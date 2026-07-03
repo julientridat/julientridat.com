@@ -1,0 +1,69 @@
+---
+import { Image } from "astro:assets";
+import Eyebrow from "@/components/Eyebrow.astro";
+import julien from "@/assets/julien.jpg";
+---
+
+<section id="about" class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto grid max-w-7xl gap-16 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
+    <div>
+      <div class="overflow-hidden rounded-2xl border border-white/10">
+        <Image src={julien} alt="Julien Tridat" widths={[400, 600]} sizes="(min-width: 768px) 40vw, 100vw" class="h-full w-full object-cover" />
+      </div>
+      <div class="mt-4 flex items-baseline justify-between text-sm">
+        <span class="font-medium">Julien Tridat</span>
+        <span class="text-white/50">Bordeaux — FR</span>
+      </div>
+    </div>
+
+    <div>
+      <Eyebrow>À propos</Eyebrow>
+      <h2 class="text-[clamp(1.8rem,3.6vw,2.8rem)] font-light leading-tight tracking-[-0.02em]">
+        Consultant &amp; Formateur IA
+      </h2>
+
+      <div class="mt-8 space-y-5 text-base leading-relaxed text-white/75">
+        <p>
+          20 ans d'expérience dans le marketing, la communication et l'accompagnement des
+          entreprises dans leur stratégie de croissance. Je forme et j'accompagne des
+          dirigeants, des équipes et des agences à intégrer l'IA dans leur métier depuis
+          3 ans.
+        </p>
+        <p>
+          Plus d'une cinquantaine d'organisations accompagnées dans leur transformation :
+          agences de communication, cabinets de conseil, maisons viticoles premium,
+          banques privées, immobilier, BTP...
+        </p>
+        <p>
+          Mon approche est différente : je ne laisse pas mes clients avec un PDF et de la
+          motivation. Je construis les assistants IA dont leurs équipes ont besoin, je les
+          déploie dans leurs outils, et je les forme à les utiliser.{" "}
+          <em class="text-lime">Ce que je livre tourne encore 6 mois plus tard.</em>
+        </p>
+      </div>
+
+      <div class="mt-10 grid gap-8 border-t border-white/10 pt-8 sm:grid-cols-[auto_1fr]">
+        <div>
+          <div class="text-5xl font-light text-lime">50+</div>
+          <div class="mt-2 max-w-[10rem] text-xs uppercase tracking-wider text-white/55">
+            organisations accompagnées
+          </div>
+        </div>
+        <div class="space-y-5 text-sm">
+          <div>
+            <div class="text-xs uppercase tracking-wider text-white/45">Basé à</div>
+            <div class="mt-1"><strong class="font-medium text-white">Bordeaux</strong> — interventions en Bordeaux Métropole, Grand Sud-Ouest &amp; national</div>
+          </div>
+          <div>
+            <div class="text-xs uppercase tracking-wider text-white/45">Outils IA Générative maîtrisés</div>
+            <div class="mt-2 flex flex-wrap gap-2">
+              {["Claude", "ChatGPT", "Copilot", "Gemini"].map((t) => (
+                <span class="rounded-full border border-lime/40 bg-lime/5 px-3 py-1 text-xs text-lime">{t}</span>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

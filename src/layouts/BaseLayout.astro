@@ -1,0 +1,59 @@
+---
+import "@/styles/global.css";
+import { SITE, PERSON_JSONLD } from "@/lib/site";
+import BookingDialog from "@/components/react/BookingDialog";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absent = page non indexable (404…) : pas de canonical, meta robots noindex. */
+  canonical?: string;
+  ogType?: string;
+  /** Blocs JSON-LD supplémentaires propres à la page. */
+  jsonLd?: Record<string, unknown>[];
+}
+
+const { title, description, canonical, ogType = "website", jsonLd = [] } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content="Julien Tridat" />
+    {canonical ? <link rel="canonical" href={canonical} /> : <meta name="robots" content="noindex" />}
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="sitemap" href="/sitemap.xml" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    {canonical && <meta property="og:url" content={canonical} />}
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:image" content={`${SITE.url}/og.jpg`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={`${SITE.url}/og.jpg`} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {canonical && <meta name="twitter:url" content={canonical} />}
+    <meta name="google-site-verification" content={SITE.googleSiteVerification} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(PERSON_JSONLD)} />
+    {jsonLd.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+  </head>
+  <body>
+    <slot />
+    <BookingDialog client:load />
+  </body>
+</html>

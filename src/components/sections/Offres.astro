@@ -1,0 +1,91 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const cardBase = "relative flex flex-col rounded-2xl border p-7 transition-colors";
+const cardDefault = "border-white/15 hover:border-white/30";
+const cardFeatured = "border-lime bg-lime/[0.04]";
+const btnDefault =
+  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors border border-white/20 hover:border-lime hover:text-lime";
+const btnFeatured =
+  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors bg-lime text-black hover:bg-lime/90";
+
+const offres = [
+  {
+    tag: "Solo",
+    name: "Dirigeant Augmenté",
+    prix: "2 500 €",
+    detail: "1 dirigeant · 2 semaines",
+    inclus: ["3 assistants IA sur-mesure", "Audit de vos processus", "Formation individuelle"],
+    featured: false,
+  },
+  {
+    tag: "JUSQU'À 10 SALARIÉS",
+    name: "TPE Augmentée",
+    prix: "6 000 €",
+    detail: "1 équipe · 4-6 semaines",
+    inclus: ["3 à 5 assistants IA sur-mesure", "Audit terrain intégré", "Déploiement dès sem. 3", "Formation métier incluse"],
+    featured: false,
+  },
+  {
+    tag: "JUSQU'À 30 SALARIÉS",
+    name: "PME Augmentée",
+    prix: "12 000 €",
+    detail: "2–3 départements · 6-8 semaines",
+    inclus: ["5 à 7 assistants IA sur-mesure", "Audit terrain approfondi", "Déploiement par vague", "2–3 demi-journées formation"],
+    featured: true,
+  },
+  {
+    tag: "JUSQU'À 80 SALARIÉS",
+    name: "PME Augmentée +",
+    prix: "25 000 €",
+    detail: "4+ départements · 8 semaines",
+    inclus: ["7 à 10 assistants IA sur-mesure", "Transformation à l'échelle", "Multi-départements", "Programme formation complet"],
+    featured: false,
+  },
+];
+---
+
+<section id="offres" class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Les offres</Eyebrow>
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+      Une offre par taille d'équipe.
+      <br />
+      <em class="text-lime">Un prix forfaitaire.</em>
+    </h2>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+      {offres.map((o) => (
+        <div class={`${cardBase} ${o.featured ? cardFeatured : cardDefault}`}>
+          {o.featured && (
+            <div class="absolute -top-3 left-7 rounded-full bg-lime px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-black">
+              ★ {o.tag}
+            </div>
+          )}
+          <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">{o.tag}</div>
+          <div class="mt-4 text-xl font-medium">{o.name}</div>
+          <div class="mt-6">
+            <div class="text-[11px] font-medium uppercase tracking-wider text-white/40">À partir de</div>
+            <div class={`mt-1 text-4xl font-light tracking-tight ${o.featured ? "text-lime" : ""}`}>{o.prix}</div>
+          </div>
+          <div class="mt-2 text-xs text-white/55">{o.detail}</div>
+          <ul class="mt-6 flex-1 space-y-3 border-t border-white/10 pt-6 text-sm text-white/80">
+            {o.inclus.map((i) => (
+              <li class="flex gap-2"><span class="text-lime">+</span><span>{i}</span></li>
+            ))}
+          </ul>
+          <button type="button" data-open-booking class={o.featured ? btnFeatured : btnDefault}>
+            Démarrer <span>→</span>
+          </button>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-10 text-sm text-white/55">
+      Au-delà de 80 utilisateurs : sur devis —{" "}
+      <button type="button" data-open-booking class="cursor-pointer text-lime hover:underline">
+        contactez-moi
+      </button>
+    </p>
+  </div>
+</section>

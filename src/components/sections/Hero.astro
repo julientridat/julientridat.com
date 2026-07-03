@@ -1,0 +1,87 @@
+---
+import { Image } from "astro:assets";
+import Nav from "@/components/Nav.astro";
+import heroImg from "@/assets/hero.jpg";
+
+const clients = [
+  "Dassault Systèmes",
+  "SNCF Fret",
+  "Le Nouveau Bélier",
+  "WeThePeople",
+  "Maison des Vins et des Spiritueux",
+];
+---
+
+<section class="relative isolate min-h-screen overflow-hidden bg-background">
+  <Image
+    src={heroImg}
+    alt=""
+    aria-hidden="true"
+    widths={[768, 1280, 1920, 2688]}
+    sizes="100vw"
+    loading="eager"
+    fetchpriority="high"
+    decoding="async"
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+  />
+  <div class="absolute inset-0 -z-10 bg-black/55"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/30 to-black/85"></div>
+
+  <Nav home />
+
+  <div class="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pb-10 pt-32 md:px-12 md:pb-14 md:pt-40">
+    <div class="flex flex-1 flex-col justify-center">
+      <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm">
+        <span>Consultant IA — Bordeaux &amp; Grand Sud Ouest</span>
+      </div>
+      <h1 class="max-w-[1100px] text-[clamp(3rem,9vw,8rem)] font-light leading-[0.95] tracking-[-0.04em] text-white">
+        <span class="block">L'IA <em class="font-normal text-[#c3fb41]">dans votre</em></span>
+        <span class="block"><em class="font-normal text-[#c3fb41]">entreprise</em> en 2 mois.</span>
+        <span class="block">Pas en 2 ans.</span>
+      </h1>
+
+      <div class="mt-12 md:mt-14">
+        <button
+          type="button"
+          data-open-booking
+          aria-label="Réserver un audit IA avec un consultant à Bordeaux"
+          class="group relative inline-flex cursor-pointer items-center gap-4 rounded-full bg-lime px-3 py-3 pr-8 text-[17px] font-medium text-black shadow-[0_0_60px_-15px_oklch(0.92_0.21_125_/_0.7)] transition-all hover:bg-lime/90"
+        >
+          <span class="grid h-11 w-11 place-items-center rounded-full bg-black text-lime transition-transform group-hover:translate-x-0.5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </span>
+          Réserver un audit
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-10 md:grid-cols-2 md:items-end">
+      <div>
+        <p class="max-w-xl text-[15px] leading-relaxed text-white">
+          <strong class="font-semibold">
+            J'intègre l'IA dans vos outils, je forme vos équipes, et je mesure le gain.
+          </strong>
+          <br />
+          <strong class="font-semibold">
+            Vous gagnez 5 à 10 heures par semaine et par collaborateur.
+          </strong>
+        </p>
+        <div class="mt-6 inline-flex items-center gap-2 text-xs text-white/55">
+          Scroll <span class="text-white/70">↓</span>
+        </div>
+      </div>
+
+      <div class="md:text-right">
+        <div class="mb-3 text-[11px] text-white/55">Ils m'ont fait confiance</div>
+        <div class="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
+          {clients.map((c) => (
+            <span class="inline-flex items-center gap-2 text-sm font-semibold text-white">
+              <span class="h-1.5 w-1.5 rounded-full bg-white"></span>
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

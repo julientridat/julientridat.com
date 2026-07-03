@@ -1,0 +1,19 @@
+---
+interface Props {
+  /** Lien vers la home (utile hors home). */
+  href?: string;
+}
+const { href } = Astro.props;
+const size = 18;
+const cell = size / 3 - 1;
+const Tag = href ? "a" : "div";
+---
+
+<Tag href={href} class="flex items-center gap-3 text-[15px] font-medium tracking-tight">
+  <span class="grid grid-cols-3 gap-[2px]" style={`width:${size}px;height:${size}px`} aria-hidden="true">
+    {Array.from({ length: 9 }).map(() => (
+      <span class="block rounded-[2px] bg-lime" style={`width:${cell}px;height:${cell}px`} />
+    ))}
+  </span>
+  <span>Julien Tridat</span>
+</Tag>

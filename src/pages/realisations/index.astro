@@ -1,0 +1,89 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
+
+const realisations = (await getCollection("realisations", ({ data }) => data.published)).sort(
+  (a, b) => a.data.sortOrder - b.data.sortOrder,
+);
+
+const title = "Réalisations — le registre des missions | Julien Tridat";
+const description =
+  "Études de cas documentées et anonymisées : intégration IA, migrations, outils sur mesure. Le contexte, ce qui a été construit, ce que ça a produit.";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Réalisations — Julien Tridat",
+    description,
+    url: `${SITE.url}/realisations`,
+    author: { "@id": `${SITE.url}/#julien-tridat` },
+  },
+];
+---
+
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/realisations`} jsonLd={jsonLd}>
+  <main class="bg-background text-foreground">
+    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-24 md:pt-44">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(700px 400px at 20% 0%, oklch(0.92 0.21 125 / 0.07), transparent 70%);"
+      >
+      </div>
+      <Nav />
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Le registre</Eyebrow>
+        <h1 class="max-w-4xl text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
+          Réalisations <em class="text-lime">documentées.</em>
+        </h1>
+        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
+          Chaque mission est documentée avec la même structure : le contexte, ce qui a été
+          construit, ce que ça a produit. Les clients sont anonymisés — les faits, eux,
+          sont vérifiables. <strong class="font-medium text-white">Pas d'adjectifs, des artefacts.</strong>
+        </p>
+      </div>
+    </header>
+
+    <section class="px-6 py-16 md:px-12 md:py-24">
+      <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2">
+        {realisations.map((r) => (
+          <a
+            href={`/realisations/${r.id}`}
+            class="group flex flex-col rounded-2xl border border-white/15 p-8 transition-colors hover:border-lime"
+          >
+            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.22em] text-white/50">
+              <span>{r.data.client}</span>
+              <span class="text-white/30">·</span>
+              <span>{r.data.secteur}</span>
+              <span class="text-white/30">·</span>
+              <span>{r.data.annee}</span>
+            </div>
+            <h2 class="mt-4 text-2xl font-medium leading-snug">{r.data.title}</h2>
+            <p class="mt-3 flex-1 leading-relaxed text-white/70">{r.data.pitch}</p>
+            {r.data.resultats.length > 0 && (
+              <div class="mt-8 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6">
+                {r.data.resultats.map((res) => (
+                  <div>
+                    <div class="text-3xl font-light text-lime">{res.chiffre}</div>
+                    <div class="mt-1 max-w-[9rem] text-[11px] uppercase tracking-wider text-white/50">
+                      {res.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div class="mt-6 inline-flex items-center gap-2 text-sm text-lime">
+              Lire l'étude <span class="transition-transform group-hover:translate-x-0.5">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</BaseLayout>

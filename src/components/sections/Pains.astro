@@ -1,0 +1,70 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const pains = [
+  {
+    title: "Une utilisation sauvage, sans pilotage",
+    desc: "Chacun teste ChatGPT dans son coin, sans cadre, sans objectifs, sans mesure. Aucune vision d'ensemble, aucun apprentissage collectif, aucun ROI mesurable.",
+  },
+  {
+    title: "Des outils qui ajoutent de la complexité au lieu d'en retirer",
+    desc: "Empilement de SaaS, interfaces qui se multiplient, doublons avec l'existant. L'IA devait simplifier le quotidien : elle alourdit la charge mentale et les équipes décrochent.",
+  },
+  {
+    title: "Des formations génériques, sans vision stratégique",
+    desc: "On apprend à vos équipes à manier ChatGPT en théorie, jamais à l'intégrer à vos process, vos données, vos clients. Résultat : retour aux anciennes habitudes en 72h.",
+  },
+  {
+    title: "Des process flous, des données éparpillées, des résultats décevants",
+    desc: "Sans process standardisé ni données propres en entrée, l'IA produit des sorties aléatoires, impossibles à industrialiser. Une démo qui marche une fois ne fait pas un système qui tourne.",
+  },
+];
+---
+
+<section id="pains" class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Le constat</Eyebrow>
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+      <span class="block">80 % des projets IA échouent.</span>
+      <em class="not-italic text-lime">
+        <span class="block italic">La cause principale n'est pas technique.</span>
+        <span class="block italic">Elle est managériale.</span>
+      </em>
+    </h2>
+    <p class="mt-6 max-w-2xl text-lg text-white/70">
+      Sources croisées : MIT, Capgemini, Bpifrance
+    </p>
+
+    <p class="mt-12 max-w-3xl text-xl font-light leading-relaxed text-white/85">
+      Derrière ces échecs, toujours les mêmes causes. Quatre angles morts qui transforment une promesse de productivité en perte de temps et d'argent.
+    </p>
+
+    <div class="mt-16 grid gap-8 md:grid-cols-2">
+      {pains.map((p) => (
+        <div class="border-t border-white/10 pt-6">
+          <div class="flex gap-4">
+            <span class="text-lime">—</span>
+            <div>
+              <h3 class="text-xl font-medium text-white">{p.title}</h3>
+              <p class="mt-3 leading-relaxed text-white/75">{p.desc}</p>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-16 max-w-3xl text-2xl font-light leading-snug text-white/80">
+      Ce n'est pas l'IA qui échoue. <em class="text-lime">C'est l'absence de méthode.</em>
+    </p>
+
+    <div class="mt-10">
+      <button
+        type="button"
+        data-open-booking
+        class="inline-flex cursor-pointer items-center gap-2 border-b border-lime pb-1 text-lg text-lime transition hover:gap-3"
+      >
+        → Audit Flash — 30 min pour savoir où mettre l'IA dans votre entreprise
+      </button>
+    </div>
+  </div>
+</section>

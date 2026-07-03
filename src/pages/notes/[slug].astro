@@ -1,0 +1,86 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import CtaButton from "@/components/CtaButton.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
+
+export async function getStaticPaths() {
+  const notes = await getCollection("notes", ({ data }) => data.published);
+  return notes.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const canonical = `${SITE.url}/notes/${entry.id}`;
+const fmt = new Intl.DateTimeFormat("fr-FR", { year: "numeric", month: "long", day: "numeric" });
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: d.title,
+    description: d.pitch,
+    url: canonical,
+    datePublished: d.date.toISOString().slice(0, 10),
+    inLanguage: "fr",
+    author: { "@id": `${SITE.url}/#julien-tridat` },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE.url}/` },
+      { "@type": "ListItem", position: 2, name: "Notes", item: `${SITE.url}/notes` },
+      { "@type": "ListItem", position: 3, name: d.title, item: canonical },
+    ],
+  },
+];
+---
+
+<BaseLayout title={`${d.title} | Julien Tridat`} description={d.pitch} canonical={canonical} ogType="article" jsonLd={jsonLd}>
+  <main class="bg-background text-foreground">
+    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(700px 400px at 20% 0%, oklch(0.92 0.21 125 / 0.07), transparent 70%);"
+      >
+      </div>
+      <Nav />
+      <div class="mx-auto max-w-4xl">
+        <nav class="mb-8 text-sm text-white/50" aria-label="Fil d'Ariane">
+          <a href="/" class="hover:text-white">Accueil</a>
+          <span class="mx-2 text-white/30">/</span>
+          <a href="/notes" class="hover:text-white">Notes</a>
+        </nav>
+        <Eyebrow>
+          <time datetime={d.date.toISOString().slice(0, 10)}>{fmt.format(d.date)}</time>
+        </Eyebrow>
+        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          {d.title}
+        </h1>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{d.pitch}</p>
+      </div>
+    </header>
+
+    <article class="px-6 py-16 md:px-12 md:py-20">
+      <div class="prose-artefact mx-auto max-w-3xl">
+        <Content />
+      </div>
+    </article>
+
+    <section class="border-t border-white/10 px-6 py-16 md:px-12">
+      <div class="mx-auto flex max-w-3xl flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
+        <p class="max-w-md text-lg leading-relaxed text-white/75">
+          Envie d'en discuter ? <em class="text-lime">30 minutes, sans engagement.</em>
+        </p>
+        <CtaButton>Réserver un échange</CtaButton>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</BaseLayout>

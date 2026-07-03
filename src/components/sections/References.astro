@@ -1,0 +1,45 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const logos = [
+  "Dassault Systèmes", "SNCF Fret", "Le Nouveau Bélier", "Maison Chapoutier",
+  "Cogefi", "Zorba Group", "WeThePeople", "Bordeaux Négoce",
+  "Maison des Vins et des Spiritueux", "Asqua BTP",
+  "Club d'Affaire Bassin Marmandais", "Qwertys",
+];
+
+const quotes = [
+  ["Un accompagnement orienté sur les spécificités de nos métiers, parfaitement ajusté à nos besoins.", "Aurélie M.", "Consultante"],
+  ["Julien a su adapter le programme à notre métier tout en apportant des exemples concrets et des cas pratiques pertinents. Une approche dynamique et captivante.", "Daphné G.", "Consultante"],
+  ["L'accompagnement était très concret et orienté vers des solutions pratiques. J'ai particulièrement apprécié la création d'assistants IA personnalisés avec ChatGPT.", "Séverine G.", "Chargée de Développement"],
+  ["La formation m'a permis de comprendre comment structurer mes prompts et affiner mes besoins grâce à une approche méthodique et pratique.", "Véronique T.", "Directrice Conseil"],
+  ["Julien est passionné et cela se ressent. Il a su répéter et reprendre chaque point de manière patiente et positive. Une formation enrichissante et pleine d'énergie.", "Elsa M.", "Responsable Administrative"],
+  ["Julien a parfaitement préparé son intervention, ce qui lui a permis d'adapter son accompagnement aux besoins spécifiques de chacun. Une grande aide pour notre équipe.", "Chrystelle T.", "Directrice Clientèle"],
+];
+---
+
+<section id="references" class="border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Références</Eyebrow>
+    <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+      Ils m'ont <em class="text-lime">fait confiance.</em>
+    </h2>
+
+    <div class="mt-12 flex flex-wrap gap-x-8 gap-y-4 border-y border-white/10 py-8">
+      {logos.map((l) => <span class="text-base text-white/65">{l}</span>)}
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {quotes.map(([q, name, role]) => (
+        <figure class="rounded-2xl border border-white/10 bg-background/40 p-7">
+          <div class="font-serif text-4xl leading-none text-lime">"</div>
+          <blockquote class="mt-3 text-[15px] leading-relaxed text-white/85">{q}</blockquote>
+          <figcaption class="mt-6 flex flex-col border-t border-white/10 pt-4 text-sm">
+            <span class="font-medium">{name}</span>
+            <span class="text-white/50">{role}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+  </div>
+</section>

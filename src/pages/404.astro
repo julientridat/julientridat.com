@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Page introuvable | Julien Tridat"
+  description="La page que vous cherchez n'existe pas ou a été déplacée."
+>
+  <main class="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
+    <div class="max-w-md text-center">
+      <h1 class="text-7xl font-light text-lime">404</h1>
+      <h2 class="mt-4 text-xl font-medium">Page introuvable</h2>
+      <p class="mt-2 text-sm text-white/60">
+        La page que vous cherchez n'existe pas ou a été déplacée.
+      </p>
+      <div class="mt-6">
+        <a
+          href="/"
+          class="inline-flex items-center justify-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90"
+        >
+          Retour à l'accueil
+        </a>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

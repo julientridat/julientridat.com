@@ -1,0 +1,21 @@
+---
+interface Props {
+  variant?: "lime" | "outline" | "ghost";
+}
+const { variant = "lime" } = Astro.props;
+const base =
+  "inline-flex cursor-pointer items-center gap-3 rounded-full px-6 py-3.5 text-[15px] font-medium transition-all duration-200 group";
+const styles =
+  variant === "lime"
+    ? "bg-lime text-black hover:bg-lime/90"
+    : variant === "outline"
+      ? "border border-white/20 text-white hover:border-lime hover:text-lime"
+      : "text-white/80 hover:text-white";
+---
+
+<button type="button" data-open-booking class={`${base} ${styles}`}>
+  <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 text-base transition-transform group-hover:translate-x-0.5">
+    →
+  </span>
+  <span><slot /></span>
+</button>

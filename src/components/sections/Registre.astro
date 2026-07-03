@@ -1,0 +1,64 @@
+---
+import { getCollection } from "astro:content";
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const realisations = (await getCollection("realisations", ({ data }) => data.published))
+  .sort((a, b) => a.data.sortOrder - b.data.sortOrder)
+  .slice(0, 3);
+---
+
+<section id="registre" class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <div class="grid gap-10 md:grid-cols-2 md:items-end">
+      <div>
+        <Eyebrow>Le registre</Eyebrow>
+        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Pas des promesses.
+          <br />
+          <em class="text-lime">Des preuves.</em>
+        </h2>
+      </div>
+      <p class="max-w-md text-lg leading-relaxed text-white/75">
+        Chaque mission documentée : le contexte, ce qui a été construit, ce que ça a produit.{" "}
+        <strong class="font-medium text-white">Anonymisé, vérifiable, sans adjectifs.</strong>
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-3">
+      {realisations.map((r) => (
+        <a
+          href={`/realisations/${r.id}`}
+          class="group flex flex-col rounded-2xl border border-white/15 p-7 transition-colors hover:border-lime"
+        >
+          <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">
+            {r.data.client} · {r.data.annee}
+          </div>
+          <h3 class="mt-4 text-xl font-medium leading-snug">{r.data.title}</h3>
+          <p class="mt-3 flex-1 text-sm leading-relaxed text-white/70">{r.data.pitch}</p>
+          {r.data.resultats.length > 0 && (
+            <div class="mt-6 flex flex-wrap gap-x-6 gap-y-2 border-t border-white/10 pt-5">
+              {r.data.resultats.slice(0, 2).map((res) => (
+                <div>
+                  <div class="text-2xl font-light text-lime">{res.chiffre}</div>
+                  <div class="mt-0.5 text-[11px] uppercase tracking-wider text-white/50">{res.label}</div>
+                </div>
+              ))}
+            </div>
+          )}
+          <div class="mt-6 inline-flex items-center gap-2 text-sm text-lime">
+            Lire l'étude <span class="transition-transform group-hover:translate-x-0.5">→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-12">
+      <a
+        href="/realisations"
+        class="inline-flex items-center gap-2 border-b border-lime pb-1 text-lg text-lime transition hover:gap-3"
+      >
+        → Tout le registre des réalisations
+      </a>
+    </div>
+  </div>
+</section>

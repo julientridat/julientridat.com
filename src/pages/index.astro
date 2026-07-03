@@ -1,0 +1,72 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Hero from "@/components/sections/Hero.astro";
+import Pains from "@/components/sections/Pains.astro";
+import Method from "@/components/sections/Method.astro";
+import Assistants from "@/components/sections/Assistants.astro";
+import Offres from "@/components/sections/Offres.astro";
+import Registre from "@/components/sections/Registre.astro";
+import References from "@/components/sections/References.astro";
+import About from "@/components/sections/About.astro";
+import FinalCTA from "@/components/sections/FinalCTA.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
+
+// Balises et microdonnées identiques au site d'origine (continuité SEO).
+const title = "Consultant IA Bordeaux — Julien Tridat | Formation & Intégration IA Entreprise";
+const description =
+  "Consultant et formateur IA à Bordeaux & Bordeaux Métropole. J'installe l'IA dans vos outils et je forme vos équipes en 2 mois. Audit, assistants, formation.";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    name: "Julien Tridat — Consultant IA Bordeaux",
+    description:
+      "Consultant et formateur IA à Bordeaux et Bordeaux Métropole. Audit IA, assistants sur mesure et formation métier en 2 mois.",
+    url: `${SITE.url}/`,
+    areaServed: [
+      { "@type": "City", name: "Bordeaux" },
+      { "@type": "AdministrativeArea", name: "Bordeaux Métropole" },
+      { "@type": "AdministrativeArea", name: "Nouvelle-Aquitaine" },
+      { "@type": "Country", name: "France" },
+    ],
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bordeaux",
+      postalCode: "33000",
+      addressRegion: "Nouvelle-Aquitaine",
+      addressCountry: "FR",
+    },
+    geo: { "@type": "GeoCoordinates", latitude: 44.8378, longitude: -0.5792 },
+    serviceType: [
+      "Audit IA",
+      "Assistants IA sur mesure",
+      "Formation IA métier",
+      "Consultant IA Bordeaux",
+      "Formateur IA Bordeaux Métropole",
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "Julien Tridat — Consultant IA Bordeaux",
+    url: `${SITE.url}/`,
+  },
+];
+---
+
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd}>
+  <main class="bg-background text-foreground">
+    <Hero />
+    <Pains />
+    <Method />
+    <Assistants />
+    <Offres />
+    <Registre />
+    <References />
+    <About />
+    <FinalCTA />
+    <Footer home />
+  </main>
+</BaseLayout>
