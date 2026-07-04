@@ -14,26 +14,31 @@ const realisations = (await getCollection("realisations", ({ data }) => data.pub
 const groupes = [
   {
     id: "cadrer",
-    titre: "Vous voulez savoir où mettre l'IA — et où pas",
+    onglet: "Savoir où commencer",
+    titre: "Savoir où l'IA a vraiment sa place",
     intro:
-      "Avant d'investir un euro : cartographier les usages réels, scorer les opportunités, construire l'offre ou la stratégie sur des faits.",
+      "Avant d'engager le moindre budget : cartographier vos usages réels, chiffrer les priorités, fonder l'offre ou la stratégie sur des faits — et repérer aussi ce qu'il vaut mieux laisser à l'humain.",
   },
   {
     id: "former",
-    titre: "Vous voulez que vos équipes s'en servent vraiment",
+    onglet: "Former les équipes",
+    titre: "Des équipes qui s'en servent vraiment",
     intro:
-      "Des formations construites sur vos vrais documents et vos vrais métiers — du bénévole associatif au groupe international — avec des livrables qui restent après mon départ.",
+      "Des formations bâties sur vos propres documents et vos métiers réels — du bénévole associatif au groupe international — et des livrables qui restent une fois la session terminée.",
   },
   {
     id: "produire",
-    titre: "Vous voulez produire plus vite, sans perdre vos standards",
+    onglet: "Produire vite et bien",
+    titre: "Produire plus vite sans rien céder sur la qualité",
     intro:
-      "Votre charte et vos process encodés en systèmes : ils produisent à la demande, conformes à chaque fois.",
+      "Votre charte et vos méthodes gravées dans des systèmes : ils produisent à la demande, et le résultat reste conforme à chaque fois.",
   },
   {
     id: "rayonner",
+    onglet: "En mon nom",
     titre: "Ce que je fais en mon nom",
-    intro: "La scène, cette plateforme : les preuves que je m'applique ma propre méthode.",
+    intro:
+      "La scène, ce site : la preuve que je m'applique à moi-même la méthode que je vends.",
   },
 ];
 
@@ -68,17 +73,17 @@ const jsonLd = [
           Réalisations <em class="text-lime">documentées.</em>
         </h1>
         <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
-          Chaque mission racontée avec la même structure — le contexte, ce qui a été construit,
-          ce que ça a produit — et classée par ce que <strong class="font-medium text-white">vous</strong> cherchez.
-          Clients anonymisés, faits vérifiables.
+          Chaque mission suit la même trame — le contexte, ce que j'ai construit, ce que ça a
+          changé — et je les ai réunies selon ce que <strong class="font-medium text-white">vous</strong>
+          venez chercher. Clients anonymisés, faits vérifiables.
         </p>
-        <nav class="mt-8 flex flex-wrap gap-2" aria-label="Aller à un besoin">
+        <nav class="mt-8 flex flex-wrap gap-2" aria-label="Accès direct par besoin">
           {groupes.map((g) => (
             <a
               href={`#${g.id}`}
               class="rounded-full border border-white/20 px-4 py-2 text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime"
             >
-              {g.titre}
+              {g.onglet}
             </a>
           ))}
         </nav>
@@ -92,8 +97,7 @@ const jsonLd = [
         <section id={g.id} class="scroll-mt-24 border-b border-white/10 px-6 py-14 md:px-12 md:py-20 last-of-type:border-b-0">
           <div class="mx-auto max-w-7xl">
             <h2 class="max-w-3xl text-[clamp(1.5rem,3vw,2.2rem)] font-light leading-tight tracking-[-0.02em]">
-              {g.titre.split("—")[0]}
-              <em class="text-lime">{g.titre.includes("—") ? `— ${g.titre.split("—")[1].trim()}` : ""}</em>
+              {g.titre}<span class="text-lime">.</span>
             </h2>
             <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/60">{g.intro}</p>
             <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">

@@ -5,7 +5,7 @@ besoin: "marketing"
 pitch: "Trois gabarits éditoriaux chartés — chiffre choc, carte citation, triptyque de preuve — que l'assistant décline en série pour accompagner chaque campagne de contenu."
 encode:
   - "3 gabarits éditoriaux avec leurs règles typographiques"
-  - "La charte du client (ou la mienne) au pixel"
+  - "La charte du client (ou la mienne) au pixel près"
   - "La logique de série : une campagne = une déclinaison cohérente"
 sorties:
   - "Vignettes 1080×1080 prêtes pour LinkedIn"

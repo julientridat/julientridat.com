@@ -6,7 +6,7 @@ annee: 2026
 role: "Conception du design system, automatisation de production"
 stack: ["Gabarits HTML", "Assistants IA", "Charte de marque"]
 besoin: "produire"
-pitch: "Un système de production de visuels réseaux sociaux charté au pixel : 4 clubs + une marque ombrelle, posts et stories générés en langage naturel."
+pitch: "Un système de production de visuels pour les réseaux sociaux, charté au pixel près : 4 clubs et une marque ombrelle, posts et stories générés en langage naturel."
 resultats:
   - chiffre: "4+1"
     label: "clubs + marque ombrelle couverts"
@@ -32,7 +32,7 @@ Un franchisé exploitant plusieurs clubs d'un grand réseau national de fitness 
 
 Un design system exécutable par l'IA, et non un simple jeu de modèles :
 
-- **Des gabarits HTML chartés** encodant l'identité officielle du réseau : fontes propriétaires, logos par club, hiérarchie typographique, ambiance visuelle. Le gabarit est du code — donc reproductible au pixel, à chaque fois.
+- **Des gabarits HTML chartés** encodant l'identité officielle du réseau : fontes propriétaires, logos par club, hiérarchie typographique, ambiance visuelle. Le gabarit est du code — donc reproductible au pixel près, à chaque fois.
 - **Une déclinaison par entité** : chaque club a ses variantes (logo, nom, localisation), plus la marque ombrelle pour les communications groupées.
 - **Deux formats de sortie** : post carré 1080×1080 et story 1080×1920, prêts à publier.
 - **Un pilotage en langage naturel** : « fais le visuel portes ouvertes pour le club X » suffit. L'assistant choisit le gabarit, injecte le contenu, produit le PNG final.

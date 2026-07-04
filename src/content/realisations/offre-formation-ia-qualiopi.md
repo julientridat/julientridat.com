@@ -6,10 +6,10 @@ annee: 2026
 role: "Étude de marché, positionnement, conception d'offre"
 stack: ["Étude de marché scorée", "Personas ICP", "Programmes Qualiopi"]
 besoin: "cadrer"
-pitch: "D'un constat de marché à une offre prête à vendre : étude scorée de 3 segments, verdict chiffré, deux programmes complets conformes Qualiopi et un plan de lancement."
+pitch: "D'un constat de marché à une offre prête à vendre : trois segments notés, verdict chiffré, deux programmes conformes Qualiopi et un plan de lancement."
 resultats:
   - chiffre: "87/100"
-    label: "le segment retenu, par scoring pondéré"
+    label: "le segment retenu, à la note pondérée"
   - chiffre: "2"
     label: "programmes complets prêts à vendre"
   - chiffre: "3"

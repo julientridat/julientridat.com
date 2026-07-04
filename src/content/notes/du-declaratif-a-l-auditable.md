@@ -7,7 +7,7 @@ published: true
 
 ## Le signal s'effondre
 
-LinkedIn reste incontournable — 1,2 milliard de comptes, une intégration profonde dans les outils RH, aucun concurrent sérieux. Mais son signal se dégrade à vue d'œil : selon Originality.ai, plus de la moitié du contenu long format publié sur la plateforme serait désormais généré par IA, pendant que la portée organique, d'après les mesures publiées par les observateurs de la plateforme, s'érode d'année en année.
+LinkedIn reste incontournable — 1,2 milliard de comptes, une intégration profonde dans les outils RH, aucun concurrent sérieux. Mais son signal se dégrade à vue d'œil : selon Originality.ai, plus de la moitié du contenu long format publié sur la plateforme serait désormais généré par IA, pendant que la portée organique, d'après les mesures publiées par les observateurs du réseau, s'érode d'année en année.
 
 Le mécanisme est structurel. L'algorithme récompense le consensus : ce qui ressemble à ce qui a déjà marché. Les experts s'y normalisent, gomment leurs aspérités, publient la même « soupe tiède » que tout le monde. Ironie du sort : en se rendant conformes, ils deviennent précisément ce que l'IA générative sait le mieux reproduire. **S'aligner sur la norme, c'est faciliter sa propre automatisation.**
 
@@ -40,6 +40,6 @@ LinkedIn reste un canal de distribution. Il n'est plus le lieu où réside la va
 
 ## La question pour votre entreprise
 
-Ce raisonnement ne vaut pas que pour un consultant. Votre entreprise aussi est évaluée par des acheteurs qui délèguent leur présélection à des IA — dès aujourd'hui, et de plus en plus. Que trouvent-elles : des pages de promesses, ou des preuves structurées de ce que vous savez faire ?
+Ce raisonnement ne vaut pas que pour un consultant. Votre entreprise aussi est évaluée par des acheteurs qui confient leur présélection à des IA — dès aujourd'hui, et de plus en plus. Que trouvent-elles : des pages de promesses, ou des preuves structurées de ce que vous savez faire ?
 
 C'est exactement le genre de chantier que je mène avec mes clients. La première étape tient en une question : *si un agent IA devait vous recommander demain matin, sur quelles preuves pourrait-il s'appuyer ?*

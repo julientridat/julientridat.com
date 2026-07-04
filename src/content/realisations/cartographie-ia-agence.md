@@ -6,7 +6,7 @@ annee: 2026
 role: "Audit, cartographie, restitution stratégique"
 stack: ["Entretiens terrain", "Analyse de frictions", "Priorisation ROI"]
 besoin: "cadrer"
-pitch: "Un audit IA fondé sur le terrain — entretiens, analyse des frictions réelles, priorisation par valeur — restitué en deck stratégique et outil de pilotage."
+pitch: "Un audit IA fondé sur le terrain : entretiens, analyse des frictions réelles, hiérarchisation par la valeur, restituée en présentation et outil de pilotage."
 resultats:
   - chiffre: "2"
     label: "livrables : restitution + pilotage"
@@ -32,7 +32,7 @@ Une cartographie complète des usages, fondée sur le terrain et non sur un cata
 
 - **Entretiens individuels** avec les profils clés de l'agence : ce qu'ils produisent, où le temps se perd, ce qui les frustre. Les sources sont hétérogènes — comptes rendus, questionnaires, échanges — et croisées entre elles.
 - **Analyse par frictions** : chaque irritant identifié est qualifié selon qu'il relève de la *production* (l'IA peut exécuter) ou du *jugement* (l'humain doit trancher, l'IA peut préparer). Cette distinction évite l'erreur la plus coûteuse : automatiser ce qui ne devrait pas l'être.
-- **Priorisation par valeur** : les cas d'usage sont classés par rapport effort/impact, pas par effet de mode. Le résultat est une feuille de route séquencée, pas une liste de courses.
+- **Priorisation par valeur** : les cas d'usage sont classés selon le rapport effort/impact, pas par effet de mode. Le résultat est une feuille de route séquencée, pas une liste de courses.
 - **Deux livrables** : un deck de restitution destiné à la direction (le diagnostic, les priorités, la trajectoire) et un outil de pilotage de 10 onglets pour suivre l'exécution de la mission dans le temps.
 
 ## Ce que ça a produit

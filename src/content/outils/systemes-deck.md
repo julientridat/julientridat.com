@@ -2,7 +2,7 @@
 title: "Un design system de présentation par client"
 type: "Skill"
 besoin: "marketing"
-pitch: "Chaque client récurrent a son skill de présentation : sa charte, ses composants, ses formats — deck HTML plein écran, scrollytelling one-page ou .pptx natif. Le contenu change, l'identité jamais."
+pitch: "Chaque client récurrent a son skill de présentation : sa charte, ses composants, ses formats — présentation plein écran, page à défilement ou PowerPoint natif. Le contenu change, l'identité jamais."
 encode:
   - "La charte complète du client (fontes, couleurs, composants éditoriaux)"
   - "Les formats : deck 16:9, one-page scrollytelling, print A4"
@@ -12,9 +12,9 @@ sorties:
   - "Decks de restitution et de recommandation"
   - "Présentations commerciales"
 gain:
-  tache: "Un support de formation ou un deck de reco"
+  tache: "Un support de formation ou une présentation de recommandation"
   avant: "mise en page manuelle, charte à re-vérifier"
-  apres: "charté au pixel, en une passe"
+  apres: "charté au pixel près, en une passe"
 demo:
   url: "/demos/support-groupe-retail.html"
   label: "Voir un support livré (anonymisé)"

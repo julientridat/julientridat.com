@@ -31,7 +31,7 @@ L'équipe marketing du siège d'une enseigne nationale — plus de 600 points de
 ## Ce qui a été construit
 
 - **Un fil narratif unique, les « 5 verbes »** — je cherche, je comprends, je produis, je communique, j'automatise — plutôt qu'un catalogue d'outils : chaque participant situe son quotidien dans le fil.
-- **Un assistant créé en direct sur un vrai cas de l'équipe** : la déclinaison de supports locaux pour chacun des points de vente — un travail répétitif à l'échelle du réseau — montée en séance, challengée par les participants, avec des résultats jugés probants par l'équipe elle-même.
+- **Un assistant créé en direct sur un vrai cas de l'équipe** : la déclinaison de supports locaux pour chacun des points de vente — un travail répétitif à l'échelle du réseau — montée en séance, mise à l'épreuve par les participants, avec des résultats jugés probants par l'équipe elle-même.
 - **Une méthode transmise, pas seulement montrée** : la « fiche entreprise en 30 minutes », socle de contexte réutilisable dans tous les assistants de l'équipe.
 - **Un livrable post-session tenant les promesses faites en séance** : une feuille de route par pôle — cinq pôles cartographiés avec leurs cas d'usage prioritaires — et une règle de gouvernance actée pour l'existant : chaque agent a un propriétaire unique, responsable de sa maintenance.
 

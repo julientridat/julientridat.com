@@ -37,7 +37,7 @@ Un parcours en deux phases, à l'inverse du stage catalogue :
 - **Phase d'entretiens par pôle** (stratégie, direction) pour cartographier les cas d'usage réels avant de concevoir quoi que ce soit. Livrable : une roadmap opérationnelle, accompagnée d'un volet confidentialité dédié.
 - **Quatre ateliers de 3h30, découpés par pôle métier** — parce qu'un stratège et un créatif n'ont pas les mêmes gestes :
   - *Stratégie / commercial* : IA de texte appliquée à leurs dossiers — analyse de briefs, benchmarks, structuration de recommandations, préparation d'avant-vente.
-  - *Création* : IA d'image et de vidéo — déclinaisons multi-formats, moodboards, templates vidéo, workflows de production.
+  - *Création* : IA d'image et de vidéo — déclinaisons multi-formats, planches d'ambiance, gabarits vidéo, chaînes de production.
   - *Transverse* : agents d'automatisation — briefs, synthèses de réunion, reporting.
 - **Deux règles tenues sur toute la durée** : pas d'introduction aux bases (le niveau du groupe l'interdisait), et chaque session se conclut par un livrable concret ou un agent fonctionnel. La question PI/confidentialité est abordée à chaque session, systématiquement.
 

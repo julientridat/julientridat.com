@@ -30,9 +30,9 @@ Un organisme de conseil et formation établi — quatorze ans d'activité, un r�
 
 ## Ce qui a été construit
 
-Un accompagnement continu sur douze mois, séquencé du haut vers le bas :
+Un accompagnement continu sur douze mois, séquencé du sommet vers la base :
 
-- **Un diagnostic enregistré et synthétisé** : les frictions opérationnelles documentées depuis un entretien de fond, converties en programme d'accompagnement chiffré en trois phases (tronc commun, ateliers par département, suivi).
+- **Un diagnostic enregistré et synthétisé** : les frictions opérationnelles, relevées lors d'un entretien de fond, converties en un programme d'accompagnement chiffré en trois phases (tronc commun, ateliers par département, suivi).
 - **Une session stratégique de deux heures avec le dirigeant** : état de l'art des IA pour dirigeant, grille d'audit flash à cinq critères (complexité, fréquence, délégabilité, valeur business, scalabilité), plans d'action à trois horizons et cadre de gouvernance — le sponsor décide avant que les équipes n'expérimentent.
 - **Deux jours de formation des équipes** — 40 % d'exposé, 60 % de pratique : fondamentaux et prompting le premier jour ; applications métier le second, dont la gestion administrative de la conformité qualité et la méthode commerciale, sur les outils réellement utilisés par la maison.
 - **Deux livrables stratégiques écrits** : une stratégie IA d'ensemble et une stratégie de visibilité dans les moteurs de réponse IA (GEO) — parce qu'un organisme de formation doit désormais être trouvable par les assistants qui conseillent ses futurs clients.
