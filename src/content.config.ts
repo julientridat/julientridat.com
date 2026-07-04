@@ -17,6 +17,10 @@ const realisations = defineCollection({
     stack: z.array(z.string()).default([]),
     /** Regroupement orienté visiteur sur les pages de liste. */
     besoin: z.enum(["cadrer", "former", "produire", "rayonner"]).default("former"),
+    /** Le blocage business AVANT — ce que l'entreprise ne pouvait pas faire. */
+    enjeu: z.string().optional(),
+    /** La punchline APRÈS — le nouveau moyen de production, ce que l'entreprise fait désormais. */
+    transformation: z.string().optional(),
     /** Résumé en 1-2 phrases — utilisé sur les cartes, le llms.txt et la meta description. */
     pitch: z.string(),
     resultats: z
@@ -26,31 +30,6 @@ const realisations = defineCollection({
     visuel: z.object({ src: z.string(), alt: z.string() }).optional(),
     /** Démo interactive liée (anonymisée ou sur données fictives). */
     demo: z.object({ url: z.string(), label: z.string() }).optional(),
-    published: z.boolean().default(true),
-    sortOrder: z.number().default(99),
-  }),
-});
-
-/**
- * Outils — les systèmes construits : skills, projets IA clients, méthodes.
- * Chaque fiche documente ce que le système encode et ce qu'il produit.
- */
-const outils = defineCollection({
-  loader: glob({ pattern: "**/*.md", base: "./src/content/outils" }),
-  schema: z.object({
-    title: z.string(),
-    type: z.enum(["Skill", "Projet client", "Méthode", "Infrastructure"]),
-    /** Regroupement orienté visiteur. */
-    besoin: z.enum(["decider", "marketing", "assistants", "operations"]).default("operations"),
-    pitch: z.string(),
-    /** Ce que le système encode (règles, charte, process). */
-    encode: z.array(z.string()).default([]),
-    /** Ce qu'il produit en sortie. */
-    sorties: z.array(z.string()).default([]),
-    /** Gain avant → après, cité dans les supports de mission. */
-    gain: z.object({ avant: z.string(), apres: z.string(), tache: z.string() }).optional(),
-    demo: z.object({ url: z.string(), label: z.string() }).optional(),
-    caseUrl: z.string().optional(),
     published: z.boolean().default(true),
     sortOrder: z.number().default(99),
   }),
@@ -68,4 +47,4 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { realisations, outils, notes };
+export const collections = { realisations, notes };

@@ -17,12 +17,16 @@ const { Content } = await render(entry);
 const d = entry.data;
 const canonical = `${SITE.url}/realisations/${entry.id}`;
 
+// Meta description : pitch tronqué proprement à ~158 caractères (frontière de mot).
+const metaDescription =
+  d.pitch.length > 160 ? d.pitch.slice(0, 158).replace(/\s+\S*$/, "") + "…" : d.pitch;
+
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "Article",
     headline: d.title,
-    description: d.pitch,
+    description: metaDescription,
     url: canonical,
     datePublished: `${d.annee}-01-01`,
     inLanguage: "fr",
@@ -34,14 +38,14 @@ const jsonLd = [
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE.url}/` },
-      { "@type": "ListItem", position: 2, name: "Réalisations", item: `${SITE.url}/realisations` },
+      { "@type": "ListItem", position: 2, name: "Cas clients", item: `${SITE.url}/realisations` },
       { "@type": "ListItem", position: 3, name: d.title, item: canonical },
     ],
   },
 ];
 ---
 
-<BaseLayout title={`${d.title} | Julien Tridat`} description={d.pitch} canonical={canonical} ogType="article" jsonLd={jsonLd}>
+<BaseLayout title={`${d.title} | Julien Tridat`} description={metaDescription} canonical={canonical} ogType="article" jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
     <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
       <div
@@ -54,7 +58,7 @@ const jsonLd = [
         <nav class="mb-8 text-sm text-white/50" aria-label="Fil d'Ariane">
           <a href="/" class="hover:text-white">Accueil</a>
           <span class="mx-2 text-white/30">/</span>
-          <a href="/realisations" class="hover:text-white">Réalisations</a>
+          <a href="/realisations" class="hover:text-white">Cas clients</a>
         </nav>
         <Eyebrow>{d.client} · {d.secteur} · {d.annee}</Eyebrow>
         <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
@@ -89,6 +93,22 @@ const jsonLd = [
         )}
       </div>
     </header>
+
+    {(d.enjeu || d.transformation) && (
+      <section class="border-b border-white/10 px-6 py-14 md:px-12 md:py-16">
+        <div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-[1fr_auto_1fr] md:items-center">
+          <div>
+            <div class="text-[11px] uppercase tracking-[0.22em] text-white/40">Avant — l'enjeu</div>
+            <p class="mt-3 text-lg leading-relaxed text-white/65">{d.enjeu}</p>
+          </div>
+          <div class="hidden text-3xl text-lime md:block" aria-hidden="true">→</div>
+          <div>
+            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Après — la transformation</div>
+            <p class="mt-3 text-lg leading-relaxed text-white">{d.transformation}</p>
+          </div>
+        </div>
+      </section>
+    )}
 
     {d.visuel && (
       <section class="border-b border-white/10 px-6 pt-12 md:px-12">

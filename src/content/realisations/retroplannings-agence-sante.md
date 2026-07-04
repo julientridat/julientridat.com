@@ -1,15 +1,17 @@
 ---
-title: "Des rétroplannings générés en minutes, au standard maison d'une agence santé"
+title: "Une agence santé produit ses rétroplannings sans dépendre de la tête de ses chefs de projet"
 client: "Agence de communication santé"
 secteur: "Communication santé"
 annee: 2026
-role: "Conception du générateur, encodage du standard interne"
-stack: ["Assistants IA", "Gabarit .xlsx", "Process encodé"]
+role: "Conception et intégration du moyen de production"
+stack: ["Assistants IA", "Gabarit .xlsx", "Standard interne encodé"]
 besoin: "produire"
-pitch: "Un générateur qui transforme un brief de mission — livrables, client, dates clés — en rétroplanning complet au format et au standard visuel de l'agence."
+enjeu: "Un standard de planning éprouvé mais oral, refait à la main à chaque mission, avec des phases de validation réglementaire parfois oubliées."
+transformation: "L'agence transforme un brief en rétroplanning complet, au standard maison, en minutes — le savoir-faire est dans le système, plus dans une tête."
+pitch: "Un moyen de production installé dans l'agence : le standard planning encodé une fois, l'équipe génère un rétroplanning conforme à partir d'un simple brief, dans le format qu'elle utilise déjà."
 resultats:
   - chiffre: ".xlsx"
-    label: "le format natif de l'équipe"
+    label: "produit dans le format natif de l'équipe"
   - chiffre: "min"
     label: "d'un brief au planning complet"
 visuel:
@@ -19,25 +21,29 @@ published: true
 sortOrder: 11
 ---
 
-## Le contexte
+## L'enjeu
 
-Dans une agence de communication santé, chaque mission démarre par un rétroplanning : livrables, phases, circuit de validation. Le secteur impose une étape que les autres agences n'ont pas — la validation réglementaire des contenus (le circuit d'approbation propre aux communications santé/pharma) — et l'agence a son standard maison : un code couleur, une hiérarchie de tâches, un pattern de circuit éprouvés par des années de missions.
+Dans une agence de communication santé, chaque mission démarre par un rétroplanning : livrables, phases, circuit de validation. Le secteur impose une étape que les autres agences n'ont pas — la validation réglementaire des contenus, ce circuit d'approbation propre aux communications santé/pharma. Et l'agence a son standard maison : un code couleur, une hiérarchie de tâches, un pattern de circuit affinés par des années de missions.
 
-Problème classique : ce standard vivait dans la tête des chefs de projet. Chaque planning était refait à la main, avec des variations, des oublis de phases de validation, et du temps perdu à chaque nouvelle mission.
+Le vrai problème n'est pas « faire des plannings plus vite ». C'est que ce standard vivait dans la tête des chefs de projet. Chaque planning était refait à la main, avec ses variations, ses oublis de phases de validation, son temps perdu. L'agence n'avait pas de capacité de production de ses plannings : elle avait des personnes qui savaient les faire. Le jour où ces personnes manquent, le savoir-faire manque avec elles.
 
-## Ce qui a été construit
+## Le système déployé
 
-Le standard a été **encodé une fois pour toutes** dans un générateur piloté par l'IA :
+J'ai encodé le standard une fois pour toutes dans un générateur piloté par l'IA — pas un gabarit de plus à remplir, un moyen de produire :
 
-- **Le pattern canonique de l'agence** — hiérarchie livrable → phase → tâche, système de couleurs, circuit de validation réglementaire — est décrit dans le système, pas réexpliqué à chaque usage.
-- **L'entrée est un brief en langage naturel** : les livrables, le client, les dates clés. C'est tout.
-- **La sortie est le fichier que l'équipe utilise déjà** : un `.xlsx` au standard visuel maison, directement exploitable — pas un outil de plus à adopter, pas de nouvelle plateforme.
-- **Le circuit de validation n'est jamais oublié** : il fait partie du pattern. Le générateur ne sait pas produire un planning qui l'omet.
+- **Le pattern canonique de l'agence est dans le système** — hiérarchie livrable → phase → tâche, code couleur, circuit de validation réglementaire. Il n'est plus réexpliqué à chaque mission : il est décrit une fois, dans le générateur.
+- **L'entrée est un brief en langage naturel** : les livrables, le client, les dates clés. Rien d'autre à saisir.
+- **La sortie est le fichier que l'équipe manipule déjà** : un `.xlsx` au standard visuel maison, directement exploitable. Aucun outil à adopter, aucune plateforme à apprendre.
+- **Le circuit de validation ne peut plus être oublié** : il fait partie du pattern. Le générateur ne sait pas produire un planning qui l'omet.
 
-## Ce que ça a produit
+L'agence ne reçoit pas des plannings : elle reçoit la machine qui les produit.
 
-Le passage d'un brief au rétroplanning complet se fait en minutes, dans le format que les équipes manipulent au quotidien. Le savoir-faire planning de l'agence est devenu un actif explicite et transmissible, au lieu d'une pratique orale.
+## La transformation
 
-## Ce qu'il faut en retenir
+Avant, un rétroplanning voulait dire un chef de projet, sa mémoire du standard, et le risque d'un oubli à chaque nouvelle mission. Après, un brief suffit : le planning complet sort en minutes, au bon format, avec le circuit réglementaire intégré par construction.
 
-L'automatisation la plus rentable n'est pas la plus spectaculaire : c'est celle qui encode un standard existant. Quand une équipe a déjà une bonne pratique, le travail de l'IA n'est pas de l'inventer — c'est de la rendre systématique, en gardant le format que les humains utilisent déjà.
+L'agence a gagné une capacité qu'elle n'avait pas : **produire ses rétroplannings au standard maison sans dépendre de qui est présent ce jour-là.** Le savoir-faire planning, jusque-là oral et fragile, est devenu un actif explicite, systématique et transmissible.
+
+## La méthode
+
+L'automatisation la plus rentable n'est pas la plus spectaculaire : c'est celle qui encode un standard existant. Quand une équipe a déjà une bonne pratique, mon travail n'est pas de l'inventer — c'est de la rendre structurelle, en gardant le format que les humains utilisent déjà. Je n'exécute pas des plannings à la place de l'agence : j'installe le moyen qu'elle les produise seule, à chaque mission, sans re-brief.
