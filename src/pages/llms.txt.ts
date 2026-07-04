@@ -13,6 +13,9 @@ export const GET: APIRoute = async () => {
   const notes = (await getCollection("notes", ({ data }) => data.published)).sort(
     (a, b) => b.data.date.getTime() - a.data.date.getTime(),
   );
+  const outils = (await getCollection("outils", ({ data }) => data.published)).sort(
+    (a, b) => a.data.sortOrder - b.data.sortOrder,
+  );
 
   const lines = [
     "# Julien Tridat — Consultant & formateur IA (Bordeaux, France)",
@@ -53,14 +56,23 @@ export const GET: APIRoute = async () => {
     `- [Formation ChatGPT bénévoles](${SITE.url}/demos/formation-association.html) : support réel en 11 parties, anonymisé`,
     `- [Keynote « Le dirigeant augmenté »](${SITE.url}/demos/keynote-dirigeant.html) : la keynote réellement donnée sur scène`,
     `- [Configurateur de visuels chartés](${SITE.url}/demos/visuels-marque.html) : design system exécutable, marque fictive`,
+    `- [Système de vignettes LinkedIn](${SITE.url}/demos/vignettes-linkedin.html) : 3 gabarits éditoriaux, marque fictive`,
+    `- [Skill Matrice ICP — testable](${SITE.url}/demos/skill-icp.html) : la méthode des 4 quadrants sur 3 profils pré-calculés`,
+    `- [Grille d'audit flash IA — testable](${SITE.url}/demos/audit-flash.html) : scorez une de vos tâches, verdict en direct`,
+    `- [Étude de marché scorée](${SITE.url}/demos/etude-marche.html) : extrait reconstitué d'un document stratégique réel`,
     `- [Restitution de cartographie IA](${SITE.url}/demos/restitution-audit.html) : extrait de livrable, méthode réelle, données fictives`,
     `- [Dashboard narratif](${SITE.url}/demos/dashboard.html) : assistant reporting, données fictives`,
+    "",
+    "## Outils & systèmes (skills, projets IA, méthodes)",
+    "",
+    ...outils.map((o) => `- ${o.data.title} [${o.data.type}] : ${o.data.pitch}`),
     "",
     "## Pages",
     "",
     `- [Accueil](${SITE.url}/) : offres, méthode en 4 étapes, références`,
     `- [Réalisations](${SITE.url}/realisations) : le registre complet`,
     `- [Démos](${SITE.url}/demos) : les artefacts testables`,
+    `- [Outils](${SITE.url}/outils) : les systèmes documentés`,
     `- [Notes](${SITE.url}/notes) : les analyses`,
     "",
   ];

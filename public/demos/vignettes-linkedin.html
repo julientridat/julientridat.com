@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Système de vignettes LinkedIn (marque fictive) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;800&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #eef2f1; color: #123332; font-family: Sora, system-ui, sans-serif; padding: 28px clamp(16px, 4vw, 56px) 64px; }
+  header { max-width: 1240px; margin: 0 auto 28px; display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: baseline; }
+  header h1 { font-size: 19px; font-weight: 800; }
+  header p { font-size: 13px; color: #5b7a76; max-width: 640px; }
+  .badge { background: #0f4c5c; color: #fff; font-size: 11px; font-weight: 600; padding: 5px 12px; border-radius: 999px; }
+  .grid { max-width: 1240px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .cell h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .14em; color: #5b7a76; margin-bottom: 10px; }
+  .v { aspect-ratio: 1; background: #0f4c5c; color: #fff; border-radius: 4px; padding: 7.5%; display: flex; flex-direction: column; position: relative; overflow: hidden; box-shadow: 0 10px 30px rgba(15,76,92,.25); }
+  .v .brand { display: flex; align-items: center; gap: 8px; font-size: clamp(11px, 1.1vw, 14px); font-weight: 800; letter-spacing: .06em; }
+  .v .brand i { width: 14px; height: 14px; background: #ff6b57; border-radius: 3px; display: inline-block; }
+  .v .halo { position: absolute; right: -18%; bottom: -18%; width: 55%; aspect-ratio: 1; background: radial-gradient(circle, rgba(255,107,87,.35), transparent 70%); }
+  /* chiffre choc */
+  .v.chiffre .big { font-size: clamp(48px, 7vw, 84px); font-weight: 800; line-height: 1; margin: auto 0 8px; color: #ff6b57; }
+  .v.chiffre .lab { font-size: clamp(14px, 1.6vw, 20px); font-weight: 600; line-height: 1.35; max-width: 90%; }
+  .v.chiffre .src { margin-top: auto; font-size: clamp(9px, .9vw, 11px); color: rgba(255,255,255,.55); }
+  /* citation */
+  .v.citation { background: #fff; color: #123332; border: 2px solid #0f4c5c; }
+  .v.citation .mark { font-size: clamp(50px, 6vw, 72px); color: #ff6b57; font-weight: 800; line-height: .6; margin-top: 6%; }
+  .v.citation .txt { font-size: clamp(15px, 1.8vw, 22px); font-weight: 600; line-height: 1.45; margin: 4% 0 auto; }
+  .v.citation .who { font-size: clamp(10px, 1vw, 13px); color: #5b7a76; border-top: 2px solid #eef2f1; padding-top: 4%; }
+  /* triptyque */
+  .v.tri .title { font-size: clamp(15px, 1.7vw, 21px); font-weight: 800; line-height: 1.3; margin: 4% 0 6%; }
+  .v.tri .rows { display: grid; gap: 4%; flex: 1; }
+  .v.tri .row { background: rgba(255,255,255,.08); border-left: 4px solid #ff6b57; padding: 4% 5%; display: flex; align-items: baseline; gap: 10px; }
+  .v.tri .row b { font-size: clamp(18px, 2.4vw, 30px); color: #ff6b57; }
+  .v.tri .row span { font-size: clamp(10px, 1.1vw, 14px); line-height: 1.3; }
+  .v .cta { margin-top: auto; align-self: flex-start; background: #ff6b57; color: #123332; font-weight: 800; font-size: clamp(10px, 1vw, 13px); padding: 3% 5%; border-radius: 999px; }
+  .note { max-width: 1240px; margin: 26px auto 0; font-size: 12px; color: #5b7a76; line-height: 1.5; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Système de vignettes LinkedIn — 3 gabarits, une charte</h1>
+    <p>Le principe livré en mission : chaque gabarit (chiffre choc, citation, triptyque de preuve) est encodé en HTML charté. L'assistant IA choisit le gabarit, injecte le contenu du post, exporte le PNG 1080×1080 — cohérence garantie sur toute la série.</p>
+  </div>
+  <span class="badge">Marque fictive « KOMPA » — système réel</span>
+</header>
+
+<div class="grid">
+  <div class="cell">
+    <h2>Gabarit 1 — chiffre choc</h2>
+    <div class="v chiffre">
+      <div class="brand"><i></i>KOMPA CONSEIL</div>
+      <div class="halo"></div>
+      <div class="big">−38 %</div>
+      <div class="lab">de temps passé sur les dossiers de subvention après automatisation du premier jet.</div>
+      <div class="src">Mesure interne sur 6 mois — kompa-conseil.example</div>
+    </div>
+  </div>
+  <div class="cell">
+    <h2>Gabarit 2 — carte citation</h2>
+    <div class="v citation">
+      <div class="mark">“</div>
+      <div class="txt">On ne manquait pas d'idées. On manquait d'un système pour les exécuter chaque semaine, sans y laisser nos soirées.</div>
+      <div class="who">Dirigeante accompagnée — cabinet de conseil, 12 personnes</div>
+    </div>
+  </div>
+  <div class="cell">
+    <h2>Gabarit 3 — triptyque de preuve</h2>
+    <div class="v tri">
+      <div class="brand"><i></i>KOMPA CONSEIL</div>
+      <div class="title">Un trimestre d'accompagnement, trois chiffres :</div>
+      <div class="rows">
+        <div class="row"><b>12 h</b><span>gagnées par semaine sur l'équipe projet</span></div>
+        <div class="row"><b>3×</b><span>plus de propositions envoyées, même effectif</span></div>
+        <div class="row"><b>0</b><span>outil ajouté — tout tourne dans l'existant</span></div>
+      </div>
+      <div class="cta">On en parle ? →</div>
+    </div>
+  </div>
+</div>
+
+<p class="note">Démonstration sur une marque fictive : « KOMPA », ses chiffres et sa citation sont inventés pour illustrer les gabarits. En mission, le système est encodé sur la charte réelle du client (fontes officielles, logos, codes couleur) et produit la série complète d'une campagne en quelques minutes — même mécanique que le configurateur de visuels présenté par ailleurs.</p>
+</body>
+</html>

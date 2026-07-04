@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Skill « Matrice ICP » (méthode IBM) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #f2f0eb; color: #1a1a18; font-family: 'IBM Plex Sans', system-ui, sans-serif; padding: 28px clamp(16px, 4vw, 56px) 64px; }
+  header { max-width: 1180px; margin: 0 auto 26px; display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline; justify-content: space-between; border-bottom: 2px solid #1a1a18; padding-bottom: 18px; }
+  header h1 { font-size: 19px; font-weight: 700; }
+  header h1 em { font-family: 'IBM Plex Serif', serif; font-weight: 400; }
+  header p { font-size: 13px; color: #6b675e; max-width: 560px; }
+  .badge { background: #1a1a18; color: #f2f0eb; font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 999px; }
+  .wrap { max-width: 1180px; margin: 0 auto; }
+  .picker { display: flex; flex-wrap: wrap; gap: 10px; margin: 22px 0 26px; }
+  .picker button { background: #fff; border: 1.5px solid #1a1a18; color: #1a1a18; font: 600 13px 'IBM Plex Sans', sans-serif; padding: 10px 18px; cursor: pointer; }
+  .picker button.on { background: #0043ce; border-color: #0043ce; color: #fff; }
+  .axes { display: grid; gap: 22px; }
+  .axe > h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .18em; color: #6b675e; margin-bottom: 10px; }
+  .axe > h2 strong { color: #0043ce; }
+  .quads { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+  .q { background: #fff; border: 1px solid #d8d4cb; border-top: 4px solid var(--c); padding: 16px 16px 14px; min-height: 150px; }
+  .q h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--c); }
+  .q .def { font-size: 11px; color: #8a857a; margin: 3px 0 10px; }
+  .q ul { padding-left: 16px; display: grid; gap: 7px; }
+  .q li { font-size: 13.5px; line-height: 1.45; }
+  .out { margin-top: 30px; background: #1a1a18; color: #f2f0eb; padding: 26px 28px; }
+  .out h2 { font-size: 12px; text-transform: uppercase; letter-spacing: .18em; color: #9ef0a0; margin-bottom: 14px; }
+  .out .axesmk { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 18px; }
+  .out h4 { font-size: 13px; color: #9ef0a0; margin-bottom: 6px; }
+  .out p { font-size: 14px; line-height: 1.55; color: rgba(242,240,235,.85); }
+  .out .msg { font-family: 'IBM Plex Serif', serif; font-style: italic; font-size: 16px; border-left: 3px solid #9ef0a0; padding-left: 12px; margin-top: 8px; }
+  .note { max-width: 1180px; margin: 26px auto 0; font-size: 12px; color: #8a857a; line-height: 1.5; }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Skill « Matrice ICP » — <em>méthode des 4 quadrants (IBM Design Thinking)</em></h1>
+    <p>Le skill analyse une cible sur deux axes — sa vie SANS votre offre, sa vie AVEC — à travers 4 quadrants : peurs, freins, manques, handicaps. Il en déduit les axes marketing et le wording.</p>
+  </div>
+  <span class="badge">Démo pré-calculée sur 3 profils — le skill réel travaille sur VOTRE contexte</span>
+</header>
+
+<div class="wrap">
+  <div class="picker" id="picker"></div>
+  <div class="axes">
+    <div class="axe">
+      <h2>Axe 1 — sa situation <strong>sans</strong> l'offre</h2>
+      <div class="quads">
+        <div class="q" style="--c:#b3261e"><h3>Peurs</h3><div class="def">Ce qui l'angoisse à l'idée de ne rien faire</div><ul id="sans-peurs"></ul></div>
+        <div class="q" style="--c:#b3611e"><h3>Freins</h3><div class="def">Ce qui l'empêche de bouger</div><ul id="sans-freins"></ul></div>
+        <div class="q" style="--c:#5b5fc7"><h3>Manques</h3><div class="def">Ce qui lui fait défaut aujourd'hui</div><ul id="sans-manques"></ul></div>
+        <div class="q" style="--c:#00696e"><h3>Handicaps</h3><div class="def">Ce qui le désavantage face à ses concurrents</div><ul id="sans-handicaps"></ul></div>
+      </div>
+    </div>
+    <div class="axe">
+      <h2>Axe 2 — sa situation <strong>avec</strong> l'offre</h2>
+      <div class="quads">
+        <div class="q" style="--c:#b3261e"><h3>Peurs</h3><div class="def">Ce qui l'inquiète dans le fait d'acheter</div><ul id="avec-peurs"></ul></div>
+        <div class="q" style="--c:#b3611e"><h3>Freins</h3><div class="def">Ses objections à l'achat</div><ul id="avec-freins"></ul></div>
+        <div class="q" style="--c:#5b5fc7"><h3>Manques</h3><div class="def">Ce que l'offre doit absolument couvrir</div><ul id="avec-manques"></ul></div>
+        <div class="q" style="--c:#00696e"><h3>Handicaps</h3><div class="def">Ce qui compliquera son adoption</div><ul id="avec-handicaps"></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="out">
+    <h2>Ce que le skill en déduit</h2>
+    <div class="axesmk">
+      <div><h4>Axe marketing n°1</h4><p id="axe1"></p></div>
+      <div><h4>Axe marketing n°2</h4><p id="axe2"></p></div>
+      <div><h4>Message clé (wording prêt à l'emploi)</h4><p class="msg" id="msg"></p></div>
+    </div>
+  </div>
+</div>
+
+<p class="note">Cette démonstration présente trois analyses pré-calculées pour illustrer la structure et la profondeur de sortie du skill. En mission, la matrice se construit sur votre marché, vos entretiens clients et votre offre réelle — puis alimente directement les messages, les pages et les séquences de prospection.</p>
+
+<script>
+  const PROFILS = {
+    "Dirigeant de PME industrielle · offre : intégration IA": {
+      sans: {
+        peurs: ["Voir un concurrent produire les mêmes devis 5× plus vite", "Perdre ses meilleurs éléments, épuisés par les tâches répétitives", "Rater le train IA comme certains ont raté le digital"],
+        freins: ["« Pas le temps de m'y pencher sérieusement »", "Méfiance après une démo gadget vue en salon", "Personne en interne pour porter le sujet"],
+        manques: ["Aucune vision des cas d'usage rentables pour SON métier", "Pas de mesure du temps perdu par ses équipes", "Aucun cadre de confidentialité pour les données clients"],
+        handicaps: ["Ses devis partent en 5 jours quand le concurrent répond en 24 h", "Le savoir-faire vit dans la tête de 2 personnes proches de la retraite"]
+      },
+      avec: {
+        peurs: ["Payer pour un énième outil que personne n'utilisera", "Dépendre d'un prestataire qui disparaît après la facture"],
+        freins: ["Budget non prévu cette année", "« Mes équipes ne sont pas techniques »"],
+        manques: ["Une preuve chiffrée avant d'engager : gain mesuré, pas promis", "Un déploiement dans SES outils, pas une plateforme de plus"],
+        handicaps: ["Données éparpillées entre ERP, Excel et boîtes mail", "Process non documentés : l'IA n'a rien à apprendre proprement"]
+      },
+      axe1: "La peur dominante n'est pas technologique, elle est concurrentielle : vendre le coût de l'inaction (devis lents, savoir-faire qui part) plutôt que la promesse IA.",
+      axe2: "L'objection « outil de plus » est le frein n°1 : tout le discours doit marteler « dans vos outils existants, mesuré, sans plateforme supplémentaire ».",
+      msg: "« Vos devis en 24 h au lieu de 5 jours — avec les outils que vos équipes utilisent déjà. On mesure le gain, ou vous arrêtez. »"
+    },
+    "DRH d'ETI · offre : formation IA des équipes": {
+      sans: {
+        peurs: ["Une utilisation sauvage de ChatGPT qui expose des données RH", "Un fossé de compétences qui se creuse entre services", "Être tenue responsable du retard IA de l'entreprise"],
+        freins: ["Catalogue de formations déjà arbitré pour l'année", "Échaudée par une formation « digital » générique sans effet"],
+        manques: ["Aucune cartographie des niveaux réels des collaborateurs", "Pas de politique d'usage IA écrite", "Aucun relais interne formé pour durer"],
+        handicaps: ["Les meilleurs candidats demandent en entretien « et l'IA chez vous ? »", "Les jeunes recrues utilisent l'IA en cachette, sans cadre"]
+      },
+      avec: {
+        peurs: ["Une formation théorique de plus, oubliée en 72 h", "Des écarts de niveau qui frustrent la moitié de la salle"],
+        freins: ["Budget OPCO à mobiliser : il faut un organisme référencé", "Calendrier : impossible d'immobiliser un service entier"],
+        manques: ["Un positionnement individuel AVANT la formation", "Des cas d'usage sur les vrais documents de l'entreprise", "Un livrable qui reste : guides, assistants, politique d'usage"],
+        handicaps: ["Population hétérogène : du réfractaire au power-user", "Outils imposés par la DSI, pas toujours les meilleurs"]
+      },
+      axe1: "Le traumatisme des formations sans lendemain structure tout : vendre l'ancrage (positionnement amont, matériaux réels, livrables qui restent), pas le contenu.",
+      axe2: "La peur de l'usage sauvage est un levier : la formation est aussi une mise en conformité — cadre d'usage, confidentialité, politique écrite.",
+      msg: "« Vos équipes utilisent déjà l'IA — sans cadre. Formons-les sur leurs vrais dossiers, avec une politique d'usage qui vous protège. »"
+    },
+    "Fondateur de startup B2B · offre : direction marketing externalisée": {
+      sans: {
+        peurs: ["Brûler le budget marketing sans pipeline à montrer aux investisseurs", "Recruter un CMO à 90 k€ et se tromper", "Le concurrent mieux distribué gagne avec un produit inférieur"],
+        freins: ["« Personne ne connaît mon produit mieux que moi »", "Déjà déçu par une agence qui a livré des posts génériques"],
+        manques: ["Un ICP écrit et partagé (il est dans sa tête)", "Une machine d'acquisition qui tourne sans lui", "Des messages qui parlent douleurs clients, pas fonctionnalités"],
+        handicaps: ["Zéro notoriété face à des concurrents financés", "Son temps de fondateur aspiré par le produit"]
+      },
+      avec: {
+        peurs: ["Un prestataire qui « apprend » sur son budget", "Perdre la voix singulière de la marque"],
+        freins: ["Trésorerie : un abonnement mensuel doit se justifier vite", "A besoin de voir des résultats en semaines, pas en trimestres"],
+        manques: ["Un senior qui décide, pas un exécutant qui attend le brief", "De la vitesse : production en 48 h, pas en cycles d'agence"],
+        handicaps: ["Pas de données marketing historiques pour calibrer", "Une seule personne côté client pour tout valider"]
+      },
+      axe1: "Le fondateur n'achète pas du marketing, il achète du temps de cerveau senior sans le risque d'un recrutement : positionner l'offre contre le CMO à 90 k€, pas contre les agences.",
+      axe2: "La vitesse est l'argument décisif — chaque semaine sans pipeline est une semaine de runway brûlée : promettre et prouver le rythme (48-72 h).",
+      msg: "« L'expérience d'un directeur marketing senior, la vitesse de l'IA, sans le pari à 90 k€. Premier livrable sous 72 h. »"
+    }
+  };
+  const $ = (id) => document.getElementById(id);
+  let current = Object.keys(PROFILS)[0];
+  function render() {
+    const picker = $('picker');
+    picker.innerHTML = '';
+    Object.keys(PROFILS).forEach(k => {
+      const b = document.createElement('button');
+      b.textContent = k; b.className = k === current ? 'on' : '';
+      b.onclick = () => { current = k; render(); };
+      picker.appendChild(b);
+    });
+    const p = PROFILS[current];
+    for (const axe of ['sans', 'avec'])
+      for (const q of ['peurs', 'freins', 'manques', 'handicaps'])
+        $(axe + '-' + q).innerHTML = p[axe][q].map(x => `<li>${x}</li>`).join('');
+    $('axe1').textContent = p.axe1;
+    $('axe2').textContent = p.axe2;
+    $('msg').textContent = p.msg;
+  }
+  render();
+</script>
+</body>
+</html>

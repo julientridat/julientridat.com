@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Grille d'audit flash IA (testable) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #fbfefc; color: #0b2818; font-family: 'Space Grotesk', system-ui, sans-serif; padding: 28px clamp(16px, 4vw, 56px) 64px; }
+  .wrap { max-width: 880px; margin: 0 auto; }
+  header { border: 2px solid #0b2818; padding: 20px 24px; display: flex; flex-wrap: wrap; gap: 10px 24px; justify-content: space-between; align-items: baseline; }
+  header h1 { font-size: 19px; font-weight: 700; }
+  header p { font-size: 13px; color: #4b6b58; max-width: 520px; }
+  .badge { background: #10b26b; color: #fff; font-size: 11px; font-weight: 700; padding: 5px 12px; }
+  .intro { margin: 22px 0; font-size: 14px; color: #4b6b58; line-height: 1.6; }
+  .task { margin-bottom: 22px; }
+  .task label { display: block; font-family: 'Space Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: .12em; color: #4b6b58; margin-bottom: 8px; }
+  .task input { width: 100%; border: 2px solid #0b2818; background: #fff; font: 500 16px 'Space Grotesk', sans-serif; padding: 12px 14px; color: #0b2818; }
+  .crit { border: 2px solid #0b2818; border-bottom: none; background: #fff; padding: 16px 20px; display: grid; grid-template-columns: 1fr auto; gap: 6px 20px; align-items: center; }
+  .crit:last-of-type { border-bottom: 2px solid #0b2818; }
+  .crit h3 { font-size: 15px; font-weight: 700; }
+  .crit p { font-size: 12.5px; color: #4b6b58; grid-column: 1; }
+  .scale { display: flex; gap: 6px; grid-row: span 2; }
+  .scale button { width: 38px; height: 38px; border: 2px solid #0b2818; background: #fff; font: 700 14px 'Space Mono', monospace; cursor: pointer; color: #0b2818; }
+  .scale button.on { background: #10b26b; border-color: #10b26b; color: #fff; }
+  .verdict { margin-top: 26px; border: 2px solid #0b2818; background: #0b2818; color: #fbfefc; padding: 24px 26px; }
+  .verdict .score { font-family: 'Space Mono', monospace; font-size: 13px; color: #7fe0b0; }
+  .verdict .bar { height: 10px; background: rgba(255,255,255,.15); margin: 12px 0 18px; position: relative; }
+  .verdict .bar i { position: absolute; inset: 0 auto 0 0; background: #10b26b; transition: width .3s; }
+  .verdict h2 { font-size: clamp(20px, 3vw, 28px); margin-bottom: 10px; }
+  .verdict h2 em { font-style: normal; color: #7fe0b0; }
+  .verdict p { font-size: 15px; line-height: 1.6; color: rgba(251,254,252,.85); }
+  .note { margin-top: 24px; font-size: 12px; color: #4b6b58; line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Grille d'audit flash — où mettre l'IA en premier ?</h1>
+      <p>L'outil de scoring utilisé en session stratégique avec les dirigeants : 5 critères, une note, un verdict argumenté.</p>
+    </div>
+    <span class="badge">Testable — le vrai outil, en réduit</span>
+  </header>
+
+  <p class="intro">Pensez à <strong>une tâche précise de votre quotidien</strong> (répondre aux appels d'offres, produire les comptes-rendus, relancer les impayés…) et notez-la sur les 5 critères. Le verdict se met à jour en direct.</p>
+
+  <div class="task">
+    <label>La tâche que vous évaluez</label>
+    <input type="text" id="task" placeholder="ex. : rédiger nos propositions commerciales" maxlength="80" />
+  </div>
+
+  <div id="criteres"></div>
+
+  <div class="verdict">
+    <div class="score">SCORE : <span id="score">–</span> / 25</div>
+    <div class="bar"><i id="fill" style="width:0%"></i></div>
+    <h2 id="verdict-titre">Notez les 5 critères pour obtenir le verdict.</h2>
+    <p id="verdict-texte"></p>
+  </div>
+
+  <p class="note">Version de démonstration du premier outil de la session stratégique dirigeant (2 h). En session, chaque tâche scorée ≥ 18 devient une fiche de cas d'usage : outil, données nécessaires, garde-fous, plan de déploiement — et la grille complète couvre l'ensemble de vos processus, pas une tâche isolée.</p>
+</div>
+
+<script>
+  const CRITERES = [
+    ["Fréquence", "À quelle fréquence cette tâche revient-elle ? (1 = rarement · 5 = plusieurs fois par jour)"],
+    ["Simplicité", "Est-elle répétitive et cadrée, ou pleine d'exceptions ? (1 = chaque cas est unique · 5 = toujours le même schéma)"],
+    ["Délégabilité", "Pourriez-vous l'expliquer à un stagiaire en 30 minutes ? (1 = impossible · 5 = facilement)"],
+    ["Valeur récupérée", "Que feriez-vous du temps libéré ? (1 = pas grand-chose · 5 = de la vente, de la stratégie, du client)"],
+    ["Données disponibles", "Les informations nécessaires sont-elles accessibles et propres ? (1 = éparpillées · 5 = centralisées)"],
+  ];
+  const notes = new Array(CRITERES.length).fill(0);
+  const $ = (id) => document.getElementById(id);
+
+  function renderCriteres() {
+    $('criteres').innerHTML = CRITERES.map(([t, d], i) => `
+      <div class="crit">
+        <h3>${i + 1}. ${t}</h3>
+        <div class="scale">${[1,2,3,4,5].map(n => `<button data-i="${i}" data-n="${n}" class="${notes[i] === n ? 'on' : ''}">${n}</button>`).join('')}</div>
+        <p>${d}</p>
+      </div>`).join('');
+    document.querySelectorAll('.scale button').forEach(b => {
+      b.onclick = () => { notes[b.dataset.i] = +b.dataset.n; renderCriteres(); verdict(); };
+    });
+  }
+
+  function verdict() {
+    if (notes.some(n => n === 0)) return;
+    const total = notes.reduce((a, b) => a + b, 0);
+    const task = $('task').value.trim() || "cette tâche";
+    $('score').textContent = total;
+    $('fill').style.width = (total / 25 * 100) + '%';
+    const [freq, simple, deleg, valeur, data] = notes;
+    let titre, texte;
+    if (total >= 20) {
+      titre = `« ${task} » : <em>automatisez maintenant.</em>`;
+      texte = "Fréquente, cadrée, délégable, avec des données accessibles : c'est le profil exact d'un quick win. Un assistant calibré sur cette tâche peut être en production en 2 à 3 semaines — commencez par elle, mesurez le temps gagné, et servez-vous de cette victoire pour embarquer l'équipe sur la suite.";
+    } else if (total >= 15) {
+      titre = `« ${task} » : <em>candidat sérieux, un verrou à lever.</em>`;
+      texte = (data <= 2 ? "Le point faible est la donnée : tant qu'elle est éparpillée, l'IA produira de l'aléatoire. Première étape : centraliser et nettoyer les informations sources — c'est 80 % du travail, et il paie même sans IA."
+        : simple <= 2 ? "Le point faible est la variabilité : trop d'exceptions pour tout automatiser. La bonne cible est un assistant qui prépare à 80 % et laisse l'humain trancher les cas particuliers."
+        : "Le potentiel est réel mais un critère décroche. En session, on isole précisément ce verrou et on décide : le lever d'abord, ou choisir une tâche mieux profilée pour démarrer.");
+    } else if (total >= 10) {
+      titre = `« ${task} » : <em>pas par elle.</em>`;
+      texte = "Le profil est mitigé — automatiser cette tâche demanderait plus d'effort qu'elle n'en libérerait. Ce n'est pas « non », c'est « pas en premier » : dans une cartographie complète, elle passerait en vague 2 ou 3, après les quick wins qui financent le reste.";
+    } else {
+      titre = `« ${task} » : <em>gardez l'humain.</em>`;
+      texte = (valeur >= 4 && deleg <= 2 ? "Cette tâche est probablement du jugement, pas de la production : rare, peu délégable, à forte valeur. L'IA peut la préparer (synthèses, options argumentées) mais pas l'exécuter — et c'est très bien ainsi."
+        : "Peu fréquente, peu cadrée : l'automatiser coûterait plus que ça ne rapporte. L'IA a mieux à faire ailleurs dans votre organisation — c'est exactement ce qu'une cartographie révèle.");
+    }
+    $('verdict-titre').innerHTML = titre;
+    $('verdict-texte').textContent = texte;
+  }
+
+  $('task').addEventListener('input', verdict);
+  renderCriteres();
+</script>
+</body>
+</html>

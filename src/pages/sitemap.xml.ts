@@ -17,6 +17,7 @@ export const GET: APIRoute = async () => {
     { path: "/", changefreq: "weekly", priority: "1.0" },
     { path: "/realisations", changefreq: "monthly", priority: "0.8" },
     { path: "/demos", changefreq: "monthly", priority: "0.8" },
+    { path: "/outils", changefreq: "monthly", priority: "0.8" },
     { path: "/notes", changefreq: "monthly", priority: "0.8" },
     ...realisations.map((r) => ({
       path: `/realisations/${r.id}`,

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Étude de marché scorée (extrait anonymisé) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #d8dbe0; font-family: 'Source Serif 4', Georgia, serif; color: #1c2733; padding: 32px 16px 72px; }
+  .ribbon { position: fixed; top: 14px; right: 14px; z-index: 10; background: #1c2733; color: #fff; font: 500 11px 'Source Sans 3', sans-serif; padding: 7px 13px; border-radius: 999px; }
+  .page { background: #fff; max-width: 800px; margin: 0 auto 28px; padding: 58px 64px; box-shadow: 0 6px 30px rgba(28,39,51,.18); }
+  .doc-head { border-bottom: 3px double #1c2733; padding-bottom: 18px; margin-bottom: 30px; }
+  .doc-head .k { font: 700 11px 'Source Sans 3', sans-serif; text-transform: uppercase; letter-spacing: .2em; color: #8a2432; }
+  h1 { font-size: 30px; font-weight: 600; line-height: 1.15; margin: 10px 0 8px; }
+  .meta { font: 400 12.5px 'Source Sans 3', sans-serif; color: #66707c; }
+  h2 { font-size: 19px; font-weight: 600; margin: 28px 0 12px; border-left: 4px solid #8a2432; padding-left: 12px; }
+  p { font-size: 15px; line-height: 1.7; margin-bottom: 12px; }
+  table { width: 100%; border-collapse: collapse; font-family: 'Source Sans 3', sans-serif; font-size: 13.5px; margin: 16px 0; }
+  th { background: #1c2733; color: #fff; text-align: left; padding: 9px 12px; font-weight: 600; }
+  td { border: 1px solid #cdd3da; padding: 9px 12px; }
+  tr.win td { background: #f6ecee; font-weight: 600; }
+  .scorebig { font-weight: 700; color: #8a2432; }
+  .verdict { background: #f2f4f6; border: 1px solid #cdd3da; padding: 18px 22px; margin: 20px 0; }
+  .verdict .k { font: 700 11px 'Source Sans 3', sans-serif; text-transform: uppercase; letter-spacing: .18em; color: #8a2432; }
+  .verdict p { margin: 8px 0 0; }
+  .src { font: 400 11.5px 'Source Sans 3', sans-serif; color: #66707c; margin-top: 4px; }
+  .foot { display: flex; justify-content: space-between; font: 400 11px 'Source Sans 3', sans-serif; color: #9aa3ad; border-top: 1px solid #cdd3da; padding-top: 12px; margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="ribbon">Démo — extraits reconstitués d'une étude réelle · « Cap Forma » est un organisme fictif</div>
+
+<div class="page">
+  <div class="doc-head">
+    <div class="k">Document confidentiel — Direction</div>
+    <h1>Étude de marché · Formation IA inter-entreprises</h1>
+    <div class="meta">Cap Forma × Julien Tridat — mars 2026 · métropole du Sud-Ouest · extrait : scoring des segments & verdict</div>
+  </div>
+
+  <h2>1. Le marché, en quatre faits sourcés</h2>
+  <p>31 % des dirigeants de TPE-PME utilisent l'IA générative — un chiffre qui a doublé en douze mois <span class="src">(Bpifrance Le Lab, janv. 2025)</span>. 75 % déclarent pourtant ne pas trouver de cas d'usage concrets <span class="src">(Bpifrance)</span>. 58 % considèrent l'IA comme un enjeu de survie à 3-5 ans <span class="src">(France Num, 2025)</span>. Sur le bassin étudié : ≈ 45 000 TPE-PME, dont ≈ 28 000 dirigeants finançables par leur fonds de formation.</p>
+
+  <h2>2. Trois segments passés à la grille de scoring</h2>
+  <p>Cinq critères pondérés : taille du bassin (25 %), urgence perçue (25 %), capacité de remplissage sous 6 semaines (20 %), financements mobilisables (20 %), ROI démontrable dès J+1 (10 %).</p>
+  <table>
+    <thead><tr><th>Segment</th><th>Bassin</th><th>Urgence</th><th>Remplissage</th><th>Financement</th><th>ROI J+1</th><th>Score</th></tr></thead>
+    <tbody>
+      <tr class="win"><td>A — Dirigeants TPE/PME</td><td>23/25</td><td>22/25</td><td>17/20</td><td>18/20</td><td>7/10</td><td class="scorebig">87/100</td></tr>
+      <tr><td>B — Commerciaux B2B</td><td>18/25</td><td>19/25</td><td>13/20</td><td>16/20</td><td>8/10</td><td>74/100</td></tr>
+      <tr><td>C — Équipes marketing</td><td>16/25</td><td>17/25</td><td>12/20</td><td>15/20</td><td>8/10</td><td>68/100</td></tr>
+    </tbody>
+  </table>
+
+  <div class="verdict">
+    <div class="k">Verdict</div>
+    <p>Le Format A (dirigeants) est retenu pour le lancement d'avril : le décideur est à la fois le payeur et le stagiaire — cycle d'inscription en 24-48 h contre 3 à 8 semaines pour les salariés — et le financement est mobilisable à 100 %. Les formats B et C sont séquencés en vagues 2 et 3. Seuil de rentabilité calculé : 8 inscrits par session.</p>
+  </div>
+
+  <h2>3. Ce que ce document a déclenché</h2>
+  <p>Deux programmes complets conformes Qualiopi (objectifs évaluables, séquençage horodaté, QCM d'acquis), une note d'argumentaire pour les prescripteurs, et un plan d'actions daté avec responsables. L'offre est partie sur une décision documentée — pas sur une intuition.</p>
+
+  <div class="foot"><span>Cap Forma × Julien Tridat — étude de marché (extrait)</span><span>p. 1/1 — démonstration</span></div>
+</div>
+</body>
+</html>
