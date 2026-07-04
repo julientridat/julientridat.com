@@ -14,11 +14,11 @@ resultats:
   - chiffre: "1"
     label: "roadmap + volet confidentialité"
 visuel:
-  src: "/artefacts/dashboard.webp"
-  alt: "Dashboard narratif — démonstration du cas d'usage reporting sur données fictives"
+  src: "/artefacts/restitution-agence-creative.webp"
+  alt: "Deck de restitution d'audit réellement présenté à la direction — anonymisé"
 demo:
-  url: "/demos/dashboard.html"
-  label: "Voir un dashboard narratif (démo fictive)"
+  url: "/demos/restitution-agence-creative.html"
+  label: "Parcourir la restitution réelle (anonymisée)"
 published: true
 sortOrder: 3
 ---

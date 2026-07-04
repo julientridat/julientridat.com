@@ -1,0 +1,966 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Claude × ClickUp — Guide d'auto-formation · Ardena</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #faf8f4;
+    --surface: #ffffff;
+    --surface-soft: #f4f1ec;
+    --ink: #0f172a;
+    --ink-soft: #475569;
+    --ink-faint: #94a3b8;
+    --accent: #1e40af;
+    --accent-soft: #dbeafe;
+    --accent-deep: #1e3a8a;
+    --warm: #c2410c;
+    --warm-soft: #fff7ed;
+    --success: #047857;
+    --success-soft: #ecfdf5;
+    --border: #e7e3dc;
+    --border-strong: #cbd5e1;
+    --shadow-sm: 0 1px 2px rgba(15, 23, 42, 0.04);
+    --shadow-md: 0 4px 12px rgba(15, 23, 42, 0.06);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --radius-lg: 18px;
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
+    --mono: 'JetBrains Mono', ui-monospace, monospace;
+    --max: 760px;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    font-family: var(--font);
+    font-size: clamp(15px, 0.95vw + 0.5rem, 16.5px);
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--bg);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* === Progress bar === */
+  .progress {
+    position: fixed;
+    top: 0; left: 0;
+    height: 3px;
+    background: var(--accent);
+    width: 0%;
+    z-index: 100;
+    transition: width 0.1s ease-out;
+  }
+
+  /* === Layout === */
+  .layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    max-width: 1400px;
+    margin: 0 auto;
+    min-height: 100vh;
+  }
+
+  /* === Sidebar === */
+  aside {
+    border-right: 1px solid var(--border);
+    background: var(--surface);
+    padding: 2.5rem 1.75rem;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  .brand {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin-bottom: 0.3rem;
+  }
+
+  .brand-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 0.4rem;
+    color: var(--ink);
+  }
+
+  .brand-sub {
+    font-size: 0.82rem;
+    color: var(--ink-soft);
+    margin: 0 0 2rem;
+  }
+
+  .toc {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .toc-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 1.6rem 0 0.6rem;
+    padding-left: 0.5rem;
+  }
+
+  .toc a {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.5rem 0.6rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    color: var(--ink-soft);
+    font-size: 0.88rem;
+    font-weight: 500;
+    transition: all 0.15s ease;
+    border-left: 2px solid transparent;
+  }
+
+  .toc a:hover {
+    background: var(--surface-soft);
+    color: var(--ink);
+  }
+
+  .toc a.active {
+    background: var(--accent-soft);
+    color: var(--accent-deep);
+    font-weight: 600;
+    border-left-color: var(--accent);
+  }
+
+  .toc-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: var(--surface-soft);
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--ink-soft);
+    flex-shrink: 0;
+  }
+
+  .toc a.active .toc-num {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* === Main === */
+  main {
+    padding: 4rem 3rem 6rem;
+    max-width: var(--max);
+    width: 100%;
+  }
+
+  header.hero {
+    margin-bottom: 3.5rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    background: var(--accent-soft);
+    padding: 0.3rem 0.7rem;
+    border-radius: 999px;
+    margin-bottom: 1.2rem;
+  }
+
+  h1 {
+    font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+    margin: 0 0 1rem;
+    color: var(--ink);
+  }
+
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--ink-soft);
+    margin: 0;
+    line-height: 1.55;
+  }
+
+  .meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: 1.8rem;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .meta span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .meta svg { width: 14px; height: 14px; stroke: var(--ink-faint); }
+
+  /* === Sections === */
+  section {
+    margin-bottom: 4rem;
+    scroll-margin-top: 2rem;
+  }
+
+  .level-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .level-badge {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-deep));
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.1rem;
+    box-shadow: var(--shadow-md);
+  }
+
+  h2 {
+    font-size: clamp(1.35rem, 2vw, 1.65rem);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+
+  .level-tag {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--ink-faint);
+    margin-top: 0.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    margin: 2rem 0 0.6rem;
+    color: var(--ink);
+  }
+
+  p { margin: 0 0 1rem; }
+
+  /* === Prompt card === */
+  .prompt {
+    position: relative;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius);
+    padding: 1.25rem 1.4rem;
+    margin: 1.2rem 0;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .prompt-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .prompt-text {
+    font-family: var(--mono);
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--ink);
+    margin: 0;
+    white-space: pre-wrap;
+  }
+
+  .copy-btn {
+    background: transparent;
+    border: 1px solid var(--border-strong);
+    color: var(--ink-soft);
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.3rem 0.7rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: var(--font);
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+  }
+
+  .copy-btn:hover {
+    background: var(--ink);
+    color: white;
+    border-color: var(--ink);
+  }
+
+  .copy-btn.copied {
+    background: var(--success);
+    color: white;
+    border-color: var(--success);
+  }
+
+  .copy-btn svg { width: 12px; height: 12px; }
+
+  /* === Trap === */
+  .trap {
+    background: var(--warm-soft);
+    border-left: 3px solid var(--warm);
+    border-radius: var(--radius-sm);
+    padding: 0.9rem 1.2rem;
+    margin: 1.2rem 0;
+    font-size: 0.93rem;
+  }
+
+  .trap-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 0.3rem;
+  }
+
+  .trap p { margin: 0; color: var(--ink); }
+
+  /* === List variants === */
+  .variants {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0 1.5rem;
+  }
+
+  .variants li {
+    padding: 0.6rem 0 0.6rem 1.5rem;
+    position: relative;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    border-bottom: 1px dashed var(--border);
+  }
+
+  .variants li:last-child { border-bottom: none; }
+
+  .variants li::before {
+    content: "›";
+    position: absolute;
+    left: 0.3rem;
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  /* === Hygiene cards === */
+  .rules {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
+    margin: 1.5rem 0;
+  }
+
+  .rule {
+    display: flex;
+    gap: 0.9rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+  }
+
+  .rule-num {
+    flex-shrink: 0;
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--accent);
+    font-size: 1.1rem;
+  }
+
+  .rule strong { display: block; margin-bottom: 0.2rem; color: var(--ink); }
+
+  .rule p { margin: 0; font-size: 0.92rem; color: var(--ink-soft); }
+
+  /* === Intro / preamble card === */
+  .preamble {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 1.8rem;
+    margin-bottom: 3rem;
+  }
+
+  .preamble p:last-child { margin-bottom: 0; }
+
+  /* === Beyond list === */
+  .beyond {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0;
+  }
+
+  .beyond li {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1rem 1.2rem;
+    margin-bottom: 0.7rem;
+    font-size: 0.93rem;
+  }
+
+  .beyond strong {
+    color: var(--ink);
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .beyond span { color: var(--ink-soft); }
+
+  /* === Footer === */
+  footer {
+    margin-top: 5rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.85rem;
+    color: var(--ink-faint);
+    text-align: center;
+  }
+
+  footer strong { color: var(--ink-soft); }
+
+  /* === Mobile menu toggle === */
+  .menu-toggle {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 50;
+    background: var(--ink);
+    color: white;
+    border: none;
+    padding: 0.6rem 0.9rem;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+  }
+
+  /* === Responsive === */
+  @media (max-width: 1024px) {
+    .layout {
+      grid-template-columns: 1fr;
+    }
+    aside {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      max-width: 320px;
+      height: 100vh;
+      transform: translateX(-100%);
+      transition: transform 0.25s ease;
+      z-index: 40;
+      box-shadow: 4px 0 20px rgba(0,0,0,0.1);
+    }
+    aside.open { transform: translateX(0); }
+    .menu-toggle { display: block; }
+    main { padding: 3rem 1.5rem 5rem; }
+    header.hero { margin-top: 1rem; }
+  }
+
+  @media (max-width: 640px) {
+    main { padding: 2rem 1.1rem 4rem; }
+    .level-header { gap: 0.7rem; }
+    .level-badge { width: 38px; height: 38px; font-size: 1rem; }
+    .prompt { padding: 1rem 1.1rem; }
+    .prompt-text { font-size: 0.83rem; }
+    .preamble { padding: 1.2rem 1.3rem; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* === Print === */
+  @media print {
+    aside, .menu-toggle, .progress, .copy-btn { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    main { padding: 0; max-width: 100%; }
+    section { page-break-inside: avoid; }
+    body { background: white; font-size: 11pt; }
+    .prompt, .trap, .rule, .beyond li, .preamble { box-shadow: none; }
+  }
+</style>
+<meta name="robots" content="noindex" />
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+
+<button class="menu-toggle" id="menuToggle" aria-label="Ouvrir le sommaire">☰ Sommaire</button>
+
+<div class="layout">
+
+  <aside id="sidebar">
+    <div class="brand">Ardena · Mémo</div>
+    <h2 class="brand-title">Claude × ClickUp</h2>
+    <p class="brand-sub">Guide d'auto-formation</p>
+
+    <nav>
+      <div class="toc-label">Introduction</div>
+      <ul class="toc">
+        <li><a href="#intro"><span class="toc-num">•</span>Avant de commencer</a></li>
+      </ul>
+
+      <div class="toc-label">Parcours</div>
+      <ul class="toc">
+        <li><a href="#niveau-1"><span class="toc-num">1</span>Connecter</a></li>
+        <li><a href="#niveau-2"><span class="toc-num">2</span>Lire</a></li>
+        <li><a href="#niveau-3"><span class="toc-num">3</span>Créer</a></li>
+        <li><a href="#niveau-4"><span class="toc-num">4</span>Piloter</a></li>
+        <li><a href="#niveau-5"><span class="toc-num">5</span>Croiser</a></li>
+        <li><a href="#niveau-6"><span class="toc-num">6</span>Aller plus loin</a></li>
+      </ul>
+
+      <div class="toc-label">Pratique</div>
+      <ul class="toc">
+        <li><a href="#hygiene"><span class="toc-num">•</span>Règles d'hygiène</a></li>
+        <li><a href="#suite"><span class="toc-num">•</span>Pour la suite</a></li>
+      </ul>
+    </nav>
+  </aside>
+
+  <main>
+    <header class="hero">
+      <span class="hero-eyebrow">Post-session · 21 mai 2026</span>
+      <h1>Exploiter ClickUp avec Claude</h1>
+      <p class="hero-sub">Un parcours en 6 niveaux, du premier branchement aux automatisations avancées. Chaque palier ajoute une compétence — prompt à copier, résultat attendu, piège à éviter.</p>
+      <div class="meta">
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ~15 min de lecture
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Connecteur ClickUp natif
+        </span>
+        <span>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+          6 niveaux progressifs
+        </span>
+      </div>
+    </header>
+
+    <section id="intro">
+      <div class="preamble">
+        <p>Ce mémo prolonge la session du jour. Il est conçu pour être lu dans l'ordre : chaque niveau ajoute une compétence à la précédente. À chaque palier, <strong>un prompt à copier-coller, un résultat à attendre, un piège fréquent</strong>.</p>
+        <p>Périmètre couvert : connecteur ClickUp officiel de Claude. Tout ce qui dépasse (génération auto de docs Qualiopi, time tracking, automatisations multi-outils) est signalé en niveau 5+ et nécessite un setup complémentaire — on en reparle ensemble si pertinent.</p>
+      </div>
+    </section>
+
+    <section id="niveau-1">
+      <div class="level-header">
+        <div class="level-badge">1</div>
+        <div>
+          <div class="level-tag">5 min · une seule fois</div>
+          <h2>Connecter</h2>
+        </div>
+      </div>
+
+      <ol>
+        <li>Sur claude.ai → <strong>Paramètres → Connecteurs → ClickUp → Connecter</strong></li>
+        <li>Autoriser l'accès au workspace Ardena</li>
+        <li>Vérifier dans une nouvelle conversation : <em>"Liste-moi mes espaces ClickUp"</em></li>
+      </ol>
+
+      <div class="trap">
+        <div class="trap-label">⚠ Piège</div>
+        <p>Si Claude répond "je n'ai pas accès à ClickUp", c'est que le connecteur n'est pas activé <strong>dans cette conversation</strong>. Bouton "Outils" en bas du chat, cocher ClickUp.</p>
+      </div>
+    </section>
+
+    <section id="niveau-2">
+      <div class="level-header">
+        <div class="level-badge">2</div>
+        <div>
+          <div class="level-tag">Lecture · raconter l'état du système</div>
+          <h2>Lire</h2>
+        </div>
+      </div>
+
+      <p>L'erreur du débutant : ouvrir ClickUp pour répondre à une question qu'on aurait pu poser à Claude.</p>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Prompt type
+          <button class="copy-btn" data-copy="Donne-moi l'état des missions en cours dans l'espace [X]. Pour chaque tâche : statut, échéance, assignataire. Classe par urgence.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Donne-moi l'état des missions en cours dans l'espace [X]. Pour chaque tâche : statut, échéance, assignataire. Classe par urgence.</p>
+      </div>
+
+      <p><strong>Résultat attendu</strong> : une synthèse priorisée, pas un dump brut.</p>
+
+      <h3>Variantes utiles au quotidien</h3>
+      <ul class="variants">
+        <li>"Quelles tâches sont en retard sur l'espace Formation ?"</li>
+        <li>"Résume les commentaires de la tâche [nom] depuis 7 jours"</li>
+        <li>"Qui a quoi sur sa liste cette semaine ?"</li>
+      </ul>
+
+      <div class="trap">
+        <div class="trap-label">⚠ Piège</div>
+        <p>Claude ne devine pas le nom exact des espaces. Première fois, demander la hiérarchie complète : <em>"Liste mes espaces, dossiers et listes."</em> Mémoriser les noms exacts.</p>
+      </div>
+    </section>
+
+    <section id="niveau-3">
+      <div class="level-header">
+        <div class="level-badge">3</div>
+        <div>
+          <div class="level-tag">Écriture · langage naturel</div>
+          <h2>Créer</h2>
+        </div>
+      </div>
+
+      <p>Plus besoin de remplir un formulaire ClickUp à la main.</p>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Prompt type
+          <button class="copy-btn" data-copy="Crée une tâche dans la liste [Pipeline Commercial] : 'Relance Grand Compte — convention signée', échéance vendredi, assignée à moi, priorité haute, tag 'relance'.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Crée une tâche dans la liste [Pipeline Commercial] : 'Relance Grand Compte — convention signée', échéance vendredi, assignée à moi, priorité haute, tag 'relance'.</p>
+      </div>
+
+      <p>Claude crée la tâche et confirme l'ID/URL. Vérification visuelle dans ClickUp.</p>
+
+      <h3>Cas d'usage Ardena immédiats</h3>
+      <ul class="variants">
+        <li>Créer une mission complète : tâche parente + sous-tâches (devis, convention, programme, attestation, facture)</li>
+        <li>Logger une réunion : tâche "CR appel [client]" avec contenu de la discussion en description</li>
+      </ul>
+
+      <div class="trap">
+        <div class="trap-label">⚠ Piège</div>
+        <p>Sans précision de la liste cible, Claude demandera. Donner toujours la liste dans le prompt pour gagner du temps.</p>
+      </div>
+    </section>
+
+    <section id="niveau-4">
+      <div class="level-header">
+        <div class="level-badge">4</div>
+        <div>
+          <div class="level-tag">Pilotage · dashboard verbal</div>
+          <h2>Piloter</h2>
+        </div>
+      </div>
+
+      <p>Le vrai gain pour un dirigeant : remplacer 15 min de navigation par 30 secondes de question.</p>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Revue hebdo
+          <button class="copy-btn" data-copy="Fais-moi le point lundi matin : qu'est-ce qui ferme cette semaine, qu'est-ce qui glisse, qu'est-ce qui dort depuis plus de 14 jours ?">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Fais-moi le point lundi matin : qu'est-ce qui ferme cette semaine, qu'est-ce qui glisse, qu'est-ce qui dort depuis plus de 14 jours ?</p>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Pipeline commercial
+          <button class="copy-btn" data-copy="Pipeline commercial : combien d'opportunités en cours, montant total, prochaines actions par opportunité.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Pipeline commercial : combien d'opportunités en cours, montant total, prochaines actions par opportunité.</p>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Charge équipe
+          <button class="copy-btn" data-copy="Qui est surchargé cette semaine ? Compte les tâches actives par personne, signale les déséquilibres.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Qui est surchargé cette semaine ? Compte les tâches actives par personne, signale les déséquilibres.</p>
+      </div>
+
+      <div class="trap">
+        <div class="trap-label">⚠ Piège</div>
+        <p>Claude ne sait pas ce qui est "important" pour Ardena. Pour des alertes pertinentes, lui donner les règles métier : <em>"Une mission Qualiopi sans convention signée à J-7 est critique"</em>. Il les appliquera.</p>
+      </div>
+    </section>
+
+    <section id="niveau-5">
+      <div class="level-header">
+        <div class="level-badge">5</div>
+        <div>
+          <div class="level-tag">Couche d'analyse · livrables</div>
+          <h2>Croiser</h2>
+        </div>
+      </div>
+
+      <p>Là où Claude dépasse ClickUp natif : combiner données ClickUp + analyse + production de livrable.</p>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Retour d'expérience
+          <button class="copy-btn" data-copy="Prends les 5 dernières missions de formation closes. Tire-en un retour d'expérience : ce qui s'est bien passé, ce qui a frotté, ce qu'on doit améliorer.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Prends les 5 dernières missions de formation closes. Tire-en un retour d'expérience : ce qui s'est bien passé, ce qui a frotté, ce qu'on doit améliorer.</p>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Comparaison temporelle
+          <button class="copy-btn" data-copy="Compare le volume de tâches commerciales ouvertes ce mois-ci vs le mois dernier. Donne-moi l'interprétation.">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Compare le volume de tâches commerciales ouvertes ce mois-ci vs le mois dernier. Donne-moi l'interprétation.</p>
+      </div>
+
+      <div class="prompt">
+        <div class="prompt-label">
+          Synthèse → email client
+          <button class="copy-btn" data-copy="Rédige un email à [client] qui résume l'état d'avancement de sa mission, à partir des tâches dans la liste [nom].">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            Copier
+          </button>
+        </div>
+        <p class="prompt-text">Rédige un email à [client] qui résume l'état d'avancement de sa mission, à partir des tâches dans la liste [nom].</p>
+      </div>
+
+      <div class="trap">
+        <div class="trap-label">★ Bascule importante</div>
+        <p>À ce niveau, Claude lit ClickUp puis <strong>produit autre chose</strong> (email, synthèse, recommandation). C'est le levier de productivité réel.</p>
+      </div>
+    </section>
+
+    <section id="niveau-6">
+      <div class="level-header">
+        <div class="level-badge">6</div>
+        <div>
+          <div class="level-tag">Setup complémentaire requis</div>
+          <h2>Aller plus loin</h2>
+        </div>
+      </div>
+
+      <p>Hors périmètre du connecteur standard, mais possible avec un setup dédié :</p>
+
+      <ul class="beyond">
+        <li>
+          <strong>Génération automatique des docs Qualiopi</strong>
+          <span>Convention, programme, attestation depuis les données ClickUp d'une mission → nécessite un skill custom ou MCP avancé.</span>
+        </li>
+        <li>
+          <strong>Tâche planifiée quotidienne</strong>
+          <span>Claude envoie chaque matin la synthèse de la veille sans qu'on le lui demande → fonctionnalité "Scheduled tasks".</span>
+        </li>
+        <li>
+          <strong>Dashboard persistant</strong>
+          <span>Une page Claude rafraîchie qui montre l'état du pipeline en temps réel → fonctionnalité "Artifacts".</span>
+        </li>
+        <li>
+          <strong>Croisement ClickUp ↔ Gmail ↔ Notion</strong>
+          <span>Claude lit une demande email, crée la tâche ClickUp, met à jour la fiche client Notion → workflow multi-connecteurs.</span>
+        </li>
+      </ul>
+
+      <p>Ces niveaux demandent qu'on en parle : il y a des coûts cachés (paramétrage, fiabilité, supervision) à peser avant de lancer.</p>
+    </section>
+
+    <section id="hygiene">
+      <div class="level-header">
+        <div class="level-badge" style="background: linear-gradient(135deg, #475569, #1e293b);">✓</div>
+        <div>
+          <div class="level-tag">À retenir</div>
+          <h2>Règles d'hygiène</h2>
+        </div>
+      </div>
+
+      <div class="rules">
+        <div class="rule">
+          <div class="rule-num">01</div>
+          <div>
+            <strong>Vérifier toujours</strong>
+            <p>Toute création ou modification dans ClickUp les premières semaines. Claude n'est pas magique : il peut mal interpréter une liste ambiguë.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">02</div>
+          <div>
+            <strong>Nommer précisément</strong>
+            <p>Vos espaces, listes, tags. Plus c'est clair côté ClickUp, plus Claude est efficace.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">03</div>
+          <div>
+            <strong>Ouvrir un nouveau chat</strong>
+            <p>Dès que le sujet change. Sinon le contexte s'alourdit et la qualité baisse.</p>
+          </div>
+        </div>
+        <div class="rule">
+          <div class="rule-num">04</div>
+          <div>
+            <strong>Limiter les écritures en lot</strong>
+            <p>Au début. Créer 30 tâches d'un coup est possible, mais corriger 30 erreurs prend plus de temps que d'en créer 30 à la main.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="suite">
+      <div class="level-header">
+        <div class="level-badge" style="background: linear-gradient(135deg, #047857, #064e3b);">→</div>
+        <div>
+          <div class="level-tag">Pour la suite</div>
+          <h2>Industrialiser ce qui se répète</h2>
+        </div>
+      </div>
+
+      <p>Si un cas d'usage devient répétitif (ex : "à chaque nouvelle formation, je crée toujours les mêmes 6 sous-tâches"), c'est le signe qu'on peut industrialiser.</p>
+
+      <p>Dans ce cas : on construit un <strong>skill dédié</strong>, Claude l'appelle automatiquement, plus besoin de répéter la consigne.</p>
+
+      <div class="trap" style="background: var(--success-soft); border-color: var(--success);">
+        <div class="trap-label" style="color: var(--success);">✓ Action</div>
+        <p>Noter les répétitions cette semaine. À la prochaine session, on les transforme.</p>
+      </div>
+    </section>
+
+    <footer>
+      <p><strong>Ardena · Mémo Claude × ClickUp</strong><br>
+      Préparé par Julien Tridat · Version 1.0 · 21 mai 2026</p>
+    </footer>
+  </main>
+</div>
+
+<script>
+  // Progress bar
+  const progress = document.getElementById('progress');
+  const updateProgress = () => {
+    const scrolled = window.scrollY;
+    const height = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = height > 0 ? (scrolled / height) * 100 : 0;
+    progress.style.width = pct + '%';
+  };
+  window.addEventListener('scroll', updateProgress, { passive: true });
+  updateProgress();
+
+  // Scroll spy
+  const tocLinks = document.querySelectorAll('.toc a');
+  const sections = document.querySelectorAll('section[id]');
+
+  const spy = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.id;
+        tocLinks.forEach(l => {
+          l.classList.toggle('active', l.getAttribute('href') === '#' + id);
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+
+  sections.forEach(s => spy.observe(s));
+
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', async () => {
+      const text = btn.getAttribute('data-copy');
+      try {
+        await navigator.clipboard.writeText(text);
+        const orig = btn.innerHTML;
+        btn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Copié';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.innerHTML = orig;
+          btn.classList.remove('copied');
+        }, 1600);
+      } catch (e) {
+        // Fallback
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+    });
+  });
+
+  // Mobile menu
+  const toggle = document.getElementById('menuToggle');
+  const sidebar = document.getElementById('sidebar');
+  toggle.addEventListener('click', () => {
+    sidebar.classList.toggle('open');
+    toggle.textContent = sidebar.classList.contains('open') ? '✕ Fermer' : '☰ Sommaire';
+  });
+
+  // Close sidebar when clicking a link on mobile
+  tocLinks.forEach(link => {
+    link.addEventListener('click', () => {
+      if (window.innerWidth <= 1024) {
+        sidebar.classList.remove('open');
+        toggle.textContent = '☰ Sommaire';
+      }
+    });
+  });
+</script>
+
+<div style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;background:#c8ff3d;color:#0a0a0a;font:500 12px/1 system-ui,sans-serif;padding:8px 14px;border-radius:999px;box-shadow:0 4px 24px rgba(0,0,0,.4);pointer-events:none;max-width:92vw;text-align:center;">Démo — guide réel livré en mission, anonymisé · « Ardena » est un organisme fictif</div>
+</body>
+</html>

@@ -13,6 +13,12 @@ resultats:
     label: "de formation des équipes (60 % pratique)"
   - chiffre: "6"
     label: "niveaux dans le guide d'autonomie"
+visuel:
+  src: "/artefacts/guide-claude-clickup.webp"
+  alt: "Guide d'autonomie Claude × ClickUp en 6 niveaux — artefact réel anonymisé"
+demo:
+  url: "/demos/guide-claude-clickup.html"
+  label: "Parcourir le guide réel (anonymisé)"
 published: true
 sortOrder: 7
 ---

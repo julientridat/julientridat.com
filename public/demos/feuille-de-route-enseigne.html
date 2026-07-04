@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Synthèse & feuille de route — Session d'accompagnement IA · Boréale · 11 juin 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gold: #AD9671;
+    --gold-deep: #8C7350;
+    --gold-soft: #F6F0E6;
+    --gold-line: #E3D6C0;
+    --ink: #1A1A1A;
+    --ink-soft: #444444;
+    --muted: #8A8A8A;
+    --line: #E9E9E9;
+    --bg: #FFFFFF;
+    --sans: 'Lato', -apple-system, sans-serif;
+    --serif: 'Playfair Display', Georgia, serif;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--ink); font-family: var(--sans); line-height: 1.6; }
+  .page { max-width: 880px; margin: 0 auto; padding: 64px 32px 96px; position: relative; z-index: 1; }
+
+  .watermark {
+    position: fixed; right: -50px; bottom: -36px; z-index: 0;
+    font-family: var(--serif); font-weight: 600; font-style: italic;
+    font-size: clamp(80px, 12vw, 180px); line-height: 0.92;
+    color: #F4EEE3; transform: rotate(-7deg);
+    pointer-events: none; user-select: none;
+  }
+
+  .lockup { font-family: var(--serif); font-weight: 600; font-size: 30px; line-height: 1.0; }
+  .lockup small { display: block; font-family: var(--sans); font-weight: 700; font-size: 10px; letter-spacing: 0.18em; text-transform: uppercase; margin-top: 8px; color: var(--ink); }
+  .meta-top { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 28px; border-bottom: 1px solid var(--line); margin-bottom: 48px; }
+  .meta-top .right { text-align: right; font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  .kicker { font-size: 13px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 14px; }
+  h1 { font-family: var(--serif); font-weight: 500; font-size: clamp(34px, 5vw, 52px); line-height: 1.12; margin-bottom: 18px; }
+  h1 em { font-style: italic; color: var(--gold); }
+  .intro { font-size: 18px; color: var(--ink-soft); max-width: 720px; }
+
+  section { margin-top: 64px; }
+  h2 { font-family: var(--serif); font-weight: 500; font-size: 30px; line-height: 1.2; margin-bottom: 8px; }
+  h2 em { font-style: italic; color: var(--gold); }
+  .h2-kicker { font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--gold); font-weight: 700; margin-bottom: 10px; }
+  .lead-in { color: var(--ink-soft); font-size: 16px; margin-bottom: 24px; max-width: 720px; }
+
+  .rows { border-top: 1px solid var(--gold); }
+  .row { display: grid; grid-template-columns: 48px 1fr; gap: 20px; padding: 18px 0; border-bottom: 1px solid var(--line); align-items: baseline; }
+  .row .n { font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--gold); }
+  .row .t { font-size: 17px; font-weight: 700; }
+  .row .d { font-size: 15px; color: var(--ink-soft); margin-top: 4px; }
+  .row .who { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold-deep); background: var(--gold-soft); border: 1px solid var(--gold-line); border-radius: 999px; padding: 3px 12px; margin-left: 10px; vertical-align: 2px; }
+
+  .card { background: var(--gold-soft); border: 1px solid var(--gold-line); border-radius: 12px; padding: 28px 32px; margin-top: 24px; }
+  .card .lbl { font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold-deep); font-weight: 700; margin-bottom: 12px; }
+  .card p, .card li { font-size: 15px; color: var(--ink-soft); }
+  .card ul { list-style: none; margin-top: 8px; }
+  .card li { padding: 6px 0; }
+  .card li::before { content: "—"; color: var(--gold); margin-right: 10px; }
+  .card .prompt { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink); }
+
+  .quoteline {
+    margin: 28px 0 0; padding-left: 22px; border-left: 4px solid var(--gold);
+    font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1.5; color: var(--ink);
+    max-width: 740px;
+  }
+  .quoteline strong { color: var(--gold-deep); font-weight: 600; }
+
+
+  /* cartographie */
+  .pole { margin-top: 36px; }
+  .pole h3 { font-family: var(--serif); font-weight: 500; font-size: 21px; margin-bottom: 4px; }
+  .pole .pole-sub { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); margin-bottom: 12px; }
+  .chip { display: inline-block; font-size: 10.5px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; border-radius: 999px; padding: 2px 10px; margin-left: 8px; vertical-align: 2px; }
+  .chip.agent { color: #fff; background: var(--gold); }
+  .chip.action { color: var(--gold-deep); background: var(--gold-soft); border: 1px solid var(--gold-line); }
+  .chip.src { color: var(--muted); border: 1px solid var(--line); background: #fff; }
+  .chip.p1 { color: #fff; background: var(--ink); }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; margin: 18px 0 8px; font-size: 13px; color: var(--ink-soft); align-items: center; }
+
+  .foot-doc { margin-top: 80px; padding-top: 24px; border-top: 1px solid var(--line); display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); }
+
+  @media print {
+    .watermark { display: none; }
+    section { page-break-inside: avoid; }
+    .page { padding: 24px; }
+  }
+  @media (max-width: 600px) {
+    .meta-top { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .meta-top .right { text-align: left; }
+  }
+</style>
+<meta name="robots" content="noindex" />
+</head>
+<body>
+
+<div class="watermark">le<br>nouveau<br>bélier</div>
+
+<div class="page">
+
+  <div class="meta-top">
+    <div class="lockup">le nouveau<br>bélier<small>L'agence la plus retail</small></div>
+    <div class="right">Équipe marketing Boréale<br>Session du 11 juin 2026 · Paris</div>
+  </div>
+
+  <div class="kicker">Session d'accompagnement IA · Synthèse & feuille de route</div>
+  <h1>Ce qu'on a vu, ce qu'on garde,<br>et <em>par quoi commencer</em>.</h1>
+  <p class="intro">Merci pour votre énergie et la qualité de vos questions. Ce document tient les deux promesses faites en fin de session : votre cartographie d'assistants et d'usages Copilot, pôle par pôle, et la méthode pour produire votre fiche entreprise. Le tout tient en quatre pages — et en une habitude : dix minutes par jour.</p>
+
+  <!-- L'ESSENTIEL -->
+  <section>
+    <div class="h2-kicker">L'essentiel</div>
+    <h2>Cinq idées à <em>garder</em> de la matinée.</h2>
+    <div class="rows">
+      <div class="row">
+        <span class="n">1.</span>
+        <span><span class="t">L'IA est un stagiaire brillant — renseigné, pas intelligent.</span><span class="d">Plus votre brief est clair et contextualisé, meilleur est son travail. Tout part de là.</span></span>
+      </div>
+      <div class="row">
+        <span class="n">2.</span>
+        <span><span class="t">Cinq verbes pour choisir l'outil.</span><span class="d">Je cherche · je comprends · je produis · je communique · j'automatise. C'est le besoin qui appelle l'outil, jamais l'inverse.</span></span>
+      </div>
+      <div class="row">
+        <span class="n">3.</span>
+        <span><span class="t">Votre Copilot premium est votre cadre de confiance.</span><span class="d">Données réelles dans le périmètre de la licence d'entreprise. Les outils grand public : informations publiques uniquement.</span></span>
+      </div>
+      <div class="row">
+        <span class="n">4.</span>
+        <span><span class="t">Le prompt magique : « Pose-moi des questions avant de commencer. »</span><span class="d">Avec « guide-moi étape par étape », c'est lui qui fait 80 % du travail de cadrage à votre place.</span></span>
+      </div>
+      <div class="row">
+        <span class="n">5.</span>
+        <span><span class="t">La qualité des données fait la qualité du résultat.</span><span class="d">On l'a vécu en direct : un fichier propre, des colonnes nommées, des exemples — et l'assistant devient fiable.</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARTOGRAPHIE -->
+  <section>
+    <div class="h2-kicker">Promesse n°1 · votre cartographie Copilot</div>
+    <h2>Vos assistants et usages, <em>pôle par pôle</em>.</h2>
+    <p class="lead-in">Construite à partir de ce que vous avez dit en session, puis prolongée vers votre métier et votre secteur. Deux familles : les <strong>assistants</strong> (agents Copilot à créer une fois, utiliser cent fois) et les <strong>actions</strong> (usages directs dans vos outils M365). Un principe : l'IA prend la production répétitive, vous gardez le jugement — l'expertise, la relation, la décision.</p>
+    <div class="legend">
+      <span class="chip agent" style="margin-left:0;">Assistant</span> agent Copilot à créer ·
+      <span class="chip action">Action</span> usage direct Copilot ·
+      <span class="chip p1">P1</span> à lancer maintenant ·
+      <span class="chip src">Projection</span> au-delà de la session
+    </div>
+
+    <div class="pole">
+      <h3>Pilotage & direction marketing — Juliette</h3>
+      <div class="pole-sub">Friction citée : réunions, process, reporting — « du temps qui ne crée pas de valeur »</div>
+      <div class="rows">
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le secrétaire de réunion <span class="chip agent">Assistant</span><span class="chip p1">P1</span></span><span class="d">Agent Copilot nourri de votre format type : décisions, actions, responsables, échéances (RACI). Transcription Teams en entrée, compte-rendu homogène en sortie. Prérequis : élargir les autorisations de téléchargement des transcriptions.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le rédacteur de process <span class="chip agent">Assistant</span><span class="chip src">Projection</span></span><span class="d">Vous lui dictez un process à la volée (ex. ouverture de magasin), il le structure au format maison : étapes, responsables, délais, points de contrôle. La mémoire écrite de l'équipe.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">La note groupe bilingue <span class="chip action">Action</span><span class="chip src">Projection</span></span><span class="d">Copilot Word : votre bilan mensuel français → note de synthèse en anglais au format attendu par le groupe. Le reporting groupe cesse d'être une double charge.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Les comptes-rendus en podcast <span class="chip action">Action</span></span><span class="d">L'exception non-Copilot, validée en session : NotebookLM, Audio Overview en français. Documents non sensibles uniquement.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pole">
+      <h3>Marketing médical & scientifique — L.</h3>
+      <div class="pole-sub">Friction citée : 650 déclinaisons de cartes ORL, vulgarisation scientifique, benchmark</div>
+      <div class="rows">
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">La sectorisation des centres <span class="chip agent">Assistant</span><span class="chip p1">P1</span></span><span class="d">Créé en session, à finaliser : fichier Excel restructuré (une ligne par centre, expertises en colonnes nommées) + vos fiches exemples. Objectif : la carte ORL déclinée sur les 650 zones.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le vulgarisateur scientifique <span class="chip agent">Assistant</span><span class="chip src">Projection</span></span><span class="d">Une étude ou un texte scientifique en entrée ; deux sorties calibrées : version prescripteur ORL (rigueur, références) et version grand public senior (clarté, réassurance). Validation humaine systématique — les claims santé restent votre jugement.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le benchmark concurrentiel cadré <span class="chip action">Action</span></span><span class="d">Copilot Chat avec le prompt magique (« pose-moi des questions avant de commencer ») + vos sources fournies en pièces jointes — c'est l'absence de cadrage, pas l'outil, qui décevait.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pole">
+      <h3>Marketing local & événementiel — L.A.</h3>
+      <div class="pole-sub">Friction citée : 1h par courrier magasin, mise en page, analyse de bilans</div>
+      <div class="rows">
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le courrier magasin sur-mesure <span class="chip agent">Assistant</span><span class="chip p1">P1</span></span><span class="d">Agent nourri de la liste des centres (le même fichier propre que L.) : adresse, accès, personnalisation locale. D'une heure à quelques minutes par courrier.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">L'analyse de bilans <span class="chip action">Action</span></span><span class="d">Copilot Excel : données d'abord en tableau propre, puis « tendances, comparaison entre centres, trois pistes pour l'année prochaine ». La formule s'explique, se comprend, se réutilise.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le répondeur d'avis clients <span class="chip agent">Assistant</span><span class="chip src">Projection</span></span><span class="d">650 centres = des centaines d'avis Google. Un agent qui propose des réponses personnalisées dans le ton Boréale — vous validez, jamais d'envoi automatique.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pole">
+      <h3>Marque & contenu — S.</h3>
+      <div class="pole-sub">Friction citée : industrialiser la gestion de projet, monter en gamme sur le contenu</div>
+      <div class="rows">
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le cadreur de projet <span class="chip agent">Assistant</span></span><span class="d">Brief type, rétroplanning, jalons de validation — généré en dix minutes au lancement de chaque projet. Un pilote d'abord, généralisation ensuite.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Scripts de capsules vidéo <span class="chip action">Action</span></span><span class="d">Copilot Word à partir de vos contenus existants : trame, questions d'interview témoignage, script de 90 secondes. Le tournage et la direction restent le métier.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pole">
+      <h3>Digital, SEO & référencement LLM — Boris</h3>
+      <div class="pole-sub">Friction citée : agents à maintenir, prompting à remettre à jour, déclinaisons ×650</div>
+      <div class="rows">
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">La mise à jour cadencée des agents <span class="chip action">Action</span><span class="chip p1">P1</span></span><span class="d">Un rendez-vous mensuel fixe : rafraîchir les connaissances des 7-8 agents existants (algorithmes, consignes SEO) — et documenter la méthode pour l'équipe. Règle actée : un agent, un seul propriétaire.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">L'auditeur de présence LLM <span class="chip agent">Assistant</span><span class="chip src">Projection</span></span><span class="d">Batterie de questions types (« meilleur audioprothésiste près de chez moi ») posées régulièrement aux IA grand public : comment Boréale apparaît, face à qui, avec quelles erreurs à corriger. Le GEO devient mesurable.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le générateur de briefs SEO local <span class="chip agent">Assistant</span><span class="chip src">Projection</span></span><span class="d">Pages locales des 650 centres : briefs sémantiques par zone (requêtes audition + ville), nourris du même fichier centres. La déclinaison ×650, version référencement.</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="pole">
+      <h3>Socle commun — toute l'équipe</h3>
+      <div class="pole-sub">Le prérequis des assistants ci-dessus</div>
+      <div class="rows">
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">La fiche entreprise <span class="chip p1">P1</span></span><span class="d">À la racine de chaque agent — méthode complète ci-dessous. Une demi-heure, une seule fois.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">Le fichier centres unique</span><span class="d">Un seul Excel propre et à jour alimente la sectorisation (L.), les courriers (L.A.) et les briefs SEO (Boris). Trois assistants, une source.</span></span>
+        </div>
+        <div class="row">
+          <span class="n">→</span>
+          <span><span class="t">La bibliothèque de prompts partagée</span><span class="d">Un document commun où chacun dépose ses prompts qui marchent — alimenté lors du rituel bi-mensuel.</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FICHE ENTREPRISE -->
+  <section>
+    <div class="h2-kicker">Promesse n°2 · les tips</div>
+    <h2>La fiche entreprise, <em>en 30 minutes</em>.</h2>
+    <p class="lead-in">Un document d'une page, à joindre à la racine de chacun de vos assistants. Il leur donne le contexte qu'un nouveau collaborateur mettrait des semaines à acquérir.</p>
+
+    <div class="card">
+      <div class="lbl">Ce qu'elle contient — une page, pas plus</div>
+      <ul>
+        <li><strong>Qui est Boréale</strong> : mission, réseau (~650 centres), appartenance au groupe international.</li>
+        <li><strong>Vos cibles</strong> : grand public senior, prescripteurs ORL, et le ton adapté à chacune.</li>
+        <li><strong>Votre vocabulaire</strong> : les mots de la marque — et les mots interdits.</li>
+        <li><strong>Vos formats récurrents</strong> : courrier magasin, fiche ORL, compte-rendu type.</li>
+        <li><strong>Les règles</strong> : jamais de données patients, validation humaine avant diffusion.</li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <div class="lbl">Comment la produire vite — le tip promis</div>
+      <p class="prompt">« Tu es consultant en communication. Je vais te donner notre site web et notre plaquette. Pose-moi ensuite toutes les questions nécessaires pour rédiger une fiche d'identité d'entreprise d'une page, destinée à briefer un assistant IA. Procède étape par étape. »</p>
+      <p style="margin-top:14px;">Collez ça dans Copilot, répondez à ses questions à plusieurs voix (15 minutes en équipe), relisez, c'est prêt. Une règle de gouvernance : <strong>un assistant = un seul propriétaire</strong>, qui est le seul à le mettre à jour.</p>
+    </div>
+  </section>
+
+  <!-- RITUELS -->
+  <section>
+    <div class="h2-kicker">Pour que ça tienne</div>
+    <h2>Trois rituels, <em>zéro usine à gaz</em>.</h2>
+    <div class="rows">
+      <div class="row">
+        <span class="n">1.</span>
+        <span><span class="t">30 minutes tous les 15 jours.</span><span class="d">Intégrées à vos rituels existants : chacun partage un succès ou un blocage. C'est là que les usages se propagent.</span></span>
+      </div>
+      <div class="row">
+        <span class="n">2.</span>
+        <span><span class="t">Un ambassadeur IA.</span><span class="d">Une heure par semaine de veille pour l'équipe. Le profil idéal existe déjà dans la pièce.</span></span>
+      </div>
+      <div class="row">
+        <span class="n">3.</span>
+        <span><span class="t">Dix minutes par jour, chacun.</span><span class="d">Sur la tâche identifiée en session. L'habitude vaut mieux que l'exploit — c'est elle qui fait la différence à trois mois.</span></span>
+      </div>
+    </div>
+    <div class="quoteline">« 85 % des entreprises qui se sont lancées dans l'IA ont un ROI négatif — faute de méthode, pas faute d'outil. Vous avez la méthode. <strong>Allez-y doucement, mais allez-y tous les jours.</strong> »</div>
+  </section>
+
+  <div class="foot-doc">
+    <span>Le Nouveau Bélier</span>
+    <span>Session d'accompagnement IA · Boréale · Juin 2026</span>
+  </div>
+
+</div>
+<div style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;background:#c8ff3d;color:#0a0a0a;font:500 12px/1 system-ui,sans-serif;padding:8px 14px;border-radius:999px;box-shadow:0 4px 24px rgba(0,0,0,.4);pointer-events:none;max-width:92vw;text-align:center;">Démo — feuille de route réelle post-formation, anonymisée · « Boréale » est une enseigne fictive</div>
+</body>
+</html>

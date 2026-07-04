@@ -13,6 +13,12 @@ resultats:
     label: "contacts mairies importés et nettoyés"
   - chiffre: "3 sem."
     label: "de plan d'ancrage post-formation"
+visuel:
+  src: "/artefacts/formation-association.webp"
+  alt: "Support de formation ChatGPT pour bénévoles en 11 parties — artefact réel anonymisé"
+demo:
+  url: "/demos/formation-association.html"
+  label: "Parcourir le support réel (anonymisé)"
 published: true
 sortOrder: 9
 ---

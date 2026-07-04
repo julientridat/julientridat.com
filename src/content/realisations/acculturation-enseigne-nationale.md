@@ -13,6 +13,12 @@ resultats:
     label: "déclinaisons locales visées par le 1er assistant"
   - chiffre: "1"
     label: "règle actée : un agent, un propriétaire"
+visuel:
+  src: "/artefacts/feuille-de-route-enseigne.webp"
+  alt: "Feuille de route post-formation par pôle — artefact réel anonymisé"
+demo:
+  url: "/demos/feuille-de-route-enseigne.html"
+  label: "Ouvrir la feuille de route réelle (anonymisée)"
 published: true
 sortOrder: 5.5
 ---

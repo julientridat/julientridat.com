@@ -1,0 +1,1687 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Formation ChatGPT — Les Éclaireurs</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0f2e4c;
+    --navy-light: #1e4a7a;
+    --ocre: #10a37f;
+    --ocre-light: #4dc4a4;
+    --cream: #f5f9f7;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --ink-soft: #4a4a4a;
+    --line: #d8e8e0;
+    --highlight: #e8f7f1;
+    --green: #2d6a4f;
+    --red: #9d2e2e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    background: var(--cream);
+  }
+
+  .wrapper {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+  }
+
+  nav {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 32px 24px;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+
+  nav .brand {
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 22px;
+    line-height: 1.2;
+    margin-bottom: 4px;
+  }
+
+  nav .subtitle {
+    font-size: 13px;
+    color: var(--ocre-light);
+    margin-bottom: 32px;
+    letter-spacing: 0.5px;
+  }
+
+  nav ol { list-style: none; counter-reset: nav; }
+  nav ol li { counter-increment: nav; margin-bottom: 6px; }
+
+  nav ol li .nav-link {
+    display: block;
+    color: var(--cream);
+    padding: 10px 12px;
+    border-radius: 6px;
+    font-size: 14.5px;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  nav ol li .nav-link::before {
+    content: counter(nav);
+    display: inline-block;
+    width: 26px;
+    color: var(--ocre);
+    font-weight: 600;
+  }
+
+  nav ol li .nav-link:hover,
+  nav ol li .nav-link.active {
+    background: var(--navy-light);
+    border-left-color: var(--ocre);
+  }
+
+  main { padding: 0; }
+
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--cream);
+    padding: 80px 70px 70px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -50px; right: -50px;
+    width: 300px; height: 300px;
+    background: var(--ocre);
+    opacity: 0.15;
+    border-radius: 50%;
+  }
+
+  .hero .eyebrow {
+    font-size: 12px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--ocre-light);
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: 58px;
+    line-height: 1.05;
+    font-weight: 700;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+
+  .hero h1 em {
+    color: var(--ocre-light);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  .hero .meta {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 40px;
+    margin-top: 36px;
+    font-size: 14px;
+  }
+
+  .hero .meta div { display: flex; flex-direction: column; }
+
+  .hero .meta span:first-child {
+    color: var(--ocre-light);
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  section { padding: 70px; max-width: 980px; }
+  section + section { border-top: 1px solid var(--line); }
+
+  .part-number {
+    display: inline-block;
+    font-family: 'Fraunces', serif;
+    font-size: 13px;
+    color: var(--ocre);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  h2 {
+    font-family: 'Fraunces', serif;
+    font-size: 42px;
+    line-height: 1.15;
+    color: var(--navy);
+    margin-bottom: 36px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  h3 {
+    font-family: 'Fraunces', serif;
+    font-size: 24px;
+    color: var(--navy);
+    margin: 40px 0 16px;
+    font-weight: 600;
+  }
+
+  h4 {
+    font-size: 17px;
+    color: var(--navy);
+    margin: 24px 0 10px;
+    font-weight: 600;
+  }
+
+  p { margin-bottom: 14px; }
+  ul, ol { margin: 14px 0 20px 22px; }
+  li { margin-bottom: 8px; }
+  strong { color: var(--navy); font-weight: 600; }
+
+  /* Flow problème → solution */
+  .flow-diagram {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 24px;
+    margin: 32px 0;
+  }
+
+  .flow-box {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(15, 46, 76, 0.08);
+  }
+
+  .flow-box.problem { border-top: 4px solid var(--red); }
+  .flow-box.solution { border-top: 4px solid var(--green); }
+
+  .flow-box-label {
+    font-family: 'Fraunces', serif;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+
+  .flow-box.problem .flow-box-label { color: var(--red); }
+  .flow-box.solution .flow-box-label { color: var(--green); }
+
+  .flow-box ul { margin: 0 0 0 18px; font-size: 15px; }
+  .flow-box li { margin-bottom: 6px; }
+
+  .flow-arrow {
+    font-size: 32px;
+    color: var(--ocre);
+    font-weight: 700;
+  }
+
+  /* KPI cards */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .kpi-grid.two { grid-template-columns: 1fr 1fr; }
+  .kpi-grid.four { grid-template-columns: repeat(4, 1fr); }
+
+  .kpi-card {
+    background: var(--paper);
+    padding: 24px 20px;
+    border-radius: 10px;
+    text-align: center;
+    border-bottom: 4px solid var(--ocre);
+  }
+
+  .kpi-card .kpi-icon { font-size: 32px; margin-bottom: 8px; }
+
+  .kpi-card .kpi-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .kpi-card .kpi-desc { font-size: 13px; color: var(--ink-soft); line-height: 1.5; }
+
+  /* Métaphore */
+  .metaphor {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 32px;
+    margin: 32px 0;
+    display: grid;
+    grid-template-columns: 100px 1fr;
+    gap: 28px;
+    align-items: center;
+    box-shadow: 0 2px 12px rgba(15, 46, 76, 0.08);
+  }
+
+  .metaphor svg { width: 100%; height: auto; }
+  .metaphor-text { font-size: 16px; line-height: 1.6; }
+
+  .metaphor-text strong:first-child {
+    display: block;
+    font-family: 'Fraunces', serif;
+    color: var(--ocre);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  /* Comparaison */
+  .comparison {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .comparison.two { grid-template-columns: 1fr 1fr; }
+
+  .comp-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    padding: 22px 20px;
+    border-radius: 10px;
+    position: relative;
+  }
+
+  .comp-card.featured {
+    border: 2px solid var(--ocre);
+    background: var(--highlight);
+    transform: translateY(-6px);
+    box-shadow: 0 8px 20px rgba(16, 163, 127, 0.2);
+  }
+
+  .comp-card .comp-logo {
+    width: 36px; height: 36px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 12px;
+    font-size: 18px;
+  }
+
+  .comp-card .comp-logo.gpt { background: var(--ocre); }
+  .comp-card .comp-logo.gem { background: #4285f4; }
+  .comp-card .comp-logo.cla { background: #c8924a; }
+
+  .comp-card h4 {
+    margin-top: 0;
+    margin-bottom: 8px;
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+  }
+
+  .comp-card .badge {
+    position: absolute;
+    top: -12px;
+    right: 14px;
+    background: var(--ocre);
+    color: white;
+    font-size: 10px;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .comp-card p { font-size: 14px; line-height: 1.55; margin-bottom: 0; }
+
+  /* Verdict */
+  .verdict {
+    background: var(--highlight);
+    border: 1px solid var(--ocre-light);
+    padding: 18px 22px;
+    margin: 24px 0;
+    border-radius: 8px;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .verdict-icon {
+    width: 32px; height: 32px;
+    background: var(--ocre);
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .verdict-content strong:first-child {
+    display: block;
+    color: var(--navy);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  /* Mockup interface ChatGPT */
+  .interface-mockup {
+    background: #2c2c2c;
+    border-radius: 12px;
+    padding: 8px;
+    margin: 28px 0;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  }
+
+  .interface-bar {
+    height: 28px;
+    background: #1a1a1a;
+    border-radius: 6px 6px 0 0;
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    gap: 6px;
+  }
+
+  .interface-bar-dot {
+    width: 10px; height: 10px;
+    border-radius: 50%;
+    background: #555;
+  }
+
+  .interface-content {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    height: 320px;
+    background: #fff;
+    border-radius: 0 0 6px 6px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .interface-sidebar {
+    background: #171717;
+    padding: 20px 14px;
+    color: #ececec;
+    position: relative;
+  }
+
+  .interface-sidebar-section {
+    font-size: 10px;
+    color: var(--ocre-light);
+    letter-spacing: 1.5px;
+    margin: 0 0 8px 4px;
+    font-weight: 600;
+  }
+
+  .interface-sidebar-section + .interface-sidebar-section { margin-top: 16px; }
+
+  .interface-sidebar-item {
+    background: #2a2a2a;
+    padding: 8px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: #ececec;
+  }
+
+  .interface-center {
+    padding: 24px;
+    background: #fff;
+    position: relative;
+  }
+
+  .interface-bubble {
+    background: #f5f5f5;
+    border-radius: 12px 12px 12px 4px;
+    padding: 12px 16px;
+    font-size: 13px;
+    margin-bottom: 12px;
+    max-width: 85%;
+    line-height: 1.4;
+  }
+
+  .interface-bubble.user {
+    background: var(--ocre);
+    color: white;
+    border-radius: 12px 12px 4px 12px;
+    margin-left: auto;
+  }
+
+  .zone-marker {
+    position: absolute;
+    width: 36px; height: 36px;
+    background: var(--ocre);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 18px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 10;
+    border: 3px solid white;
+  }
+
+  .interface-legend {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin-top: 16px;
+  }
+
+  .legend-item {
+    background: var(--paper);
+    padding: 14px 16px;
+    border-radius: 8px;
+    border-left: 3px solid var(--ocre);
+  }
+
+  .legend-item strong { font-size: 14px; display: block; margin-bottom: 4px; }
+
+  .legend-item .num {
+    display: inline-block;
+    width: 22px; height: 22px;
+    background: var(--ocre);
+    color: white;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 22px;
+    font-weight: 700;
+    font-size: 12px;
+    margin-right: 8px;
+  }
+
+  .legend-item p { font-size: 13px; color: var(--ink-soft); margin: 0 0 0 30px; }
+
+  /* VS diagram */
+  .vs-diagram {
+    display: grid;
+    grid-template-columns: 1fr 60px 1fr;
+    align-items: stretch;
+    gap: 16px;
+    margin: 28px 0;
+  }
+
+  .vs-side {
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  }
+
+  .vs-side.bad { border-top: 4px solid var(--red); }
+  .vs-side.good { border-top: 4px solid var(--green); }
+
+  .vs-side-title {
+    font-family: 'Fraunces', serif;
+    font-size: 18px;
+    margin-bottom: 14px;
+    font-weight: 700;
+  }
+
+  .vs-side.bad .vs-side-title { color: var(--red); }
+  .vs-side.good .vs-side-title { color: var(--green); }
+
+  .vs-side ul { margin: 0 0 0 18px; font-size: 14px; }
+  .vs-side li { margin-bottom: 6px; }
+
+  .vs-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 900;
+    font-size: 24px;
+    color: var(--ocre);
+  }
+
+  /* Recipe cards */
+  .prompt-recipe {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px 16px;
+    margin: 36px 0 28px;
+  }
+
+  .recipe-card {
+    background: var(--paper);
+    padding: 24px 22px 20px;
+    border-radius: 10px;
+    border-top: 4px solid var(--ocre);
+    position: relative;
+  }
+
+  .recipe-num {
+    position: absolute;
+    top: -18px;
+    left: 22px;
+    width: 36px; height: 36px;
+    background: var(--navy);
+    color: var(--ocre-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-weight: 700;
+    font-size: 16px;
+    border: 3px solid var(--cream);
+  }
+
+  .recipe-card h4 {
+    margin: 4px 0 6px;
+    font-family: 'Fraunces', serif;
+    font-size: 19px;
+  }
+
+  .recipe-card > p { font-size: 14px; margin-bottom: 8px; }
+
+  .recipe-card .recipe-example {
+    background: var(--cream);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-soft);
+    border-left: 2px solid var(--ocre-light);
+  }
+
+  /* Steps */
+  .steps {
+    counter-reset: step;
+    margin: 28px 0;
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: 50px 1fr;
+    gap: 20px;
+    padding: 16px 0;
+    position: relative;
+  }
+
+  .step:not(:last-child)::before {
+    content: '';
+    position: absolute;
+    left: 22px;
+    top: 50px;
+    bottom: -20px;
+    width: 2px;
+    background: var(--line);
+  }
+
+  .step-number {
+    counter-increment: step;
+    width: 44px; height: 44px;
+    background: var(--navy);
+    color: var(--ocre-light);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    z-index: 1;
+    position: relative;
+  }
+
+  .step-number::before { content: counter(step); }
+
+  .step-content h4 { margin: 4px 0; font-size: 17px; }
+  .step-content p { font-size: 14.5px; margin-bottom: 0; }
+
+  /* GPTs blocks */
+  .project-block {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 32px 36px;
+    margin: 28px 0;
+    box-shadow: 0 4px 20px rgba(15, 46, 76, 0.08);
+    border-top: 6px solid var(--ocre);
+  }
+
+  .project-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+  }
+
+  .project-emoji { font-size: 38px; }
+
+  .project-title {
+    font-family: 'Fraunces', serif;
+    font-size: 26px;
+    color: var(--navy);
+    font-weight: 700;
+  }
+
+  .project-purpose {
+    background: var(--cream);
+    padding: 12px 18px;
+    border-radius: 6px;
+    font-style: italic;
+    margin-bottom: 22px;
+    color: var(--ink-soft);
+    font-size: 14.5px;
+  }
+
+  .prompts-title {
+    font-family: 'Fraunces', serif;
+    color: var(--ocre);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 22px 0 12px;
+    font-weight: 700;
+  }
+
+  .prompt-item {
+    background: var(--cream);
+    border-left: 3px solid var(--ocre-light);
+    padding: 12px 18px;
+    margin-bottom: 8px;
+    border-radius: 0 4px 4px 0;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .prompt-item::before {
+    content: '"';
+    font-family: 'Fraunces', serif;
+    font-size: 22px;
+    color: var(--ocre);
+    margin-right: 4px;
+    vertical-align: -4px;
+  }
+
+  /* Phrases magiques */
+  .phrases-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+    margin: 24px 0;
+  }
+
+  .phrase-tag {
+    background: var(--paper);
+    padding: 14px 18px;
+    border-radius: 8px;
+    border-left: 3px solid var(--ocre);
+    font-style: italic;
+    font-size: 14px;
+    color: var(--ink);
+  }
+
+  /* Section création image */
+  .image-feature {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    color: var(--cream);
+    border-radius: 12px;
+    padding: 36px 40px;
+    margin: 28px 0;
+  }
+
+  .image-feature h3 {
+    color: var(--cream);
+    margin-top: 0;
+  }
+
+  .image-feature p { color: var(--cream); }
+
+  .image-recipe {
+    background: rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    border-left: 3px solid var(--ocre);
+  }
+
+  .image-recipe-label {
+    font-family: 'Fraunces', serif;
+    color: var(--ocre-light);
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+
+  .image-recipe-text {
+    font-style: italic;
+    line-height: 1.6;
+    color: white;
+  }
+
+  .image-uses {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    margin: 28px 0;
+  }
+
+  .image-use-card {
+    background: var(--paper);
+    padding: 20px 24px;
+    border-radius: 10px;
+    border-left: 4px solid var(--ocre);
+  }
+
+  .image-use-card h4 {
+    margin-top: 0;
+    font-family: 'Fraunces', serif;
+    color: var(--navy);
+  }
+
+  .image-use-card p {
+    font-size: 14px;
+    color: var(--ink-soft);
+    margin-bottom: 8px;
+  }
+
+  .image-use-card .ex {
+    background: var(--cream);
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--ink-soft);
+  }
+
+  .image-warning {
+    background: #fff4dc;
+    border: 1px solid #e0b878;
+    padding: 18px 22px;
+    border-radius: 8px;
+    margin: 24px 0;
+    display: grid;
+    grid-template-columns: 32px 1fr;
+    gap: 14px;
+    align-items: start;
+  }
+
+  .image-warning .warn-icon {
+    width: 32px; height: 32px;
+    background: #c8924a;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .image-warning strong:first-child {
+    display: block;
+    color: var(--navy);
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  /* Règles */
+  .rules-list {
+    counter-reset: rule;
+    list-style: none;
+    margin: 28px 0 0 0;
+    padding: 0;
+  }
+
+  .rules-list li {
+    counter-increment: rule;
+    background: var(--paper);
+    padding: 18px 24px 18px 70px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    position: relative;
+    border-left: 4px solid var(--navy);
+    font-size: 16px;
+    font-weight: 500;
+  }
+
+  .rules-list li::before {
+    content: counter(rule);
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 36px; height: 36px;
+    background: var(--navy);
+    color: var(--ocre-light);
+    font-family: 'Fraunces', serif;
+    font-size: 20px;
+    font-weight: 700;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Footer */
+  footer {
+    background: var(--navy);
+    color: var(--cream);
+    padding: 56px 70px;
+    text-align: center;
+  }
+
+  footer h3 { color: var(--cream); margin-bottom: 12px; }
+  footer p { color: var(--ocre-light); }
+
+  footer .signature {
+    font-family: 'Fraunces', serif;
+    font-style: italic;
+    font-size: 20px;
+    margin-top: 24px;
+    color: var(--cream);
+  }
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .wrapper { grid-template-columns: 1fr; }
+    nav { position: relative; height: auto; }
+    .hero { padding: 50px 32px; }
+    .hero h1 { font-size: 38px; }
+    .hero .meta { grid-template-columns: 1fr 1fr; gap: 20px; }
+    section { padding: 50px 32px; }
+    h2 { font-size: 30px; }
+    .comparison, .comparison.two, .kpi-grid, .kpi-grid.two, .kpi-grid.four,
+    .prompt-recipe, .interface-legend, .phrases-grid, .image-uses {
+      grid-template-columns: 1fr;
+    }
+    .vs-diagram, .flow-diagram { grid-template-columns: 1fr; }
+    .vs-divider, .flow-arrow { transform: rotate(90deg); margin: 8px auto; }
+    .interface-content { grid-template-columns: 1fr; height: auto; }
+  }
+
+  @media print {
+    nav { display: none; }
+    .wrapper { grid-template-columns: 1fr; }
+    section { page-break-inside: avoid; }
+  }
+</style>
+<meta name="robots" content="noindex" />
+</head>
+<body>
+
+<div class="wrapper">
+
+  <nav>
+    <div class="brand">Les Éclaireurs<br>de Demain</div>
+    <div class="subtitle">FORMATION CHATGPT</div>
+    <ol>
+      <li><span class="nav-link" data-target="partie1">Pourquoi on est là</span></li>
+      <li><span class="nav-link" data-target="partie2">Comprendre l'outil</span></li>
+      <li><span class="nav-link" data-target="partie3">Découvrir ChatGPT</span></li>
+      <li><span class="nav-link" data-target="partie4">Bien parler à ChatGPT</span></li>
+      <li><span class="nav-link" data-target="partie5">Les Projets ChatGPT</span></li>
+      <li><span class="nav-link" data-target="partie6">Vos 3 Projets prêts</span></li>
+      <li><span class="nav-link" data-target="partie7">Et les GPTs ?</span></li>
+      <li><span class="nav-link" data-target="partie8">Créer des images</span></li>
+      <li><span class="nav-link" data-target="partie9">Organisation</span></li>
+      <li><span class="nav-link" data-target="partie10">Les 5 règles</span></li>
+      <li><span class="nav-link" data-target="partie11">Et après ?</span></li>
+    </ol>
+  </nav>
+
+  <main>
+
+    <header class="hero">
+      <div class="eyebrow">Formation — Demi-journée</div>
+      <h1>Devenir <em>autonomes</em><br>avec ChatGPT</h1>
+      <p style="font-size: 19px; max-width: 600px; line-height: 1.5; color: var(--ocre-light);">
+        Un guide simple pour utiliser l'intelligence artificielle au service de l'association.
+      </p>
+      <div class="meta">
+        <div><span>Durée</span><span>3h30</span></div>
+        <div><span>Participants</span><span>3 à 4 membres</span></div>
+        <div><span>Outil</span><span>ChatGPT</span></div>
+        <div><span>Formateur</span><span>Julien Tridat</span></div>
+      </div>
+    </header>
+
+    <!-- PARTIE 1 -->
+    <section id="partie1">
+      <div class="part-number">Partie 1 · 20 min</div>
+      <h2>Pourquoi on est là</h2>
+
+      <div class="flow-diagram">
+        <div class="flow-box problem">
+          <div class="flow-box-label">⚠ Aujourd'hui</div>
+          <ul>
+            <li>Manque de temps</li>
+            <li>Budget limité pour une agence</li>
+            <li>Version gratuite trop limitée</li>
+            <li>Tentative payante bloquée</li>
+          </ul>
+        </div>
+        <div class="flow-arrow">→</div>
+        <div class="flow-box solution">
+          <div class="flow-box-label">✓ Après la formation</div>
+          <ul>
+            <li>Autonomie sur 3 missions clés</li>
+            <li>Charge répartie à 3-4</li>
+            <li>Plus de dépendance externe</li>
+            <li>Outils opérationnels immédiats</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3>Vos 3 missions à reprendre en main</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">📧</div>
+          <div class="kpi-title">Démarcher</div>
+          <div class="kpi-desc">Écoles, mairies,<br>partenaires éducatifs</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">🤝</div>
+          <div class="kpi-title">Financer</div>
+          <div class="kpi-desc">Mécénat entreprises,<br>crowdfunding</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📣</div>
+          <div class="kpi-title">Communiquer</div>
+          <div class="kpi-desc">Réseaux sociaux,<br>site internet, visuels</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 2 -->
+    <section id="partie2">
+      <div class="part-number">Partie 2 · 30 min</div>
+      <h2>Comprendre l'outil</h2>
+
+      <h3>Qu'est-ce qu'un LLM ?</h3>
+
+      <div class="metaphor">
+        <svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="50" cy="35" r="18" fill="#0f2e4c"/>
+          <rect x="32" y="50" width="36" height="40" rx="4" fill="#10a37f"/>
+          <rect x="38" y="62" width="24" height="2" fill="#f5f9f7"/>
+          <rect x="38" y="68" width="20" height="2" fill="#f5f9f7"/>
+          <rect x="38" y="74" width="22" height="2" fill="#f5f9f7"/>
+          <circle cx="44" cy="33" r="2" fill="#f5f9f7"/>
+          <circle cx="56" cy="33" r="2" fill="#f5f9f7"/>
+          <path d="M 44 42 Q 50 46 56 42" stroke="#f5f9f7" stroke-width="1.5" fill="none"/>
+        </svg>
+        <div class="metaphor-text">
+          <strong>L'image à retenir</strong>
+          Un LLM (<em>Large Language Model</em>), c'est un <strong>stagiaire brillant</strong> qui aurait lu toute une bibliothèque. Il sait écrire, reformuler, résumer. Mais il a besoin que vous lui expliquiez le contexte. <strong>Plus le brief est bon, meilleur est le résultat.</strong>
+        </div>
+      </div>
+
+      <p style="text-align: center; color: var(--ink-soft); font-size: 15px;">
+        Ce n'est <strong>pas un cerveau</strong> · Ce n'est <strong>pas magique</strong> · Ce n'est <strong>pas Google</strong>
+      </p>
+
+      <h3>Pourquoi ChatGPT plutôt que Claude ou Gemini ?</h3>
+
+      <div class="comparison">
+        <div class="comp-card">
+          <div class="comp-logo cla">C</div>
+          <h4>Claude</h4>
+          <p>Excellent en français, ton nuancé. Mais pas de création d'image native, et écosystème moins répandu.</p>
+        </div>
+        <div class="comp-card">
+          <div class="comp-logo gem">✦</div>
+          <h4>Gemini</h4>
+          <p>Le concurrent Google. Bien intégré aux services Google, moins doué en rédaction nuancée.</p>
+        </div>
+        <div class="comp-card featured">
+          <span class="badge">SDD</span>
+          <div class="comp-logo gpt">G</div>
+          <h4>ChatGPT</h4>
+          <p>Le plus connu, le plus polyvalent. <strong>Création d'image native</strong>, GPTs personnalisés, écosystème mature.</p>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-icon">✓</div>
+        <div class="verdict-content">
+          <strong>Verdict pour SDD</strong>
+          ChatGPT est l'outil tout-en-un : rédaction, analyse de documents, et surtout création d'images pour les réseaux sociaux et le site, sans changer d'outil.
+        </div>
+      </div>
+
+      <h3>Et les autres outils ?</h3>
+      <div class="kpi-grid two">
+        <div class="kpi-card">
+          <div class="kpi-icon">🔍</div>
+          <div class="kpi-title">Perplexity</div>
+          <div class="kpi-desc">Pour les <strong>recherches sur internet</strong>. Utile quand ChatGPT ne connaît pas une info récente.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📚</div>
+          <div class="kpi-title">NotebookLM</div>
+          <div class="kpi-desc">Pour faire <strong>« discuter » entre eux</strong> plusieurs documents que vous lui donnez.</div>
+        </div>
+      </div>
+      <p style="text-align: center; font-size: 14px; color: var(--ink-soft); font-style: italic;">
+        Aujourd'hui on reste sur ChatGPT. Le reste viendra plus tard, si besoin.
+      </p>
+
+      <h3>Combien ça coûte</h3>
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-title" style="font-size: 22px;">Gratuit</div>
+          <div class="kpi-desc">Limité (10 messages / 5h).<br>Pas suffisant pour un usage régulier.</div>
+        </div>
+        <div class="kpi-card" style="border-bottom-color: var(--green);">
+          <div class="kpi-title" style="font-size: 22px;">23 €/mois</div>
+          <div class="kpi-desc"><strong>ChatGPT Plus</strong><br>1 utilisateur, non partageable</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title" style="font-size: 22px;">29 €/mois/u.</div>
+          <div class="kpi-desc"><strong>ChatGPT Business</strong><br>Mini 2 comptes · espace partagé</div>
+        </div>
+      </div>
+
+      <div class="image-warning">
+        <div class="warn-icon">!</div>
+        <div>
+          <strong>À savoir</strong>
+          ChatGPT Plus est <strong>strictement individuel</strong> (lié à un compte, non partageable). Pour 3-4 utilisateurs, le plan Business est obligatoire si on veut être en règle. <strong>OpenAI for Nonprofits</strong> propose jusqu'à 75 % de réduction sur Business pour les associations — à demander en amont.
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 3 -->
+    <section id="partie3">
+      <div class="part-number">Partie 3 · 25 min</div>
+      <h2>Découvrir ChatGPT</h2>
+
+      <h3>L'interface en 3 zones</h3>
+
+      <div class="interface-mockup">
+        <div class="interface-bar">
+          <div class="interface-bar-dot"></div>
+          <div class="interface-bar-dot"></div>
+          <div class="interface-bar-dot"></div>
+        </div>
+        <div class="interface-content">
+          <div class="interface-sidebar">
+            <div class="zone-marker" style="top: 20px; left: -18px;">1</div>
+            <div class="interface-sidebar-section">PROJETS</div>
+            <div class="interface-sidebar-item">📧 Écrire aux écoles</div>
+            <div class="interface-sidebar-item">🤝 Mécénat</div>
+            <div class="interface-sidebar-item">✍️ Contenu</div>
+            <div class="interface-sidebar-section">CONVERSATIONS</div>
+            <div class="interface-sidebar-item">Mail école Bordeaux</div>
+            <div class="interface-sidebar-item">Post LinkedIn</div>
+          </div>
+          <div class="interface-center">
+            <div class="zone-marker" style="top: 20px; left: 50%;">2</div>
+            <div class="zone-marker" style="top: 20px; right: 16px;">3</div>
+            <div class="interface-bubble user">Rédige un mail à la directrice de l'école...</div>
+            <div class="interface-bubble">Bonjour Madame, je me permets de vous écrire au nom de l'association Les Éclaireurs...</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="interface-legend">
+        <div class="legend-item">
+          <strong><span class="num">1</span>À gauche</strong>
+          <p>Vos conversations<br>et vos Projets</p>
+        </div>
+        <div class="legend-item">
+          <strong><span class="num">2</span>Au centre</strong>
+          <p>La discussion<br>avec ChatGPT</p>
+        </div>
+        <div class="legend-item">
+          <strong><span class="num">3</span>En haut à droite</strong>
+          <p>Compte<br>et réglages</p>
+        </div>
+      </div>
+
+      <h3>Paramétrer ChatGPT pour soi</h3>
+      <p>ChatGPT permet de régler des <strong>« Instructions personnalisées »</strong> dans les paramètres : qui vous êtes, comment vous voulez qu'il vous réponde. Ces réglages s'appliquent à toutes vos futures conversations.</p>
+
+      <div class="verdict">
+        <div class="verdict-icon">✓</div>
+        <div class="verdict-content">
+          <strong>Configuration recommandée</strong>
+          « Bénévole de l'association Les Éclaireurs (formation des enfants aux gestes de premiers secours). Je m'adresse à des écoles, mairies, entreprises mécènes. Ton chaleureux mais professionnel, réponses claires et structurées, en français. »
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 4 -->
+    <section id="partie4">
+      <div class="part-number">Partie 4 · 20 min</div>
+      <h2>Bien parler à ChatGPT</h2>
+
+      <p style="font-size: 18px;">ChatGPT n'est pas Google. <strong>On lui donne du contexte</strong>, comme à un nouveau collaborateur.</p>
+
+      <h3>Les 4 ingrédients d'une bonne demande</h3>
+
+      <div class="prompt-recipe">
+        <div class="recipe-card">
+          <div class="recipe-num">1</div>
+          <h4>Le rôle</h4>
+          <p>Qui ChatGPT doit être pour répondre.</p>
+          <div class="recipe-example">« Tu es un rédacteur spécialisé dans la communication associative. »</div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-num">2</div>
+          <h4>Le contexte</h4>
+          <p>Qui vous êtes, à qui vous écrivez.</p>
+          <div class="recipe-example">« Bénévole de SDD, j'écris à la directrice d'une école à Bordeaux. »</div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-num">3</div>
+          <h4>La mission</h4>
+          <p>Ce que vous voulez précisément obtenir.</p>
+          <div class="recipe-example">« Rédige un mail de premier contact pour proposer une intervention. »</div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-num">4</div>
+          <h4>Le format</h4>
+          <p>Longueur, ton, structure.</p>
+          <div class="recipe-example">« 150 mots, ton chaleureux, structure : accroche, présentation, proposition. »</div>
+        </div>
+      </div>
+
+      <h3>Les phrases magiques pour relancer</h3>
+      <div class="phrases-grid">
+        <div class="phrase-tag">« Plus court / plus long »</div>
+        <div class="phrase-tag">« Plus chaleureux / plus institutionnel »</div>
+        <div class="phrase-tag">« Donne-moi 3 versions différentes »</div>
+        <div class="phrase-tag">« Reformule comme si tu écrivais à un maire de village »</div>
+        <div class="phrase-tag">« Garde l'idée, change le ton »</div>
+        <div class="phrase-tag">« Coupe la première partie »</div>
+      </div>
+    </section>
+
+    <!-- PARTIE 5 -->
+    <section id="partie5">
+      <div class="part-number">Partie 5 · 30 min</div>
+      <h2>Les Projets ChatGPT</h2>
+
+      <h3>Conversation simple <span style="color: var(--ocre);">vs</span> Projet</h3>
+
+      <div class="vs-diagram">
+        <div class="vs-side bad">
+          <div class="vs-side-title">💬 Conversation simple</div>
+          <ul>
+            <li>On repart de zéro à chaque fois</li>
+            <li>Réexpliquer qui on est</li>
+            <li>Réexpliquer le ton voulu</li>
+            <li>Long et fastidieux</li>
+          </ul>
+        </div>
+        <div class="vs-divider">VS</div>
+        <div class="vs-side good">
+          <div class="vs-side-title">📁 Projet ChatGPT</div>
+          <ul>
+            <li>ChatGPT connaît déjà le contexte</li>
+            <li>Charte, ton, exemples mémorisés</li>
+            <li>Mémoire entre les conversations</li>
+            <li>Rapide et cohérent</li>
+          </ul>
+        </div>
+      </div>
+
+      <p style="font-size: 14.5px;">
+        Un <strong>Projet ChatGPT</strong>, c'est un dossier qui regroupe toutes vos conversations sur un même thème, avec des fichiers de référence et des instructions communes. ChatGPT garde la mémoire entre les conversations du Projet : il sait ce que vous avez déjà fait, dans quel ton, avec quels résultats.
+      </p>
+
+      <div class="verdict">
+        <div class="verdict-icon">✓</div>
+        <div class="verdict-content">
+          <strong>Bonne nouvelle</strong>
+          Les Projets sont disponibles <strong>même sur le plan gratuit</strong>. Pas besoin d'attendre l'abonnement pour commencer à structurer votre travail.
+        </div>
+      </div>
+
+      <h3>Créer un Projet en 5 étapes</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Cliquer sur « Nouveau projet »</h4>
+            <p>Bouton « + Nouveau projet » dans la barre de gauche.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Lui donner un nom clair</h4>
+            <p>Que toute l'équipe comprenne en un coup d'œil. Ex : « Écrire aux écoles ».</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Écrire les instructions</h4>
+            <p>Le brief permanent : ce que ChatGPT doit faire, comment, quel ton. S'applique à toutes les conversations du Projet.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Ajouter les fichiers de référence</h4>
+            <p>Charte, exemples qui marchent, plaquette PDF, présentation de l'asso. Jusqu'à 20 fichiers par projet.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Tester avec une vraie demande</h4>
+            <p>On ajuste les instructions au besoin.</p>
+          </div>
+        </div>
+      </div>
+
+      <h3>Mettre à jour un Projet</h3>
+      <div class="comparison two">
+        <div class="comp-card">
+          <h4>Quand ?</h4>
+          <p>Changement de stratégie · évolution du ton · nouveaux exemples qui marchent · nouvelles infos à intégrer.</p>
+        </div>
+        <div class="comp-card">
+          <h4>Comment ?</h4>
+          <p>Modifier les instructions sans casser ce qui marche. Ajouter ou remplacer un fichier via le bouton dédié dans le projet.</p>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-icon">✓</div>
+        <div class="verdict-content">
+          <strong>Vos 3 Projets sont déjà créés</strong>
+          On va les visiter, les essayer, et les ajuster ensemble.
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 6 -->
+    <section id="partie6">
+      <div class="part-number">Partie 6 · 50 min</div>
+      <h2>Vos 3 Projets prêts à l'emploi</h2>
+
+      <p>Pour chaque Projet : <strong>une mission, une démo en direct, une mini-bibliothèque de prompts</strong> à copier-coller.</p>
+
+      <div class="project-block">
+        <div class="project-header">
+          <div class="project-emoji">📧</div>
+          <div class="project-title">Écrire aux écoles & mairies</div>
+        </div>
+        <div class="project-purpose">
+          Mails de démarchage, courriers officiels, relances aux directeurs, maires, adjoints éducation.
+        </div>
+
+        <div class="prompts-title">Mini-bibliothèque de prompts</div>
+        <div class="prompt-item">Rédige un premier mail de prise de contact avec la directrice de l'école [nom] pour proposer une intervention.</div>
+        <div class="prompt-item">Reformule ce mail pour qu'il soit plus court et plus chaleureux.</div>
+        <div class="prompt-item">Prépare une relance pour un mail resté sans réponse depuis 15 jours, sans paraître insistant.</div>
+        <div class="prompt-item">Adapte ce mail pour un adjoint au maire chargé de l'éducation, avec un ton plus institutionnel.</div>
+        <div class="prompt-item">Rédige un courrier officiel pour une demande de rendez-vous en mairie.</div>
+      </div>
+
+      <div class="project-block">
+        <div class="project-header">
+          <div class="project-emoji">🤝</div>
+          <div class="project-title">Mécénat & financements</div>
+        </div>
+        <div class="project-purpose">
+          Demandes de mécénat aux entreprises locales, dossiers de financement, campagnes de crowdfunding.
+        </div>
+
+        <div class="prompts-title">Mini-bibliothèque de prompts</div>
+        <div class="prompt-item">Identifie les arguments à mettre en avant pour convaincre une [type d'entreprise] de soutenir l'asso.</div>
+        <div class="prompt-item">Rédige un mail d'approche mécénat pour [entreprise], sans tomber dans le tire-larmes.</div>
+        <div class="prompt-item">Structure un dossier de mécénat de 2 pages : mission, impact, contreparties.</div>
+        <div class="prompt-item">Prépare un texte de campagne de crowdfunding avec 3 paliers de dons.</div>
+        <div class="prompt-item">Écris un mail de remerciement personnalisé après un don.</div>
+      </div>
+
+      <div class="project-block">
+        <div class="project-header">
+          <div class="project-emoji">✍️</div>
+          <div class="project-title">Création de contenu</div>
+        </div>
+        <div class="project-purpose">
+          Posts réseaux sociaux ET contenus du site internet (articles, pages, actualités) à partir d'un seul brief.
+        </div>
+
+        <div class="prompts-title">Mini-bibliothèque de prompts</div>
+        <div class="prompt-item">À partir de [intervention], rédige 3 posts : LinkedIn, Facebook, Instagram, en adaptant le ton.</div>
+        <div class="prompt-item">Transforme ce post en article de blog de 400 mots, avec titre accrocheur et 3 sous-parties.</div>
+        <div class="prompt-item">Rédige une actualité courte (80 mots max) pour la page d'accueil du site.</div>
+        <div class="prompt-item">Propose 5 idées de posts pour la semaine prochaine sur le thème [sujet].</div>
+        <div class="prompt-item">Écris une page « Qui sommes-nous » chaleureuse et claire pour le site.</div>
+      </div>
+    </section>
+
+    <!-- PARTIE 7 — Et les GPTs ? -->
+    <section id="partie7">
+      <div class="part-number">Partie 7 · 15 min</div>
+      <h2>Et les GPTs personnalisés, dans tout ça ?</h2>
+
+      <p style="font-size: 18px;">Vous entendrez peut-être parler des « <strong>GPTs personnalisés</strong> » (ou simplement « GPTs »). C'est <strong>autre chose</strong> que les Projets. On clarifie en 2 minutes.</p>
+
+      <h3>La différence en une image</h3>
+
+      <div class="comparison two">
+        <div class="comp-card featured">
+          <span class="badge">SDD</span>
+          <h4>📁 Projet</h4>
+          <p style="margin-bottom: 12px;"><strong>Un dossier de travail.</strong> Vous y mettez vos conversations, vos fichiers, vos instructions. ChatGPT garde la mémoire entre les conversations du dossier.</p>
+          <p style="font-size: 13px; color: var(--ink-soft);"><em>Comme un classeur dans lequel vous travaillez régulièrement.</em></p>
+        </div>
+        <div class="comp-card">
+          <h4>🤖 GPT personnalisé</h4>
+          <p style="margin-bottom: 12px;"><strong>Un assistant spécialisé.</strong> Vous le configurez une fois, il fait toujours la même chose. Pas de mémoire entre conversations, mais peut être partagé publiquement ou en équipe.</p>
+          <p style="font-size: 13px; color: var(--ink-soft);"><em>Comme un robot programmé pour une seule mission.</em></p>
+        </div>
+      </div>
+
+      <h3>Pour SDD, on choisit quoi ?</h3>
+
+      <div class="kpi-grid two">
+        <div class="kpi-card" style="border-bottom-color: var(--green);">
+          <div class="kpi-icon">✅</div>
+          <div class="kpi-title">Les Projets</div>
+          <div class="kpi-desc">Disponibles dès le plan gratuit. Mémoire entre conversations. Suffisants pour 95 % de vos besoins.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">⏳</div>
+          <div class="kpi-title">Les GPTs</div>
+          <div class="kpi-desc">Plus tard, si vous voulez créer un assistant à partager publiquement. Pas prioritaire aujourd'hui.</div>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-icon">✓</div>
+        <div class="verdict-content">
+          <strong>Verdict pour SDD</strong>
+          On reste sur les <strong>Projets</strong>. Plus simples, mémoire entre conversations, accessibles à tous les comptes. Les GPTs viendront peut-être plus tard si vous voulez créer un assistant public (par exemple un GPT « Conseils premiers secours » que tout le monde pourrait utiliser sans compte SDD).
+        </div>
+      </div>
+
+      <h3>Tableau récapitulatif</h3>
+      <div class="comparison two" style="font-size: 13px;">
+        <div class="comp-card">
+          <h4 style="font-size: 16px;">📁 Projet ChatGPT</h4>
+          <ul style="margin: 8px 0 0 16px; font-size: 13px;">
+            <li>Disponible : tous les plans (gratuit inclus)</li>
+            <li>Instructions : oui</li>
+            <li>Fichiers de référence : oui (jusqu'à 20)</li>
+            <li>Mémoire entre conversations : <strong>oui</strong></li>
+            <li>Partage public : non</li>
+            <li>Idéal pour : usage régulier d'équipe</li>
+          </ul>
+        </div>
+        <div class="comp-card">
+          <h4 style="font-size: 16px;">🤖 GPT personnalisé</h4>
+          <ul style="margin: 8px 0 0 16px; font-size: 13px;">
+            <li>Disponible : plans payants uniquement</li>
+            <li>Instructions : oui (plus poussées)</li>
+            <li>Fichiers de référence : oui (jusqu'à 20)</li>
+            <li>Mémoire entre conversations : <strong>non</strong></li>
+            <li>Partage public : oui (lien)</li>
+            <li>Idéal pour : assistants à diffuser largement</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 8 — CRÉATION D'IMAGE -->
+    <section id="partie8">
+      <div class="part-number">Partie 8 · 40 min</div>
+      <h2>Créer des images avec ChatGPT</h2>
+
+      <p style="font-size: 18px;">Gros avantage de ChatGPT : il <strong>génère des images directement dans la conversation</strong>, sans changer d'outil. Idéal pour illustrer un post, un article ou une plaquette quand on n'a pas de banque d'images.</p>
+
+      <div class="image-feature">
+        <h3>Comment ça marche</h3>
+        <p>On écrit une description précise (un « prompt visuel »), ChatGPT génère une image en quelques secondes. On peut ensuite demander des modifications en parlant simplement.</p>
+
+        <div class="image-recipe">
+          <div class="image-recipe-label">Exemple de prompt</div>
+          <div class="image-recipe-text">
+            « Crée une illustration colorée et chaleureuse, format carré pour Instagram, montrant une formatrice qui apprend à des enfants de 8 ans le geste de la position latérale de sécurité, dans une cour d'école ensoleillée. Style aquarelle moderne, ambiance positive. »
+          </div>
+        </div>
+
+        <p style="font-size: 14px; color: var(--ocre-light);">
+          Puis on peut continuer : <em>« Change le format pour LinkedIn (16:9) »</em> · <em>« Rends l'ambiance plus douce »</em> · <em>« Ajoute le texte "Apprendre tôt, sauver plus tard" en haut »</em>
+        </p>
+      </div>
+
+      <h3>À quoi ça sert pour SDD</h3>
+
+      <div class="image-uses">
+        <div class="image-use-card">
+          <h4>📱 Visuels réseaux sociaux</h4>
+          <p>Illustrations pour accompagner vos posts quand vous n'avez pas de photo de l'événement.</p>
+          <div class="ex">« Illustration pour un post Facebook annonçant une intervention dans une école primaire »</div>
+        </div>
+        <div class="image-use-card">
+          <h4>🌐 Bannières et visuels site</h4>
+          <p>Images d'en-tête pour les pages, illustrations d'articles de blog.</p>
+          <div class="ex">« Bannière pour la page d'accueil, format 1920x600px, thème prévention enfance »</div>
+        </div>
+        <div class="image-use-card">
+          <h4>📄 Plaquettes et présentations</h4>
+          <p>Visuels pour vos supports de démarchage, dossiers de mécénat.</p>
+          <div class="ex">« Visuel format A4 vertical pour la couverture d'un dossier de mécénat »</div>
+        </div>
+        <div class="image-use-card">
+          <h4>🎨 Mascotte et identité</h4>
+          <p>Personnages sympathiques pour adresser les enfants dans vos contenus.</p>
+          <div class="ex">« Personnage mascotte sympathique pour expliquer un geste de secours aux enfants »</div>
+        </div>
+      </div>
+
+      <h3>Les 4 ingrédients d'un bon prompt visuel</h3>
+
+      <div class="prompt-recipe">
+        <div class="recipe-card">
+          <div class="recipe-num">1</div>
+          <h4>Le sujet</h4>
+          <p>Quoi ou qui dans l'image.</p>
+          <div class="recipe-example">« Une formatrice avec des enfants de 8 ans »</div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-num">2</div>
+          <h4>Le contexte</h4>
+          <p>Où, quand, ambiance.</p>
+          <div class="recipe-example">« Dans une cour d'école ensoleillée, ambiance chaleureuse »</div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-num">3</div>
+          <h4>Le style</h4>
+          <p>Type d'image souhaité.</p>
+          <div class="recipe-example">« Illustration aquarelle moderne, couleurs douces »</div>
+        </div>
+        <div class="recipe-card">
+          <div class="recipe-num">4</div>
+          <h4>Le format</h4>
+          <p>Dimensions et usage.</p>
+          <div class="recipe-example">« Format carré 1:1 pour Instagram »</div>
+        </div>
+      </div>
+
+      <h3>Mini-bibliothèque de prompts visuels</h3>
+
+      <div class="prompt-item">Crée une illustration chaleureuse et colorée pour un post Facebook : un enfant de 8 ans qui apprend la position latérale de sécurité avec un adulte bienveillant, style dessin moderne, format carré 1:1.</div>
+      <div class="prompt-item">Génère une bannière LinkedIn (1584x396px) sur le thème « former dès l'enfance les éclaireurs de demain », style épuré et professionnel, tons chauds.</div>
+      <div class="prompt-item">Crée un visuel pour la couverture d'un dossier de mécénat, format A4 portrait, montrant des mains d'adulte et d'enfant qui se rejoignent, style minimaliste avec dégradé bleu-doré.</div>
+      <div class="prompt-item">Illustre un article de blog sur « Pourquoi former les enfants aux gestes qui sauvent », format paysage 16:9, style aquarelle moderne, ambiance positive et lumineuse.</div>
+      <div class="prompt-item">Crée une icône simple et reconnaissable représentant la mission de l'association, fond blanc, style flat design, couleurs vives.</div>
+
+      <div class="image-warning">
+        <div class="warn-icon">!</div>
+        <div>
+          <strong>Limites à connaître</strong>
+          ChatGPT peut refuser certaines demandes (visages réels d'enfants reconnaissables, scènes anxiogènes, images médicales précises). <strong>Toujours préférer des illustrations stylisées</strong> à des photos réalistes pour éviter les refus et les questions juridiques. Les visuels générés intègrent automatiquement une signature C2PA (origine IA détectable).
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-icon">✓</div>
+        <div class="verdict-content">
+          <strong>Réflexe à prendre</strong>
+          Quand vous écrivez un post dans le Projet « Création de contenu », pensez à demander dans la foulée : <em>« Et propose-moi 2 idées de visuels que je peux générer »</em>. Vous repartez avec le texte ET les images, dans la même conversation.
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 9 -->
+    <section id="partie9">
+      <div class="part-number">Partie 9 · 10 min</div>
+      <h2>Organisation</h2>
+
+      <div class="kpi-grid">
+        <div class="kpi-card">
+          <div class="kpi-icon">👥</div>
+          <div class="kpi-title">Qui fait quoi</div>
+          <div class="kpi-desc">Tableau rempli en direct : chaque membre, son GPT référent, sa fréquence.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">👁</div>
+          <div class="kpi-title">Toujours relire</div>
+          <div class="kpi-desc">ChatGPT propose, l'humain dispose. Lecture à voix haute = 90 % des erreurs détectées.</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-icon">📂</div>
+          <div class="kpi-title">Sauvegarder</div>
+          <div class="kpi-desc">Bibliothèque partagée des résultats qui marchent (Drive, Notion, dossier).</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PARTIE 10 -->
+    <section id="partie10">
+      <div class="part-number">Partie 10 · 10 min</div>
+      <h2>Les 5 règles à ne jamais oublier</h2>
+
+      <ol class="rules-list">
+        <li>Toujours relire avant d'envoyer ou de publier.</li>
+        <li>Jamais de données personnelles d'enfants (noms, photos reconnaissables) dans ChatGPT.</li>
+        <li>Si une réponse ou une image semble bizarre, on vérifie.</li>
+        <li>Garder le ton et l'identité de l'association : chaleureux, sérieux, humain.</li>
+        <li>En cas de doute, on appelle Julien.</li>
+      </ol>
+    </section>
+
+    <!-- PARTIE 11 -->
+    <section id="partie11">
+      <div class="part-number">Partie 11 · 10 min</div>
+      <h2>Et après ?</h2>
+
+      <h3>Vos 3 prochaines semaines</h3>
+      <div class="steps">
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Semaine 1 — Prise en main</h4>
+            <p>Ouvrir ChatGPT tous les jours, 10 minutes minimum. Tester chaque GPT et la création d'image.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Semaine 2 — Premières campagnes</h4>
+            <p>5 mails écoles · 1 approche mécénat · 3 posts avec visuels générés. Sauvegarder ce qui marche.</p>
+          </div>
+        </div>
+        <div class="step">
+          <div class="step-number"></div>
+          <div class="step-content">
+            <h4>Semaine 3 — Bilan</h4>
+            <p>Point d'équipe 30 min : ce qui a marché, ce qui coince, questions à Julien.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="verdict-icon">📅</div>
+        <div class="verdict-content">
+          <strong>Point de suivi</strong>
+          3 semaines après la formation · Visio 1h · Bilan, ajustements, besoins pour aller plus loin.
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <h3>Bonne formation</h3>
+      <p>Le plus dur, c'est le premier message à ChatGPT. Après, ça roule.</p>
+      <div class="signature">— Julien Tridat</div>
+    </footer>
+
+  </main>
+</div>
+
+<script>
+  document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', function() {
+      const targetId = this.getAttribute('data-target');
+      const target = document.getElementById(targetId);
+      if (target) {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+        this.classList.add('active');
+      }
+    });
+  });
+
+  const sections = document.querySelectorAll('section[id]');
+  const navLinks = document.querySelectorAll('.nav-link');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const id = entry.target.getAttribute('id');
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('data-target') === id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px' });
+
+  sections.forEach(section => observer.observe(section));
+</script>
+
+<div style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;background:#c8ff3d;color:#0a0a0a;font:500 12px/1 system-ui,sans-serif;padding:8px 14px;border-radius:999px;box-shadow:0 4px 24px rgba(0,0,0,.4);pointer-events:none;max-width:92vw;text-align:center;">Démo — support de formation réel, anonymisé · « Les Éclaireurs » est une association fictive</div>
+</body>
+</html>

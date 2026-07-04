@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Le dirigeant augmenté — V2 keynote · CDA 30 juin 2026</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+<style>
+/* ═══ Le dirigeant augmenté — V2 keynote allégé. Moteur plein écran autonome. ═══ */
+:root{
+  --ink-900:#0A0A0A; --ink-800:#141414; --ink-700:#1C1C1C;
+  --paper-50:#FAFAF7;
+  --fg:#FFFFFF; --fg-muted:rgba(255,255,255,.70); --fg-subtle:rgba(255,255,255,.50);
+  --fg-line:rgba(255,255,255,.12);
+  --fg-dark:#0A0A0A; --fg-dark-muted:rgba(10,10,10,.66); --fg-dark-subtle:rgba(10,10,10,.46);
+  --lime:#C7F560; --lime-2:#B5E84A; --lime-dark:#93C932; --lime-soft:rgba(199,245,96,.14);
+  --font-sans:"Geist","Söhne","Helvetica Neue",Helvetica,Arial,sans-serif;
+  --font-serif:"Instrument Serif","GT Sectra",Georgia,serif;
+  --font-mono:"Geist Mono","JetBrains Mono",ui-monospace,monospace;
+}
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;height:100%;background:var(--ink-900);color:var(--fg);
+  font-family:var(--font-sans);-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;overflow:hidden;}
+
+.deck{position:fixed;inset:0;overflow:hidden;}
+.slide{position:absolute;inset:0;display:none;background:var(--ink-900);color:var(--fg);
+  padding:clamp(28px,4.6vh,72px) clamp(28px,5vw,96px);overflow-y:auto;}
+.slide.active{display:flex;flex-direction:column;animation:fade .45s ease;}
+@keyframes fade{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:none;}}
+.slide.paper{background:var(--paper-50);color:var(--fg-dark);}
+
+.head{display:flex;align-items:center;justify-content:space-between;flex-shrink:0;gap:16px;}
+.brand-lockup{display:inline-flex;align-items:center;gap:clamp(8px,.8vw,16px);font-weight:500;
+  letter-spacing:-.01em;color:var(--fg);font-size:clamp(14px,1.25vw,24px);}
+.slide.paper .brand-lockup{color:var(--fg-dark);}
+.brand-dots{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);
+  gap:clamp(1.5px,.16vw,3px);width:clamp(18px,1.7vw,32px);height:clamp(18px,1.7vw,32px);color:currentColor;}
+.brand-dots>i{display:block;background:currentColor;border-radius:50%;}
+.brand-dots>i:nth-child(5){opacity:0;}
+.meta{font-family:var(--font-mono);font-size:clamp(11px,1.25vw,24px);letter-spacing:.08em;
+  text-transform:uppercase;color:var(--fg-subtle);}
+.slide.paper .meta{color:var(--fg-dark-subtle);}
+.body{flex:1;display:flex;flex-direction:column;justify-content:center;padding-top:clamp(14px,2vh,24px);min-height:0;}
+.foot{flex-shrink:0;display:flex;justify-content:flex-end;align-items:center;font-family:var(--font-mono);
+  font-size:clamp(11px,1.25vw,24px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-subtle);padding-top:clamp(12px,2vh,20px);}
+.slide.paper .foot{color:var(--fg-dark-subtle);}
+
+.eyebrow{font-family:var(--font-mono);font-size:clamp(13px,1.25vw,24px);letter-spacing:.12em;
+  text-transform:uppercase;color:var(--fg-subtle);display:inline-flex;align-items:center;
+  gap:clamp(8px,.7vw,14px);margin-bottom:clamp(20px,3.4vh,40px);}
+.slide.paper .eyebrow{color:var(--fg-dark-subtle);}
+.eyebrow::before{content:"";width:clamp(6px,.42vw,8px);height:clamp(6px,.42vw,8px);border-radius:50%;background:var(--lime);}
+
+/* Titres — plus gros qu'en V1, c'est le coeur du keynote */
+.display{font-weight:500;font-size:clamp(46px,8vw,150px);line-height:.95;letter-spacing:-.035em;margin:0;text-wrap:balance;}
+.display em,.serif{font-family:var(--font-serif);font-style:italic;font-weight:400;letter-spacing:-.02em;color:var(--lime);}
+.slide.paper .display em,.slide.paper .serif{color:var(--lime-dark);}
+.h1{font-weight:500;font-size:clamp(38px,6vw,110px);line-height:.98;letter-spacing:-.03em;margin:0;text-wrap:balance;}
+
+/* Sous-titre court (1 ligne, rare) */
+.sub{font-size:clamp(18px,2vw,38px);line-height:1.3;color:var(--fg-muted);margin:clamp(20px,3vh,44px) 0 0;font-weight:400;max-width:1300px;}
+.sub em{font-family:var(--font-serif);font-style:italic;color:var(--lime);font-weight:400;}
+.slide.paper .sub{color:var(--fg-dark-muted);}
+
+.cover-by{margin-top:clamp(28px,3.6vh,64px);padding-top:clamp(20px,2.4vh,32px);border-top:1px solid var(--fg-line);
+  display:flex;align-items:baseline;gap:clamp(14px,1.5vw,28px);flex-wrap:wrap;}
+.cover-by .k{font-family:var(--font-mono);font-size:clamp(12px,1.25vw,24px);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-subtle);}
+.cover-by .v{font-size:clamp(16px,1.65vw,32px);font-weight:500;letter-spacing:-.015em;color:var(--fg);}
+
+/* ── KPI hero : un seul énorme chiffre par slide ── */
+.hero-num{display:flex;flex-direction:column;gap:clamp(14px,2vh,28px);margin-top:clamp(20px,2.6vh,40px);}
+.hero-num .n{font-weight:500;font-size:clamp(120px,21vw,420px);line-height:.82;letter-spacing:-.05em;color:var(--lime);}
+.hero-num .n .small{font-size:clamp(48px,7vw,150px);color:var(--fg-muted);margin-left:8px;}
+.hero-num .cap{font-size:clamp(18px,2vw,40px);line-height:1.25;color:var(--fg);max-width:1300px;}
+.hero-num .cap em{font-family:var(--font-serif);font-style:italic;color:var(--lime);font-weight:400;}
+.hero-num .src{font-family:var(--font-mono);font-size:clamp(12px,1.25vw,24px);letter-spacing:.08em;text-transform:uppercase;color:var(--fg-subtle);}
+
+/* ── Mots-clés en grand : liste nue, gros ── */
+.words{display:flex;flex-wrap:wrap;gap:clamp(14px,1.6vw,30px) clamp(28px,3.2vw,64px);margin-top:clamp(28px,4vh,60px);}
+.words .w{font-weight:500;font-size:clamp(28px,3.6vw,68px);line-height:1.0;letter-spacing:-.025em;color:var(--fg);
+  display:inline-flex;align-items:baseline;gap:clamp(10px,.9vw,18px);}
+.words .w::before{content:"";width:clamp(8px,.6vw,12px);height:clamp(8px,.6vw,12px);border-radius:50%;background:var(--lime);transform:translateY(-.18em);flex-shrink:0;}
+
+/* ── 3 missions : version allégée (mot + tag, pas de desc) ── */
+.three{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(24px,2.9vw,56px);margin-top:clamp(32px,4.6vh,72px);}
+.three .m{border-top:1px solid var(--fg-line);padding-top:clamp(18px,2.4vh,32px);display:flex;flex-direction:column;gap:clamp(10px,1.3vh,18px);}
+.three .m.accent{border-top-color:var(--lime);}
+.three .m .n{font-family:var(--font-mono);font-size:clamp(13px,1.25vw,24px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-subtle);}
+.three .m .t{font-weight:500;font-size:clamp(34px,4vw,80px);line-height:1.0;letter-spacing:-.025em;margin:0;}
+.three .m .tag{font-family:var(--font-serif);font-style:italic;font-size:clamp(18px,1.7vw,34px);color:var(--lime);}
+
+/* ── Opposition pleine page (avant / après) ── */
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,64px);margin-top:clamp(28px,4vh,64px);align-items:stretch;}
+.vs .side{padding:clamp(24px,2.4vw,48px);border:1px solid var(--fg-line);display:flex;flex-direction:column;justify-content:center;gap:clamp(12px,1.6vh,24px);}
+.vs .side.good{background:var(--lime-soft);border-color:var(--lime);}
+.vs .side .lbl{font-family:var(--font-mono);font-size:clamp(13px,1.25vw,24px);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-subtle);}
+.vs .side.good .lbl{color:var(--lime);}
+.vs .side .big{font-weight:500;font-size:clamp(30px,3.4vw,64px);line-height:1.0;letter-spacing:-.025em;}
+.vs .side.good .big{color:var(--lime);}
+
+/* ── Offre allégée : 3 mots-étapes ── */
+.steps3{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,2.4vw,44px);margin-top:clamp(32px,4.6vh,72px);}
+.steps3 .s{border-top:1px solid var(--fg-line);padding-top:clamp(16px,2.2vh,30px);display:flex;flex-direction:column;gap:clamp(8px,1.1vh,16px);}
+.steps3 .s.accent{border-top-color:var(--lime);}
+.steps3 .s .k{font-family:var(--font-mono);font-size:clamp(12px,1.15vw,22px);letter-spacing:.12em;text-transform:uppercase;color:var(--fg-subtle);}
+.steps3 .s.accent .k{color:var(--lime);}
+.steps3 .s .t{font-weight:500;font-size:clamp(26px,3vw,56px);line-height:1.0;letter-spacing:-.025em;margin:0;}
+
+/* ── CTA ── */
+.cta-grid{display:grid;grid-template-columns:1fr clamp(220px,19vw,360px);gap:clamp(32px,4.2vw,80px);align-items:center;margin-top:clamp(20px,2.6vh,40px);}
+.email-row{margin-top:clamp(28px,3.4vh,48px);display:flex;align-items:center;gap:clamp(14px,1.25vw,24px);
+  padding:clamp(18px,1.7vw,28px) clamp(22px,1.9vw,36px);border:1px solid var(--lime);background:var(--lime-soft);flex-wrap:wrap;}
+.email-row .lbl{font-family:var(--font-mono);font-size:clamp(12px,1.15vw,22px);letter-spacing:.12em;text-transform:uppercase;color:var(--lime);
+  flex-shrink:0;white-space:nowrap;border-right:1px solid rgba(199,245,96,.3);padding-right:clamp(14px,1.25vw,24px);}
+.email-row .addr{font-weight:500;font-size:clamp(22px,2.4vw,46px);letter-spacing:-.018em;color:var(--lime);}
+.qr{width:clamp(220px,19vw,360px);height:clamp(220px,19vw,360px);background:var(--fg);padding:clamp(14px,1vw,20px);display:flex;align-items:center;justify-content:center;}
+.qr img{width:100%;height:100%;display:block;image-rendering:pixelated;}
+.qr-meta{text-align:center;margin-top:clamp(12px,1.2vh,18px);font-family:var(--font-mono);font-size:clamp(13px,1.25vw,24px);letter-spacing:.1em;text-transform:uppercase;color:var(--fg-subtle);}
+
+.vignette{position:absolute;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 60% 80% at 90% 100%,var(--lime-soft),transparent 60%),
+            radial-gradient(ellipse 80% 60% at 10% 0%,rgba(255,255,255,.03),transparent 60%);}
+.slide>.head,.slide>.body,.slide>.foot{position:relative;z-index:1;}
+
+.controls{position:fixed;bottom:clamp(16px,2.4vh,28px);left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:clamp(10px,1vw,16px);z-index:50;
+  background:rgba(10,10,10,.6);backdrop-filter:blur(8px);border:1px solid var(--fg-line);border-radius:999px;padding:clamp(6px,.6vh,9px) clamp(10px,1vw,14px);}
+.controls button{width:clamp(34px,3vw,42px);height:clamp(34px,3vw,42px);border-radius:50%;border:0;background:var(--ink-700);color:var(--fg);cursor:pointer;
+  font-size:clamp(16px,1.5vw,20px);display:inline-flex;align-items:center;justify-content:center;transition:background .15s,color .15s;}
+.controls button:hover{background:var(--lime);color:var(--ink-900);}
+.controls .counter{font-family:var(--font-mono);font-size:clamp(12px,1.15vw,16px);letter-spacing:.1em;color:var(--fg-muted);min-width:clamp(48px,4.5vw,64px);text-align:center;}
+.controls .nbtn{font-family:var(--font-mono);font-size:clamp(10px,1vw,13px);letter-spacing:.08em;text-transform:uppercase;width:auto;padding:0 clamp(10px,1vw,16px);border-radius:999px;}
+.progress{position:fixed;top:0;left:0;height:3px;background:var(--lime);z-index:50;width:0;transition:width .35s ease;}
+.notes{position:fixed;left:0;right:0;bottom:0;max-height:46vh;overflow-y:auto;z-index:60;background:rgba(10,10,10,.94);backdrop-filter:blur(10px);
+  border-top:1px solid var(--fg-line);padding:clamp(20px,3vh,32px) clamp(24px,5vw,80px) clamp(72px,9vh,96px);display:none;
+  font-size:clamp(15px,1.3vw,22px);line-height:1.55;color:var(--fg-muted);}
+.notes.show{display:block;}
+.notes b{color:var(--lime);font-weight:500;font-family:var(--font-mono);font-size:.8em;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:8px;}
+
+@media (max-width:860px){
+  .three,.steps3,.vs{grid-template-columns:1fr;}
+  .cta-grid{grid-template-columns:1fr;}
+  .cta-grid .qrwrap{order:-1;margin:0 auto;}
+  .slide,.body{justify-content:flex-start;}
+}
+@media (max-width:560px){ .controls .nbtn{display:none;} }
+@media print{
+  html,body{overflow:visible;}
+  .slide{display:flex!important;position:relative;page-break-after:always;height:100vh;}
+  .controls,.progress,.notes{display:none!important;}
+}
+</style>
+<meta name="robots" content="noindex" />
+</head>
+<body>
+
+<div class="progress" id="progress"></div>
+<div class="deck" id="deck">
+
+  <!-- 01 COUVERTURE -->
+  <section class="slide active" data-label="Couverture">
+    <div class="vignette"></div>
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Réseau d'affaires · 30 juin 2026 · Bordeaux</div>
+      <h1 class="display">Le dirigeant<br><em>augmenté</em>.</h1>
+      <div class="cover-by"><span class="k">Présenté par</span><span class="v">Julien Tridat — Consultant Marketing et IA</span></div>
+    </div>
+    <div class="foot"><span></span></div>
+  </section>
+
+  <!-- 02 VOUS FAITES TOUT -->
+  <section class="slide" data-label="Vous faites tout">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Votre journée</div>
+      <h1 class="display">Vous faites <em>tout</em>.</h1>
+      <p class="sub">Commercial, DAF, assistant, stratège. <em>En même temps.</em></p>
+    </div>
+    <div class="foot"><span>01 / 12</span></div>
+  </section>
+
+  <!-- 03 LE FAUX SOULAGEMENT -->
+  <section class="slide" data-label="Resté à la main">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Ce que vous avez déjà fait</div>
+      <h1 class="display">Vous avez formé vos équipes.<br>Pas <em>vous</em>.</h1>
+    </div>
+    <div class="foot"><span>02 / 12</span></div>
+  </section>
+
+  <!-- 04 LE MAILLON FAIBLE -->
+  <section class="slide" data-label="Le maillon faible">
+    <div class="vignette"></div>
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Le vrai diagnostic</div>
+      <h1 class="display">Le maillon faible,<br>c'est <em>vous</em>.</h1>
+    </div>
+    <div class="foot"><span>03 / 12</span></div>
+  </section>
+
+  <!-- 05 LE COÛT — un seul chiffre -->
+  <section class="slide" data-label="40 %">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Ce que ça coûte</div>
+      <div class="hero-num">
+        <div class="n">40<span class="small">%</span></div>
+        <div class="cap">de votre temps part sur des tâches <em>qu'une machine ferait</em>.</div>
+        <div class="src">McKinsey</div>
+      </div>
+    </div>
+    <div class="foot"><span>04 / 12</span></div>
+  </section>
+
+  <!-- 06 LE BON ORDRE (punchline, fond clair) -->
+  <section class="slide paper" data-label="Le bon ordre">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow">Le bon ordre</div>
+      <h1 class="display">S'augmenter soi.<br><em>Avant</em> la boîte.</h1>
+    </div>
+    <div class="foot"><span>05 / 12</span></div>
+  </section>
+
+  <!-- 07 VOS 3 MISSIONS -->
+  <section class="slide" data-label="Trois missions">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Votre vrai métier</div>
+      <h1 class="h1" style="max-width:1500px;">Trois missions. <span class="serif">Le reste à la machine.</span></h1>
+      <div class="three">
+        <div class="m accent"><span class="n">Mission 01</span><h3 class="t">Le contact.</h3><span class="tag">la relation</span></div>
+        <div class="m"><span class="n">Mission 02</span><h3 class="t">L'arbitrage.</h3><span class="tag">la décision</span></div>
+        <div class="m"><span class="n">Mission 03</span><h3 class="t">Le projet.</h3><span class="tag">le cap</span></div>
+      </div>
+    </div>
+    <div class="foot"><span>06 / 12</span></div>
+  </section>
+
+  <!-- 08 DÉMO ADMINISTRATIF — mots-clés -->
+  <section class="slide" data-label="L'administratif">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Ce que la machine reprend · l'administratif</div>
+      <h1 class="h1" style="max-width:1300px;">Tout ce qui vous <span class="serif">épuise</span>.</h1>
+      <div class="words">
+        <span class="w">Mails</span>
+        <span class="w">Comptes rendus</span>
+        <span class="w">Devis</span>
+        <span class="w">Factures</span>
+        <span class="w">Compta</span>
+        <span class="w">Relances</span>
+      </div>
+    </div>
+    <div class="foot"><span>07 / 12</span></div>
+  </section>
+
+  <!-- 09 DÉMO CERVEAU — mots-clés -->
+  <section class="slide" data-label="Votre cerveau">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Ce que la machine prépare · votre cerveau</div>
+      <h1 class="h1" style="max-width:1400px;">Elle ne décide pas.<br>Elle <span class="serif">prépare le terrain</span>.</h1>
+      <div class="words">
+        <span class="w">Stratégie</span>
+        <span class="w">Prospective</span>
+        <span class="w">Prospection</span>
+        <span class="w">Relation client</span>
+      </div>
+    </div>
+    <div class="foot"><span>08 / 12</span></div>
+  </section>
+
+  <!-- 10 RÉINVENTER LE MODÈLE -->
+  <section class="slide" data-label="Le modèle">
+    <div class="vignette"></div>
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">L'aboutissement</div>
+      <h1 class="display" style="font-size:clamp(40px,6.4vw,118px);">L'IA n'change pas vos process.<br>Elle interroge votre <em>modèle</em>.</h1>
+      <p class="sub">Vos offres. Vos produits. Votre façon de vendre.</p>
+    </div>
+    <div class="foot"><span>09 / 12</span></div>
+  </section>
+
+  <!-- 11 AVANT / APRÈS — opposition -->
+  <section class="slide" data-label="Avant / après">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Deux mois plus tard</div>
+      <div class="vs">
+        <div class="side bad"><span class="lbl">Aujourd'hui</span><div class="big">Le goulot<br>d'étranglement.</div></div>
+        <div class="side good"><span class="lbl">Demain</span><div class="big">Le moteur<br>de la boîte.</div></div>
+      </div>
+    </div>
+    <div class="foot"><span>10 / 12</span></div>
+  </section>
+
+  <!-- 12 L'OFFRE -->
+  <section class="slide" data-label="Dirigeant Augmenté">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow">Ce que j'installe</div>
+      <h1 class="display"><span class="serif">Dirigeant Augmenté</span>.</h1>
+      <div class="steps3">
+        <div class="s accent"><span class="k">Temps 01</span><h3 class="t">Le terrain.</h3></div>
+        <div class="s"><span class="k">Temps 02</span><h3 class="t">Le sur-mesure.</h3></div>
+        <div class="s"><span class="k">Temps 03</span><h3 class="t">L'autonomie.</h3></div>
+      </div>
+    </div>
+    <div class="foot"><span>11 / 12</span></div>
+  </section>
+
+  <!-- 13 CTA -->
+  <section class="slide" data-label="À vous de jouer">
+    <div class="vignette"></div>
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="cta-grid">
+        <div class="cta-block">
+          <div class="eyebrow">À vous de jouer</div>
+          <h1 class="display" style="font-size:clamp(40px,6.4vw,116px);">30 min sur<br><em>votre journée</em>.</h1>
+          <div class="email-row"><span class="lbl">Écrivez-moi</span><span class="addr">julien.tridat@gmail.com</span></div>
+        </div>
+        <div class="qrwrap">
+          <div class="qr" id="qrcode"></div>
+          <div class="qr-meta">julientridat.com</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>12 / 12</span></div>
+  </section>
+
+</div>
+
+<div class="controls">
+  <button class="nbtn" id="prev">‹ Préc.</button>
+  <span class="counter" id="counter">1 / 13</span>
+  <button class="nbtn" id="next">Suiv. ›</button>
+  <button id="notesBtn" title="Notes orateur (N)">N</button>
+</div>
+<div class="notes" id="notes"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/qrcode-generator@1.4.4/qrcode.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var slides=Array.prototype.slice.call(document.querySelectorAll('.slide'));
+  var total=slides.length,i=0;
+  var counter=document.getElementById('counter'),progress=document.getElementById('progress'),notesEl=document.getElementById('notes');
+
+  /* Notes orateur enrichies : tout le texte retiré des slides vit ici. */
+  var NOTES=[
+    "Ouverture. Pause 3 secondes. « Ce soir je ne vais pas vous parler d'IA. Je vais vous parler de vous. De votre journée. » Laisser résonner.",
+    "« Vous faites tout. » Énumérer à l'oral, vite, comme une avalanche : les mails, les relances, les CR, les devis, les factures, la compta, le commercial, la prospection, la relation client, la stratégie — et la prospective quand il reste du temps, c'est-à-dire jamais. Pause. « Vous êtes commercial, DAF, assistant et stratège en même temps. Et c'est exactement le problème. »",
+    "« Vous avez fait ce qu'il fallait : formé vos équipes, payé les licences, coché la case IA. » Pause. « Et vous, vous êtes resté à la main. Vous traitez encore vos mails un par un, vous tapez vos CR à 22 h. » Laisser le malaise une seconde.",
+    "Le retournement. Lent. « Le maillon faible de votre transformation, ce n'est pas votre commercial junior. Ni votre assistante. C'est vous. » Pause longue. « On ne transforme pas une boîte par le bas pendant que la tête reste manuelle. »",
+    "Laisser le 40 % s'installer, ne pas le commenter tout de suite. Puis : « 40 % de votre temps sur des tâches qu'une machine ferait. C'est le temps que vous ne passez pas à décider, à vendre, à voir vos clients. » Ajouter à l'oral les autres chiffres si la salle accroche : 28 h/semaine d'administratif, 2,5× de croissance pour les PME qui ont structuré l'IA.",
+    "LE titre de la soirée. Le dire très lentement, mot pour mot. « Vous ne pouvez pas augmenter votre boîte si vous ne vous êtes pas augmenté vous-même d'abord. » Pause 3 secondes. C'est le moment où ça doit faire tilt.",
+    "« Votre vrai métier tient en trois missions. » Les nommer une à une. Contact : la relation, vos clients, vos équipes — la machine ne le fera jamais. Arbitrage : décider au nom de la boîte — l'IA éclaire, elle ne tranche pas, c'est votre ligne de dignité. Projet : le cap. Annoncer qu'on y revient. « Tout le reste, la machine peut le porter. »",
+    "On montre, ton qui s'allège. Pointer les mots un par un et donner UN exemple vécu pour chacun : les mails triés et rédigés dans votre ton, le CR écrit pendant que vous parlez, le devis fait à la voix, la compta qui se tient seule. « Voilà ce que ça donne quand c'est en place. Ça tourne déjà. »",
+    "« Au-dessus de l'administratif, il y a votre cerveau. » Insister : l'IA ne décide pas à votre place, elle prépare le terrain. Stratégie : un sparring-partner qui connaît votre boîte. Prospective : la veille que vous n'avez jamais le temps de faire. Prospection : les bons prospects déjà qualifiés. Relation client : la relance qui ne tombe jamais aux oubliettes.",
+    "Monter d'un cran, ton plus grave. « La vraie question, ce n'est pas quoi déléguer. C'est : qu'est-ce que devient votre entreprise quand l'IA l'a traversée ? » Vos offres, vos produits, votre façon de vendre et de distribuer. « C'est l'aboutissement du parcours qu'on fait ensemble. »",
+    "Montrer le contraste, simplement. « Aujourd'hui, vous êtes peut-être le goulot d'étranglement de votre propre boîte. Dans deux mois, vous pouvez en être le moteur. » Même personne, même journée — plus le même métier. Laisser parler la colonne de droite.",
+    "Ouverture commerciale, sobre, sans pitch agressif. « Ce que j'installe, ça s'appelle Dirigeant Augmenté. Trois temps. » Le terrain : on regarde votre semaine. Le sur-mesure : on construit vos assistants, dans vos outils. L'autonomie : ça tourne quand je repars. « On ne commence jamais par les outils. On commence par votre journée. »",
+    "Dernière slide. « Trente minutes. Je regarde votre journée avec vous et je vous dis où part votre temps. Pas un pitch — un diagnostic. » Pause. « Scannez maintenant, ou retrouvez-moi au cocktail. » Remercier."
+  ];
+
+  function render(){
+    slides.forEach(function(s,n){ s.classList.toggle('active', n===i); });
+    counter.textContent=(i+1)+' / '+total;
+    progress.style.width=((i)/(total-1)*100)+'%';
+    if(notesEl.classList.contains('show')) renderNotes();
+    slides[i].scrollTop=0;
+  }
+  function renderNotes(){ notesEl.innerHTML='<b>Notes — '+slides[i].getAttribute('data-label')+'</b>'+(NOTES[i]||'—'); }
+  function go(n){ i=Math.max(0,Math.min(total-1,n)); render(); }
+  function next(){ go(i+1); } function prev(){ go(i-1); }
+
+  document.getElementById('next').addEventListener('click',next);
+  document.getElementById('prev').addEventListener('click',prev);
+  document.getElementById('notesBtn').addEventListener('click',function(){ notesEl.classList.toggle('show'); if(notesEl.classList.contains('show')) renderNotes(); });
+  document.addEventListener('keydown',function(e){
+    switch(e.key){
+      case 'ArrowRight': case 'PageDown': case ' ': e.preventDefault(); next(); break;
+      case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); break;
+      case 'Home': go(0); break; case 'End': go(total-1); break;
+      case 'n': case 'N': notesEl.classList.toggle('show'); if(notesEl.classList.contains('show')) renderNotes(); break;
+      case 'f': case 'F': if(!document.fullscreenElement){document.documentElement.requestFullscreen&&document.documentElement.requestFullscreen();}else{document.exitFullscreen&&document.exitFullscreen();} break;
+    }
+  });
+  var x0=null;
+  document.addEventListener('touchstart',function(e){ x0=e.touches[0].clientX; },{passive:true});
+  document.addEventListener('touchend',function(e){ if(x0===null)return; var dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>50){ dx<0?next():prev(); } x0=null; },{passive:true});
+
+  (function makeQR(){
+    var el=document.getElementById('qrcode'); if(!el||typeof qrcode!=='function')return;
+    var qr=qrcode(0,'M'); qr.addData('https://julientridat.com'); qr.make();
+    var img=document.createElement('img'); img.src=qr.createDataURL(10,0); img.alt='QR'; el.replaceChildren(img);
+  })();
+
+  render();
+})();
+</script>
+<div style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:99999;background:#c8ff3d;color:#0a0a0a;font:500 12px/1 system-ui,sans-serif;padding:8px 14px;border-radius:999px;box-shadow:0 4px 24px rgba(0,0,0,.4);pointer-events:none;max-width:92vw;text-align:center;">Démo — keynote réelle donnée devant un réseau de dirigeants (30 juin 2026)</div>
+</body>
+</html>

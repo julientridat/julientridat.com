@@ -13,6 +13,12 @@ resultats:
     label: "livrets outils livrés (~15 pages chacun)"
   - chiffre: "6"
     label: "onglets de cas d'usage par métier"
+visuel:
+  src: "/artefacts/support-groupe-retail.webp"
+  alt: "Support de formation scrollytelling — artefact réel anonymisé, à la charte de l'organisme partenaire"
+demo:
+  url: "/demos/support-groupe-retail.html"
+  label: "Dérouler le support réel (anonymisé)"
 published: true
 sortOrder: 5
 ---

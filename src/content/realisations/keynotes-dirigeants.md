@@ -13,6 +13,12 @@ resultats:
     label: "une campagne construite en public"
   - chiffre: "1×/mois"
     label: "format live récurrent co-animé"
+visuel:
+  src: "/artefacts/keynote-dirigeant.webp"
+  alt: "La keynote « Le dirigeant augmenté » réellement donnée sur scène — 12 slides"
+demo:
+  url: "/demos/keynote-dirigeant.html"
+  label: "Dérouler la keynote (version scène)"
 published: true
 sortOrder: 8
 ---
