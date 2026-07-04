@@ -21,6 +21,25 @@ const realisations = defineCollection({
     enjeu: z.string().optional(),
     /** La punchline APRÈS — le nouveau moyen de production, ce que l'entreprise fait désormais. */
     transformation: z.string().optional(),
+    /** Le déclencheur + situation de départ, court (2-3 phrases). */
+    pointDepart: z.string().optional(),
+    /** Le bilan / ce qui a changé, court (2-3 phrases). */
+    bilan: z.string().optional(),
+    /** La méthode appliquée, en 3-4 étapes — rendu en diagramme de flux. */
+    methode: z
+      .array(z.object({ etape: z.string(), detail: z.string() }))
+      .default([]),
+    /** Les assistants/systèmes installés — rendus en schéma entrée → système → sortie. */
+    assistants: z
+      .array(
+        z.object({
+          nom: z.string(),
+          entree: z.string(),
+          sortie: z.string(),
+          fait: z.string().optional(),
+        }),
+      )
+      .default([]),
     /** Résumé en 1-2 phrases — utilisé sur les cartes, le llms.txt et la meta description. */
     pitch: z.string(),
     resultats: z

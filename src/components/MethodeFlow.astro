@@ -1,0 +1,30 @@
+---
+interface Etape {
+  etape: string;
+  detail: string;
+}
+interface Props {
+  etapes: Etape[];
+}
+const { etapes } = Astro.props;
+---
+
+<div class="relative">
+  <!-- ligne de liaison (desktop) -->
+  <div class="absolute left-0 right-0 top-5 hidden h-px bg-white/12 md:block"></div>
+  <ol class="grid gap-8 md:grid-cols-4">
+    {etapes.map((e, i) => (
+      <li class="relative">
+        <div class="flex items-center gap-3 md:block">
+          <span class="relative z-10 grid h-10 w-10 flex-none place-items-center rounded-full border border-lime/40 bg-background text-sm font-medium text-lime">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <div class="text-[13px] font-medium uppercase tracking-[0.14em] text-white md:mt-4">
+            {e.etape}
+          </div>
+        </div>
+        <p class="mt-2 text-[13.5px] leading-relaxed text-white/60 md:mt-3">{e.detail}</p>
+      </li>
+    ))}
+  </ol>
+</div>

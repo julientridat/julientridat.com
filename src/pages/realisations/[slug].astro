@@ -3,6 +3,8 @@ import { getCollection, render } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
+import MethodeFlow from "@/components/MethodeFlow.astro";
+import AssistantsSchema from "@/components/AssistantsSchema.astro";
 import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
@@ -15,6 +17,7 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { Content } = await render(entry);
 const d = entry.data;
+const hasBody = (entry.body ?? "").trim().length > 0;
 const canonical = `${SITE.url}/realisations/${entry.id}`;
 
 // Meta description : pitch tronqué proprement à ~158 caractères (frontière de mot).
@@ -112,23 +115,66 @@ const jsonLd = [
       </section>
     )}
 
-    <article class="px-6 py-16 md:px-12 md:py-20">
-      <div class="prose-artefact mx-auto max-w-3xl">
-        <Content />
-      </div>
+    {d.pointDepart && (
+      <section class="px-6 py-16 md:px-12 md:py-20">
+        <div class="mx-auto max-w-3xl">
+          <Eyebrow>Le point de départ</Eyebrow>
+          <p class="text-xl font-light leading-relaxed text-white/85">{d.pointDepart}</p>
+        </div>
+      </section>
+    )}
 
-      {d.visuel && (
-        <figure class="mx-auto mt-14 max-w-3xl border-t border-white/10 pt-10">
+    {d.methode.length > 0 && (
+      <section class="border-t border-white/10 px-6 py-16 md:px-12 md:py-20">
+        <div class="mx-auto max-w-4xl">
+          <Eyebrow>La méthode, sur le terrain</Eyebrow>
+          <MethodeFlow etapes={d.methode} />
+        </div>
+      </section>
+    )}
+
+    {d.assistants.length > 0 && (
+      <section class="border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-16 md:px-12 md:py-20">
+        <div class="mx-auto max-w-4xl">
+          <Eyebrow>Les assistants installés</Eyebrow>
+          <p class="mb-8 max-w-2xl text-[15px] leading-relaxed text-white/60">
+            Pas des démonstrations : des systèmes qui tournent dans leurs outils, des mois après.
+          </p>
+          <AssistantsSchema assistants={d.assistants} />
+        </div>
+      </section>
+    )}
+
+    {d.bilan && (
+      <section class="border-t border-white/10 px-6 py-16 md:px-12 md:py-20">
+        <div class="mx-auto max-w-3xl">
+          <Eyebrow>Ce qui a changé</Eyebrow>
+          <p class="text-xl font-light leading-relaxed text-white/85">{d.bilan}</p>
+        </div>
+      </section>
+    )}
+
+    {hasBody && (
+      <article class="border-t border-white/10 px-6 py-16 md:px-12 md:py-20">
+        <div class="prose-artefact mx-auto max-w-3xl">
+          <Content />
+        </div>
+      </article>
+    )}
+
+    {d.visuel && (
+      <section class="border-t border-white/10 px-6 py-12 md:px-12">
+        <figure class="mx-auto max-w-3xl">
           <figcaption class="mb-4 text-[11px] uppercase tracking-[0.2em] text-white/40">
             Un aperçu — pour la preuve, pas pour la démonstration
           </figcaption>
           <div class="overflow-hidden rounded-xl border border-white/10">
             {d.demo ? (
               <a href={d.demo.url} target="_blank" rel="noopener" class="block">
-                <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-80 transition-opacity hover:opacity-100" />
+                <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-75 transition-opacity hover:opacity-100" />
               </a>
             ) : (
-              <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-80" />
+              <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-75" />
             )}
           </div>
           {d.demo && (
@@ -137,8 +183,8 @@ const jsonLd = [
             </a>
           )}
         </figure>
-      )}
-    </article>
+      </section>
+    )}
 
     <section class="border-t border-white/10 px-6 py-16 md:px-12">
       <div class="mx-auto flex max-w-3xl flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">

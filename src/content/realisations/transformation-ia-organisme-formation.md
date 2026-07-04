@@ -24,32 +24,36 @@ demo:
   label: "Parcourir le guide réel (anonymisé)"
 published: true
 sortOrder: 7
+pointDepart: "Un organisme de conseil et formation établi — plus de dix ans d'activité, plusieurs centaines d'experts — veut passer à l'IA sans improviser. Le déclencheur : des frictions précises. Suivi administratif qui pèse, génération de contacts en chute après une mise à jour de Google, allers-retours d'e-mails avec les formateurs. Le manque n'est pas un outil, c'est une capacité à produire avec l'IA."
+bilan: "La transformation est ancrée dans le bon ordre : dirigeant cadré et validé ambassadeur IA, équipes en pratique quotidienne sur leurs propres outils, guides et assistants qui restent après le départ. L'organisme sait désormais produire avec l'IA sans dépendre d'un prestataire — ce que la mission flash ne permet jamais."
+methode:
+  - etape: "Observer"
+    detail: "Un entretien de fond transforme les frictions relevées en un accompagnement chiffré, découpé en phases."
+  - etape: "Cadrer le dirigeant"
+    detail: "Session stratégique de deux heures en trois actes : état de l'art, audit des tâches sur grille flash à cinq critères, stratégie à trois horizons et gouvernance."
+  - etape: "Cartographier"
+    detail: "Maturité IA département par département — administration, commercial, marketing, direction — pour savoir où l'IA produit vite."
+  - etape: "Mettre en production"
+    detail: "Équipes en atelier sur leurs vrais outils, métier par métier, puis guides et assistants laissés en place."
+assistants:
+  - nom: "Assistant écriture + copilote agenda"
+    entree: "E-mails, briefs, réunions"
+    sortie: "Rédaction, synthèses, préparation"
+    fait: "Fait passer les tâches chronophages du dirigeant de plusieurs dizaines de minutes à quelques-unes."
+  - nom: "Assistant rédactionnel éditorial"
+    entree: "Charte éditoriale, sujets"
+    sortie: "Contenus pertinents et trouvables"
+    fait: "Produit des contenus qui existent aussi dans les moteurs de réponse IA, sans se faire sanctionner."
+  - nom: "Assistant de veille automatisée"
+    entree: "Marché ou concurrent visé"
+    sortie: "État sourcé et vérifiable"
+    fait: "Remonte des sources vérifiables pour nourrir les décisions."
+  - nom: "Guide d'autonomie 6 niveaux"
+    entree: "Outil de gestion de projet"
+    sortie: "Pilotage à la phrase"
+    fait: "Fait passer un quart d'heure de navigation à une phrase ; chaque palier livre prompt, résultat attendu et piège à éviter."
+  - nom: "Deux stratégies écrites"
+    entree: "Contexte de l'organisme"
+    sortie: "Feuille de route IA + GEO"
+    fait: "Rend l'organisme trouvable par les assistants qui conseillent ses futurs clients."
 ---
-
-## Le point de départ
-
-Un organisme de conseil et formation établi — plus de dix ans d'activité, un réseau de plusieurs centaines d'experts, un taux de satisfaction élevé à préserver — voulait passer à l'IA sans improviser. Le déclencheur n'était pas une lubie : c'étaient des frictions précises, nettes dès le premier entretien de fond.
-
-Le suivi administratif et comptable pesait, avec des rôles cumulés sur une même personne. La génération de contacts avait chuté après une mise à jour de l'algorithme de Google, qui avait dévalorisé les contenus produits en série — le référencement et le trafic avaient plongé. La collaboration avec les formateurs se faisait par allers-retours d'e-mails, une vraie perte de temps. Et derrière chaque friction, la même question : comment produire autrement. Le manque n'était pas « un outil » — c'était une capacité à produire avec l'IA, qui n'existait nulle part dans la maison.
-
-## La méthode, sur le terrain
-
-Je n'ai pas fait « une formation ». J'ai observé le terrain, construit des assistants, déployé, puis formé les équipes — dans l'ordre qui rend la transformation durable, du sommet vers la base.
-
-D'abord observer. Un entretien de fond transforme les frictions relevées en un accompagnement chiffré, découpé en phases. Ensuite cadrer le dirigeant, avant que les équipes n'expérimentent : une session stratégique de deux heures, en trois actes — état de l'art des IA utiles à un dirigeant, audit de ses tâches avec une grille flash à cinq critères (complexité, fréquence, délégabilité, valeur business, scalabilité), puis stratégie à trois horizons et cadre de gouvernance. On cartographie la maturité IA département par département — administration, commercial, marketing, direction — pour savoir où l'IA produit vite. Puis on met les équipes en production sur leurs vrais outils, atelier par atelier, métier par métier. Enfin, on laisse des guides et des assistants qui survivent au départ du consultant.
-
-## Les assistants installés
-
-Le cœur de la mission, ce sont les assistants et systèmes qui tournent encore aujourd'hui :
-
-- **Un assistant d'écriture pour les e-mails et les briefs**, et un copilote d'agenda branché sur l'environnement bureautique de la maison — les tâches chronophages du dirigeant (rédiger, préparer une réunion, synthétiser) passent de plusieurs dizaines de minutes à quelques-unes.
-- **Un assistant rédactionnel calé sur la charte éditoriale**, pensé pour la nouvelle donne du référencement : produire des contenus pertinents qui existent aussi dans les moteurs de réponse IA, et non des textes en série qui se font sanctionner.
-- **Un assistant de veille automatisée** qui remonte l'état d'un marché ou d'un concurrent avec des sources vérifiables, pour nourrir les décisions.
-- **Un guide d'autonomie en six niveaux progressifs** pour brancher l'IA sur l'outil de gestion de projet de la maison : connecter, lire l'état des missions, créer, piloter d'une phrase ce qui prenait un quart d'heure de navigation, croiser les données pour produire un livrable, puis aller plus loin. À chaque palier : le prompt à copier, le résultat attendu, le piège à éviter.
-- **Deux stratégies écrites qui restent** : une stratégie IA d'ensemble et une stratégie de visibilité dans les moteurs de réponse IA (GEO). Un organisme de formation doit désormais être trouvable par les assistants qui conseillent ses futurs clients.
-
-## Ce qui a changé
-
-Avant : une envie de « faire de l'IA » et un savoir-faire absent. Après : une transformation ancrée dans le bon ordre — dirigeant cadré, équipes formées, outillage et autonomie en dernier. Le dirigeant a validé sa posture d'ambassadeur IA de la maison. Les équipes pratiquent au quotidien, sur leurs propres outils, atelier après atelier. Et les guides à six niveaux comme les assistants restent quand je pars.
-
-L'organisme sait faire, désormais, ce qu'il ne savait pas faire : produire avec l'IA sans dépendre d'un prestataire. C'est là que l'accompagnement annuel bat la mission flash — une formation isolée s'évapore en trois jours ; une intégration séquencée installe des pratiques qui survivent au consultant. Je ne délivre pas une prestation ponctuelle : j'installe un moyen de production IA et je m'assure qu'il tourne sans moi.
