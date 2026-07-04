@@ -13,6 +13,12 @@ resultats:
     label: "formats : post carré & story"
   - chiffre: "min"
     label: "un visuel produit en minutes"
+visuel:
+  src: "/artefacts/visuels-marque.webp"
+  alt: "Configurateur de visuels chartés — démonstration du système sur la marque fictive VOLT"
+demo:
+  url: "/demos/visuels-marque.html"
+  label: "Tester le configurateur (marque fictive)"
 published: true
 sortOrder: 4
 ---

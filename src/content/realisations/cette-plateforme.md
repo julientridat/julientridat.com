@@ -13,6 +13,9 @@ resultats:
     label: "HTML pré-rendu"
   - chiffre: "1"
     label: "llms.txt généré au build"
+visuel:
+  src: "/artefacts/plateforme.webp"
+  alt: "La page d'accueil de julientridat.com — le site documenté par cette étude de cas"
 published: true
 sortOrder: 5
 ---

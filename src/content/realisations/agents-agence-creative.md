@@ -13,6 +13,12 @@ resultats:
     label: "pôles : stratégie/commercial & création"
   - chiffre: "1"
     label: "roadmap + volet confidentialité"
+visuel:
+  src: "/artefacts/dashboard.webp"
+  alt: "Dashboard narratif — démonstration du cas d'usage reporting sur données fictives"
+demo:
+  url: "/demos/dashboard.html"
+  label: "Voir un dashboard narratif (démo fictive)"
 published: true
 sortOrder: 3
 ---

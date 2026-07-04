@@ -28,8 +28,20 @@ const realisations = (await getCollection("realisations", ({ data }) => data.pub
       {realisations.map((r) => (
         <a
           href={`/realisations/${r.id}`}
-          class="group flex flex-col rounded-2xl border border-white/15 p-7 transition-colors hover:border-lime"
+          class="group flex flex-col overflow-hidden rounded-2xl border border-white/15 p-7 transition-colors hover:border-lime"
         >
+          {r.data.visuel && (
+            <div class="-mx-7 -mt-7 mb-6 overflow-hidden border-b border-white/10">
+              <img
+                src={r.data.visuel.src}
+                alt={r.data.visuel.alt}
+                width="1200"
+                height="675"
+                loading="lazy"
+                class="aspect-video w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            </div>
+          )}
           <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">
             {r.data.client} · {r.data.annee}
           </div>
@@ -52,12 +64,18 @@ const realisations = (await getCollection("realisations", ({ data }) => data.pub
       ))}
     </div>
 
-    <div class="mt-12">
+    <div class="mt-12 flex flex-wrap gap-x-10 gap-y-4">
       <a
         href="/realisations"
         class="inline-flex items-center gap-2 border-b border-lime pb-1 text-lg text-lime transition hover:gap-3"
       >
         → Tout le registre des réalisations
+      </a>
+      <a
+        href="/demos"
+        class="inline-flex items-center gap-2 border-b border-white/30 pb-1 text-lg text-white/80 transition hover:gap-3 hover:border-lime hover:text-lime"
+      >
+        → Tester les démos interactives
       </a>
     </div>
   </div>

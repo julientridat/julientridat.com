@@ -1,0 +1,132 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
+
+const demos = [
+  {
+    url: "/demos/deck-formation/",
+    visuel: "/artefacts/deck-formation.webp",
+    titre: "Support de formation IA & Texte",
+    nature: "Artefact réel, anonymisé",
+    desc: "Le support complet d'une journée de formation livrée à une agence santé — 38 écrans navigables. Seul le nom du client a été remplacé (« Horizon », agence fictive) : le contenu, la pédagogie et le design sont ceux de la mission.",
+    caseUrl: "/realisations/formation-ia-agence-sante",
+    action: "Parcourir le support",
+  },
+  {
+    url: "/demos/visuels-marque.html",
+    visuel: "/artefacts/visuels-marque.webp",
+    titre: "Configurateur de visuels chartés",
+    nature: "Système réel, marque fictive",
+    desc: "Le principe du design system livré à une franchise fitness : la charte encodée en gabarit HTML, le contenu injecté à la demande. Changez le club, le gabarit, le format, le titre — le visuel se re-rend au pixel. En mission, un assistant IA pilote ce gabarit en langage naturel.",
+    caseUrl: "/realisations/design-system-franchise-fitness",
+    action: "Tester le configurateur",
+  },
+  {
+    url: "/demos/restitution-audit.html",
+    visuel: "/artefacts/restitution-audit.webp",
+    titre: "Restitution de cartographie IA",
+    nature: "Méthode réelle, données fictives",
+    desc: "Extrait du livrable de restitution d'un audit IA : carte des frictions, qualification production/jugement, matrice effort × impact, feuille de route en vagues. L'agence « Méridien » et ses chiffres sont fictifs ; la structure est celle des missions réelles.",
+    caseUrl: "/realisations/cartographie-ia-agence",
+    action: "Parcourir la restitution",
+  },
+  {
+    url: "/demos/dashboard.html",
+    visuel: "/artefacts/dashboard.webp",
+    titre: "Dashboard narratif",
+    nature: "Démo — données fictives",
+    desc: "Un exemple du cas d'usage « assistant reporting » : les chiffres racontés avant d'être affichés. Le narratif du mois, les indicateurs et les signaux (comptes à réactiver) sont produits par l'assistant puis validés par un humain. Naviguez entre les mois.",
+    caseUrl: null,
+    action: "Ouvrir le dashboard",
+  },
+];
+
+const title = "Démos — testez les systèmes | Julien Tridat";
+const description =
+  "Des artefacts à manipuler, pas des promesses : support de formation réel anonymisé, configurateur de visuels chartés, restitution d'audit IA, dashboard narratif.";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    name: "Démos — Julien Tridat",
+    description,
+    url: `${SITE.url}/demos`,
+    author: { "@id": `${SITE.url}/#julien-tridat` },
+  },
+];
+---
+
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/demos`} jsonLd={jsonLd}>
+  <main class="bg-background text-foreground">
+    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-24 md:pt-44">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(700px 400px at 20% 0%, oklch(0.92 0.21 125 / 0.07), transparent 70%);"
+      >
+      </div>
+      <Nav />
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Démos</Eyebrow>
+        <h1 class="max-w-4xl text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
+          Ne me croyez pas. <em class="text-lime">Testez.</em>
+        </h1>
+        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
+          Des artefacts à manipuler, dans votre navigateur. Chacun est étiqueté honnêtement :
+          <strong class="font-medium text-white">réel anonymisé</strong> quand c'est un livrable
+          de mission dont seul le client a été masqué, <strong class="font-medium text-white">données
+          fictives</strong> quand le système est réel mais la matière inventée pour la démonstration.
+        </p>
+      </div>
+    </header>
+
+    <section class="px-6 py-16 md:px-12 md:py-24">
+      <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2">
+        {demos.map((demo) => (
+          <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/15 transition-colors hover:border-lime">
+            <a href={demo.url} target="_blank" rel="noopener" class="block overflow-hidden border-b border-white/10">
+              <img
+                src={demo.visuel}
+                alt={`Aperçu — ${demo.titre}`}
+                width="1200"
+                height="675"
+                loading="lazy"
+                class="aspect-video w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+              />
+            </a>
+            <div class="flex flex-1 flex-col p-8 pt-6">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">{demo.nature}</div>
+              <h2 class="mt-3 text-2xl font-medium leading-snug">{demo.titre}</h2>
+              <p class="mt-3 flex-1 text-[15px] leading-relaxed text-white/70">{demo.desc}</p>
+              <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+                <a
+                  href={demo.url}
+                  target="_blank"
+                  rel="noopener"
+                  class="inline-flex items-center gap-3 rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-all hover:bg-lime/90"
+                >
+                  {demo.action} <span>→</span>
+                </a>
+                {demo.caseUrl && (
+                  <a href={demo.caseUrl} class="text-sm text-white/60 underline-offset-4 hover:text-lime hover:underline">
+                    Lire l'étude de cas
+                  </a>
+                )}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <p class="mx-auto mt-12 max-w-7xl text-sm text-white/45">
+        Les démos s'ouvrent dans un nouvel onglet. Aucune donnée client réelle n'y figure —
+        les livrables complets se partagent en rendez-vous, avec l'accord des clients concernés.
+      </p>
+    </section>
+
+    <Footer />
+  </main>
+</BaseLayout>

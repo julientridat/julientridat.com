@@ -11,6 +11,12 @@ resultats:
     label: "livrables : restitution + pilotage"
   - chiffre: "10"
     label: "onglets de suivi opérationnel"
+visuel:
+  src: "/artefacts/restitution-audit.webp"
+  alt: "Extrait du deck de restitution de cartographie IA — démonstration sur données fictives"
+demo:
+  url: "/demos/restitution-audit.html"
+  label: "Parcourir la restitution (démo)"
 published: true
 sortOrder: 1
 ---

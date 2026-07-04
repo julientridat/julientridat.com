@@ -1,0 +1,1323 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Démo — Support de formation IA &amp; Texte (anonymisé) · Julien Tridat</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600;700&family=Geist+Mono:wght@400;500&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+
+<style>
+  :root { --slide-w: 1920px; --slide-h: 1080px; }
+  body { background: #050505; }
+  deck-stage:not(:defined) { visibility: hidden; }
+
+  .slide { width:1920px; height:1080px; background:var(--ink-900); color:var(--fg); position:relative; overflow:hidden; font-family:var(--font-sans); }
+  .slide.paper { background:var(--paper-50); color:var(--fg-dark); }
+
+  .chrome { position:absolute; inset:0; padding:72px 96px; display:flex; flex-direction:column; }
+  .head { display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+  .head .brand-lockup { font-size:24px; gap:16px; }
+  .head .brand-dots   { width:32px; height:32px; gap:3px; }
+  .foot { position:absolute; left:96px; right:96px; bottom:56px; display:flex; justify-content:flex-end; align-items:center; font-family:var(--font-mono); font-size:24px; letter-spacing:0.1em; text-transform:uppercase; color:var(--fg-subtle); }
+  .foot.dark { color:var(--fg-dark-subtle); }
+  .body { flex:1; display:flex; flex-direction:column; justify-content:center; padding-top:24px; }
+
+  /* ── Typo ── */
+  .eyebrow { font-family:var(--font-mono); font-size:24px; letter-spacing:0.12em; text-transform:uppercase; color:var(--fg-subtle); display:inline-flex; align-items:center; gap:14px; }
+  .eyebrow::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--lime); }
+  .eyebrow.dark { color:var(--fg-dark-subtle); }
+  .eyebrow.dark::before { background:var(--fg-dark); }
+  .display { font-family:var(--font-sans); font-weight:500; font-size:128px; line-height:.96; letter-spacing:-.035em; margin:0; text-wrap:balance; }
+  .display em, .serif { font-family:var(--font-serif); font-style:italic; font-weight:400; letter-spacing:-.02em; color:var(--lime); }
+  .h1 { font-family:var(--font-sans); font-weight:500; font-size:96px; line-height:1.0; letter-spacing:-.028em; margin:0; text-wrap:balance; }
+  .h2 { font-family:var(--font-sans); font-weight:500; font-size:64px; line-height:1.05; letter-spacing:-.022em; margin:0; }
+  .h3 { font-family:var(--font-sans); font-weight:500; font-size:36px; line-height:1.15; letter-spacing:-.012em; margin:0; }
+  .lead { font-family:var(--font-sans); font-size:32px; line-height:1.4; color:var(--fg-muted); margin:0; max-width:1000px; font-weight:400; }
+  .meta { font-family:var(--font-mono); font-size:24px; letter-spacing:.08em; color:var(--fg-subtle); text-transform:uppercase; }
+  .body-lg { font-family:var(--font-sans); font-size:26px; line-height:1.45; color:var(--fg); margin:0; }
+  .body-md { font-family:var(--font-sans); font-size:24px; line-height:1.5; color:var(--fg-muted); margin:0; }
+
+  /* ── Stats 3 col ── */
+  .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:56px; margin-top:80px; }
+  .stat { border-top:1px solid var(--fg-line); padding-top:32px; display:flex; flex-direction:column; gap:18px; }
+  .stat.accent { border-top-color:var(--lime); }
+  .stat .num { font-family:var(--font-sans); font-weight:500; font-size:168px; line-height:.9; letter-spacing:-.045em; }
+  .stat.accent .num { color:var(--lime); }
+  .stat .unit { font-size:64px; color:var(--fg-muted); margin-left:6px; letter-spacing:-.04em; }
+  .stat .label { font-family:var(--font-sans); font-size:24px; line-height:1.4; color:var(--fg); max-width:460px; }
+  .stat .src { font-family:var(--font-mono); font-size:20px; letter-spacing:.08em; color:var(--fg-subtle); text-transform:uppercase; }
+
+  /* ── Agenda ── */
+  .agenda { list-style:none; margin:56px 0 0; padding:0; display:flex; flex-direction:column; gap:0; }
+  .agenda li { display:flex; align-items:baseline; gap:32px; padding:24px 0; border-bottom:1px solid var(--fg-line); }
+  .agenda li:first-child { border-top:1px solid var(--fg-line); }
+  .agenda .time { font-family:var(--font-mono); font-size:24px; letter-spacing:.08em; color:var(--fg-subtle); text-transform:uppercase; flex-shrink:0; width:180px; }
+  .agenda .title { font-family:var(--font-sans); font-size:28px; font-weight:500; letter-spacing:-.01em; color:var(--fg); }
+  .agenda .tag { font-family:var(--font-serif); font-style:italic; font-size:26px; color:var(--lime); margin-left:auto; flex-shrink:0; }
+
+  /* ── Module separator (paper) ── */
+  .module-sep-num { font-family:var(--font-sans); font-weight:500; font-size:240px; line-height:.88; letter-spacing:-.05em; color:var(--fg-dark); opacity:.08; position:absolute; right:96px; bottom:80px; }
+  .module-sep-title { font-family:var(--font-sans); font-weight:500; font-size:96px; line-height:.98; letter-spacing:-.03em; margin:0; color:var(--fg-dark); }
+  .module-sep-title em { font-family:var(--font-serif); font-style:italic; color:var(--lime-dark); }
+  .module-tag { font-family:var(--font-mono); font-size:24px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-dark-subtle); display:inline-flex; align-items:center; gap:14px; margin-bottom:40px; }
+  .module-tag::before { content:""; width:8px; height:8px; border-radius:50%; background:var(--lime-dark); }
+
+  /* ── Objectives ── */
+  .objectives { list-style:none; margin:48px 0 0; padding:0; display:flex; flex-direction:column; gap:24px; }
+  .objectives li { display:flex; align-items:flex-start; gap:28px; font-family:var(--font-sans); font-size:26px; line-height:1.4; color:var(--fg); }
+  .objectives li::before { content:"⮻"; color:var(--lime); font-size:26px; flex-shrink:0; margin-top:2px; }
+
+  /* ── Content bullets ── */
+  .content-bullets { list-style:none; margin:48px 0 0; padding:0; display:flex; flex-direction:column; gap:20px; }
+  .content-bullets li { display:flex; align-items:flex-start; gap:24px; font-family:var(--font-sans); font-size:26px; line-height:1.4; color:var(--fg); }
+  .content-bullets li::before { content:"—"; color:var(--lime); font-family:var(--font-mono); flex-shrink:0; }
+  .content-bullets .sub { display:flex; flex-direction:column; gap:8px; }
+  .content-bullets .sub-item { font-size:22px; color:var(--fg-muted); padding-left:16px; border-left:2px solid var(--fg-line); }
+
+  /* ── Definition ── */
+  .def-term { font-family:var(--font-sans); font-weight:500; font-size:72px; line-height:1.0; letter-spacing:-.025em; color:var(--lime); margin:0; }
+  .def-question { font-family:var(--font-mono); font-size:24px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-subtle); margin:16px 0 40px; }
+  .def-body { font-family:var(--font-sans); font-size:30px; line-height:1.45; color:var(--fg); max-width:1400px; }
+  .def-example { margin-top:48px; padding:40px; background:var(--ink-800); border-left:3px solid var(--lime); font-family:var(--font-sans); font-size:26px; line-height:1.5; color:var(--fg-muted); font-style:italic; }
+  .def-example strong { color:var(--fg); font-style:normal; }
+
+  /* ── Couche prompt (numbered) ── */
+  .layers { display:grid; grid-template-columns:repeat(4,1fr); gap:40px; margin-top:72px; }
+  .layer { border-top:1px solid var(--fg-line); padding-top:28px; display:flex; flex-direction:column; gap:18px; }
+  .layer.active { border-top-color:var(--lime); }
+  .layer .n { font-family:var(--font-mono); font-size:24px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-subtle); }
+  .layer.active .n { color:var(--lime); }
+  .layer .name { font-family:var(--font-sans); font-weight:500; font-size:40px; line-height:1.1; letter-spacing:-.018em; margin:0; }
+  .layer .question { font-family:var(--font-mono); font-size:22px; letter-spacing:.06em; color:var(--fg-muted); text-transform:uppercase; }
+
+  /* ── Do / Don't ── */
+  .compare { display:grid; grid-template-columns:1fr 1fr; gap:48px; margin-top:56px; }
+  .compare .col { padding:40px; border:1px solid var(--fg-line); display:flex; flex-direction:column; gap:22px; }
+  .compare .col.bad  { background:rgba(255,255,255,.02); }
+  .compare .col.good { background:var(--lime-soft); border-color:var(--lime); }
+  .compare .col h3 { font-family:var(--font-sans); font-weight:500; font-size:32px; letter-spacing:-.015em; margin:0; display:flex; align-items:center; gap:14px; }
+  .compare .col.good h3 { color:var(--lime); }
+  .compare .col h3 .marker { width:36px; height:36px; display:inline-flex; align-items:center; justify-content:center; font-family:var(--font-mono); font-size:24px; font-weight:500; border-radius:50%; }
+  .compare .col.bad h3 .marker  { background:rgba(255,255,255,.08); color:var(--fg-muted); }
+  .compare .col.good h3 .marker { background:var(--lime); color:var(--ink-900); }
+  .compare ul { list-style:none; padding:0; margin:0; display:flex; flex-direction:column; gap:14px; }
+  .compare ul li { font-family:var(--font-sans); font-size:24px; line-height:1.4; color:var(--fg); display:flex; align-items:baseline; gap:14px; }
+  .compare ul li::before { content:"—"; color:var(--fg-subtle); font-family:var(--font-mono); flex-shrink:0; }
+
+  /* ── Exercise ── */
+  .exercise-card { background:var(--ink-800); border:1px solid var(--lime); padding:56px; display:flex; flex-direction:column; gap:32px; margin-top:40px; }
+  .exercise-prompt { font-family:var(--font-sans); font-size:40px; font-weight:500; line-height:1.2; letter-spacing:-.018em; color:var(--lime); margin:0; }
+  .exercise-instructions { font-family:var(--font-sans); font-size:26px; line-height:1.5; color:var(--fg-muted); margin:0; }
+  .exercise-meta { display:flex; gap:48px; }
+  .exercise-meta .pill { font-family:var(--font-mono); font-size:22px; letter-spacing:.08em; text-transform:uppercase; color:var(--fg-subtle); padding:10px 24px; border:1px solid var(--fg-line); }
+  .exercise-label { font-family:var(--font-mono); font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--lime); }
+
+  /* ── Takeaway ── */
+  .takeaway-box { background:var(--lime-soft); border:1px solid rgba(199,245,96,.3); padding:64px 80px; display:flex; flex-direction:column; align-items:flex-start; gap:24px; margin-top:40px; }
+  .takeaway-idea { font-family:var(--font-sans); font-weight:500; font-size:64px; line-height:1.05; letter-spacing:-.025em; color:var(--fg); max-width:1400px; }
+  .takeaway-idea em { font-family:var(--font-serif); font-style:italic; color:var(--lime); }
+
+  /* ── Methods steps (4 steps) ── */
+  .method { display:grid; grid-template-columns:repeat(4,1fr); gap:40px; margin-top:64px; }
+  .step { border-top:1px solid var(--fg-line); padding-top:28px; display:flex; flex-direction:column; gap:16px; }
+  .step.accent { border-top-color:var(--lime); }
+  .step .idx { display:flex; justify-content:space-between; align-items:baseline; }
+  .step .idx .n { font-family:var(--font-mono); font-size:24px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-subtle); }
+  .step .idx .tag { font-family:var(--font-serif); font-style:italic; font-size:26px; color:var(--lime); }
+  .step .title { font-family:var(--font-sans); font-weight:500; font-size:32px; line-height:1.1; letter-spacing:-.018em; margin:0; }
+  .step .desc { font-family:var(--font-sans); font-size:24px; line-height:1.45; color:var(--fg-muted); margin:0; }
+
+  /* ── Vigilance cards ── */
+  .vigilance-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:40px; margin-top:64px; }
+  .vig { border-top:1px solid var(--fg-line); padding-top:28px; display:flex; flex-direction:column; gap:18px; }
+  .vig.active { border-top-color:var(--lime); }
+  .vig .vnum { font-family:var(--font-mono); font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-subtle); }
+  .vig.active .vnum { color:var(--lime); }
+  .vig .vname { font-family:var(--font-sans); font-weight:500; font-size:36px; line-height:1.1; letter-spacing:-.015em; margin:0; }
+  .vig .vdesc { font-family:var(--font-sans); font-size:22px; line-height:1.5; color:var(--fg-muted); margin:0; }
+
+  /* ── Rules summary inline ── */
+  .rule-box { background:var(--ink-800); border-left:3px solid var(--lime); padding:32px 40px; margin-top:40px; font-family:var(--font-sans); font-size:28px; line-height:1.4; color:var(--fg); }
+
+  /* ── Vignette ── */
+  .vignette { position:absolute; inset:0; background: radial-gradient(ellipse 60% 80% at 90% 100%, var(--lime-soft), transparent 60%), radial-gradient(ellipse 80% 60% at 10% 0%, rgba(255,255,255,.03), transparent 60%); pointer-events:none; }
+
+  /* ── Workflow steps (vertical) ── */
+  .workflow { display:flex; flex-direction:column; gap:0; margin-top:48px; }
+  .wstep { display:flex; align-items:flex-start; gap:40px; padding:28px 0; border-bottom:1px solid var(--fg-line); }
+  .wstep:first-child { border-top:1px solid var(--fg-line); }
+  .wstep .wnum { font-family:var(--font-mono); font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--lime); flex-shrink:0; width:80px; padding-top:4px; }
+  .wstep .wcontent { display:flex; flex-direction:column; gap:8px; }
+  .wstep .wtitle { font-family:var(--font-sans); font-weight:500; font-size:30px; letter-spacing:-.012em; color:var(--fg); }
+  .wstep .wdesc { font-family:var(--font-sans); font-size:24px; line-height:1.45; color:var(--fg-muted); }
+
+  /* ── RGPD table ── */
+  .rgpd-table { width:100%; border-collapse:collapse; margin-top:56px; }
+  .rgpd-table th { font-family:var(--font-mono); font-size:20px; letter-spacing:.1em; text-transform:uppercase; color:var(--fg-subtle); text-align:left; padding:16px 24px; border-bottom:1px solid var(--fg-line); }
+  .rgpd-table td { font-family:var(--font-sans); font-size:24px; line-height:1.4; color:var(--fg); padding:20px 24px; border-bottom:1px solid rgba(255,255,255,.06); }
+  .rgpd-table tr.preferred td { background:var(--lime-soft); }
+  .risk-badge { display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:20px; letter-spacing:.06em; }
+
+  /* ── Footnote serif ── */
+  .footnote { font-family:var(--font-serif); font-style:italic; font-size:26px; color:var(--fg-muted); margin-top:40px; }
+
+  /* ── Quick wins ── */
+  .qw-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; margin-top:64px; }
+  .qw { border-top:1px solid var(--fg-line); padding-top:28px; display:flex; flex-direction:column; gap:20px; }
+  .qw.accent { border-top-color:var(--lime); }
+  .qw .qn { font-family:var(--font-mono); font-size:24px; letter-spacing:.12em; text-transform:uppercase; color:var(--lime); }
+  .qw .qtitle { font-family:var(--font-sans); font-weight:500; font-size:36px; line-height:1.1; letter-spacing:-.015em; margin:0; }
+  .qw .qdesc { font-family:var(--font-sans); font-size:24px; line-height:1.5; color:var(--fg-muted); margin:0; }
+
+  /* ── Prompt box (code-like) ── */
+  .prompt-box { background:var(--ink-700); border:1px solid var(--fg-line); padding:40px 48px; margin-top:40px; font-family:var(--font-mono); font-size:24px; line-height:1.6; color:var(--fg-muted); }
+  .prompt-box strong { color:var(--lime); font-weight:500; }
+
+  /* Slide paper overrides */
+  .slide.paper .eyebrow { color:var(--fg-dark-subtle); }
+  .slide.paper .eyebrow::before { background:var(--fg-dark); }
+  .slide.paper .lead { color:var(--fg-dark-muted); }
+  .slide.paper .foot { color:var(--fg-dark-subtle); }
+  .slide.paper .module-sep-num { color:var(--fg-dark); }
+</style>
+
+<script type="application/json" id="speaker-notes">
+[
+  "Slide d'ouverture. Laisser 5 secondes de silence. Bienvenue courte, puis enchaîner directement. Pas d'intro longue.",
+  "Ces deux chiffres disent la même chose sous deux angles. 1h30 par jour économisée — sur un mois ouvré, ça fait 30 heures. Sur l'année, 350 heures. Neuf semaines de travail récupérées. Et ce n'est pas réservé aux geeks.",
+  "On va avoir une journée dense et 100% pratique. Deux grandes parties. Le matin : comprendre les outils et maîtriser la mécanique de base. L'après-midi : on travaille directement sur vos cas métier Horizon. Vous repartez ce soir avec des choses utilisables demain matin.",
+  "Tour de table rapide : prénom, poste, et une chose que vous faites régulièrement qui vous prend trop de temps. Ce sera notre matière première pour l'après-midi. Pour les 5 personnes dont je n'ai pas reçu le questionnaire — bienvenue quand même, on vous intègre.",
+  "Module 1. On commence par poser les bases : quels outils on a, pourquoi certains sont mieux que d'autres pour vos usages, et on traite le sujet de la confidentialité tout de suite — parce que je sais que c'est une préoccupation forte pour vous.",
+  "Vous utilisez déjà Perplexity et ChatGPT. C'est bien. Je vais vous montrer une troisième option — Claude — qui va s'avérer particulièrement adaptée à certains de vos cas d'usage. Et notamment à votre cas d'usage le plus chronophage. On y reviendra cet après-midi.",
+  "La question de la confidentialité, c'est la première chose que je veux poser avant qu'on touche à quoi que ce soit. Non pas pour vous faire peur, mais parce que si on a les bons réflexes, il n'y a aucune raison d'avoir peur.",
+  "Ce tableau montre quelque chose de contre-intuitif : le risque n'est souvent pas là où on le croit. Envoyer un email avec des données client par Gmail est souvent plus risqué RGPD que d'utiliser Claude for Work. La sécurité ce n'est pas 'IA vs pas-IA'. C'est une hiérarchie.",
+  "Une règle simple pour tous les jours : avant de coller un document dans une IA, demandez-vous 'est-ce que j'écrirais ça à un fournisseur externe ?' Si la réponse est non, vous ne le collez pas. Si la réponse est oui avec un compte pro configuré, c'est bon. Pour tout le sensible médical — jamais dans une IA grand public sans compte entreprise.",
+  "Module 2. Le prompting. Si vous ne deviez retenir qu'une chose de cette journée, c'est ça. Quatre couches. Toujours dans cet ordre.",
+  "Objectifs clairs : à la fin de ce bloc, vous aurez une méthode. Pas une liste de conseils. Une méthode reproductible que vous pouvez appliquer à n'importe quelle tâche.",
+  "Imaginez un stagiaire brillant. Il a tout lu — toute la littérature médicale, toutes les techniques rédactionnelles, tout l'historique des agences de communication. Mais il arrive dans votre agence et il ne connaît personne, aucun client, aucun dossier en cours. Il va produire du générique tant que vous ne lui expliquez pas votre contexte. C'est exactement ça, l'IA.",
+  "Quatre questions, dans l'ordre. On les voit une par une, avec un exemple à chaque fois. Vous verrez : plus vous descendez, plus le résultat devient précis.",
+  "Le piège classique : 'tu es un expert'. L'IA ne sait pas quoi en faire. Donnez-lui un vrai métier, un vrai niveau, un vrai terrain. Exemple : 'Tu es une rédactrice médicale senior, spécialisée en oncologie, qui travaille pour une agence de communication santé. Tu maîtrises le format réglementaire français.' C'est ça un Rôle.",
+  "Sans contexte, l'IA invente. Et elle invente mal. Trois à quatre lignes suffisent. Ce qui change si vous l'enlevez — c'est ça le contexte. La pathologie, le client, la réglementation, le stade du projet.",
+  "Verbe à l'impératif. Livrable nommé. Si vous n'arrivez pas à nommer ce que vous attendez, l'IA n'y arrivera pas non plus. 'Aide-moi avec le contenu' — trop vague. 'Rédige une synthèse en 3 paragraphes de 100 mots sur...' — c'est une tâche.",
+  "Sans format, vous récupérez un pavé. Avec format, vous récupérez quelque chose d'utilisable. C'est la différence entre 'j'ai testé l'IA' et 'j'utilise l'IA'. Format, longueur, ton, structure — donnez ces contraintes.",
+  "Ces quatre pièges, tout le monde les fait au début. Même après. Le plus fréquent chez vous sera probablement le manque de contexte — parce que votre contexte médical est très spécifique et l'IA ne le connaît pas par défaut.",
+  "Ces phrases courtes, mémorisez-les. Elles remplacent 90% des cas où vous reformulez tout le prompt depuis le début. La première réponse n'est jamais parfaite. C'est normal. C'est un dialogue, pas un formulaire.",
+  "12 minutes. Choisissez UNE tâche que vous faites au moins deux fois par semaine. Écrivez les 4 couches sur papier. On ne touche pas encore à l'IA — c'est la réflexion d'abord. On débriefe en binôme.",
+  "Mémorisez l'ordre. Rôle, Contexte, Tâche, Format. Si vous oubliez l'une des quatre, vous récupérez du générique. La bonne nouvelle : ça s'apprend vite. Dans une semaine d'usage, c'est automatique.",
+  "Module 2 terminé. Pause déjeuner. Cet après-midi on passe aux cas d'usage concrets Horizon. Amenez vos documents, vos projets en cours — on va travailler dessus.",
+  "Module 3. On passe au concret. Quatre cas d'usage choisis en fonction de ce que vous m'avez dit en amont. On en teste deux ou trois en détail selon le rythme du groupe.",
+  "Premier cas d'usage. Vous arrivez sur un nouveau brief — pathologie inconnue. En 10 minutes, vous avez une carte d'identité complète. Promesse ambitieuse ? On va tester ça maintenant.",
+  "Maintenant on le fait. Ouvrez Claude ou Perplexity. On part sur un exemple réel. Reprenez une pathologie sur laquelle vous avez travaillé récemment. 20 minutes — on débrief ensemble.",
+  "Deuxième cas d'usage. Outil de retranscription. Teams Premium est contraignant — vous m'avez dit que vous ne l'activiez pas systématiquement. Il y a des alternatives plus légères. On va en tester une.",
+  "On pratique. Prenez les notes d'une vraie réunion récente — même un email de compte-rendu brut. On génère un CR structuré. Je montre d'abord, puis vous essayez. 15 minutes.",
+  "Troisième cas d'usage. Rédaction de contenus courts. C'est celui qui crée le plus rapidement de la valeur quotidienne. On teste sur un exemple réel de votre agence.",
+  "Quatrième cas d'usage. Je dois être honnête sur les limites. La comparaison de documents, ça marche bien sur le contenu textuel. Sur la mise en page — double espaces, kerning, approche des lettres — l'IA ne voit pas ce que l'œil voit dans un PDF. Je vais vous montrer ce qui fonctionne et ce qui ne fonctionne pas.",
+  "Module 4. Avant de vous lâcher dans la nature — quatre réflexes. Non négociables. Courts. On en a besoin pour piloter ce qu'on vient d'apprendre.",
+  "L'hallucination dans un contexte médical, c'est le risque principal. L'IA peut citer un article qui n'existe pas, attribuer un chiffre à la mauvaise étude, ou inventer une référence avec aplomb. Règle absolue : sur tout ce qui est chiffré ou sourcé, vous vérifiez à la source primaire.",
+  "Le RGPD ne s'arrête pas à la porte de ChatGPT. La règle simple : pour les données patient, données client identifiables, ou contenu sous NDA — jamais dans une IA grand public. Compte pro avec clause d'opt-out, ou Mistral hébergé en Europe.",
+  "Ce n'est plus de la science-fiction. La fraude au président par voix clonée arrive maintenant. Formez vos équipes sur ce réflexe : toute demande inhabituelle, urgente, financière — on rappelle la personne sur un numéro connu. Pas le numéro du mail.",
+  "C'est la punchline de la journée. L'IA ne va pas réparer ce qui ne marchait pas. Elle va vous faire foncer dans le mur plus vite et avec moins d'effort. Avant d'automatiser quelque chose : est-ce que ce process fonctionne bien manuellement ? Si oui — automatisez. Sinon — corrigez d'abord.",
+  "Vérifier, Protéger, Discerner, Décider. Quatre réflexes, à vie. Si vous n'en gardez qu'un : Décider. Vous restez le pilote. L'IA accélère. Elle ne remplace pas votre jugement.",
+  "Trois actions concrètes pour la semaine qui vient. Si vous ne faites rien dans les 7 prochains jours, ce qu'on a vu aujourd'hui s'efface dans les 30 jours. Ces trois quick wins, c'est la digue.",
+  "Une phrase. À emporter. La semaine prochaine vous allez tester — et parfois la première réponse sera décevante. C'est normal. Ce n'est pas l'outil qui a raté, c'est le prompt qui était encore incomplet. Recommencez avec les 4 couches. La deuxième tentative est toujours meilleure."
+]
+</script>
+</head>
+<body>
+
+<deck-stage width="1920" height="1080" style="--deck-rail-w: 188px;">
+
+<!-- ══════════════════════════════════════════════════════
+     01 — COUVERTURE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="01 Couverture" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="vignette"></div>
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup">
+        <span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Julien Tridat
+      </span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">Formation · Horizon · 4 juin 2026</div>
+      <h1 class="display" style="font-size:120px; max-width:1600px;">
+        IA <em>&amp; Texte</em>.<br>
+        De la théorie au <em>quotidien</em>.
+      </h1>
+      <p class="lead" style="margin-top:48px; max-width:1100px;">
+        Prompting, cas d'usage métier et réflexes pour l'équipe Horizon.<br>
+        Format : journée entière — 9h30 / 17h30
+      </p>
+      <div style="margin-top:72px; padding-top:32px; border-top:1px solid var(--fg-line); display:flex; align-items:baseline; gap:28px;">
+        <span style="font-family:var(--font-mono); font-size:24px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-subtle);">Formateur</span>
+        <span style="font-family:var(--font-sans); font-size:32px; font-weight:500; letter-spacing:-.015em; color:var(--fg);">Julien Tridat — Consultant Marketing &amp; IA</span>
+      </div>
+    </div>
+    <div class="foot"></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     02 — CHIFFRES
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="02 Chiffres" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body">
+      <div class="eyebrow" style="margin-bottom:36px;">Ce que l'IA change — déjà</div>
+      <h1 class="h1" style="max-width:1600px;">Pas dans 2 ans. <em class="serif">Maintenant.</em></h1>
+      <div class="stats">
+        <div class="stat accent">
+          <div class="num">+33<span class="unit">%</span></div>
+          <div class="label">de productivité mesurée sur les utilisateurs réguliers d'IA générative.</div>
+          <div class="src">McKinsey · 2025</div>
+        </div>
+        <div class="stat">
+          <div class="num">1h30</div>
+          <div class="label">économisées par jour par utilisateur régulier. Sur l'année : 9 semaines de travail récupérées.</div>
+          <div class="src">Gartner · 2025</div>
+        </div>
+        <div class="stat">
+          <div class="num">48<span class="unit">%</span></div>
+          <div class="label">du temps d'une équipe passé sur des tâches non-métier — rédaction, mise en forme, sourcing.</div>
+          <div class="src">Études PME · 2025</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>01 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     03 — AGENDA
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="03 Agenda" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:48px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Programme de la journée</div>
+      <h2 class="h2" style="margin-bottom:0;">Ce qu'on construit <em class="serif">ensemble</em> aujourd'hui.</h2>
+      <ol class="agenda">
+        <li><span class="time">9h30 – 10h00</span><span class="title">Tour de table &amp; règle d'or de la journée</span></li>
+        <li><span class="time">10h00 – 11h00</span><span class="title">Panorama des outils IA · Confidentialité &amp; RGPD</span><span class="tag">Module 1</span></li>
+        <li><span class="time">11h00 – 12h30</span><span class="title">Le framework de prompt — méthode des 4 couches</span><span class="tag">Module 2</span></li>
+        <li><span class="time">12h30 – 13h30</span><span class="title">Déjeuner</span></li>
+        <li><span class="time">13h30 – 16h30</span><span class="title">Cas d'usage Horizon — pratique sur vos vrais documents</span><span class="tag">Module 3</span></li>
+        <li><span class="time">16h30 – 17h15</span><span class="title">Les 4 vigilances non négociables</span><span class="tag">Module 4</span></li>
+        <li><span class="time">17h15 – 17h30</span><span class="title">Quick wins &amp; plan d'action semaine 1</span></li>
+      </ol>
+    </div>
+    <div class="foot"><span>02 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     04 — TOUR DE TABLE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="04 Tour de table" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">Avant de commencer</div>
+      <h1 class="h1" style="max-width:1400px;">Une tâche qui vous <em class="serif">prend trop de temps</em>.</h1>
+      <div class="takeaway-box" style="margin-top:64px;">
+        <div class="takeaway-idea" style="font-size:36px;">Prénom · Poste · La tâche la plus chronophage de votre semaine.</div>
+      </div>
+      <p class="body-md" style="margin-top:40px; max-width:1200px;">Ce sera notre matière première pour l'après-midi. Plus vous êtes précis, plus on peut travailler dessus en vrai.</p>
+    </div>
+    <div class="foot"><span>03 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     05 — SÉPARATEUR MODULE 1
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="05 Module 1 - Panorama" class="slide paper" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup" style="color:var(--fg-dark);">
+        <span class="brand-dots" style="color:var(--fg-dark);"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Julien Tridat
+      </span>
+      <span class="meta dark">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="module-tag">Module 01 — 60 min</div>
+      <h1 class="module-sep-title">Panorama IA<br>&amp; <em>Confidentialité</em>.</h1>
+    </div>
+    <div class="module-sep-num">01</div>
+    <div class="foot dark"><span>04 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     06 — PANORAMA OUTILS
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="06 Panorama outils" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Les outils du quotidien</div>
+      <h2 class="h2">Trois outils. <em class="serif">Pas les mêmes usages.</em></h2>
+      <div class="method" style="margin-top:56px;">
+        <div class="step">
+          <div class="idx"><span class="n">Perplexity</span><span class="tag">Sourcing</span></div>
+          <p class="title">Vous l'utilisez déjà.</p>
+          <p class="desc">Moteur de recherche augmenté. Points forts : sources citées, actualité, qualité des références scientifiques. À garder pour le sourcing et la veille.</p>
+        </div>
+        <div class="step">
+          <div class="idx"><span class="n">ChatGPT</span><span class="tag">Généraliste</span></div>
+          <p class="title">L'assistant quotidien.</p>
+          <p class="desc">Bon généraliste pour la rédaction rapide, les questions courtes, la reformulation. Limite : peu adapté aux documents longs et aux instructions complexes.</p>
+        </div>
+        <div class="step accent">
+          <div class="idx"><span class="n">Claude</span><span class="tag">Recommandé</span></div>
+          <p class="title">Pour vos cas d'usage avancés.</p>
+          <p class="desc">Conçu pour les documents longs, la rigueur, les instructions complexes. Anthropic a un modèle de sécurité IA renforcé. Recommandé pour le travail médical structuré.</p>
+        </div>
+        <div class="step">
+          <div class="idx"><span class="n">Gemini</span><span class="tag">Intégration Google</span></div>
+          <p class="title">Pour l'écosystème Google.</p>
+          <p class="desc">Intégré à Google Workspace (Docs, Gmail, Drive). Utile si votre équipe passe beaucoup de temps dans la suite Google.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>05 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     07 — CONFIDENTIALITÉ
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="07 Confidentialité" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">Avant tout</div>
+      <h1 class="h1" style="max-width:1400px;">Ce qu'on met — et ce qu'on <em class="serif">ne met jamais</em> — dans une IA.</h1>
+      <div class="compare" style="margin-top:56px;">
+        <div class="col bad">
+          <h3><span class="marker">✗</span>Ne jamais coller</h3>
+          <ul>
+            <li>Données patient identifiables (nom, dossier médical, numéro sécu)</li>
+            <li>Données client sous NDA ou accord de confidentialité</li>
+            <li>Données financières confidentielles (marges, CA détaillé)</li>
+            <li>Contenu réglementaire non publié</li>
+          </ul>
+        </div>
+        <div class="col good">
+          <h3><span class="marker">✓</span>OK avec précautions</h3>
+          <ul>
+            <li>Documents anonymisés (données patient supprimées)</li>
+            <li>Résumés de pathologies sans données identifiables</li>
+            <li>Briefs créatifs sans mention de client réel</li>
+            <li>Tout contenu public ou déjà diffusé</li>
+          </ul>
+        </div>
+      </div>
+      <div class="rule-box">La règle simple : avant de coller un document, demandez-vous « est-ce que j'écrirais ça à un fournisseur externe ? » Si non — ne le collez pas.</div>
+    </div>
+    <div class="foot"><span>06 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     08 — RGPD HIÉRARCHIE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="08 RGPD risques" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">RGPD — Hiérarchie des risques</div>
+      <h2 class="h2">Le risque n'est pas <em class="serif">là où vous le croyez</em>.</h2>
+      <table class="rgpd-table">
+        <thead>
+          <tr><th>Pratique</th><th>Niveau de risque RGPD</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Email Gmail perso avec données clients</td><td><span class="risk-badge">🔴 Très élevé</span></td></tr>
+          <tr><td>ChatGPT Plus avec données patient identifiables</td><td><span class="risk-badge">🟠 Élevé</span></td></tr>
+          <tr><td>ChatGPT Business / Claude for Work (avec DPA configuré)</td><td><span class="risk-badge">🟡 Faible si bien utilisé</span></td></tr>
+          <tr class="preferred"><td>IA pro sous DPA + données anonymisées</td><td><span class="risk-badge">🟢 Acceptable</span></td></tr>
+        </tbody>
+      </table>
+      <p class="footnote">« Le risque n'est pas dans l'IA. Il est souvent déjà dans vos pratiques quotidiennes les plus banales. »</p>
+    </div>
+    <div class="foot"><span>07 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     09 — SÉPARATEUR MODULE 2
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="09 Module 2 - Prompt" class="slide paper" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup" style="color:var(--fg-dark);">
+        <span class="brand-dots" style="color:var(--fg-dark);"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Julien Tridat
+      </span>
+      <span class="meta dark">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="module-tag">Module 02 — 90 min</div>
+      <h1 class="module-sep-title">Le Framework<br>de <em>Prompt</em>.</h1>
+    </div>
+    <div class="module-sep-num">02</div>
+    <div class="foot dark"><span>08 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     10 — OBJECTIFS MODULE 2
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="10 Objectifs prompt" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:40px;">À la fin de ce module</div>
+      <h1 class="h1" style="max-width:1400px;">Trois choses <em class="serif">concrètes</em>.</h1>
+      <ul class="objectives">
+        <li>Structurer n'importe quel prompt en 4 couches — et sentir la différence de résultat</li>
+        <li>Éviter les 4 pièges qui donnent des réponses génériques</li>
+        <li>Relancer et affiner une réponse sans tout reformuler depuis zéro</li>
+      </ul>
+    </div>
+    <div class="foot"><span>09 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     11 — MÉTAPHORE STAGIAIRE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="11 Métaphore stagiaire" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">Ce qu'est vraiment l'IA</div>
+      <h1 class="h1" style="max-width:1600px;">Un stagiaire <em class="serif">brillant</em><br>qui a tout lu. Mais qui ne connaît pas votre agence.</h1>
+      <p class="body-lg" style="margin-top:56px; max-width:1300px; color:var(--fg-muted); line-height:1.5;">Il a lu toute la littérature médicale, toutes les recommandations de com santé, tous les formats réglementaires. Mais le premier jour, il ne connaît personne, aucun client, aucun dossier en cours. Tant que vous ne lui expliquez pas votre contexte — il produit du générique.</p>
+      <div class="rule-box">Ce que vous lui expliquez au départ = la qualité de ce qu'il produit. C'est tout.</div>
+    </div>
+    <div class="foot"><span>10 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     12 — VUE D'ENSEMBLE 4 COUCHES
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="12 Les 4 couches" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">La règle d'or</div>
+      <h1 class="h1">Un bon prompt, c'est <em class="serif">quatre couches</em> dans le bon ordre.</h1>
+      <div class="layers">
+        <div class="layer active">
+          <span class="n">Couche 01</span>
+          <p class="name">Le Rôle</p>
+          <p class="question">Qui est l'IA ?</p>
+        </div>
+        <div class="layer">
+          <span class="n">Couche 02</span>
+          <p class="name">Le Contexte</p>
+          <p class="question">Pour qui travaille-t-elle ?</p>
+        </div>
+        <div class="layer">
+          <span class="n">Couche 03</span>
+          <p class="name">La Tâche</p>
+          <p class="question">Que doit-elle produire ?</p>
+        </div>
+        <div class="layer">
+          <span class="n">Couche 04</span>
+          <p class="name">Le Format</p>
+          <p class="question">Comment le présenter ?</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>11 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     13 — COUCHE 1 : LE RÔLE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="13 Couche 1 - Rôle" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Couche 01 sur 04</div>
+      <div class="def-term">Le Rôle.</div>
+      <div class="def-question">Qui est l'IA ?</div>
+      <p class="def-body">Assignez une identité professionnelle précise. Pas "tu es un expert" — trop générique. Un métier, un niveau d'expérience, un contexte sectoriel.</p>
+      <div class="def-example">
+        <strong>Exemple Horizon :</strong> « Tu es une rédactrice médicale senior avec 12 ans d'expérience en communication santé réglementée (pharma, dispositifs médicaux). Tu connais les exigences de véracité scientifique, les codes APM et les contraintes de sourcing bibliographique. »
+      </div>
+    </div>
+    <div class="foot"><span>12 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     14 — COUCHE 2 : LE CONTEXTE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="14 Couche 2 - Contexte" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Couche 02 sur 04</div>
+      <div class="def-term">Le Contexte.</div>
+      <div class="def-question">Pour qui travaille-t-elle ?</div>
+      <p class="def-body">Le client, le projet, la situation. Tout ce qui changerait la réponse si on l'enlevait. Sans contexte, l'IA invente. Et elle invente <em>mal</em>.</p>
+      <div class="def-example">
+        <strong>Exemple Horizon :</strong> « Notre client est un laboratoire pharmaceutique qui lance une campagne sur une maladie rare (syndrome X, prévalence 1/50 000). Le document en cours est une brochure patient de 8 pages. Toutes les affirmations doivent être sourcées selon les normes réglementaires françaises avec références numérotées. »
+      </div>
+    </div>
+    <div class="foot"><span>13 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     15 — COUCHE 3 : LA TÂCHE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="15 Couche 3 - Tâche" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Couche 03 sur 04</div>
+      <div class="def-term">La Tâche.</div>
+      <div class="def-question">Que doit-elle produire ?</div>
+      <p class="def-body">Verbe à l'impératif + livrable nommé. Si vous ne savez pas nommer ce que vous attendez, l'IA ne le saura pas non plus. "Aide-moi avec" — trop vague.</p>
+      <div class="def-example">
+        <strong>Exemple Horizon :</strong> « Rédige un résumé de 150 mots de cette pathologie, structuré en 4 blocs : définition clinique, épidémiologie, impact patient, spécialistes impliqués. »<br><br>
+        <strong>Pas ça :</strong> « Aide-moi à comprendre cette maladie. »
+      </div>
+    </div>
+    <div class="foot"><span>14 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     16 — COUCHE 4 : LE FORMAT
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="16 Couche 4 - Format" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Couche 04 sur 04</div>
+      <div class="def-term">Le Format.</div>
+      <div class="def-question">Comment le présenter ?</div>
+      <p class="def-body">Structure, longueur, ton. Ce qui distingue un livrable utilisable d'un texte à retravailler entièrement.</p>
+      <div class="def-example">
+        <strong>Exemple Horizon :</strong> « Format : 4 paragraphes courts (max 3 lignes chacun), titres de section en gras, ton professionnel et accessible (niveau grand public éduqué). Pas d'abréviations médicales sans les développer. »
+      </div>
+      <div class="rule-box" style="margin-top:36px;">Sans format, vous récupérez un pavé à retravailler. Avec format, vous récupérez quelque chose d'utilisable tel quel.</div>
+    </div>
+    <div class="foot"><span>15 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     17 — PIÈGES DO/DON'T
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="17 Pièges prompt" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Les 4 pièges les plus fréquents</div>
+      <h2 class="h2">Pourquoi la réponse est <em class="serif">décevante</em> — et comment y remédier.</h2>
+      <div class="compare" style="margin-top:48px;">
+        <div class="col bad">
+          <h3><span class="marker">✗</span>Ce qu'on fait</h3>
+          <ul>
+            <li>Prompt vague : « Écris-moi un texte sur l'HBP »</li>
+            <li>Pas de contexte : l'IA ne sait pas pour quel client ni quel format</li>
+            <li>Pas de format : on récupère un pavé générique</li>
+            <li>Tout en un : 5 demandes dans un seul prompt</li>
+          </ul>
+        </div>
+        <div class="col good">
+          <h3><span class="marker">✓</span>Ce qu'on devrait faire</h3>
+          <ul>
+            <li>Préciser quoi, pour qui, dans quel contexte</li>
+            <li>Donner 3 lignes de contexte client minimum</li>
+            <li>Indiquer structure, longueur, ton attendus</li>
+            <li>Découper en 3–4 prompts séquentiels</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>16 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     18 — PHRASES MAGIQUES
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="18 Phrases magiques" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:40px;">Affiner sans tout reformuler</div>
+      <h1 class="h1" style="max-width:1400px;">La première réponse n'est <em class="serif">jamais parfaite</em>. C'est normal.</h1>
+      <ul class="content-bullets" style="margin-top:56px; column-count:2; column-gap:80px; display:block;">
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Plus court »  /  « Plus long »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Plus accessible » / « Plus technique »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Donne-moi 3 versions différentes »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Reformule comme si tu écrivais à [type de lecteur] »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Garde l'idée, change le ton »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Coupe la première partie, garde la suite »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Numéroter les sources comme des références académiques »</li>
+        <li style="display:flex; gap:24px; margin-bottom:20px;"><span style="color:var(--lime); font-family:var(--font-mono);">—</span> « Ajoute une note explicative pour chaque terme médical »</li>
+      </ul>
+      <div class="rule-box" style="margin-top:40px;">C'est un dialogue, pas un formulaire. La deuxième tentative est toujours meilleure que la première.</div>
+    </div>
+    <div class="foot"><span>17 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     19 — EXERCICE PROMPT
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="19 Exercice prompt" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <span class="exercise-label">Exercice 01</span>
+      <div class="exercise-card">
+        <p class="exercise-prompt">Écrivez le prompt expert pour votre prochaine tâche récurrente.</p>
+        <p class="exercise-instructions">Reprenez la tâche que vous avez citée en début de journée. Écrivez les 4 couches sur votre fiche : Rôle · Contexte · Tâche · Format. On ne touche pas encore à l'IA — d'abord la réflexion.</p>
+        <div class="exercise-meta">
+          <span class="pill">12 minutes</span>
+          <span class="pill">Individuel</span>
+          <span class="pill">Livrable : fiche A4</span>
+        </div>
+      </div>
+      <p class="body-md" style="margin-top:32px;">Débrief en binôme : vérifiez mutuellement que les 4 couches sont bien là. On partage ensuite 2 exemples en plénière.</p>
+    </div>
+    <div class="foot"><span>18 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     20 — À RETENIR PROMPT
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="20 À retenir - prompt" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center; align-items:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">À retenir</div>
+      <div class="takeaway-box" style="width:100%; max-width:1400px;">
+        <div class="takeaway-idea">Un bon prompt, c'est <em>quatre couches</em><br>dans le bon ordre.</div>
+        <p style="font-family:var(--font-mono); font-size:28px; letter-spacing:.1em; color:var(--lime); text-transform:uppercase; margin:0;">Rôle · Contexte · Tâche · Format</p>
+      </div>
+    </div>
+    <div class="foot"><span>19 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     21 — SÉPARATEUR MODULE 3
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="21 Module 3 - Cas usage" class="slide paper" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup" style="color:var(--fg-dark);">
+        <span class="brand-dots" style="color:var(--fg-dark);"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Julien Tridat
+      </span>
+      <span class="meta dark">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="module-tag">Module 03 — 180 min</div>
+      <h1 class="module-sep-title">Cas d'usage<br><em>Horizon</em>.</h1>
+    </div>
+    <div class="module-sep-num">03</div>
+    <div class="foot dark"><span>20 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     22 — VUE D'ENSEMBLE CAS D'USAGE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="22 Cas usage - vue ensemble" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Ce qu'on va tester</div>
+      <h2 class="h2">Quatre cas d'usage. <em class="serif">Vos vrais documents.</em></h2>
+      <div class="method" style="margin-top:56px;">
+        <div class="step accent">
+          <div class="idx"><span class="n">CU 01</span><span class="tag">Toute l'agence</span></div>
+          <p class="title">Fiche synthèse pathologie</p>
+          <p class="desc">Nouvelle pathologie = fiche carte d'identité en 10 minutes. Cas d'usage universel agence santé.</p>
+        </div>
+        <div class="step">
+          <div class="idx"><span class="n">CU 02</span><span class="tag">Toute l'agence</span></div>
+          <p class="title">Compte-rendu &amp; retranscription</p>
+          <p class="desc">Alternative légère à Teams Premium. Réunions internes et externes, terminologie médicale.</p>
+        </div>
+        <div class="step">
+          <div class="idx"><span class="n">CU 03</span><span class="tag">Toute l'agence</span></div>
+          <p class="title">Rédaction contenus courts</p>
+          <p class="desc">Emails, invitations, briefs — gain de temps immédiat, applicable le lendemain matin.</p>
+        </div>
+        <div class="step">
+          <div class="idx"><span class="n">CU 04</span><span class="tag">Toute l'agence</span></div>
+          <p class="title">Vérification de documents</p>
+          <p class="desc">Allers-retours client : commentaires pris en compte, cohérence entre versions. Avec les vraies limites.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>21 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     23 — CU1 : FICHE PATHOLOGIE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="23 CU1 - Fiche pathologie" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Cas d'usage 01</div>
+      <h2 class="h2">La fiche synthèse <em class="serif">pathologie</em>.</h2>
+      <p class="body-lg" style="margin-top:32px; max-width:1300px; color:var(--fg-muted);">Nouveau brief = pathologie que personne ne connaît. En 10 minutes, vous avez une carte d'identité complète — pour les stratèges, les rédacteurs et les créas.</p>
+      <div class="workflow">
+        <div class="wstep">
+          <span class="wnum">01</span>
+          <div class="wcontent"><p class="wtitle">Définir le template</p><p class="wdesc">Créez votre modèle de fiche : définition clinique · épidémiologie · patient type · spécialistes · ce qu'on peut / ne peut pas dire · mots-clés créas</p></div>
+        </div>
+        <div class="wstep">
+          <span class="wnum">02</span>
+          <div class="wcontent"><p class="wtitle">Générer avec Perplexity ou Claude</p><p class="wdesc">Prompt avec Rôle médical + Contexte (agence, type de projet) + Tâche (remplir le template) + Format (blocs structurés, sources citées)</p></div>
+        </div>
+        <div class="wstep">
+          <span class="wnum">03</span>
+          <div class="wcontent"><p class="wtitle">Valider avec la direction médicale</p><p class="wdesc">L'IA produit le premier jet. la directrice médicale valide la véracité scientifique. Vous ne publiez jamais sans ce circuit.</p></div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>22 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     24 — EXERCICE FICHE PATHOLOGIE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="24 Exercice fiche pathologie" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <span class="exercise-label">Exercice 02 — CU1</span>
+      <div class="exercise-card">
+        <p class="exercise-prompt">Générez la fiche synthèse d'une pathologie sur laquelle vous avez travaillé.</p>
+        <p class="exercise-instructions">Reprenez une pathologie récente. Ouvrez Claude ou Perplexity. Appliquez les 4 couches. Utilisez le template : définition · épidémiologie · patient type · spécialistes · ce qu'on peut dire. Comparez le résultat avec ce que vous auriez cherché manuellement.</p>
+        <div class="exercise-meta">
+          <span class="pill">20 minutes</span>
+          <span class="pill">En autonomie</span>
+          <span class="pill">Livrable : fiche complète</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>23 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     25 — CU2 : COMPTE-RENDU
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="25 CU2 - Compte-rendu" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Cas d'usage 02</div>
+      <h2 class="h2">Notes brutes <em class="serif">→ compte-rendu structuré</em>.</h2>
+      <div class="compare" style="margin-top:48px;">
+        <div class="col bad">
+          <h3><span class="marker">✗</span>Teams Premium</h3>
+          <ul>
+            <li>Enregistrement vidéo obligatoire</li>
+            <li>Demander l'accord de tous les participants</li>
+            <li>Trop invasif pour les réunions courtes</li>
+            <li>Difficultés sur les termes médicaux + franglais</li>
+          </ul>
+        </div>
+        <div class="col good">
+          <h3><span class="marker">✓</span>Alternatives légères</h3>
+          <ul>
+            <li>Notes brutes → Claude : prompt de structuration</li>
+            <li>Otter / Granola : retranscription audio à la demande</li>
+            <li>Fonctionne sur termes médicaux si précisé en amont</li>
+            <li>Pas besoin d'enregistrer la réunion en vidéo</li>
+          </ul>
+        </div>
+      </div>
+      <div class="prompt-box" style="margin-top:36px;">
+        <strong>Prompt type :</strong> « Tu es une cheffe de projet en agence de communication santé. Voici mes notes brutes de réunion : [notes]. Génère un compte-rendu structuré en : décisions prises · actions à mener (responsable + deadline) · points ouverts. »
+      </div>
+    </div>
+    <div class="foot"><span>24 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     26 — EXERCICE CR
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="26 Exercice CR" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <span class="exercise-label">Exercice 03 — CU2</span>
+      <div class="exercise-card">
+        <p class="exercise-prompt">Prenez les notes d'une vraie réunion récente. Générez le CR.</p>
+        <p class="exercise-instructions">Un email de synthèse brouillon, un fil de messages, des notes manuscrites scannées — n'importe quel format. Collez dans Claude avec le prompt type. Comparez le résultat avec votre CR habituel. Notez ce qui manque, ce qui est trop générique.</p>
+        <div class="exercise-meta">
+          <span class="pill">15 minutes</span>
+          <span class="pill">Vos vrais documents</span>
+          <span class="pill">Livrable : CR prêt à envoyer</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>25 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     27 — CU3 : RÉDACTION CONTENUS COURTS
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="27 CU3 - Rédaction courte" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Cas d'usage 03</div>
+      <h2 class="h2">Emails, briefs, invitations. <em class="serif">Le plus rapide à déployer.</em></h2>
+      <ul class="content-bullets" style="margin-top:48px;">
+        <li>
+          <div class="sub">
+            <span class="wtitle">Email client (relance, compte-rendu, proposition)</span>
+            <span class="sub-item">Prompt : Rôle DA ou CDP + contexte client (prénom, projet) + tâche (email de relance sur retours) + format (3 paragraphes, ton professionnel)</span>
+          </div>
+        </li>
+        <li>
+          <div class="sub">
+            <span class="wtitle">Brief interne pour la créa</span>
+            <span class="sub-item">À partir de notes de réunion + brief client : générer le brief créa structuré en 5 blocs standard (enjeu, cible, promesse, ton, mandatories)</span>
+          </div>
+        </li>
+        <li>
+          <div class="sub">
+            <span class="wtitle">Invitation à un événement ou congrès médical</span>
+            <span class="sub-item">Prompt + modèle de l'invitation existante en référence → déclinaison sur nouvelle date/thème en 2 minutes</span>
+          </div>
+        </li>
+      </ul>
+      <div class="rule-box" style="margin-top:40px;">Le gain n'est pas dans la qualité du texte final. Il est dans <em class="serif">le temps de la première version</em> — qui passe de 30 min à 5 min.</div>
+    </div>
+    <div class="foot"><span>26 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     28 — CU4 : VÉRIFICATION DOCUMENTS
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="28 CU4 - Vérification docs" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Cas d'usage 04 — avec ses limites</div>
+      <h2 class="h2">Vérification allers-retours. <em class="serif">Ce qui marche et ce qui ne marche pas.</em></h2>
+      <div class="compare" style="margin-top:48px;">
+        <div class="col good">
+          <h3><span class="marker">✓</span>L'IA peut</h3>
+          <ul>
+            <li>Comparer deux versions de texte et lister les modifications</li>
+            <li>Vérifier si une liste de commentaires a bien été intégrée</li>
+            <li>Détecter les incohérences de contenu entre deux versions</li>
+            <li>Identifier les passages supprimés entre version A et B</li>
+          </ul>
+        </div>
+        <div class="col bad">
+          <h3><span class="marker">✗</span>L'IA ne peut pas</h3>
+          <ul>
+            <li>Détecter les doubles espaces dans un PDF</li>
+            <li>Voir les problèmes de kerning ou d'approche typographique</li>
+            <li>Contrôler la mise en page visuelle (PDF = image pour l'IA)</li>
+            <li>Remplacer une relecture humaine sur la forme graphique</li>
+          </ul>
+        </div>
+      </div>
+      <p class="footnote">L'IA voit le texte. Elle ne voit pas la mise en page. Sur le fond — oui. Sur la forme graphique — non.</p>
+    </div>
+    <div class="foot"><span>27 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     29 — EXERCICE VÉRIFICATION
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="29 Exercice vérification" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <span class="exercise-label">Exercice 04 — CU4</span>
+      <div class="exercise-card">
+        <p class="exercise-prompt">Deux versions d'un document. Tous les commentaires ont-ils été pris en compte ?</p>
+        <p class="exercise-instructions">Prenez un vrai aller-retour client récent — version avec commentaires + version modifiée. Collez les deux dans Claude. Demandez-lui de lister ce qui a été modifié et ce qui n'a pas changé. Évaluez la précision du résultat.</p>
+        <div class="exercise-meta">
+          <span class="pill">15 minutes</span>
+          <span class="pill">Vos vrais documents</span>
+          <span class="pill">Livrable : liste de vérification</span>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>28 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     30 — SÉPARATEUR MODULE 4
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="30 Module 4 - Vigilances" class="slide paper" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup" style="color:var(--fg-dark);">
+        <span class="brand-dots" style="color:var(--fg-dark);"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>
+        Julien Tridat
+      </span>
+      <span class="meta dark">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="module-tag">Module 04 — 45 min</div>
+      <h1 class="module-sep-title">Les 4<br><em>Vigilances</em>.</h1>
+    </div>
+    <div class="module-sep-num">04</div>
+    <div class="foot dark"><span>29 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     31 — INTRO VIGILANCES
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="31 Intro vigilances" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">Avant de vous lâcher dans la nature</div>
+      <h1 class="h1" style="max-width:1400px;">Quatre points de vigilance. <em class="serif">Non négociables.</em></h1>
+      <div class="vigilance-grid">
+        <div class="vig active">
+          <span class="vnum">01</span>
+          <p class="vname">Vérifier</p>
+          <p class="vdesc">L'IA peut se tromper — surtout sur les chiffres et les sources médicales.</p>
+        </div>
+        <div class="vig">
+          <span class="vnum">02</span>
+          <p class="vname">Protéger</p>
+          <p class="vdesc">Les données sensibles n'entrent pas dans une IA grand public.</p>
+        </div>
+        <div class="vig">
+          <span class="vnum">03</span>
+          <p class="vname">Discerner</p>
+          <p class="vdesc">L'IA génère aussi du faux — images, voix, textes, emails.</p>
+        </div>
+        <div class="vig">
+          <span class="vnum">04</span>
+          <p class="vname">Décider</p>
+          <p class="vdesc">Vous restez le pilote. L'IA accélère, elle ne remplace pas votre jugement.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>30 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     32 — VÉRIFIER
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="32 Vérifier" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Vigilance 01 sur 04</div>
+      <div class="def-term" style="color:var(--fg);">Vérifier — l'IA peut <em class="serif">se tromper</em>.</div>
+      <div class="def-question" style="margin-top:24px;">L'hallucination en contexte médical : le risque principal</div>
+      <p class="def-body" style="margin-top:32px; max-width:1400px;">L'IA peut citer un article qui n'existe pas, attribuer un chiffre à la mauvaise étude, inventer une référence bibliographique avec une assurance totale. Sur les données chiffrées, les lois, les citations — toujours vérifier à la source primaire.</p>
+      <ul class="content-bullets" style="margin-top:40px;">
+        <li>Chiffres épidémiologiques : toujours vérifier dans HAS, ANSM, PubMed</li>
+        <li>Références bibliographiques générées : vérifier que l'article existe et que la citation est exacte</li>
+        <li>Recommandations réglementaires : ne jamais publier sans validation médicale</li>
+      </ul>
+      <div class="rule-box">Règle : ne publiez jamais un chiffre médical sans l'avoir vérifié à la source primaire. Pas à la sortie de l'IA.</div>
+    </div>
+    <div class="foot"><span>31 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     33 — PROTÉGER
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="33 Protéger" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Vigilance 02 sur 04</div>
+      <div class="def-term" style="color:var(--fg);">Protéger — les <em class="serif">données sensibles</em>.</div>
+      <div class="def-question" style="margin-top:24px;">Ce qui ne passe jamais dans une IA grand public</div>
+      <ul class="content-bullets" style="margin-top:48px;">
+        <li>Données patient identifiables (noms, dossiers médicaux, numéros de sécurité sociale)</li>
+        <li>Données client sous NDA ou contrat de confidentialité</li>
+        <li>Contenu réglementaire non publié (études en cours, données pré-AMM)</li>
+        <li>Données financières confidentielles de Horizon ou de vos clients</li>
+      </ul>
+      <div class="compare" style="margin-top:40px;">
+        <div class="col bad">
+          <h3><span class="marker">✗</span>IA grand public (ChatGPT Plus, etc.)</h3>
+          <ul><li>Données peuvent être lues, stockées, réutilisées pour l'entraînement selon les conditions</li></ul>
+        </div>
+        <div class="col good">
+          <h3><span class="marker">✓</span>IA pro avec DPA configuré</h3>
+          <ul><li>Claude for Work ou ChatGPT Business avec clause d'opt-out activée — données non utilisées pour l'entraînement</li></ul>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>32 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     34 — DISCERNER
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="34 Discerner" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Vigilance 03 sur 04</div>
+      <div class="def-term" style="color:var(--fg);">Discerner — l'IA <em class="serif">génère du faux</em>.</div>
+      <div class="def-question" style="margin-top:24px;">Pas seulement du texte</div>
+      <ul class="content-bullets" style="margin-top:48px;">
+        <li>Un deepfake vidéo de qualité broadcast coûte 50 € et 10 minutes</li>
+        <li>Une voix clonée à partir de 3 secondes d'audio — indiscernable</li>
+        <li>Un email de "votre patron" ou d'un client — impossible à distinguer du vrai</li>
+        <li>Des images médicales ou des données d'études générées de toutes pièces</li>
+      </ul>
+      <div class="rule-box" style="margin-top:40px;">Réflexe : toute demande inhabituelle, urgente, financière → rappeler la personne sur un numéro <em class="serif">que vous connaissez</em>. Pas le numéro du message.</div>
+    </div>
+    <div class="foot"><span>33 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     35 — DÉCIDER
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="35 Décider" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:32px;">Vigilance 04 sur 04</div>
+      <div class="def-term" style="color:var(--fg);">Décider — vous restez <em class="serif">le pilote</em>.</div>
+      <div class="def-question" style="margin-top:24px;">L'IA accélère. Elle ne remplace pas votre jugement.</div>
+      <div class="takeaway-box" style="margin-top:48px;">
+        <div class="takeaway-idea" style="font-size:52px;">« Si vous accélérez un process <em>cassé</em>,<br>vous le cassez plus vite. »</div>
+      </div>
+      <ul class="content-bullets" style="margin-top:40px;">
+        <li>Toute décision client, médicale ou stratégique reste humaine</li>
+        <li>L'IA propose un premier jet — c'est vous qui choisissez, validez, signez</li>
+        <li>La validation médicale de la directrice médicale ne disparaît pas parce que l'IA a aidé</li>
+      </ul>
+    </div>
+    <div class="foot"><span>34 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     36 — À RETENIR VIGILANCES
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="36 À retenir - vigilances" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center; align-items:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">À retenir</div>
+      <div class="takeaway-box" style="width:100%; max-width:1400px;">
+        <div class="takeaway-idea"><em>Vérifier · Protéger · Discerner · Décider</em>.</div>
+        <div class="takeaway-idea" style="font-size:36px; color:var(--fg-muted);">Quatre réflexes, à vie.<br>Si vous n'en gardez qu'un : vous restez le pilote.</div>
+      </div>
+    </div>
+    <div class="foot"><span>35 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     37 — QUICK WINS
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="37 Quick wins" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:flex-start; padding-top:40px;">
+      <div class="eyebrow" style="margin-bottom:32px;">Plan d'action — semaine 1</div>
+      <h2 class="h2">Trois quick wins. <em class="serif">Cette semaine.</em></h2>
+      <div class="qw-grid">
+        <div class="qw accent">
+          <span class="qn">QW 01 — Cette semaine</span>
+          <p class="qtitle">Testez la fiche pathologie.</p>
+          <p class="qdesc">Prenez le prochain nouveau brief. Générez la fiche synthèse avec le template qu'on a construit. Comparez avec votre méthode habituelle. Mesurez le gain de temps.</p>
+        </div>
+        <div class="qw">
+          <span class="qn">QW 02 — Cette semaine</span>
+          <p class="qtitle">Remplacez un CR.</p>
+          <p class="qdesc">La prochaine réunion que vous devez synthétiser — notes brutes dans Claude + prompt type. Comparez avec votre CR habituel. Affinement si besoin.</p>
+        </div>
+        <div class="qw">
+          <span class="qn">QW 03 — Ce mois</span>
+          <p class="qtitle">Créez votre premier template de prompt.</p>
+          <p class="qdesc">Choisissez votre tâche la plus récurrente. Testez le prompt 5 fois. Affinez jusqu'à ce que le résultat soit directement utilisable. Sauvegardez le template.</p>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>36 / 37</span></div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     38 — SLIDE FINALE
+     ══════════════════════════════════════════════════════ -->
+<section data-screen-label="38 Finale" class="slide" data-om-validate="no_overflowing_text,no_overlapping_text,slide_sized_text">
+  <div class="vignette"></div>
+  <div class="chrome">
+    <div class="head">
+      <span class="brand-lockup"><span class="brand-dots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span>Julien Tridat</span>
+      <span class="meta">www.julientridat.com</span>
+    </div>
+    <div class="body" style="justify-content:center;">
+      <div class="eyebrow" style="margin-bottom:44px;">À retenir de cette journée</div>
+      <h1 class="h1" style="max-width:1400px;">L'IA propose.<br><em class="serif">Vous disposez.</em></h1>
+      <p class="lead" style="margin-top:56px; max-width:1100px;">Si la première réponse est décevante — ce n'est pas l'outil. C'est le prompt qui était incomplet. Relancez avec les 4 couches. La deuxième tentative est toujours meilleure.</p>
+      <div style="margin-top:72px; padding-top:32px; border-top:1px solid var(--fg-line); display:flex; align-items:center; gap:48px;">
+        <div>
+          <div style="font-family:var(--font-mono); font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-subtle); margin-bottom:12px;">Questions · Contact</div>
+          <div style="font-family:var(--font-sans); font-size:32px; font-weight:500; letter-spacing:-.015em; color:var(--lime);">julien.tridat@gmail.com</div>
+        </div>
+        <div style="width:1px; height:64px; background:var(--fg-line);"></div>
+        <div>
+          <div style="font-family:var(--font-mono); font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-subtle); margin-bottom:12px;">Point post-formation</div>
+          <div style="font-family:var(--font-sans); font-size:32px; font-weight:500; letter-spacing:-.015em;">8 juillet 2026</div>
+        </div>
+        <div style="width:1px; height:64px; background:var(--fg-line);"></div>
+        <div>
+          <div style="font-family:var(--font-mono); font-size:22px; letter-spacing:.12em; text-transform:uppercase; color:var(--fg-subtle); margin-bottom:12px;">Prochaine session</div>
+          <div style="font-family:var(--font-sans); font-size:32px; font-weight:500; letter-spacing:-.015em;">18 juin — IA &amp; Strat</div>
+        </div>
+      </div>
+    </div>
+    <div class="foot"><span>37 / 37</span></div>
+  </div>
+</section>
+
+</deck-stage>
+
+<script src="deck-stage.js"></script>
+<div style="position:fixed;left:50%;bottom:14px;transform:translateX(-50%);z-index:9999;background:#c8ff3d;color:#0a0a0a;font:500 12px/1 Geist,system-ui,sans-serif;padding:8px 14px;border-radius:999px;letter-spacing:.02em;box-shadow:0 4px 24px rgba(0,0,0,.4);pointer-events:none;">Démo — support de formation réel, anonymisé · « Horizon » est une agence fictive</div>
+</body>
+</html>

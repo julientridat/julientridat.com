@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Dashboard narratif (données fictives) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  :root { --lime: #c8ff3d; --line: rgba(255,255,255,.12); --ink2: rgba(255,255,255,.72); --ink3: rgba(255,255,255,.5); }
+  body { background: #0a0a0a; color: #fff; font-family: Geist, system-ui, sans-serif; padding: 28px clamp(16px, 4vw, 56px) 56px; }
+  em { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; color: var(--lime); }
+  header { display: flex; flex-wrap: wrap; gap: 12px 24px; align-items: center; justify-content: space-between; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+  header h1 { font-size: 17px; font-weight: 600; }
+  header .sub { font-size: 13px; color: var(--ink3); }
+  .badge { background: var(--lime); color: #0a0a0a; font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 999px; }
+  .months { display: flex; gap: 8px; margin: 24px 0; }
+  .months button { background: transparent; border: 1px solid rgba(255,255,255,.25); color: #fff; font: 500 13px Geist, sans-serif; padding: 8px 16px; border-radius: 999px; cursor: pointer; }
+  .months button.on { background: var(--lime); border-color: var(--lime); color: #0a0a0a; }
+  .story { border: 1px solid var(--line); border-radius: 16px; padding: 24px 28px; margin-bottom: 24px; background: rgba(255,255,255,.02); }
+  .story .k { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: var(--lime); margin-bottom: 10px; }
+  .story p { font-size: clamp(16px, 1.8vw, 21px); font-weight: 300; line-height: 1.5; max-width: 900px; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 24px; }
+  .kpi { border: 1px solid var(--line); border-radius: 16px; padding: 20px; }
+  .kpi .v { font-size: clamp(26px, 3vw, 38px); font-weight: 300; }
+  .kpi .v.up { color: var(--lime); }
+  .kpi .v.down { color: #fda4af; }
+  .kpi .l { margin-top: 6px; font-size: 11px; text-transform: uppercase; letter-spacing: .16em; color: var(--ink3); }
+  .kpi .d { margin-top: 8px; font-size: 12px; color: var(--ink2); }
+  .row { display: grid; grid-template-columns: 1.2fr .8fr; gap: 14px; }
+  @media (max-width: 860px) { .row { grid-template-columns: 1fr; } }
+  .card { border: 1px solid var(--line); border-radius: 16px; padding: 22px; }
+  .card h2 { font-size: 13px; font-weight: 500; text-transform: uppercase; letter-spacing: .16em; color: var(--ink3); margin-bottom: 18px; }
+  .bars { display: flex; align-items: flex-end; gap: 10px; height: 190px; }
+  .bar { flex: 1; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: 8px; height: 100%; }
+  .bar i { display: block; width: 100%; background: rgba(255,255,255,.16); border-radius: 6px 6px 0 0; transition: height .4s; }
+  .bar.hot i { background: var(--lime); }
+  .bar b { font-size: 11px; color: var(--ink3); font-weight: 400; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  td { padding: 10px 8px 10px 0; border-bottom: 1px solid var(--line); color: var(--ink2); }
+  td:first-child { color: #fff; font-weight: 500; }
+  td:last-child { text-align: right; }
+  .pill { display: inline-block; font-size: 11px; padding: 3px 10px; border-radius: 999px; border: 1px solid rgba(200,255,61,.5); color: var(--lime); }
+  footer { margin-top: 28px; font-size: 12px; color: var(--ink3); }
+</style>
+</head>
+<body>
+<header>
+  <div>
+    <h1>Pipeline commercial — <em>dashboard narratif</em></h1>
+    <div class="sub">Le principe : les chiffres racontés avant d'être affichés. Généré chaque mois par un assistant, à partir du CRM.</div>
+  </div>
+  <span class="badge">Démo — PME fictive, données fictives</span>
+</header>
+
+<div class="months" id="months"></div>
+
+<div class="story">
+  <div class="k">Ce que disent les chiffres ce mois-ci</div>
+  <p id="narrative"></p>
+</div>
+
+<div class="grid" id="kpis"></div>
+
+<div class="row">
+  <div class="card">
+    <h2>Chiffre d'affaires par mois (k€)</h2>
+    <div class="bars" id="bars"></div>
+  </div>
+  <div class="card">
+    <h2>Comptes à réactiver — détectés par l'assistant</h2>
+    <table id="accounts"></table>
+  </div>
+</div>
+
+<footer>Démonstration d'un livrable type « assistant reporting » : données 100 % fictives, mécanique réelle — le narratif, les indicateurs et les signaux sont produits automatiquement puis validés par un humain.</footer>
+
+<script>
+  const MONTHS = {
+    'Avril 2026': {
+      narrative: "Un bon mois porté par deux signatures industrie, mais la prospection ralentit : 31 % de premiers rendez-vous en moins qu'en mars. Si rien ne change, le creux se verra en juin. L'assistant a repéré 3 comptes dormants à fort potentiel — dont un qui a re-visité la page tarifs deux fois cette semaine.",
+      kpis: [ ['128 k€', 'CA signé', '+12 % vs mars', 'up'], ['9', 'Opportunités actives', '2 en closing', ''], ['14', 'Premiers RDV', '−31 % vs mars', 'down'], ['21 j', 'Cycle moyen', 'stable', ''] ],
+      bars: [ ['Nov', 74], ['Déc', 81], ['Jan', 66], ['Fév', 92], ['Mar', 114], ['Avr', 128, true] ],
+      accounts: [ ['Groupe Ardevon', 'dormant 5 mois · a re-visité les tarifs', 'chaud'], ['Ateliers Brumaire', 'devis sans suite en janvier', 'à relancer'], ['Ceruse & Fils', 'contact parti, successeur identifié', 'à requalifier'] ],
+    },
+    'Mai 2026': {
+      narrative: "Le creux annoncé se confirme sur le haut du tunnel : 11 premiers rendez-vous seulement. En revanche, le closing tient — 2 signatures et un panier moyen en hausse de 18 %. Le narratif du mois : moins de volume, plus de valeur. Décision suggérée : réallouer 2 demi-journées de prospection sur le segment industrie, qui convertit 2× mieux.",
+      kpis: [ ['96 k€', 'CA signé', '−25 % vs avril', 'down'], ['11', 'Opportunités actives', '+2 entrées', 'up'], ['11', 'Premiers RDV', '−21 % vs avril', 'down'], ['19 j', 'Cycle moyen', '−2 j', 'up'] ],
+      bars: [ ['Déc', 81], ['Jan', 66], ['Fév', 92], ['Mar', 114], ['Avr', 128], ['Mai', 96, true] ],
+      accounts: [ ['Manufacture Odilon', 'a ouvert 4 emails sur 4 ce mois-ci', 'chaud'], ['Groupe Ardevon', 'relancé le 12/05 — RDV pris', 'en cours'], ['Tannerie Vauclin', 'budget confirmé pour T3', 'à planifier'] ],
+    },
+    'Juin 2026': {
+      narrative: "Le rebond : 19 premiers rendez-vous, record de l'année, dont 7 issus des comptes réactivés par l'assistant. Le CA signé revient à 121 k€ et le pipeline pondéré couvre déjà 84 % de l'objectif T3. Point de vigilance unique : le cycle s'allonge sur les dossiers > 30 k€ — prévoir un point de méthode closing à la rentrée.",
+      kpis: [ ['121 k€', 'CA signé', '+26 % vs mai', 'up'], ['13', 'Opportunités actives', 'record annuel', 'up'], ['19', 'Premiers RDV', '+73 % vs mai', 'up'], ['24 j', 'Cycle moyen', '+5 j sur les gros dossiers', 'down'] ],
+      bars: [ ['Jan', 66], ['Fév', 92], ['Mar', 114], ['Avr', 128], ['Mai', 96], ['Juin', 121, true] ],
+      accounts: [ ['Groupe Ardevon', 'signé — 34 k€', 'gagné'], ['Manufacture Odilon', 'proposition envoyée', 'en cours'], ['Comptoir Ligérien', 'nouveau signal : recrute un DAF', 'à contacter'] ],
+    },
+  };
+  const $ = (id) => document.getElementById(id);
+  let current = 'Juin 2026';
+  function render() {
+    const d = MONTHS[current];
+    $('months').innerHTML = '';
+    Object.keys(MONTHS).forEach(m => {
+      const b = document.createElement('button');
+      b.textContent = m; b.className = m === current ? 'on' : '';
+      b.onclick = () => { current = m; render(); };
+      $('months').appendChild(b);
+    });
+    $('narrative').textContent = d.narrative;
+    $('kpis').innerHTML = d.kpis.map(([v, l, det, dir]) =>
+      `<div class="kpi"><div class="v ${dir}">${v}</div><div class="l">${l}</div><div class="d">${det}</div></div>`).join('');
+    const max = Math.max(...d.bars.map(b => b[1]));
+    $('bars').innerHTML = d.bars.map(([m, v, hot]) =>
+      `<div class="bar ${hot ? 'hot' : ''}"><i style="height:${Math.round(v / max * 100)}%"></i><b>${m}</b></div>`).join('');
+    $('accounts').innerHTML = d.accounts.map(([n, why, st]) =>
+      `<tr><td>${n}</td><td>${why}</td><td><span class="pill">${st}</span></td></tr>`).join('');
+  }
+  render();
+</script>
+</body>
+</html>

@@ -53,8 +53,20 @@ const jsonLd = [
         {realisations.map((r) => (
           <a
             href={`/realisations/${r.id}`}
-            class="group flex flex-col rounded-2xl border border-white/15 p-8 transition-colors hover:border-lime"
+            class="group flex flex-col overflow-hidden rounded-2xl border border-white/15 p-8 transition-colors hover:border-lime"
           >
+            {r.data.visuel && (
+              <div class="-mx-8 -mt-8 mb-7 overflow-hidden border-b border-white/10">
+                <img
+                  src={r.data.visuel.src}
+                  alt={r.data.visuel.alt}
+                  width="1200"
+                  height="675"
+                  loading="lazy"
+                  class="aspect-video w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                />
+              </div>
+            )}
             <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.22em] text-white/50">
               <span>{r.data.client}</span>
               <span class="text-white/30">·</span>

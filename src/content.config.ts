@@ -20,6 +20,10 @@ const realisations = defineCollection({
     resultats: z
       .array(z.object({ chiffre: z.string(), label: z.string() }))
       .default([]),
+    /** Capture d'écran illustrant l'artefact (chemin sous /public). */
+    visuel: z.object({ src: z.string(), alt: z.string() }).optional(),
+    /** Démo interactive liée (anonymisée ou sur données fictives). */
+    demo: z.object({ url: z.string(), label: z.string() }).optional(),
     published: z.boolean().default(true),
     sortOrder: z.number().default(99),
   }),

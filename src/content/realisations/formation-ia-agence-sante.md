@@ -13,6 +13,12 @@ resultats:
     label: "cas d'usage métier travaillés"
   - chiffre: "3"
     label: "niveaux, pédagogie différenciée"
+visuel:
+  src: "/artefacts/deck-formation.webp"
+  alt: "Support de formation IA & Texte — version anonymisée du deck réel de la mission"
+demo:
+  url: "/demos/deck-formation/"
+  label: "Parcourir le support (anonymisé)"
 published: true
 sortOrder: 2
 ---

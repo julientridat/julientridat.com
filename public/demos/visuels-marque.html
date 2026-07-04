@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Design system de visuels (marque fictive) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=Geist:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  :root { --accent: #ffe600; --bg: #0d0d0f; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: #17171a; color: #fff; font-family: Geist, system-ui, sans-serif; min-height: 100vh; }
+  header { padding: 20px 28px; border-bottom: 1px solid rgba(255,255,255,.1); display: flex; flex-wrap: wrap; gap: 10px 24px; align-items: baseline; }
+  header h1 { font-size: 17px; font-weight: 600; }
+  header p { font-size: 13px; color: rgba(255,255,255,.55); }
+  .badge { background: #c8ff3d; color: #0a0a0a; font-size: 11px; font-weight: 500; padding: 5px 12px; border-radius: 999px; }
+  .wrap { display: flex; flex-wrap: wrap; gap: 32px; padding: 32px 28px; align-items: flex-start; justify-content: center; }
+  .panel { width: 320px; display: flex; flex-direction: column; gap: 18px; }
+  .panel label { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: rgba(255,255,255,.5); display: block; margin-bottom: 7px; }
+  .opts { display: flex; flex-wrap: wrap; gap: 8px; }
+  .opts button { background: transparent; border: 1px solid rgba(255,255,255,.25); color: #fff; font: 500 13px Geist, sans-serif; padding: 8px 14px; border-radius: 999px; cursor: pointer; }
+  .opts button.on { background: #c8ff3d; border-color: #c8ff3d; color: #0a0a0a; }
+  .panel input[type=text] { width: 100%; background: #0d0d0f; border: 1px solid rgba(255,255,255,.2); color: #fff; font: 500 14px Geist, sans-serif; padding: 10px 12px; border-radius: 8px; }
+  .hint { font-size: 12px; color: rgba(255,255,255,.45); line-height: 1.5; border-top: 1px solid rgba(255,255,255,.1); padding-top: 14px; }
+  .stage { flex: 1; min-width: 300px; max-width: 620px; display: flex; justify-content: center; }
+  #frame { transform-origin: top center; }
+
+  /* ——— Le gabarit (design system fictif « VOLT ») ——— */
+  .visual { width: 1080px; background: var(--bg); position: relative; overflow: hidden; display: flex; flex-direction: column; font-family: Geist, sans-serif; }
+  .visual.post { height: 1080px; }
+  .visual.story { height: 1920px; }
+  .v-stripe { position: absolute; top: -140px; right: -220px; width: 560px; height: 1400px; background: var(--accent); transform: rotate(18deg); opacity: .13; }
+  .v-head { display: flex; justify-content: space-between; align-items: center; padding: 64px 72px 0; }
+  .v-logo { font-family: 'Archivo Black', sans-serif; font-size: 52px; letter-spacing: -.02em; }
+  .v-logo span { color: var(--accent); }
+  .v-club { font-size: 24px; font-weight: 600; text-transform: uppercase; letter-spacing: .18em; color: rgba(255,255,255,.7); }
+  .v-body { flex: 1; display: flex; flex-direction: column; justify-content: center; padding: 0 72px; gap: 36px; }
+  .v-kicker { display: inline-block; width: fit-content; background: var(--accent); color: #0d0d0f; font-weight: 600; font-size: 26px; text-transform: uppercase; letter-spacing: .1em; padding: 12px 24px; }
+  .v-title { font-family: 'Archivo Black', sans-serif; font-size: 118px; line-height: .95; text-transform: uppercase; letter-spacing: -.02em; }
+  .v-title em { font-style: normal; color: var(--accent); }
+  .v-sub { font-size: 34px; color: rgba(255,255,255,.75); line-height: 1.35; max-width: 800px; }
+  .v-foot { display: flex; justify-content: space-between; align-items: center; padding: 0 72px 64px; font-size: 24px; color: rgba(255,255,255,.55); }
+  .v-cta { background: #fff; color: #0d0d0f; font-weight: 600; padding: 18px 36px; border-radius: 999px; font-size: 26px; }
+  .visual.story .v-title { font-size: 148px; }
+  .visual.story .v-body { gap: 56px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Design system de visuels — démonstration interactive</h1>
+  <p>Le principe livré en mission : la charte encodée en gabarit HTML, le contenu injecté à la demande. Conformité garantie par le code, pas par la vigilance.</p>
+  <span class="badge">Marque fictive « VOLT » — système réel</span>
+</header>
+<div class="wrap">
+  <div class="panel">
+    <div>
+      <label>Club</label>
+      <div class="opts" id="clubs"></div>
+    </div>
+    <div>
+      <label>Gabarit</label>
+      <div class="opts" id="templates"></div>
+    </div>
+    <div>
+      <label>Format</label>
+      <div class="opts" id="formats"></div>
+    </div>
+    <div>
+      <label>Titre (modifiable)</label>
+      <input type="text" id="headline" maxlength="40" />
+    </div>
+    <p class="hint">Chaque changement re-rend le visuel instantanément, au pixel de la charte. En mission, c'est un assistant IA qui pilote ce gabarit en langage naturel : « fais le visuel portes ouvertes pour le club des Docks » suffit.</p>
+  </div>
+  <div class="stage"><div id="frame"><div class="visual post" id="visual"></div></div></div>
+</div>
+<script>
+  const state = { club: 'VOLT Docks', template: 'offre', format: 'post', headline: null };
+  const CLUBS = ['VOLT Docks', 'VOLT Nord', 'VOLT Rive Gauche', 'VOLT Métropole'];
+  const TEMPLATES = {
+    offre:    { label: 'Offre choc', kicker: 'Offre de rentrée', headline: '19,90€ <em>/mois</em>', sub: 'Sans engagement. Accès à tous les clubs VOLT de la métropole, cours collectifs inclus.', cta: 'Je m’inscris' },
+    portes:   { label: 'Portes ouvertes', kicker: 'Week-end portes ouvertes', headline: 'Venez <em>tester.</em>', sub: 'Samedi & dimanche, 9h–19h. Séances découverte gratuites, coachs sur place.', cta: 'Réserver ma séance' },
+    citation: { label: 'Motivation', kicker: 'Le lundi, ça compte double', headline: 'On ne <em>lâche</em> rien.', sub: 'Chaque séance te rapproche. Rejoins les 4 000 membres VOLT.', cta: 'Commencer' },
+  };
+  const $ = (id) => document.getElementById(id);
+
+  function chips(el, values, get, set) {
+    el.innerHTML = '';
+    values.forEach(v => {
+      const b = document.createElement('button');
+      b.textContent = typeof v === 'string' ? v : v[1];
+      b.className = get() === (typeof v === 'string' ? v : v[0]) ? 'on' : '';
+      b.onclick = () => { set(typeof v === 'string' ? v : v[0]); render(); };
+      el.appendChild(b);
+    });
+  }
+
+  function render() {
+    const t = TEMPLATES[state.template];
+    const headline = state.headline ?? t.headline.replace(/<[^>]+>/g, '');
+    $('headline').value = headline;
+    const v = $('visual');
+    v.className = 'visual ' + state.format;
+    const isDefault = state.headline === null;
+    v.innerHTML = `
+      <div class="v-stripe"></div>
+      <div class="v-head"><div class="v-logo">VOLT<span>.</span></div><div class="v-club">${state.club}</div></div>
+      <div class="v-body">
+        <div class="v-kicker">${t.kicker}</div>
+        <div class="v-title">${isDefault ? t.headline : headline}</div>
+        <div class="v-sub">${t.sub}</div>
+      </div>
+      <div class="v-foot"><span>volt-club.example — démo</span><span class="v-cta">${t.cta}</span></div>`;
+    chips($('clubs'), CLUBS, () => state.club, (x) => state.club = x);
+    chips($('templates'), Object.entries(TEMPLATES).map(([k, o]) => [k, o.label]), () => state.template, (x) => { state.template = x; state.headline = null; });
+    chips($('formats'), [['post', 'Post 1080×1080'], ['story', 'Story 1080×1920']], () => state.format, (x) => state.format = x);
+    fit();
+  }
+
+  function fit() {
+    const stage = document.querySelector('.stage');
+    const h = state.format === 'post' ? 1080 : 1920;
+    const scale = Math.min((stage.clientWidth - 4) / 1080, (window.innerHeight - 180) / h, 0.56);
+    const f = $('frame');
+    f.style.transform = `scale(${scale})`;
+    f.style.height = h * scale + 'px';
+    f.style.width = 1080 * scale + 'px';
+  }
+
+  $('headline').addEventListener('input', (e) => { state.headline = e.target.value; renderTitleOnly(); });
+  function renderTitleOnly() { document.querySelector('.v-title').textContent = state.headline; }
+  window.addEventListener('resize', fit);
+  render();
+</script>
+</body>
+</html>

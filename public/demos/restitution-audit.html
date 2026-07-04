@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Démo — Restitution de cartographie IA (données fictives) · Julien Tridat</title>
+<meta name="robots" content="noindex" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  :root { --lime: #c8ff3d; --ink2: rgba(255,255,255,.72); --ink3: rgba(255,255,255,.5); --line: rgba(255,255,255,.12); }
+  body { background: #0a0a0a; color: #fff; font-family: Geist, system-ui, sans-serif; overflow: hidden; }
+  em { font-family: 'Instrument Serif', Georgia, serif; font-weight: 400; color: var(--lime); }
+  .slide { position: absolute; inset: 0; display: none; flex-direction: column; justify-content: center; padding: 7vh 8vw 12vh; }
+  .slide.on { display: flex; }
+  .eyebrow { display: flex; align-items: center; gap: 10px; font-size: 12px; text-transform: uppercase; letter-spacing: .22em; color: var(--lime); margin-bottom: 28px; }
+  .eyebrow::before { content: ''; width: 26px; height: 1px; background: var(--lime); }
+  h1 { font-weight: 300; font-size: clamp(34px, 5.5vw, 76px); line-height: 1.02; letter-spacing: -.03em; }
+  h2 { font-weight: 300; font-size: clamp(26px, 3.6vw, 48px); letter-spacing: -.02em; margin-bottom: 4vh; }
+  .sub { margin-top: 3vh; font-size: clamp(15px, 1.4vw, 20px); color: var(--ink2); max-width: 760px; line-height: 1.55; }
+  .cols3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5vw; }
+  .step { border-top: 1px solid var(--line); padding-top: 22px; }
+  .step .n { color: var(--lime); font-size: 12px; letter-spacing: .22em; }
+  .step h3 { font-size: clamp(16px, 1.6vw, 24px); font-weight: 500; margin: 12px 0 10px; }
+  .step p { color: var(--ink2); font-size: clamp(13px, 1.15vw, 16px); line-height: 1.55; }
+  table { width: 100%; border-collapse: collapse; font-size: clamp(12px, 1.2vw, 17px); }
+  th { text-align: left; font-weight: 500; font-size: 11px; text-transform: uppercase; letter-spacing: .18em; color: var(--ink3); padding: 0 14px 12px 0; border-bottom: 1px solid var(--line); }
+  td { padding: 13px 14px 13px 0; border-bottom: 1px solid var(--line); color: var(--ink2); }
+  td:first-child { color: #fff; font-weight: 500; }
+  .tag { display: inline-block; padding: 3px 10px; border-radius: 999px; font-size: 11px; border: 1px solid; }
+  .tag.p { color: var(--lime); border-color: rgba(200,255,61,.5); }
+  .tag.j { color: #7dd3fc; border-color: rgba(125,211,252,.5); }
+  .matrix { position: relative; height: 52vh; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 0 2vw; }
+  .matrix .axis { position: absolute; font-size: 11px; text-transform: uppercase; letter-spacing: .18em; color: var(--ink3); }
+  .matrix .mid-h { position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed rgba(255,255,255,.1); }
+  .matrix .mid-v { position: absolute; top: 0; bottom: 0; left: 50%; border-left: 1px dashed rgba(255,255,255,.1); }
+  .dot { position: absolute; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 8px; font-size: clamp(11px, 1.1vw, 15px); white-space: nowrap; }
+  .dot::before { content: ''; width: 12px; height: 12px; border-radius: 50%; background: var(--lime); flex: none; }
+  .dot.later::before { background: rgba(255,255,255,.35); }
+  .wave { display: grid; grid-template-columns: 130px 1fr; gap: 18px; border-top: 1px solid var(--line); padding: 20px 0; align-items: baseline; }
+  .wave .w { color: var(--lime); font-size: 13px; letter-spacing: .18em; text-transform: uppercase; }
+  .wave p { color: var(--ink2); font-size: clamp(13px, 1.3vw, 18px); line-height: 1.5; }
+  .wave strong { color: #fff; font-weight: 500; }
+  nav { position: fixed; bottom: 0; left: 0; right: 0; display: flex; justify-content: space-between; align-items: center; padding: 16px 8vw; border-top: 1px solid var(--line); background: rgba(10,10,10,.85); backdrop-filter: blur(8px); }
+  nav .pos { font-size: 12px; color: var(--ink3); }
+  nav .keys { font-size: 12px; color: var(--ink3); }
+  nav .btns { display: flex; gap: 8px; }
+  nav button { background: transparent; border: 1px solid rgba(255,255,255,.25); color: #fff; width: 40px; height: 40px; border-radius: 999px; cursor: pointer; font-size: 15px; }
+  nav button:hover { border-color: var(--lime); color: var(--lime); }
+  .ribbon { position: fixed; top: 14px; right: 14px; z-index: 10; background: var(--lime); color: #0a0a0a; font-size: 11px; font-weight: 500; padding: 7px 13px; border-radius: 999px; }
+</style>
+</head>
+<body>
+<div class="ribbon">Démo — méthode réelle, données fictives</div>
+
+<section class="slide on">
+  <div class="eyebrow">Cartographie IA — Restitution de direction</div>
+  <h1>Agence Méridien<br /><em>Où investir, dans quel ordre.</em></h1>
+  <p class="sub">Extrait de démonstration d'un livrable de restitution : la structure et la méthode sont celles utilisées en mission, l'agence et les données sont fictives. Restitué à la direction après une phase d'entretiens individuels.</p>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">La méthode</div>
+  <h2>Du terrain vers la décision, <em>en trois passes.</em></h2>
+  <div class="cols3">
+    <div class="step"><div class="n">01</div><h3>Frictions</h3><p>Entretiens individuels par pôle : ce qui se produit, où le temps se perd, ce qui frustre. Pas de catalogue de cas d'usage — du vécu.</p></div>
+    <div class="step"><div class="n">02</div><h3>Production / Jugement</h3><p>Chaque friction est qualifiée : l'IA peut-elle <em>exécuter</em> (production) ou seulement <em>préparer</em> la décision humaine (jugement) ? C'est le garde-fou contre la sur-automatisation.</p></div>
+    <div class="step"><div class="n">03</div><h3>Priorisation</h3><p>Croisement effort × impact. Le résultat n'est pas une liste de courses : c'est une feuille de route séquencée, défendable en direction.</p></div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Passe 01 · extrait</div>
+  <h2>La carte des frictions.</h2>
+  <table>
+    <thead><tr><th>Pôle</th><th>Friction observée</th><th>Temps estimé</th><th>Nature</th></tr></thead>
+    <tbody>
+      <tr><td>Commercial</td><td>Reformulation manuelle des briefs clients avant transmission au studio</td><td>~4 h / semaine</td><td><span class="tag p">Production</span></td></tr>
+      <tr><td>Studio</td><td>Déclinaison des visuels validés en 12 formats</td><td>~6 h / campagne</td><td><span class="tag p">Production</span></td></tr>
+      <tr><td>Conseil</td><td>Synthèses de réunions clients, jamais rédigées faute de temps</td><td>perte d'information</td><td><span class="tag p">Production</span></td></tr>
+      <tr><td>Direction</td><td>Arbitrage des priorités entre comptes — informations dispersées</td><td>—</td><td><span class="tag j">Jugement</span></td></tr>
+      <tr><td>Conseil</td><td>Réponses aux appels d'offres : analyse du cahier des charges</td><td>~2 j / dossier</td><td><span class="tag j">Jugement</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Passe 03 · extrait</div>
+  <h2>Effort × impact : <em>quatre décisions.</em></h2>
+  <div class="matrix">
+    <div class="axis" style="left:-8px;top:-24px;">Impact ↑</div>
+    <div class="axis" style="right:0;bottom:-26px;">Effort →</div>
+    <div class="mid-h"></div><div class="mid-v"></div>
+    <div class="dot" style="left:22%;top:18%;">Assistant briefs commerciaux</div>
+    <div class="dot" style="left:30%;top:38%;">Synthèses de réunion</div>
+    <div class="dot" style="left:68%;top:22%;">Pipeline de déclinaison visuels</div>
+    <div class="dot later" style="left:76%;top:64%;">Analyse d'appels d'offres</div>
+    <div class="dot later" style="left:40%;top:78%;">Chatbot interne</div>
+  </div>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">La feuille de route</div>
+  <h2>Trois vagues, <em>pas un big bang.</em></h2>
+  <div>
+    <div class="wave"><div class="w">Vague 1</div><p><strong>Quick wins de production</strong> — assistant briefs + synthèses de réunion. Faible effort, gain immédiat, crée l'adhésion.</p></div>
+    <div class="wave"><div class="w">Vague 2</div><p><strong>Chaîne de production visuelle</strong> — gabarits chartés et déclinaison assistée. Plus d'effort, impact structurel sur le studio.</p></div>
+    <div class="wave"><div class="w">Vague 3</div><p><strong>Aide au jugement</strong> — préparation des appels d'offres et des arbitrages. L'IA prépare, l'humain tranche.</p></div>
+  </div>
+  <p class="sub">Chaque vague se conclut par une mesure : temps réellement gagné, adoption réelle. On ne passe à la suivante que sur des faits.</p>
+</section>
+
+<section class="slide">
+  <div class="eyebrow">Fin de l'extrait</div>
+  <h1>La méthode est réelle.<br /><em>Les données sont fictives.</em></h1>
+  <p class="sub">Le livrable complet comprend la cartographie exhaustive par pôle, le volet confidentialité, et un outil de pilotage pour suivre l'exécution. → <span style="color:var(--lime)">julientridat.com</span></p>
+</section>
+
+<nav>
+  <span class="pos"><span id="cur">1</span> / <span id="total"></span></span>
+  <span class="keys">← → au clavier, ou cliquez</span>
+  <div class="btns"><button id="prev" aria-label="Précédent">←</button><button id="next" aria-label="Suivant">→</button></div>
+</nav>
+
+<script>
+  const slides = [...document.querySelectorAll('.slide')];
+  let i = 0;
+  document.getElementById('total').textContent = slides.length;
+  function go(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, k) => s.classList.toggle('on', k === i));
+    document.getElementById('cur').textContent = i + 1;
+  }
+  document.getElementById('prev').onclick = () => go(i - 1);
+  document.getElementById('next').onclick = () => go(i + 1);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ') go(i + 1);
+    if (e.key === 'ArrowLeft') go(i - 1);
+  });
+</script>
+</body>
+</html>

@@ -74,8 +74,31 @@ const jsonLd = [
             </div>
           )}
         </div>
+        {d.demo && (
+          <div class="mt-8">
+            <a
+              href={d.demo.url}
+              target="_blank"
+              rel="noopener"
+              class="group inline-flex items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90"
+            >
+              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 text-base transition-transform group-hover:translate-x-0.5">→</span>
+              {d.demo.label}
+            </a>
+          </div>
+        )}
       </div>
     </header>
+
+    {d.visuel && (
+      <section class="border-b border-white/10 px-6 pt-12 md:px-12">
+        <div class="mx-auto max-w-4xl">
+          <div class="overflow-hidden rounded-t-2xl border border-b-0 border-white/10">
+            <img src={d.visuel.src} alt={d.visuel.alt} width="1440" height="900" class="w-full" />
+          </div>
+        </div>
+      </section>
+    )}
 
     {d.resultats.length > 0 && (
       <section class="border-b border-white/10 bg-[oklch(0.17_0_0)] px-6 py-12 md:px-12">
