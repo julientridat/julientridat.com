@@ -174,35 +174,35 @@ const jsonLd = [
     </header>
 
     <section class="px-6 py-16 md:px-12 md:py-24">
-      <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2">
+      <div class="mx-auto grid max-w-7xl gap-5 md:grid-cols-2 lg:grid-cols-3">
         {demos.map((demo) => (
-          <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/15 transition-colors hover:border-lime">
-            <a href={demo.url} target="_blank" rel="noopener" class="block overflow-hidden border-b border-white/10">
+          <div class="group flex flex-col overflow-hidden rounded-2xl border border-white/12 bg-white/[0.02] transition-colors hover:border-lime/60">
+            <a href={demo.url} target="_blank" rel="noopener" class="block overflow-hidden border-b border-white/10 bg-[oklch(0.16_0_0)]">
               <img
                 src={demo.visuel}
                 alt={`Aperçu — ${demo.titre}`}
-                width="1200"
-                height="675"
+                width="800"
+                height="450"
                 loading="lazy"
-                class="aspect-video w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
+                class="aspect-[16/9] w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.03]"
               />
             </a>
-            <div class="flex flex-1 flex-col p-8 pt-6">
-              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">{demo.nature}</div>
-              <h2 class="mt-3 text-2xl font-medium leading-snug">{demo.titre}</h2>
-              <p class="mt-3 flex-1 text-[15px] leading-relaxed text-white/70">{demo.desc}</p>
-              <div class="mt-7 flex flex-wrap items-center gap-x-6 gap-y-3">
+            <div class="flex flex-1 flex-col p-6">
+              <div class="text-[10px] uppercase tracking-[0.2em] text-lime">{demo.nature}</div>
+              <h2 class="mt-2.5 line-clamp-2 text-[17px] font-medium leading-snug">{demo.titre}</h2>
+              <p class="mt-2 line-clamp-3 text-[13.5px] leading-relaxed text-white/55">{demo.desc}</p>
+              <div class="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-5">
                 <a
                   href={demo.url}
                   target="_blank"
                   rel="noopener"
-                  class="inline-flex items-center gap-3 rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-all hover:bg-lime/90"
+                  class="inline-flex items-center gap-2 rounded-full bg-lime px-4 py-2 text-[12.5px] font-medium text-black transition-colors hover:bg-lime/90"
                 >
                   {demo.action} <span>→</span>
                 </a>
                 {demo.caseUrl && (
-                  <a href={demo.caseUrl} class="text-sm text-white/60 underline-offset-4 hover:text-lime hover:underline">
-                    Lire l'étude de cas
+                  <a href={demo.caseUrl} class="text-[12.5px] text-white/55 underline-offset-4 hover:text-lime hover:underline">
+                    Étude de cas
                   </a>
                 )}
               </div>

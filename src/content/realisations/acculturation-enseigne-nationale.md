@@ -5,6 +5,7 @@ secteur: "Retail spécialisé"
 annee: 2026
 role: "Conception, animation, feuille de route post-session"
 stack: ["Copilot", "Agents", "Feuille de route par pôle"]
+besoin: "former"
 pitch: "Trois heures d'acculturation sur le fil des « 5 verbes », un assistant créé en séance sur un vrai cas, et une feuille de route par pôle livrée après la session."
 resultats:
   - chiffre: "5"

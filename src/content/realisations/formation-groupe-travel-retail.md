@@ -5,6 +5,7 @@ secteur: "Retail / grande entreprise"
 annee: 2026
 role: "Ingénierie pédagogique, animation, recommandations outillage"
 stack: ["Copilot", "Gemini", "Matrice de cas d'usage", "Supports scrollytelling"]
+besoin: "former"
 pitch: "Un parcours repensé après la session pilote : programme restructuré en 3 blocs, 28 heures déployées, livrets outils et matrice de cas d'usage par métier."
 resultats:
   - chiffre: "28 h"

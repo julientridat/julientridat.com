@@ -1,6 +1,7 @@
 ---
 title: "Un design system de présentation par client"
 type: "Skill"
+besoin: "marketing"
 pitch: "Chaque client récurrent a son skill de présentation : sa charte, ses composants, ses formats — deck HTML plein écran, scrollytelling one-page ou .pptx natif. Le contenu change, l'identité jamais."
 encode:
   - "La charte complète du client (fontes, couleurs, composants éditoriaux)"

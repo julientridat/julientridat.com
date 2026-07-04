@@ -5,6 +5,7 @@ secteur: "Réseaux de dirigeants"
 annee: 2026
 role: "Conception du programme, animation, guides pratiques"
 stack: ["Démos live", "Guides par profil", "Méthode WAIT"]
+besoin: "former"
 pitch: "Deux journées de formation IA pour un club d'affaires : démos live sur les vrais métiers des membres, du carrossier au notaire, guides pratiques remis à chacun."
 resultats:
   - chiffre: "49"

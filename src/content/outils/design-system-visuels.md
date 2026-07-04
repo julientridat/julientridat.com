@@ -1,6 +1,7 @@
 ---
 title: "Design systems de visuels exécutables"
 type: "Skill"
+besoin: "marketing"
 pitch: "La charte d'une marque encodée en gabarits HTML pilotables en langage naturel : « fais le visuel portes ouvertes pour le club X » produit un PNG conforme au pixel, à chaque fois."
 encode:
   - "Fontes officielles, logos, codes couleur et règles de placement"

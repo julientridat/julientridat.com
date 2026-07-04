@@ -1,6 +1,7 @@
 ---
 title: "Projets IA réglementaires (santé)"
 type: "Projet client"
+besoin: "assistants"
 pitch: "Deux projets Claude livrés à une agence santé : une « fiche pathologie » au premier jet systématiquement sourcé et un « brief créa » dérivé — avec la chaîne de validation médicale encodée."
 encode:
   - "Recherche restreinte aux autorités de santé (HAS, ANSM, EMA, sociétés savantes)"

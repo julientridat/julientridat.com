@@ -1,6 +1,7 @@
 ---
 title: "Cycle devis / facture / avoir automatisé"
 type: "Infrastructure"
+besoin: "operations"
 pitch: "Mon propre back-office : ClickUp comme source de vérité (pipeline, numérotation, registre), un template HTML unique pour les trois documents, génération PDF et classement automatique."
 encode:
   - "La numérotation et le registre — jamais de doublon"

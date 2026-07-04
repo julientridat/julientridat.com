@@ -5,6 +5,7 @@ secteur: "Infrastructure personnelle"
 annee: 2026
 role: "Conception, développement, contenu"
 stack: ["Astro", "Cloudflare Pages", "React", "JSON-LD", "llms.txt"]
+besoin: "rayonner"
 pitch: "Un site statique souverain qui documente chaque mission en étude de cas vérifiable, structuré pour les moteurs, les agents IA et les humains."
 resultats:
   - chiffre: "0 €"

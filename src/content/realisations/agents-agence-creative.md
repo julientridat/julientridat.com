@@ -5,6 +5,7 @@ secteur: "Communication / création"
 annee: 2026
 role: "Cartographie des usages, conception du parcours, animation"
 stack: ["Agents IA", "IA texte", "IA image & vidéo", "Workflows"]
+besoin: "former"
 pitch: "Entretiens par pôle, roadmap opérationnelle, puis quatre ateliers 100 % pratique : chaque session doit livrer un agent ou un workflow utilisable."
 resultats:
   - chiffre: "4"

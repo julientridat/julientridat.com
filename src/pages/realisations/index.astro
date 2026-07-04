@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
+import RealisationCard from "@/components/RealisationCard.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
@@ -10,9 +11,35 @@ const realisations = (await getCollection("realisations", ({ data }) => data.pub
   (a, b) => a.data.sortOrder - b.data.sortOrder,
 );
 
+const groupes = [
+  {
+    id: "cadrer",
+    titre: "Vous voulez savoir où mettre l'IA — et où pas",
+    intro:
+      "Avant d'investir un euro : cartographier les usages réels, scorer les opportunités, construire l'offre ou la stratégie sur des faits.",
+  },
+  {
+    id: "former",
+    titre: "Vous voulez que vos équipes s'en servent vraiment",
+    intro:
+      "Des formations construites sur vos vrais documents et vos vrais métiers — du bénévole associatif au groupe international — avec des livrables qui restent après mon départ.",
+  },
+  {
+    id: "produire",
+    titre: "Vous voulez produire plus vite, sans perdre vos standards",
+    intro:
+      "Votre charte et vos process encodés en systèmes : ils produisent à la demande, conformes à chaque fois.",
+  },
+  {
+    id: "rayonner",
+    titre: "Ce que je fais en mon nom",
+    intro: "La scène, cette plateforme : les preuves que je m'applique ma propre méthode.",
+  },
+];
+
 const title = "Réalisations — le registre des missions | Julien Tridat";
 const description =
-  "Études de cas documentées et anonymisées : intégration IA, migrations, outils sur mesure. Le contexte, ce qui a été construit, ce que ça a produit.";
+  "Études de cas documentées et anonymisées, classées par besoin : décider où mettre l'IA, former vos équipes, produire avec des systèmes.";
 
 const jsonLd = [
   {
@@ -28,7 +55,7 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/realisations`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-24 md:pt-44">
+    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
       <div
         class="pointer-events-none absolute inset-0 -z-10"
         style="background: radial-gradient(700px 400px at 20% 0%, oklch(0.92 0.21 125 / 0.07), transparent 70%);"
@@ -41,60 +68,41 @@ const jsonLd = [
           Réalisations <em class="text-lime">documentées.</em>
         </h1>
         <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
-          Chaque mission est documentée avec la même structure : le contexte, ce qui a été
-          construit, ce que ça a produit. Les clients sont anonymisés — les faits, eux,
-          sont vérifiables. <strong class="font-medium text-white">Pas d'adjectifs, des artefacts.</strong>
+          Chaque mission racontée avec la même structure — le contexte, ce qui a été construit,
+          ce que ça a produit — et classée par ce que <strong class="font-medium text-white">vous</strong> cherchez.
+          Clients anonymisés, faits vérifiables.
         </p>
+        <nav class="mt-8 flex flex-wrap gap-2" aria-label="Aller à un besoin">
+          {groupes.map((g) => (
+            <a
+              href={`#${g.id}`}
+              class="rounded-full border border-white/20 px-4 py-2 text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime"
+            >
+              {g.titre}
+            </a>
+          ))}
+        </nav>
       </div>
     </header>
 
-    <section class="px-6 py-16 md:px-12 md:py-24">
-      <div class="mx-auto grid max-w-7xl gap-6 md:grid-cols-2">
-        {realisations.map((r) => (
-          <a
-            href={`/realisations/${r.id}`}
-            class="group flex flex-col overflow-hidden rounded-2xl border border-white/15 p-8 transition-colors hover:border-lime"
-          >
-            {r.data.visuel && (
-              <div class="-mx-8 -mt-8 mb-7 overflow-hidden border-b border-white/10">
-                <img
-                  src={r.data.visuel.src}
-                  alt={r.data.visuel.alt}
-                  width="1200"
-                  height="675"
-                  loading="lazy"
-                  class="aspect-video w-full object-cover object-top transition-transform duration-300 group-hover:scale-[1.02]"
-                />
-              </div>
-            )}
-            <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-[11px] uppercase tracking-[0.22em] text-white/50">
-              <span>{r.data.client}</span>
-              <span class="text-white/30">·</span>
-              <span>{r.data.secteur}</span>
-              <span class="text-white/30">·</span>
-              <span>{r.data.annee}</span>
+    {groupes.map((g) => {
+      const items = realisations.filter((r) => r.data.besoin === g.id);
+      if (items.length === 0) return null;
+      return (
+        <section id={g.id} class="scroll-mt-24 border-b border-white/10 px-6 py-14 md:px-12 md:py-20 last-of-type:border-b-0">
+          <div class="mx-auto max-w-7xl">
+            <h2 class="max-w-3xl text-[clamp(1.5rem,3vw,2.2rem)] font-light leading-tight tracking-[-0.02em]">
+              {g.titre.split("—")[0]}
+              <em class="text-lime">{g.titre.includes("—") ? `— ${g.titre.split("—")[1].trim()}` : ""}</em>
+            </h2>
+            <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/60">{g.intro}</p>
+            <div class="mt-8 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+              {items.map((r) => <RealisationCard entry={r} />)}
             </div>
-            <h2 class="mt-4 text-2xl font-medium leading-snug">{r.data.title}</h2>
-            <p class="mt-3 flex-1 leading-relaxed text-white/70">{r.data.pitch}</p>
-            {r.data.resultats.length > 0 && (
-              <div class="mt-8 flex flex-wrap gap-x-8 gap-y-4 border-t border-white/10 pt-6">
-                {r.data.resultats.map((res) => (
-                  <div>
-                    <div class="text-3xl font-light text-lime">{res.chiffre}</div>
-                    <div class="mt-1 max-w-[9rem] text-[11px] uppercase tracking-wider text-white/50">
-                      {res.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-            <div class="mt-6 inline-flex items-center gap-2 text-sm text-lime">
-              Lire l'étude <span class="transition-transform group-hover:translate-x-0.5">→</span>
-            </div>
-          </a>
-        ))}
-      </div>
-    </section>
+          </div>
+        </section>
+      );
+    })}
 
     <Footer />
   </main>

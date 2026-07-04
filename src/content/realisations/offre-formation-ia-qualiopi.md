@@ -5,6 +5,7 @@ secteur: "Formation professionnelle"
 annee: 2026
 role: "Étude de marché, positionnement, conception d'offre"
 stack: ["Étude de marché scorée", "Personas ICP", "Programmes Qualiopi"]
+besoin: "cadrer"
 pitch: "D'un constat de marché à une offre prête à vendre : étude scorée de 3 segments, verdict chiffré, deux programmes complets conformes Qualiopi et un plan de lancement."
 resultats:
   - chiffre: "87/100"
@@ -13,6 +14,12 @@ resultats:
     label: "programmes complets prêts à vendre"
   - chiffre: "3"
     label: "segments évalués sur 5 critères"
+visuel:
+  src: "/artefacts/etude-marche.webp"
+  alt: "Étude de marché scorée — extrait reconstitué du document stratégique"
+demo:
+  url: "/demos/etude-marche.html"
+  label: "Lire l'extrait de l'étude (anonymisé)"
 published: true
 sortOrder: 4
 ---

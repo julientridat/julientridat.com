@@ -5,6 +5,7 @@ secteur: "Sport & loisirs"
 annee: 2026
 role: "Conception du design system, automatisation de production"
 stack: ["Gabarits HTML", "Assistants IA", "Charte de marque"]
+besoin: "produire"
 pitch: "Un système de production de visuels réseaux sociaux charté au pixel : 4 clubs + une marque ombrelle, posts et stories générés en langage naturel."
 resultats:
   - chiffre: "4+1"

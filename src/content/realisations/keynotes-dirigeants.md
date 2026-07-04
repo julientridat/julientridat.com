@@ -5,6 +5,7 @@ secteur: "Conférences"
 annee: 2026
 role: "Conférencier, conception des keynotes, démos live"
 stack: ["Keynotes HTML sur-mesure", "Démos 100 % live", "Perplexity · NotebookLM · ChatGPT · Lovable"]
+besoin: "rayonner"
 pitch: "Keynotes devant des dirigeants et co-animation d'un rendez-vous mensuel de démos IA : une campagne marketing complète construite en 90 minutes, en public."
 resultats:
   - chiffre: "2"

@@ -5,6 +5,7 @@ secteur: "Communication santé"
 annee: 2026
 role: "Cadrage pédagogique, formation, recommandation d'outillage"
 stack: ["Claude", "ChatGPT", "Perplexity", "Cas d'usage réels"]
+besoin: "former"
 pitch: "Deux journées de formation construites depuis le terrain : positionnement individuel, cas d'usage réels cartographiés en amont, pédagogie différenciée par niveau."
 resultats:
   - chiffre: "14"

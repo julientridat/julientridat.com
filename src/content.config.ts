@@ -15,6 +15,8 @@ const realisations = defineCollection({
     annee: z.number(),
     role: z.string(),
     stack: z.array(z.string()).default([]),
+    /** Regroupement orienté visiteur sur les pages de liste. */
+    besoin: z.enum(["cadrer", "former", "produire", "rayonner"]).default("former"),
     /** Résumé en 1-2 phrases — utilisé sur les cartes, le llms.txt et la meta description. */
     pitch: z.string(),
     resultats: z
@@ -38,6 +40,8 @@ const outils = defineCollection({
   schema: z.object({
     title: z.string(),
     type: z.enum(["Skill", "Projet client", "Méthode", "Infrastructure"]),
+    /** Regroupement orienté visiteur. */
+    besoin: z.enum(["decider", "marketing", "assistants", "operations"]).default("operations"),
     pitch: z.string(),
     /** Ce que le système encode (règles, charte, process). */
     encode: z.array(z.string()).default([]),

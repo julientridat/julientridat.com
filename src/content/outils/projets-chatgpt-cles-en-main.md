@@ -1,6 +1,7 @@
 ---
 title: "Projets ChatGPT clés en main"
 type: "Projet client"
+besoin: "assistants"
 pitch: "Pour les équipes sans profil technique : des Projets ChatGPT livrés déjà construits — mission par mission, avec mini-bibliothèque de prompts copiables et règles d'usage intégrées."
 encode:
   - "Un projet par mission (démarcher, financer, communiquer)"

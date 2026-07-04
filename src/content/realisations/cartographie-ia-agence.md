@@ -5,6 +5,7 @@ secteur: "Communication"
 annee: 2026
 role: "Audit, cartographie, restitution stratégique"
 stack: ["Entretiens terrain", "Analyse de frictions", "Priorisation ROI"]
+besoin: "cadrer"
 pitch: "Un audit IA fondé sur le terrain — entretiens, analyse des frictions réelles, priorisation par valeur — restitué en deck stratégique et outil de pilotage."
 resultats:
   - chiffre: "2"

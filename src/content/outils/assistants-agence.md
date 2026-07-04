@@ -1,6 +1,7 @@
 ---
 title: "Assistants d'agence en fichiers d'instructions"
 type: "Projet client"
+besoin: "assistants"
 pitch: "Des assistants livrés en fichiers d'instructions versionnables : l'assistant interne calibré sur l'identité de l'agence, et des assistants « chef de projet » par compte client — avec garde-fous éditoriaux."
 encode:
   - "Identité, ton et documents cadres de l'agence"

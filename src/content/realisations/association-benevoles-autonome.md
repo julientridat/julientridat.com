@@ -5,6 +5,7 @@ secteur: "Associatif"
 annee: 2026
 role: "Formation, outillage, infrastructure emailing"
 stack: ["Projets ChatGPT", "Brevo", "SPF/DKIM/DMARC", "Plan d'ancrage"]
+besoin: "former"
 pitch: "3 Projets ChatGPT livrés prêts à l'emploi, un plan d'ancrage de 3 semaines — puis leur emailing sauvé : nom de domaine, délivrabilité, 537 contacts importés."
 resultats:
   - chiffre: "3"

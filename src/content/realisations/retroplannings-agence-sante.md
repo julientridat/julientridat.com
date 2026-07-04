@@ -5,6 +5,7 @@ secteur: "Communication santé"
 annee: 2026
 role: "Conception du générateur, encodage du standard interne"
 stack: ["Assistants IA", "Gabarit .xlsx", "Process encodé"]
+besoin: "produire"
 pitch: "Un générateur qui transforme un brief de mission — livrables, client, dates clés — en rétroplanning complet au format et au standard visuel de l'agence."
 resultats:
   - chiffre: ".xlsx"

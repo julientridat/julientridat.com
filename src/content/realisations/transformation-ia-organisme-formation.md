@@ -5,6 +5,7 @@ secteur: "Formation professionnelle"
 annee: 2026
 role: "Diagnostic, conseil stratégique, formation, outillage"
 stack: ["Session stratégique dirigeant", "Formation équipes", "Stratégie GEO", "Guides d'autonomie"]
+besoin: "cadrer"
 pitch: "Douze mois d'accompagnement : diagnostic, session stratégique dirigeant, deux jours de formation des équipes, stratégie de visibilité IA, guide d'autonomie."
 resultats:
   - chiffre: "12"

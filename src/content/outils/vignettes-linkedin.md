@@ -1,6 +1,7 @@
 ---
 title: "Système de vignettes LinkedIn"
 type: "Skill"
+besoin: "marketing"
 pitch: "Trois gabarits éditoriaux chartés — chiffre choc, carte citation, triptyque de preuve — que l'assistant décline en série pour accompagner chaque campagne de contenu."
 encode:
   - "3 gabarits éditoriaux avec leurs règles typographiques"

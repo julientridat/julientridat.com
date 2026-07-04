@@ -1,6 +1,7 @@
 ---
 title: "Générateur de rétroplannings au standard maison"
 type: "Skill"
+besoin: "operations"
 pitch: "Le standard planning d'une agence (hiérarchie, code couleur, circuit de validation réglementaire) encodé une fois : un brief en langage naturel produit le .xlsx complet que l'équipe utilise déjà."
 encode:
   - "La hiérarchie livrable → phase → tâche"
