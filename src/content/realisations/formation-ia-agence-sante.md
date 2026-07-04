@@ -13,6 +13,8 @@ resultats:
     label: "cas d'usage métier travaillés"
   - chiffre: "3"
     label: "niveaux, pédagogie différenciée"
+  - chiffre: "2"
+    label: "projets IA réglementaires livrés"
 visuel:
   src: "/artefacts/deck-formation.webp"
   alt: "Support de formation IA & Texte — version anonymisée du deck réel de la mission"
@@ -41,6 +43,8 @@ Une formation en deux journées, conçue avant d'être animée :
 ## Ce que ça a produit
 
 Toute l'agence formée sur ses propres matériaux, une recommandation d'outillage par cas d'usage (quel outil pour le sourcing, lequel pour les documents longs et les références, lequel pour la retranscription) — et une position claire sur le réglementaire : l'IA assiste, la validation médicale reste humaine.
+
+La formation s'est prolongée en livrables : deux projets IA opérationnels remis à l'agence. Une « fiche pathologie » qui produit un premier jet systématiquement sourcé — recherche restreinte aux autorités de santé (HAS, ANSM, EMA, sociétés savantes), tout fait non sourcé marqué « à sourcer » plutôt qu'inventé — et un « brief créa » dérivé pour le studio. Règle encodée dans les deux : l'IA ne valide jamais ; la validation reste à la direction médicale.
 
 ## Ce qu'il faut en retenir
 

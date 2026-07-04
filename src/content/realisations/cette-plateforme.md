@@ -17,7 +17,7 @@ visuel:
   src: "/artefacts/plateforme.webp"
   alt: "La page d'accueil de julientridat.com — le site documenté par cette étude de cas"
 published: true
-sortOrder: 5
+sortOrder: 12
 ---
 
 ## Le contexte

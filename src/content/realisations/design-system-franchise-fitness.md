@@ -20,7 +20,7 @@ demo:
   url: "/demos/visuels-marque.html"
   label: "Tester le configurateur (marque fictive)"
 published: true
-sortOrder: 4
+sortOrder: 10
 ---
 
 ## Le contexte

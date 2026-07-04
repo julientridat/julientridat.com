@@ -15,7 +15,7 @@ visuel:
   src: "/artefacts/retroplanning.webp"
   alt: "Rétroplanning généré — reconstitution sur une mission fictive, standard visuel réel"
 published: true
-sortOrder: 6
+sortOrder: 11
 ---
 
 ## Le contexte

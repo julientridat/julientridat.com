@@ -52,6 +52,16 @@ Règles éditoriales (non négociables) :
 
 ## [À VALIDER] par Julien
 
+- **⚠️ Étude « groupe travel retail »** : le contrat de sous-traitance avec l'organisme de
+  formation contient une clause de confidentialité explicite couvrant l'organisme ET ses
+  clients. L'étude est doublement anonymisée, mais faire valider par l'organisme avant
+  bascule DNS serait prudent.
+- **Étude « accompagnement organisme de formation »** : petite structure au dirigeant très
+  identifiable dans le milieu — valider le niveau d'anonymisation.
+- **Cas écartés en attente** : conseiller immobilier réseau de mandataires (lien familial,
+  mission non documentée comme facturée — à clarifier) ; centre d'affaires Gironde (phase
+  amont sans livrable).
+
 - **LinkedIn** : ajouter l'URL exacte du profil dans `sameAs` (`src/lib/site.ts`).
 - **Étude « cartographie IA agence »** : compléter si possible le nombre d'entretiens menés.
 - **Étude « formation agence santé »** : confirmer la tenue effective des 2 journées

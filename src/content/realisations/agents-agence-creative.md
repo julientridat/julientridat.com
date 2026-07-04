@@ -44,6 +44,8 @@ Un parcours en deux phases, à l'inverse du stage catalogue :
 
 Un parcours entièrement adossé aux cas d'usage identifiés en entretien — aucun contenu générique — et une équipe outillée pôle par pôle, avec un cadre de confidentialité explicite pour travailler avec l'IA sur des marques sensibles.
 
+La restitution a débouché sur une décision actée et un socle déployé — pas un rapport rangé dans un tiroir. Les livrables tiennent après la mission : des assistants remis en fichiers d'instructions (dont un assistant interne calibré sur l'identité et le ton de l'agence), un document de référence des workflows et du stockage — quel flux, quel outil, où vit la donnée —, et un document de cadrage que chaque collaborateur injecte en début de conversation IA : identité, offre, profils utilisateurs par métier, et des garde-fous éditoriaux stricts (zéro donnée inventée).
+
 ## Ce qu'il faut en retenir
 
 Le marché de la formation IA a changé d'étage : les équipes matures ne demandent plus de comprendre l'IA, elles demandent de repartir avec des systèmes qui fonctionnent. Répondre à ça n'est plus de l'animation — c'est de l'ingénierie de cas d'usage, et elle commence par des entretiens, pas par des slides.
