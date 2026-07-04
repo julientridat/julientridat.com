@@ -9,6 +9,10 @@ encode:
 sorties:
   - "Fiches pathologie sourcées"
   - "Briefs créa dérivés pour le studio"
+gain:
+  tache: "Bibliographie + pack de références (doc 12 p, ~20 sources)"
+  avant: "renumérotation manuelle à chaque révision"
+  apres: "premier jet sourcé, automatisé"
 caseUrl: "/realisations/formation-ia-agence-sante"
 published: true
 sortOrder: 7

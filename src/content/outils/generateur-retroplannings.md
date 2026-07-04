@@ -8,6 +8,10 @@ encode:
   - "Le système de couleurs et le pattern canonique de l'agence"
 sorties:
   - "Rétroplannings .xlsx prêts à l'emploi"
+gain:
+  tache: "Un rétroplanning complet au standard maison"
+  avant: "refait à la main à chaque mission"
+  apres: "quelques minutes depuis un brief"
 caseUrl: "/realisations/retroplannings-agence-sante"
 published: true
 sortOrder: 6

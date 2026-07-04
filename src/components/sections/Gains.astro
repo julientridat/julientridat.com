@@ -1,0 +1,59 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+interface Props {
+  bg?: boolean;
+}
+const { bg = false } = Astro.props;
+
+// Gains cités dans les supports de formation et les cas d'usage déployés en mission.
+// Format avant → après : une démonstration de capacité, pas une mesure client par client.
+const gains = [
+  { tache: "Une proposition commerciale", avant: "2 à 3 h", apres: "30 min" },
+  { tache: "Un email de prospection personnalisé", avant: "45 min", apres: "4 min" },
+  { tache: "Un compte-rendu de visite", avant: "30 min", apres: "30 s" },
+  { tache: "Un courrier client personnalisé", avant: "1 h", apres: "quelques min" },
+  { tache: "Un devis conforme (artisan)", avant: "—", apres: "×8 plus vite" },
+  { tache: "La fiche de contexte d'une entreprise", avant: "—", apres: "30 min" },
+];
+---
+
+<section class={`border-t border-white/10 px-6 py-24 md:px-12 md:py-32 ${bg ? "bg-[oklch(0.17_0_0)]" : ""}`}>
+  <div class="mx-auto max-w-7xl">
+    <div class="grid gap-10 md:grid-cols-2 md:items-end">
+      <div>
+        <Eyebrow>Les gains</Eyebrow>
+        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Ce que les assistants
+          <br />
+          <em class="text-lime">font gagner.</em>
+        </h2>
+      </div>
+      <p class="max-w-md text-lg leading-relaxed text-white/75">
+        Chiffres cités dans mes supports de formation et les cas d'usage déployés en mission.{" "}
+        <strong class="font-medium text-white">Des tâches concrètes, avant et après.</strong>
+      </p>
+    </div>
+
+    <div class="mt-16 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+      {gains.map((g) => (
+        <div class={`p-8 ${bg ? "bg-[oklch(0.17_0_0)]" : "bg-background"}`}>
+          <div class="text-sm text-white/70">{g.tache}</div>
+          <div class="mt-4 flex items-baseline gap-3">
+            {g.avant !== "—" && (
+              <span class="text-lg text-white/40 line-through decoration-white/30">{g.avant}</span>
+            )}
+            {g.avant !== "—" && <span class="text-lime">→</span>}
+            <span class="text-3xl font-light text-lime">{g.apres}</span>
+          </div>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-8 max-w-3xl text-sm leading-relaxed text-white/50">
+      Chaque mission inclut 3 à 10 assistants sur mesure. Ces ordres de grandeur sont ceux
+      démontrés en formation sur des cas réels ; le gain exact dépend de vos process et de vos
+      données — c'est ce que l'audit mesure avant de s'engager.
+    </p>
+  </div>
+</section>

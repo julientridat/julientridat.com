@@ -10,6 +10,10 @@ sorties:
   - "Supports de formation et d'animation"
   - "Decks de restitution et de recommandation"
   - "Présentations commerciales"
+gain:
+  tache: "Un support de formation ou un deck de reco"
+  avant: "mise en page manuelle, charte à re-vérifier"
+  apres: "charté au pixel, en une passe"
 demo:
   url: "/demos/support-groupe-retail.html"
   label: "Voir un support livré (anonymisé)"

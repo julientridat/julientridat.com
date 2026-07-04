@@ -43,6 +43,8 @@ const outils = defineCollection({
     encode: z.array(z.string()).default([]),
     /** Ce qu'il produit en sortie. */
     sorties: z.array(z.string()).default([]),
+    /** Gain avant → après, cité dans les supports de mission. */
+    gain: z.object({ avant: z.string(), apres: z.string(), tache: z.string() }).optional(),
     demo: z.object({ url: z.string(), label: z.string() }).optional(),
     caseUrl: z.string().optional(),
     published: z.boolean().default(true),

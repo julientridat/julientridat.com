@@ -10,6 +10,10 @@ sorties:
   - "Matrice ICP documentée"
   - "Axes marketing priorisés"
   - "Messages clés et éléments de wording"
+gain:
+  tache: "Une analyse ICP complète (2 axes, 8 quadrants)"
+  avant: "atelier de plusieurs demi-journées"
+  apres: "une session, wording inclus"
 demo:
   url: "/demos/skill-icp.html"
   label: "Tester sur 3 profils"

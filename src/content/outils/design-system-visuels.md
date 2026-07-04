@@ -9,6 +9,10 @@ encode:
 sorties:
   - "Visuels réseaux sociaux prêts à publier"
   - "Séries de campagne cohérentes sans re-brief"
+gain:
+  tache: "Un visuel charté conforme"
+  avant: "aller-retour prestataire"
+  apres: "quelques minutes, en autonomie"
 demo:
   url: "/demos/visuels-marque.html"
   label: "Tester le configurateur"

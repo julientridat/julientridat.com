@@ -9,6 +9,10 @@ encode:
 sorties:
   - "Projets ChatGPT opérationnels dès la formation"
   - "Plan d'ancrage sur 3 semaines"
+gain:
+  tache: "3 posts LinkedIn / Facebook / Instagram"
+  avant: "page blanche à chaque publication"
+  apres: "produits en minutes, adaptés au ton"
 demo:
   url: "/demos/formation-association.html"
   label: "Voir la formation livrée avec"

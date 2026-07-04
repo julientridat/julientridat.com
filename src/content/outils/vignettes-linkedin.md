@@ -9,6 +9,10 @@ encode:
 sorties:
   - "Vignettes 1080×1080 prêtes pour LinkedIn"
   - "Séries de campagne multi-posts"
+gain:
+  tache: "Une série de vignettes de campagne"
+  avant: "une par une, sur outil graphique"
+  apres: "la série en minutes"
 demo:
   url: "/demos/vignettes-linkedin.html"
   label: "Voir les 3 gabarits"

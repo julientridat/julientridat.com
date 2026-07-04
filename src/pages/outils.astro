@@ -3,6 +3,7 @@ import { getCollection } from "astro:content";
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
+import Gains from "@/components/sections/Gains.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
@@ -89,6 +90,18 @@ const jsonLd = [
               </div>
             )}
 
+            {o.data.gain && (
+              <div class="mt-4 rounded-xl border border-lime/25 bg-lime/[0.04] px-4 py-3">
+                <div class="text-[10px] uppercase tracking-[0.2em] text-lime/80">Gain observé</div>
+                <div class="mt-1 text-[13px] text-white/80">{o.data.gain.tache}</div>
+                <div class="mt-1.5 flex items-baseline gap-2 text-[13px]">
+                  <span class="text-white/40 line-through decoration-white/25">{o.data.gain.avant}</span>
+                  <span class="text-lime">→</span>
+                  <span class="font-medium text-lime">{o.data.gain.apres}</span>
+                </div>
+              </div>
+            )}
+
             <div class="mt-auto flex flex-wrap items-center gap-x-5 gap-y-3 pt-6">
               {o.data.demo && (
                 <a
@@ -110,6 +123,8 @@ const jsonLd = [
         ))}
       </div>
     </section>
+
+    <Gains bg />
 
     <Footer />
   </main>
