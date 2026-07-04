@@ -1,24 +1,24 @@
 ---
-title: "Un organisme de formation devient autonome sur l'IA — le consultant peut partir"
+title: "Un organisme de conseil et formation qui pilote sa transformation IA de bout en bout"
 client: "Organisme de conseil et formation (Île-de-France, réseau de 350 experts)"
 secteur: "Formation professionnelle"
 annee: 2026
 role: "Intégration IA de bout en bout : diagnostic, dirigeant, équipes, outillage"
 stack: ["Session stratégique dirigeant", "Formation équipes", "Stratégie GEO", "Guides d'autonomie"]
 besoin: "cadrer"
-enjeu: "Un organisme établi, un suivi administratif chronophage, une génération de contacts en baisse après un changement d'algorithme Google — et l'envie de passer à l'IA sans improviser."
-transformation: "L'organisme a une stratégie IA écrite, des équipes qui pratiquent au quotidien, et des guides qui restent — il produit désormais sans le consultant."
-pitch: "Une capacité IA installée du sommet à la base, en douze mois : le dirigeant cadre, les équipes pratiquent, les guides d'autonomie restent. L'organisme ne dépend plus du consultant pour continuer."
+enjeu: "Un organisme établi, un suivi administratif chronophage, une génération de contacts en chute après une mise à jour Google — et l'envie de passer à l'IA sans improviser."
+transformation: "Le dirigeant cadre, les équipes pratiquent au quotidien, les assistants et les guides restent : l'organisme produit désormais avec l'IA sans dépendre du consultant."
+pitch: "Une capacité IA installée du sommet à la base : dirigeant cadré, équipes en production, assistants et guides d'autonomie qui tournent après mon départ."
 resultats:
   - chiffre: "12"
-    label: "mois pour ancrer, pas une intervention flash"
+    label: "mois d'ancrage, pas une intervention flash"
   - chiffre: "2 j"
-    label: "de pratique équipes (60 % de main sur le clavier)"
+    label: "de pratique équipes sur leurs vrais outils"
   - chiffre: "6"
-    label: "niveaux d'autonomie qui restent après mon départ"
+    label: "niveaux d'autonomie qui restent après moi"
 visuel:
   src: "/artefacts/guide-claude-clickup.webp"
-  alt: "Guide d'autonomie Claude × ClickUp en 6 niveaux — artefact réel anonymisé"
+  alt: "Guide d'autonomie en 6 niveaux sur l'outil de gestion de projet — artefact réel anonymisé"
 demo:
   url: "/demos/guide-claude-clickup.html"
   label: "Parcourir le guide réel (anonymisé)"
@@ -26,24 +26,30 @@ published: true
 sortOrder: 7
 ---
 
-## L'enjeu
+## Le point de départ
 
-Un organisme de conseil et formation établi — quatorze ans d'activité, un réseau de centaines d'experts, un taux de satisfaction élevé à préserver — voulait passer à l'IA sans improviser. Les frictions étaient nettes dès le diagnostic : un suivi administratif et comptable chronophage, une génération de contacts en baisse après une mise à jour de l'algorithme de Google, une chaîne de production de supports à moderniser. Le manque de fond n'était pas « un outil » — c'était une capacité à produire autrement, qui n'existait nulle part dans la maison.
+Un organisme de conseil et formation établi — plus de dix ans d'activité, un réseau de plusieurs centaines d'experts, un taux de satisfaction élevé à préserver — voulait passer à l'IA sans improviser. Le déclencheur n'était pas une lubie : c'étaient des frictions précises, nettes dès le premier entretien de fond.
 
-## Le système déployé
+Le suivi administratif et comptable pesait, avec des rôles cumulés sur une même personne. La génération de contacts avait chuté après une mise à jour de l'algorithme de Google, qui avait dévalorisé les contenus produits en série — le référencement et le trafic avaient plongé. La collaboration avec les formateurs se faisait par allers-retours d'e-mails, une vraie perte de temps. Et derrière chaque friction, la même question : comment produire autrement. Le manque n'était pas « un outil » — c'était une capacité à produire avec l'IA, qui n'existait nulle part dans la maison.
 
-Je n'ai pas fait « une formation ». J'ai intégré une capacité IA du sommet vers la base, dans un ordre qui la rend durable :
+## La méthode, sur le terrain
 
-- **Un diagnostic converti en programme.** Les frictions relevées lors d'un entretien de fond deviennent un accompagnement chiffré en trois phases (tronc commun, ateliers par département, suivi).
-- **Le dirigeant cadré d'abord.** Une session stratégique de deux heures : état de l'art des IA pour dirigeant, grille d'audit flash à cinq critères (complexité, fréquence, délégabilité, valeur business, scalabilité), plans d'action à trois horizons, cadre de gouvernance. Le sponsor décide avant que les équipes n'expérimentent.
-- **Les équipes mises en production.** Deux jours de formation, 40 % d'exposé et 60 % de pratique : fondamentaux et prompting le premier jour ; applications métier le second — gestion administrative de la conformité qualité, méthode commerciale — sur les outils réellement utilisés par la maison.
-- **Deux stratégies écrites qui restent.** Une stratégie IA d'ensemble et une stratégie de visibilité dans les moteurs de réponse IA (GEO) : un organisme de formation doit désormais être trouvable par les assistants qui conseillent ses futurs clients.
-- **Un moyen de production qui survit à mon départ.** Un guide d'autonomie en six niveaux progressifs pour brancher l'IA sur l'outil de gestion de projet de la maison : à chaque palier, le prompt à copier, le résultat attendu, le piège à éviter.
+Je n'ai pas fait « une formation ». J'ai observé le terrain, construit des assistants, déployé, puis formé les équipes — dans l'ordre qui rend la transformation durable, du sommet vers la base.
 
-## La transformation
+D'abord observer. Un entretien de fond transforme les frictions relevées en un accompagnement chiffré, découpé en phases. Ensuite cadrer le dirigeant, avant que les équipes n'expérimentent : une session stratégique de deux heures, en trois actes — état de l'art des IA utiles à un dirigeant, audit de ses tâches avec une grille flash à cinq critères (complexité, fréquence, délégabilité, valeur business, scalabilité), puis stratégie à trois horizons et cadre de gouvernance. On cartographie la maturité IA département par département — administration, commercial, marketing, direction — pour savoir où l'IA produit vite. Puis on met les équipes en production sur leurs vrais outils, atelier par atelier, métier par métier. Enfin, on laisse des guides et des assistants qui survivent au départ du consultant.
 
-Avant : une envie de « faire de l'IA » et un savoir-faire absent. Après : une transformation ancrée dans l'ordre juste — dirigeant cadré, équipes formées, outillage et autonomie en dernier. L'organisme dispose d'une stratégie écrite, d'équipes qui pratiquent au quotidien (les 2 jours étaient à 60 % de main sur le clavier) et de guides à 6 niveaux qui restent quand je pars. Il sait faire, désormais, ce qu'il ne savait pas faire : produire avec l'IA sans dépendre d'un prestataire.
+## Les assistants installés
 
-## La méthode
+Le cœur de la mission, ce sont les assistants et systèmes qui tournent encore aujourd'hui :
 
-L'accompagnement annuel bat la mission flash sur un point décisif : le temps de l'ancrage. Une formation isolée s'évapore en soixante-douze heures ; une intégration séquencée — diagnostic, dirigeant, équipes, autonomie — installe des pratiques qui survivent au consultant. Je ne délivre pas une prestation ponctuelle : j'installe un moyen de production IA et je m'assure qu'il tourne sans moi.
+- **Un assistant d'écriture pour les e-mails et les briefs**, et un copilote d'agenda branché sur l'environnement bureautique de la maison — les tâches chronophages du dirigeant (rédiger, préparer une réunion, synthétiser) passent de plusieurs dizaines de minutes à quelques-unes.
+- **Un assistant rédactionnel calé sur la charte éditoriale**, pensé pour la nouvelle donne du référencement : produire des contenus pertinents qui existent aussi dans les moteurs de réponse IA, et non des textes en série qui se font sanctionner.
+- **Un assistant de veille automatisée** qui remonte l'état d'un marché ou d'un concurrent avec des sources vérifiables, pour nourrir les décisions.
+- **Un guide d'autonomie en six niveaux progressifs** pour brancher l'IA sur l'outil de gestion de projet de la maison : connecter, lire l'état des missions, créer, piloter d'une phrase ce qui prenait un quart d'heure de navigation, croiser les données pour produire un livrable, puis aller plus loin. À chaque palier : le prompt à copier, le résultat attendu, le piège à éviter.
+- **Deux stratégies écrites qui restent** : une stratégie IA d'ensemble et une stratégie de visibilité dans les moteurs de réponse IA (GEO). Un organisme de formation doit désormais être trouvable par les assistants qui conseillent ses futurs clients.
+
+## Ce qui a changé
+
+Avant : une envie de « faire de l'IA » et un savoir-faire absent. Après : une transformation ancrée dans le bon ordre — dirigeant cadré, équipes formées, outillage et autonomie en dernier. Le dirigeant a validé sa posture d'ambassadeur IA de la maison. Les équipes pratiquent au quotidien, sur leurs propres outils, atelier après atelier. Et les guides à six niveaux comme les assistants restent quand je pars.
+
+L'organisme sait faire, désormais, ce qu'il ne savait pas faire : produire avec l'IA sans dépendre d'un prestataire. C'est là que l'accompagnement annuel bat la mission flash — une formation isolée s'évapore en trois jours ; une intégration séquencée installe des pratiques qui survivent au consultant. Je ne délivre pas une prestation ponctuelle : j'installe un moyen de production IA et je m'assure qu'il tourne sans moi.

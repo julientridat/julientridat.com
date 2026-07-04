@@ -1,19 +1,19 @@
 ---
-title: "Un organisme Qualiopi passe d'une intuition à une offre IA prête à vendre"
+title: "Un organisme de formation Qualiopi qui lance son offre IA sur le bon segment"
 client: "Organisme de formation certifié Qualiopi (Gironde)"
 secteur: "Formation professionnelle"
 annee: 2026
 role: "Conception et intégration d'un moyen de production d'offre"
 stack: ["Étude de marché scorée", "Personas ICP", "Programmes Qualiopi", "Argumentaire prescripteurs"]
 besoin: "cadrer"
-enjeu: "Un organisme solide sur le management, mais zéro offre IA — et aucun moyen de décider par quel segment commencer, à quel prix, avec quel programme."
-transformation: "L'organisme lance une offre IA sur un segment scoré, avec deux programmes conformes prêts à commercialiser — et une méthode pour séquencer les suivants lui-même."
-pitch: "Un moyen de production d'offre installé dans l'organisme : du constat de marché à la vente. Trois segments notés, un verdict chiffré, deux programmes conformes Qualiopi et un argumentaire — l'organisme sait désormais fabriquer et lancer une offre sur des faits."
+enjeu: "Un organisme solide sur le management, l'envie de lancer une formation IA — mais aucun moyen de décider par quel segment commencer, à quel prix, avec quel programme."
+transformation: "L'organisme lance son offre IA sur un segment scoré 87/100, avec deux programmes conformes prêts à vendre — et la méthode de scoring pour ouvrir les segments suivants seul."
+pitch: "D'une envie d'« IA » à une offre lancée sur des faits : segment scoré 87/100, deux programmes conformes, et la méthode pour ouvrir les suivants seul."
 resultats:
   - chiffre: "87/100"
-    label: "le segment retenu, justifié par un score"
+    label: "le segment retenu, tranché par un score"
   - chiffre: "2"
-    label: "programmes conformes, prêts à vendre"
+    label: "programmes conformes, prêts à commercialiser"
   - chiffre: "3"
     label: "segments passés au crible de 5 critères"
 visuel:
@@ -26,24 +26,29 @@ published: true
 sortOrder: 4
 ---
 
-## L'enjeu
+## Le point de départ
 
-L'organisme est certifié Qualiopi, solide sur le management et la performance opérationnelle, et veut lancer une offre de formation IA inter-entreprises sur son bassin. La question n'était pas « faut-il y aller ». C'était « par quel segment commencer, avec quel programme, à quel prix, et pourquoi celui-là ». Autrement dit : il manquait la capacité de fabriquer une offre sur des faits plutôt que sur une intuition. Le modèle de collaboration était clair — l'organisme porte la certification et les financements, j'apporte l'expertise IA et l'ingénierie de l'offre.
+L'organisme est certifié Qualiopi, solide sur le management et la performance opérationnelle, porté par un dirigeant qui a passé vingt ans sur le terrain. Il veut lancer une offre de formation IA en présentiel sur son bassin. La question n'était pas « faut-il y aller » — le marché local est mûr : un tiers des dirigeants de TPE-PME utilisent déjà l'IA, mais les trois quarts ne trouvent pas de cas d'usage concrets pour leur métier. L'envie était là, la certification aussi, les financements aussi.
 
-## Ce que j'ai mis en place
+Ce qui manquait, c'était le moyen de trancher. Par quel segment commencer ? À quel prix ? Avec quel programme ? Et surtout : pourquoi celui-là plutôt qu'un autre. Trois cibles étaient en concurrence — les dirigeants, les commerciaux, les métiers du marketing. Sans méthode, c'était le piège classique : lancer une offre généraliste qui ne remplit jamais. Le modèle de collaboration était clair dès le départ : l'organisme porte la certification et les financements, j'apporte l'expertise IA et l'ingénierie de l'offre.
 
-Je n'ai pas rendu une étude. J'ai installé une chaîne complète, de l'analyse de marché à l'offre vendable, que l'organisme peut rejouer sur ses segments suivants :
+## La méthode, sur le terrain
 
-- **Une analyse stratégique en six blocs** : problématiques du marché, proposition de valeur, quatre personas acheteurs avec objections et canaux, analyse concurrentielle (grands organismes nationaux, acteurs locaux, consultants indépendants), leaders d'opinion, synthèse.
-- **Un datasheet opérationnel en douze blocs** : canaux d'acquisition évalués, jobs-to-be-done, cadre légal (Qualiopi, RGPD, référent handicap), frictions, messaging rédigé par persona.
-- **Une machine à décider le segment** : trois cibles (dirigeants, commerciaux, marketing) passées dans une grille à cinq critères pondérés — taille du bassin, urgence perçue, vitesse de remplissage, financements mobilisables, ROI immédiat. Verdict chiffré : le segment dirigeants de TPE/PME sort à 87/100 et devient la priorité de lancement, les deux autres séquencés derrière. Seuil de rentabilité par session calculé.
-- **Deux programmes conformes Qualiopi, prêts à vendre** : une journée de 7 heures chacun, objectifs évaluables, séquençage horodaté, critères d'évaluation des acquis, QCM final — l'un pour les dirigeants, l'autre pour les commerciaux, démonstrations chronométrées.
-- **Un argumentaire pour les prescripteurs** : pourquoi cette cible, en six raisons vérifiables (le décideur est le payeur et le stagiaire, financement mobilisable à 100 %, cycle d'inscription en 24-48 h…).
+Je n'ai pas rendu une étude qu'on lit une fois et qu'on range. J'ai observé le marché local avant d'écrire la moindre ligne de programme, puis j'ai installé une chaîne complète — de l'analyse à l'offre vendable — que l'organisme peut rejouer seul sur ses segments suivants.
 
-## La transformation
+D'abord le terrain : cadrer le marché de la formation IA sur le bassin, chiffrer l'adoption réelle, repérer les concurrents présents localement et le créneau qu'aucun n'occupait. Ensuite, construire l'outil de décision : une grille à cinq critères pondérés — taille du bassin finançable, urgence perçue par la cible, vitesse de remplissage d'une session, financements mobilisables, retour sur investissement dès le lendemain. Chaque segment y passe, note par note. Puis fabriquer l'offre gagnante, dans les règles Qualiopi. Enfin, transmettre la grille pour que l'organisme séquence les segments suivants sans moi.
 
-Avant : une envie de « faire de l'IA » et aucun moyen de trancher. Après : une offre lancée sur une décision documentée. L'organisme dispose d'un segment prioritaire justifié par un score de 87/100, de 2 programmes conformes prêts à commercialiser, et surtout d'une méthode de scoring qu'il peut rejouer seul pour ouvrir les segments suivants. La collaboration s'est prolongée en missions intra-entreprise et en webinaires sectoriels — signe que la capacité, une fois installée, appelle la production.
+## Les assistants installés
 
-## La méthode
+Le cœur de la mission, ce n'est pas un rapport — c'est un moyen de production d'offre qui reste dans la maison :
 
-Lancer une offre de formation IA n'est pas un sujet de contenu pédagogique — c'est d'abord un sujet de marché. Scorer les segments avant d'écrire le premier slide évite le piège de l'offre généraliste qui ne remplit jamais. Je n'écris pas des programmes à la commande : j'installe le moyen de décider quelle offre construire, puis de la construire — un moyen de production qui reste dans la maison.
+- **Une machine à décider le segment prioritaire.** Les trois cibles passées dans la grille à cinq critères. Verdict chiffré : le segment des dirigeants de TPE-PME sort à 87/100, contre 74 et 68 pour les deux autres. Il devient la priorité de lancement, les deux suivants séquencés derrière avec leur condition de départ. La raison est nette et vérifiable : le dirigeant décide seul, en 48 heures, sans circuit de validation ; son financement couvre la totalité du tarif ; et le réseau chaud permet de remplir une première session en quelques semaines.
+- **Une analyse stratégique et un datasheet opérationnel** qui cartographient tout le décor : problématiques du marché, personas acheteurs avec objections et canaux, concurrence locale, cadre légal, messages par cible. La matière première pour décider sur des faits, pas sur des impressions.
+- **Deux programmes conformes Qualiopi, prêts à vendre.** Une journée de sept heures chacun — l'un pour les dirigeants, l'autre pour les commerciaux : objectifs évaluables, séquençage horodaté heure par heure, grilles d'évaluation des acquis, QCM final, évaluation à froid à trente jours. Pas des maquettes : des offres commercialisables telles quelles.
+- **Un argumentaire pour les prescripteurs**, en six raisons vérifiables, qui explique pourquoi cette cible d'abord et donne à l'organisme et à ses relais un discours de vente solide.
+
+## Ce qui a changé
+
+Avant : une envie de « faire de l'IA » et rien pour décider. Après : une offre lancée sur une décision documentée. L'organisme dispose d'un segment prioritaire justifié par un score de 87/100, de deux programmes conformes prêts à commercialiser — et, surtout, d'une méthode de scoring qu'il rejoue seul pour ouvrir les segments suivants. Il ne me redemande pas « par où commencer » : il sait fabriquer et séquencer une offre.
+
+La suite l'a confirmé : la collaboration s'est prolongée en missions intra-entreprise et en webinaires sectoriels. Quand la capacité de production est installée, elle appelle la production. C'est là toute la différence entre livrer une étude et intégrer un moyen de décider qui tourne encore des mois après.

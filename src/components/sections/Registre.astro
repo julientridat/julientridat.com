@@ -29,18 +29,12 @@ const realisations = (await getCollection("realisations", ({ data }) => data.pub
       {realisations.map((r) => <RealisationCard entry={r} />)}
     </div>
 
-    <div class="mt-12 flex flex-wrap gap-x-10 gap-y-4">
+    <div class="mt-12">
       <a
         href="/realisations"
         class="inline-flex items-center gap-2 border-b border-lime pb-1 text-lg text-lime transition hover:gap-3"
       >
         → Tous les cas clients
-      </a>
-      <a
-        href="/capacites"
-        class="inline-flex items-center gap-2 border-b border-white/30 pb-1 text-lg text-white/80 transition hover:gap-3 hover:border-lime hover:text-lime"
-      >
-        → Les moyens de production que je déploie
       </a>
     </div>
   </div>

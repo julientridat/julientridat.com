@@ -78,19 +78,6 @@ const jsonLd = [
             </div>
           )}
         </div>
-        {d.demo && (
-          <div class="mt-8">
-            <a
-              href={d.demo.url}
-              target="_blank"
-              rel="noopener"
-              class="group inline-flex items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90"
-            >
-              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 text-base transition-transform group-hover:translate-x-0.5">→</span>
-              {d.demo.label}
-            </a>
-          </div>
-        )}
       </div>
     </header>
 
@@ -105,16 +92,6 @@ const jsonLd = [
           <div>
             <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Après — la transformation</div>
             <p class="mt-3 text-lg leading-relaxed text-white">{d.transformation}</p>
-          </div>
-        </div>
-      </section>
-    )}
-
-    {d.visuel && (
-      <section class="border-b border-white/10 px-6 pt-12 md:px-12">
-        <div class="mx-auto max-w-4xl">
-          <div class="overflow-hidden rounded-t-2xl border border-b-0 border-white/10">
-            <img src={d.visuel.src} alt={d.visuel.alt} width="1440" height="900" class="w-full" />
           </div>
         </div>
       </section>
@@ -139,6 +116,28 @@ const jsonLd = [
       <div class="prose-artefact mx-auto max-w-3xl">
         <Content />
       </div>
+
+      {d.visuel && (
+        <figure class="mx-auto mt-14 max-w-3xl border-t border-white/10 pt-10">
+          <figcaption class="mb-4 text-[11px] uppercase tracking-[0.2em] text-white/40">
+            Un aperçu — pour la preuve, pas pour la démonstration
+          </figcaption>
+          <div class="overflow-hidden rounded-xl border border-white/10">
+            {d.demo ? (
+              <a href={d.demo.url} target="_blank" rel="noopener" class="block">
+                <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-80 transition-opacity hover:opacity-100" />
+              </a>
+            ) : (
+              <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-80" />
+            )}
+          </div>
+          {d.demo && (
+            <a href={d.demo.url} target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-1.5 text-[13px] text-white/50 hover:text-lime">
+              {d.demo.label} <span>→</span>
+            </a>
+          )}
+        </figure>
+      )}
     </article>
 
     <section class="border-t border-white/10 px-6 py-16 md:px-12">
