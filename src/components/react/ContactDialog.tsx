@@ -3,6 +3,7 @@ import {
   CONTACT_EMAIL,
   SUPABASE_PUBLISHABLE_KEY,
   SUPABASE_URL,
+  WEB3FORMS_ACCESS_KEY,
 } from "@/lib/site";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
@@ -80,27 +81,46 @@ export default function ContactDialog() {
     if (Object.keys(errs).length > 0) return;
 
     setStatus("sending");
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/contact_messages`, {
-        method: "POST",
-        headers: {
-          apikey: SUPABASE_PUBLISHABLE_KEY,
-          Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
-          name: name.trim(),
-          email: email.trim(),
-          company: company.trim() || null,
-          message: message.trim(),
-        }),
-      });
-      if (!res.ok) throw new Error(`Supabase ${res.status}`);
-      setStatus("done");
-    } catch {
-      setStatus("error");
-    }
+
+    // Notification par email (Web3Forms → CONTACT_EMAIL).
+    const emailReq = fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `Nouveau message via julientridat.com — ${name.trim()}`,
+        from_name: "Formulaire julientridat.com",
+        replyto: email.trim(),
+        // champs affichés dans l'email
+        Nom: name.trim(),
+        Email: email.trim(),
+        Entreprise: company.trim() || "—",
+        Message: message.trim(),
+      }),
+    });
+
+    // Enregistrement (trace) dans Supabase.
+    const dbReq = fetch(`${SUPABASE_URL}/rest/v1/contact_messages`, {
+      method: "POST",
+      headers: {
+        apikey: SUPABASE_PUBLISHABLE_KEY,
+        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
+        "Content-Type": "application/json",
+        Prefer: "return=minimal",
+      },
+      body: JSON.stringify({
+        name: name.trim(),
+        email: email.trim(),
+        company: company.trim() || null,
+        message: message.trim(),
+      }),
+    });
+
+    const [emailRes, dbRes] = await Promise.allSettled([emailReq, dbReq]);
+    const ok = (r: PromiseSettledResult<Response>) =>
+      r.status === "fulfilled" && r.value.ok;
+    // Succès si l'email OU l'enregistrement passe ; échec seulement si les deux échouent.
+    setStatus(ok(emailRes) || ok(dbRes) ? "done" : "error");
   };
 
   if (!open) return null;
