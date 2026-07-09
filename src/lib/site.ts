@@ -7,6 +7,9 @@ export const SITE = {
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 
+/** Adresse de contact — repli du formulaire de message (mailto). */
+export const CONTACT_EMAIL = "julien.tridat@gmail.com";
+
 /** Google Calendar — page de prise de rendez-vous (identique au site d'origine). */
 export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
