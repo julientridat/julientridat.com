@@ -19,9 +19,9 @@ export const SCHEDULER_URL =
  * exposée dans le bundle JS du site en production). La sécurité repose sur la
  * politique RLS côté Supabase (insert-only, champs bornés).
  */
-export const SUPABASE_URL = "https://wvxjmafrdrmjmjwbzflg.supabase.co";
+export const SUPABASE_URL = "https://vizjvyuojwetalctdxer.supabase.co";
 export const SUPABASE_PUBLISHABLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Ind2eGptYWZyZHJtam1qd2J6ZmxnIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzg1NzA2NjgsImV4cCI6MjA5NDE0NjY2OH0.iY15DD29KAYHwresYH6dAUpWmF5tsJq5DXxltfcQDUU";
+  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpemp2eXVvandldGFsY3RkeGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MDM5MjksImV4cCI6MjA5OTE3OTkyOX0.hN-1EexqzaC9sXl1_U9jF53ipQ1_MQeLK3mmUsDnAgY";
 
 /** JSON-LD Person — injecté sur toutes les pages (Knowledge Graph / AEO). */
 export const PERSON_JSONLD = {
