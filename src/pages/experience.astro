@@ -1,0 +1,483 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { SITE } from "@/lib/site";
+
+const title = "L'expérience — l'IA au travail, sous vos yeux | Julien Tridat";
+const description =
+  "Une page qui se construit devant vous et s'adapte à votre profil : la démonstration vivante de ce que l'IA peut installer dans votre entreprise.";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "L'expérience — Julien Tridat",
+    description,
+    url: `${SITE.url}/experience`,
+    author: { "@id": `${SITE.url}/#julien-tridat` },
+  },
+];
+---
+
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/experience`} jsonLd={jsonLd}>
+  <main id="xp" class="bg-background text-foreground">
+
+    <!-- ============ ACTE 1 — LA PAGE SE GÉNÈRE ============ -->
+    <section id="xp-hero" class="relative isolate flex min-h-screen flex-col overflow-hidden" data-blueprint="Section hero — génération en direct">
+      <!-- Couches de profondeur : grille irrégulière + halos superposés -->
+      <svg class="pointer-events-none absolute inset-0 -z-30 h-full w-full opacity-[0.13]" aria-hidden="true">
+        <line x1="12%" y1="0" x2="9%" y2="100%" stroke="white" stroke-width="1" />
+        <line x1="34%" y1="0" x2="38%" y2="100%" stroke="white" stroke-width="1" />
+        <line x1="71%" y1="0" x2="66%" y2="100%" stroke="white" stroke-width="1" />
+        <line x1="90%" y1="0" x2="94%" y2="100%" stroke="white" stroke-width="1" />
+        <line x1="0" y1="28%" x2="100%" y2="24%" stroke="white" stroke-width="1" />
+        <line x1="0" y1="76%" x2="100%" y2="81%" stroke="white" stroke-width="1" />
+      </svg>
+      <div class="pointer-events-none absolute -left-40 top-1/4 -z-20 h-[480px] w-[480px] rounded-full bg-lime/15 blur-3xl" aria-hidden="true"></div>
+      <div class="pointer-events-none absolute -right-32 bottom-10 -z-20 h-[380px] w-[380px] rounded-full bg-lime/10 blur-3xl" aria-hidden="true"></div>
+      <div id="xp-spot" class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+
+      <nav class="flex items-center justify-between px-6 py-6 md:px-12 md:py-8">
+        <a href="/" class="flex items-center gap-3 text-[15px] font-medium tracking-tight">
+          <span class="grid grid-cols-3 gap-[2px]" style="width:18px;height:18px" aria-hidden="true">
+            {Array.from({ length: 9 }).map(() => <span class="block rounded-[2px] bg-lime" style="width:5px;height:5px" />)}
+          </span>
+          Julien Tridat
+        </a>
+        <div class="flex items-center gap-3">
+          <a href="/" class="hidden text-[13px] text-white/50 transition-colors hover:text-white sm:block">← Version classique</a>
+          <button type="button" data-open-contact class="cursor-pointer rounded-full bg-white px-5 py-2.5 text-[15px] font-medium text-black transition-colors hover:bg-white/90">
+            Contact
+          </button>
+        </div>
+      </nav>
+
+      <div class="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-16 md:px-12">
+        <!-- La console qui « génère » la page -->
+        <div class="mb-8 inline-flex w-fit items-center gap-3 rounded-full border border-lime/30 bg-black/40 px-4 py-2 font-mono text-[12px] text-lime/90 backdrop-blur-sm">
+          <span class="relative flex h-2 w-2">
+            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60"></span>
+            <span class="relative inline-flex h-2 w-2 rounded-full bg-lime"></span>
+          </span>
+          <span id="xp-console" aria-live="polite">initialisation…</span>
+        </div>
+
+        <h1 class="max-w-[1000px] text-[clamp(2.6rem,7.5vw,6.5rem)] font-light leading-[0.98] tracking-[-0.04em]">
+          <span class="xp-line block overflow-hidden"><span class="xp-word">Cette page</span></span>
+          <span class="xp-line block overflow-hidden"><span class="xp-word">se construit <em class="font-normal text-lime">pour vous,</em></span></span>
+          <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">maintenant.</em></span></span>
+        </h1>
+
+        <p class="xp-fade mt-8 max-w-xl text-lg leading-relaxed text-white/70">
+          Comme votre entreprise quand j'y installe l'IA : elle observe, s'adapte, produit.
+          Dites-lui qui vous êtes — <strong class="font-medium text-white">et regardez-la travailler.</strong>
+        </p>
+
+        <div class="xp-fade mt-10 inline-flex items-center gap-2 text-xs text-white/45">
+          Faites défiler pour voir la suite <span class="text-lime">↓</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACTE 2 — LA PAGE S'ADAPTE À VOUS ============ -->
+    <section class="relative border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Section profil — personnalisation en direct">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+          <span class="h-px w-6 bg-lime"></span> Acte 1 — elle s'adapte
+        </div>
+        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Qui êtes-vous ? <em class="text-lime">La page se reconfigure.</em>
+        </h2>
+
+        <div class="mt-12 grid gap-4 sm:grid-cols-3" role="group" aria-label="Choisissez votre profil">
+          <button type="button" class="xp-profil cursor-pointer rounded-2xl border border-white/15 p-6 text-left transition-all hover:border-lime/60" data-profil="dirigeant">
+            <div class="text-3xl" aria-hidden="true">◆</div>
+            <div class="mt-4 text-lg font-medium">Dirigeant de TPE/PME</div>
+            <p class="mt-2 text-sm text-white/60">Votre temps part dans l'administratif et le commercial.</p>
+          </button>
+          <button type="button" class="xp-profil cursor-pointer rounded-2xl border border-white/15 p-6 text-left transition-all hover:border-lime/60" data-profil="marketing">
+            <div class="text-3xl" aria-hidden="true">◈</div>
+            <div class="mt-4 text-lg font-medium">Équipe marketing</div>
+            <p class="mt-2 text-sm text-white/60">Produire plus de contenus, sans casser la marque.</p>
+          </button>
+          <button type="button" class="xp-profil cursor-pointer rounded-2xl border border-white/15 p-6 text-left transition-all hover:border-lime/60" data-profil="agence">
+            <div class="text-3xl" aria-hidden="true">◇</div>
+            <div class="mt-4 text-lg font-medium">Agence / cabinet</div>
+            <p class="mt-2 text-sm text-white/60">Vos experts perdent des heures en production répétitive.</p>
+          </button>
+        </div>
+
+        <!-- Zone reconfigurée en direct — cartes en superposition, débordement volontaire -->
+        <div id="xp-perso" class="relative mt-16 opacity-40 transition-opacity duration-500" aria-live="polite">
+          <div class="pointer-events-none absolute -right-8 -top-10 hidden rotate-2 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3 font-mono text-[11px] text-white/40 backdrop-blur-sm lg:block" aria-hidden="true">
+            profil = <span id="xp-perso-tag" class="text-lime">en attente…</span>
+          </div>
+          <div class="grid gap-5 md:grid-cols-[1.2fr_1fr]">
+            <div class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-8">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Ce que je vous installe</div>
+              <h3 id="xp-perso-titre" class="mt-4 text-2xl font-medium leading-snug">Choisissez un profil ci-dessus…</h3>
+              <ul id="xp-perso-liste" class="mt-5 space-y-3 text-[15px] text-white/75"></ul>
+            </div>
+            <div class="flex flex-col gap-5">
+              <div class="rounded-2xl border border-white/12 bg-white/[0.02] p-6">
+                <div class="text-[11px] uppercase tracking-[0.22em] text-white/45">Gain démontré en mission</div>
+                <div class="mt-3 flex items-baseline gap-3">
+                  <span id="xp-perso-avant" class="text-lg text-white/40 line-through decoration-white/25">—</span>
+                  <span class="text-lime">→</span>
+                  <span id="xp-perso-apres" class="text-4xl font-light text-lime">—</span>
+                </div>
+                <div id="xp-perso-tache" class="mt-2 text-sm text-white/60">—</div>
+              </div>
+              <a id="xp-perso-cas" href="/realisations" class="group flex items-center justify-between rounded-2xl border border-white/12 p-6 transition-colors hover:border-lime/60">
+                <span class="text-sm text-white/70">Le cas client qui le prouve</span>
+                <span class="text-lime transition-transform group-hover:translate-x-0.5">→</span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACTE 3 — CHIFFRES VIVANTS ============ -->
+    <section class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Section chiffres — compteurs animés">
+      <div class="pointer-events-none absolute -right-24 -top-24 h-[360px] w-[360px] rounded-full bg-lime/10 blur-3xl" aria-hidden="true"></div>
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+          <span class="h-px w-6 bg-lime"></span> Acte 2 — elle compte
+        </div>
+        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Le temps que les assistants <em class="text-lime">rendent aux équipes.</em>
+        </h2>
+        <p class="mt-4 max-w-xl text-white/60">Chiffres cités dans mes supports de mission — regardez-les se recalculer.</p>
+
+        <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-3">
+          <div class="bg-[oklch(0.17_0_0)] p-8">
+            <div class="text-sm text-white/60">Une proposition commerciale</div>
+            <div class="mt-3 text-4xl font-light text-lime"><span class="xp-count" data-from="180" data-to="30" data-suffix=" min">180 min</span></div>
+            <div class="mt-1 text-xs text-white/40">au lieu de 2 à 3 heures</div>
+          </div>
+          <div class="bg-[oklch(0.17_0_0)] p-8">
+            <div class="text-sm text-white/60">Un email de prospection ciblé</div>
+            <div class="mt-3 text-4xl font-light text-lime"><span class="xp-count" data-from="45" data-to="4" data-suffix=" min">45 min</span></div>
+            <div class="mt-1 text-xs text-white/40">au lieu de 45 minutes</div>
+          </div>
+          <div class="bg-[oklch(0.17_0_0)] p-8">
+            <div class="text-sm text-white/60">Un compte-rendu de visite</div>
+            <div class="mt-3 text-4xl font-light text-lime"><span class="xp-count" data-from="30" data-to="0.5" data-suffix=" min" data-final="30 s">30 min</span></div>
+            <div class="mt-1 text-xs text-white/40">au lieu de 30 minutes</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACTE 4 — LA MÉTHODE SE DESSINE ============ -->
+    <section class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Section méthode — scrollytelling">
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+          <span class="h-px w-6 bg-lime"></span> Acte 3 — elle suit une méthode
+        </div>
+        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Rien de magique : <em class="text-lime">une méthode qui se déroule.</em>
+        </h2>
+
+        <div class="relative mt-16 md:pl-10">
+          <div class="absolute bottom-0 left-[7px] top-0 hidden w-px bg-white/10 md:block" aria-hidden="true">
+            <div id="xp-ligne" class="w-px origin-top bg-lime transition-transform duration-200" style="height:100%; transform: scaleY(0)"></div>
+          </div>
+          {[
+            ["Observer", "Vos vraies journées, pas un questionnaire générique. Là où le temps part vraiment."],
+            ["Construire", "Des assistants calibrés sur votre métier, votre charte, vos données — dans vos outils."],
+            ["Déployer", "Par vagues : les premiers assistants tournent dès la semaine 3, pas à la fin du projet."],
+            ["Former", "Vos équipes deviennent autonomes. Ce que je livre tourne encore des mois après mon départ."],
+          ].map(([titre, texte], i) => (
+            <div class="xp-etape relative border-b border-white/10 py-10 opacity-30 transition-all duration-700 last:border-b-0 md:pl-8" data-etape={i}>
+              <div class="absolute -left-10 top-11 hidden h-4 w-4 rounded-full border border-lime/50 bg-background transition-colors md:block" aria-hidden="true"></div>
+              <div class="grid gap-4 md:grid-cols-[220px_1fr] md:items-baseline">
+                <div class="flex items-baseline gap-4">
+                  <span class="font-mono text-sm text-lime">0{i + 1}</span>
+                  <h3 class="text-2xl font-medium">{titre}</h3>
+                </div>
+                <p class="max-w-xl text-white/65">{texte}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACTE 5 — DIAGNOSTIC EN DIRECT ============ -->
+    <section class="relative border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Section diagnostic — outil interactif">
+      <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-start">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> Acte 4 — elle vous répond
+          </div>
+          <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+            Une tâche vous pèse ? <em class="text-lime">Testez-la ici.</em>
+          </h2>
+          <p class="mt-5 max-w-md text-white/65">
+            Trois curseurs, un verdict. C'est l'outil que j'utilise en session stratégique avec les
+            dirigeants — en version réduite, directement dans la page.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-white/12 bg-background/60 p-7 backdrop-blur-sm md:p-9">
+          {[
+            ["freq", "Cette tâche revient…", "rarement", "plusieurs fois par jour"],
+            ["simple", "Elle est…", "pleine d'exceptions", "toujours pareille"],
+            ["data", "Les infos nécessaires sont…", "éparpillées", "centralisées"],
+          ].map(([id, q, lo, hi]) => (
+            <div class="mb-7 last:mb-0">
+              <div class="flex items-baseline justify-between gap-4">
+                <label for={`xp-${id}`} class="text-[15px] font-medium">{q}</label>
+              </div>
+              <input type="range" id={`xp-${id}`} class="xp-slider mt-3 w-full" min="1" max="5" step="1" value="3" />
+              <div class="mt-1.5 flex justify-between text-[11px] text-white/40">
+                <span>{lo}</span><span>{hi}</span>
+              </div>
+            </div>
+          ))}
+          <div class="mt-8 rounded-xl border border-lime/25 bg-lime/[0.05] p-5">
+            <div class="text-[10px] uppercase tracking-[0.2em] text-lime/80">Verdict en direct</div>
+            <p id="xp-verdict" class="mt-2 text-[15px] leading-relaxed text-white/85">
+              Bougez les curseurs — le verdict se met à jour à chaque geste.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ ACTE 6 — SOUS LE CAPOT + FINAL ============ -->
+    <section class="relative overflow-hidden border-t border-white/10 px-6 py-28 md:px-12 md:py-40" data-blueprint="Section finale — appel à l'action">
+      <div class="pointer-events-none absolute inset-0 -z-10" style="background: radial-gradient(700px 400px at 50% 0%, oklch(0.92 0.21 125 / 0.10), transparent 70%);" aria-hidden="true"></div>
+      <div class="mx-auto max-w-4xl text-center">
+        <div class="mb-6 text-[11px] uppercase tracking-[0.22em] text-lime">Dernier acte — elle se laisse démonter</div>
+        <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
+          Tout ce que vous venez de voir <em class="text-lime">est un système.</em>
+        </h2>
+        <p class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
+          Pas de studio, pas d'agence : cette page a été conçue et construite avec l'IA, comme les
+          assistants que j'installe chez mes clients. La preuve — regardez sa structure.
+        </p>
+        <div class="mt-8">
+          <button type="button" id="xp-blueprint" class="cursor-pointer rounded-full border border-white/25 px-6 py-3 font-mono text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime" aria-pressed="false">
+            [ révéler la structure ]
+          </button>
+        </div>
+        <div class="mt-14 flex flex-wrap items-center justify-center gap-4">
+          <button type="button" data-open-booking class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
+            <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
+            Installons ça chez vous — audit 30 min
+          </button>
+          <a href="/realisations" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
+            Voir les cas clients
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <footer class="border-t border-white/10 px-6 py-10 text-center text-xs text-white/40 md:px-12">
+      © 2026 Julien Tridat — Bordeaux · <a href="/" class="hover:text-white">Version classique du site</a>
+    </footer>
+  </main>
+
+  <style is:global>
+    /* Curseurs (sliders) à la charte */
+    .xp-slider { -webkit-appearance: none; appearance: none; height: 4px; border-radius: 999px; background: rgba(255,255,255,.15); outline: none; }
+    .xp-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: oklch(0.92 0.21 125); cursor: pointer; border: 3px solid oklch(0.145 0 0); box-shadow: 0 0 0 1px oklch(0.92 0.21 125 / .5); }
+    .xp-slider::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: oklch(0.92 0.21 125); cursor: pointer; border: 3px solid oklch(0.145 0 0); }
+
+    /* Apparition du hero */
+    .xp-word { display: inline-block; transform: translateY(110%); animation: xp-rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
+    .xp-line:nth-child(2) .xp-word { animation-delay: .18s; }
+    .xp-line:nth-child(3) .xp-word { animation-delay: .36s; }
+    .xp-fade { opacity: 0; animation: xp-in .8s ease .7s forwards; }
+    @keyframes xp-rise { to { transform: translateY(0); } }
+    @keyframes xp-in { to { opacity: 1; } }
+
+    /* Étapes de la méthode */
+    .xp-etape.is-on { opacity: 1; }
+    .xp-etape.is-on > div[aria-hidden] { background: oklch(0.92 0.21 125); border-color: oklch(0.92 0.21 125); }
+
+    /* Profil sélectionné */
+    .xp-profil[aria-pressed="true"] { border-color: oklch(0.92 0.21 125); background: oklch(0.92 0.21 125 / .06); }
+
+    /* Mode blueprint : la page révèle sa structure */
+    .xp-reveal [data-blueprint] { outline: 1px dashed oklch(0.92 0.21 125 / .55); outline-offset: -8px; position: relative; }
+    .xp-reveal [data-blueprint]::after { content: attr(data-blueprint); position: absolute; top: 10px; left: 10px; z-index: 40; font-family: ui-monospace, monospace; font-size: 11px; color: oklch(0.92 0.21 125); background: oklch(0.145 0 0 / .9); border: 1px solid oklch(0.92 0.21 125 / .4); padding: 4px 10px; border-radius: 999px; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .xp-word { transform: none; animation: none; }
+      .xp-fade { opacity: 1; animation: none; }
+      .xp-etape { opacity: 1 !important; transition: none; }
+    }
+  </style>
+
+  <script>
+    // ————— Console du hero : la page « se génère »
+    const consoleEl = document.getElementById("xp-console");
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const steps = [
+      "initialisation…",
+      "analyse du contexte visiteur…",
+      "chargement de la méthode…",
+      "assemblage des sections…",
+      "page générée — à vous de jouer.",
+    ];
+    if (consoleEl) {
+      if (reduced) {
+        consoleEl.textContent = steps[steps.length - 1];
+      } else {
+        let i = 0;
+        const tick = () => {
+          consoleEl.textContent = steps[i];
+          i += 1;
+          if (i < steps.length) setTimeout(tick, i === 1 ? 500 : 700);
+        };
+        tick();
+      }
+    }
+
+    // ————— Halo qui suit le pointeur (hero uniquement, désactivé en reduced-motion / tactile)
+    const spot = document.getElementById("xp-spot");
+    const hero = document.getElementById("xp-hero");
+    if (spot && hero && !reduced && window.matchMedia("(pointer: fine)").matches) {
+      hero.addEventListener("pointermove", (e) => {
+        const r = hero.getBoundingClientRect();
+        const x = ((e.clientX - r.left) / r.width) * 100;
+        const y = ((e.clientY - r.top) / r.height) * 100;
+        spot.style.background = `radial-gradient(420px 300px at ${x}% ${y}%, oklch(0.92 0.21 125 / 0.07), transparent 70%)`;
+      });
+    }
+
+    // ————— Profils : la page se reconfigure
+    const PROFILS = {
+      dirigeant: {
+        tag: "dirigeant_tpe_pme",
+        titre: "Vos assistants de dirigeant, dans vos outils",
+        liste: [
+          "Propositions commerciales et devis générés sur votre trame",
+          "Relances clients et suivi des impayés, personnalisés",
+          "Veille et synthèses pour décider plus vite",
+        ],
+        avant: "2 à 3 h", apres: "30 min", tache: "pour une proposition commerciale complète",
+        cas: "/realisations/formation-club-affaires",
+      },
+      marketing: {
+        tag: "equipe_marketing",
+        titre: "Votre chaîne de production de contenus, conforme à la marque",
+        liste: [
+          "Visuels chartés générés en langage naturel, au pixel près",
+          "Séries de campagne déclinées en minutes",
+          "Reporting narratif : les chiffres racontés chaque mois",
+        ],
+        avant: "aller-retour prestataire", apres: "minutes", tache: "pour un visuel conforme, produit en interne",
+        cas: "/realisations/design-system-franchise-fitness",
+      },
+      agence: {
+        tag: "agence_cabinet",
+        titre: "Des assistants par pôle, calés sur vos exigences métier",
+        liste: [
+          "Premiers jets sourcés — vos règles de validation encodées",
+          "Plannings et livrables au standard maison, générés",
+          "Un assistant par pôle, qui tourne après mon départ",
+        ],
+        avant: "1h30 / jour perdue", apres: "récupérée", tache: "par utilisateur régulier, mesuré en mission",
+        cas: "/realisations/formation-ia-agence-sante",
+      },
+    };
+    const persoZone = document.getElementById("xp-perso");
+    document.querySelectorAll(".xp-profil").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".xp-profil").forEach((b) => b.setAttribute("aria-pressed", "false"));
+        btn.setAttribute("aria-pressed", "true");
+        const p = PROFILS[btn.dataset.profil];
+        if (!p || !persoZone) return;
+        persoZone.style.opacity = "0.2";
+        setTimeout(() => {
+          document.getElementById("xp-perso-tag").textContent = p.tag;
+          document.getElementById("xp-perso-titre").textContent = p.titre;
+          document.getElementById("xp-perso-liste").innerHTML = p.liste
+            .map((l) => `<li class="flex gap-2"><span class="text-lime">+</span><span>${l}</span></li>`)
+            .join("");
+          document.getElementById("xp-perso-avant").textContent = p.avant;
+          document.getElementById("xp-perso-apres").textContent = p.apres;
+          document.getElementById("xp-perso-tache").textContent = p.tache;
+          document.getElementById("xp-perso-cas").setAttribute("href", p.cas);
+          persoZone.style.opacity = "1";
+        }, reduced ? 0 : 220);
+      });
+    });
+
+    // ————— Compteurs animés (avant → après)
+    const animateCount = (el) => {
+      const from = parseFloat(el.dataset.from);
+      const to = parseFloat(el.dataset.to);
+      const suffix = el.dataset.suffix || "";
+      const final = el.dataset.final;
+      if (reduced) { el.textContent = final || `${to}${suffix}`; return; }
+      const t0 = performance.now();
+      const dur = 1600;
+      const step = (t) => {
+        const k = Math.min((t - t0) / dur, 1);
+        const eased = 1 - Math.pow(1 - k, 3);
+        const val = from + (to - from) * eased;
+        el.textContent = val >= 10 ? `${Math.round(val)}${suffix}` : `${val.toFixed(1)}${suffix}`;
+        if (k < 1) requestAnimationFrame(step);
+        else if (final) el.textContent = final;
+      };
+      requestAnimationFrame(step);
+    };
+    const seen = new WeakSet();
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting && !seen.has(e.target)) {
+          seen.add(e.target);
+          animateCount(e.target);
+        }
+      });
+    }, { threshold: 0.6 });
+    document.querySelectorAll(".xp-count").forEach((el) => io.observe(el));
+
+    // ————— Méthode : étapes + ligne qui se dessine au scroll
+    const etapes = [...document.querySelectorAll(".xp-etape")];
+    const ligne = document.getElementById("xp-ligne");
+    const ioEtapes = new IntersectionObserver((entries) => {
+      entries.forEach((e) => {
+        if (e.isIntersecting) {
+          e.target.classList.add("is-on");
+          const done = etapes.filter((x) => x.classList.contains("is-on")).length;
+          if (ligne) ligne.style.transform = `scaleY(${done / etapes.length})`;
+        }
+      });
+    }, { threshold: 0.5 });
+    etapes.forEach((el) => ioEtapes.observe(el));
+
+    // ————— Diagnostic en direct
+    const sliders = ["xp-freq", "xp-simple", "xp-data"].map((id) => document.getElementById(id));
+    const verdictEl = document.getElementById("xp-verdict");
+    const verdict = () => {
+      if (!verdictEl || sliders.some((s) => !s)) return;
+      const [f, s, d] = sliders.map((x) => parseInt(x.value, 10));
+      const total = f + s + d;
+      let msg;
+      if (total >= 12) msg = "Profil idéal : fréquente, cadrée, données accessibles. Un assistant peut être en production en 2 à 3 semaines — c'est exactement le genre de victoire rapide par laquelle on commence.";
+      else if (total >= 9) msg = d <= 2
+        ? "Bon potentiel, mais vos données éparpillées sont le verrou : on les centralise d'abord — ce travail paie même sans IA — puis l'assistant devient fiable."
+        : "Bon candidat, avec un point à cadrer. En audit, on isole le verrou et on décide : le lever, ou commencer par une tâche mieux profilée.";
+      else if (total >= 6) msg = "Profil mitigé : automatiser coûterait plus que ça ne rapporte aujourd'hui. Pas « non » — « pas en premier ». D'autres tâches de votre quotidien feront de bien meilleures premières victoires.";
+      else msg = "Cette tâche relève sans doute du jugement plus que de la production : l'IA peut la préparer (synthèses, options), pas l'exécuter. Et c'est très bien comme ça.";
+      verdictEl.textContent = msg;
+    };
+    sliders.forEach((s) => s && s.addEventListener("input", verdict));
+
+    // ————— Mode blueprint : révéler la structure
+    const bp = document.getElementById("xp-blueprint");
+    if (bp) {
+      bp.addEventListener("click", () => {
+        const on = document.documentElement.classList.toggle("xp-reveal");
+        bp.setAttribute("aria-pressed", String(on));
+        bp.textContent = on ? "[ masquer la structure ]" : "[ révéler la structure ]";
+      });
+    }
+  </script>
+</BaseLayout>
