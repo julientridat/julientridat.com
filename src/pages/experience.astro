@@ -2,9 +2,9 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { SITE } from "@/lib/site";
 
-const title = "L'expérience — l'IA au travail, sous vos yeux | Julien Tridat";
+const title = "L'expérience — une IA au travail, en direct | Julien Tridat";
 const description =
-  "Une page qui se construit devant vous et s'adapte à votre profil : la démonstration vivante de ce que l'IA peut installer dans votre entreprise.";
+  "Quiz de maturité, générateur de scénarios pour votre métier, assistant de qualification : cette page embarque une vraie IA qui vous répond en direct.";
 
 const jsonLd = [
   {
@@ -16,25 +16,56 @@ const jsonLd = [
     author: { "@id": `${SITE.url}/#julien-tridat` },
   },
 ];
+
+const QUIZ = [
+  {
+    q: "Votre équipe, c'est…",
+    options: ["Moi, seul(e)", "2 à 10 personnes", "11 à 50 personnes", "Plus de 50"],
+    cle: "Taille d'équipe",
+  },
+  {
+    q: "Le temps part surtout dans…",
+    options: ["Devis & propositions", "Relances & suivi client", "Administratif & saisie", "Contenus & communication"],
+    cle: "Où part le temps",
+  },
+  {
+    q: "Vos informations (clients, prix, documents) sont…",
+    options: ["Dans ma tête", "Éparpillées (mails, Excel, papier)", "Centralisées dans un outil"],
+    cle: "État des données",
+  },
+  {
+    q: "L'IA, aujourd'hui, chez vous…",
+    options: ["Jamais testée", "Testée, sans suite", "Utilisée de temps en temps", "Déjà dans nos process"],
+    cle: "Usage actuel de l'IA",
+  },
+  {
+    q: "Votre objectif n°1 :",
+    options: ["Gagner du temps", "Vendre plus", "Réduire les erreurs", "Rendre l'équipe autonome"],
+    cle: "Objectif prioritaire",
+  },
+];
+
+const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière", "Restaurant", "Cabinet d'avocats", "E-commerce"];
 ---
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/experience`} jsonLd={jsonLd}>
   <main id="xp" class="bg-background text-foreground">
-
-    <!-- ============ ACTE 1 — LA PAGE SE GÉNÈRE ============ -->
-    <section id="xp-hero" class="relative isolate flex min-h-screen flex-col overflow-hidden" data-blueprint="Section hero — génération en direct">
-      <!-- Couches de profondeur : grille irrégulière + halos superposés -->
-      <svg class="pointer-events-none absolute inset-0 -z-30 h-full w-full opacity-[0.13]" aria-hidden="true">
-        <line x1="12%" y1="0" x2="9%" y2="100%" stroke="white" stroke-width="1" />
-        <line x1="34%" y1="0" x2="38%" y2="100%" stroke="white" stroke-width="1" />
-        <line x1="71%" y1="0" x2="66%" y2="100%" stroke="white" stroke-width="1" />
-        <line x1="90%" y1="0" x2="94%" y2="100%" stroke="white" stroke-width="1" />
-        <line x1="0" y1="28%" x2="100%" y2="24%" stroke="white" stroke-width="1" />
-        <line x1="0" y1="76%" x2="100%" y2="81%" stroke="white" stroke-width="1" />
-      </svg>
-      <div class="pointer-events-none absolute -left-40 top-1/4 -z-20 h-[480px] w-[480px] rounded-full bg-lime/15 blur-3xl" aria-hidden="true"></div>
-      <div class="pointer-events-none absolute -right-32 bottom-10 -z-20 h-[380px] w-[380px] rounded-full bg-lime/10 blur-3xl" aria-hidden="true"></div>
-      <div id="xp-spot" class="pointer-events-none absolute inset-0 -z-10" aria-hidden="true"></div>
+    <!-- ═════════ HERO — profondeur de champ + moteur réel ═════════ -->
+    <section id="xp-hero" class="relative isolate flex min-h-screen flex-col overflow-hidden" style="perspective: 900px" data-blueprint="Hero — état du moteur IA en direct">
+      <!-- Couches de profondeur (parallaxe + flou croissant vers l'arrière) -->
+      <canvas id="xp-canvas" class="pointer-events-none absolute inset-0 -z-40 h-full w-full" aria-hidden="true"></canvas>
+      <div class="xp-depth pointer-events-none absolute inset-0 -z-30" data-depth="0.12" aria-hidden="true">
+        <svg class="h-full w-full opacity-[0.10]" style="filter: blur(1.5px)">
+          <line x1="12%" y1="0" x2="8%" y2="100%" stroke="white" stroke-width="1" />
+          <line x1="36%" y1="0" x2="40%" y2="100%" stroke="white" stroke-width="1" />
+          <line x1="72%" y1="0" x2="66%" y2="100%" stroke="white" stroke-width="1" />
+          <line x1="0" y1="30%" x2="100%" y2="25%" stroke="white" stroke-width="1" />
+          <line x1="0" y1="74%" x2="100%" y2="80%" stroke="white" stroke-width="1" />
+        </svg>
+      </div>
+      <div class="xp-depth pointer-events-none absolute -left-44 top-1/4 -z-20 h-[520px] w-[520px] rounded-full bg-lime/15 blur-3xl" data-depth="0.35" aria-hidden="true"></div>
+      <div class="xp-depth pointer-events-none absolute -right-36 bottom-8 -z-20 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.55" aria-hidden="true"></div>
+      <div class="xp-depth pointer-events-none absolute left-1/2 top-12 -z-20 h-[260px] w-[260px] rounded-full bg-white/[0.04] blur-2xl" data-depth="0.8" aria-hidden="true"></div>
 
       <nav class="flex items-center justify-between px-6 py-6 md:px-12 md:py-8">
         <a href="/" class="flex items-center gap-3 text-[15px] font-medium tracking-tight">
@@ -52,213 +83,207 @@ const jsonLd = [
       </nav>
 
       <div class="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-16 md:px-12">
-        <!-- La console qui « génère » la page -->
         <div class="mb-8 inline-flex w-fit items-center gap-3 rounded-full border border-lime/30 bg-black/40 px-4 py-2 font-mono text-[12px] text-lime/90 backdrop-blur-sm">
           <span class="relative flex h-2 w-2">
-            <span class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60"></span>
-            <span class="relative inline-flex h-2 w-2 rounded-full bg-lime"></span>
+            <span id="xp-led-ping" class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60"></span>
+            <span id="xp-led" class="relative inline-flex h-2 w-2 rounded-full bg-lime"></span>
           </span>
           <span id="xp-console" aria-live="polite">initialisation…</span>
         </div>
 
-        <h1 class="max-w-[1000px] text-[clamp(2.6rem,7.5vw,6.5rem)] font-light leading-[0.98] tracking-[-0.04em]">
-          <span class="xp-line block overflow-hidden"><span class="xp-word">Cette page</span></span>
-          <span class="xp-line block overflow-hidden"><span class="xp-word">se construit <em class="font-normal text-lime">pour vous,</em></span></span>
-          <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">maintenant.</em></span></span>
+        <h1 class="max-w-[1050px] text-[clamp(2.5rem,7vw,6.2rem)] font-light leading-[0.98] tracking-[-0.04em]">
+          <span class="xp-line block overflow-hidden"><span class="xp-word">Cette page ne parle</span></span>
+          <span class="xp-line block overflow-hidden"><span class="xp-word">pas d'IA. <em class="font-normal text-lime">Elle pense,</em></span></span>
+          <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">là, maintenant.</em></span></span>
         </h1>
 
         <p class="xp-fade mt-8 max-w-xl text-lg leading-relaxed text-white/70">
-          Comme votre entreprise quand j'y installe l'IA : elle observe, s'adapte, produit.
-          Dites-lui qui vous êtes — <strong class="font-medium text-white">et regardez-la travailler.</strong>
+          Trois expériences, une vraie IA branchée derrière — celle que j'installe dans les entreprises.
+          Répondez-lui : <strong class="font-medium text-white">tout ce qu'elle écrit ici est généré pour vous, en direct.</strong>
         </p>
 
-        <div class="xp-fade mt-10 inline-flex items-center gap-2 text-xs text-white/45">
-          Faites défiler pour voir la suite <span class="text-lime">↓</span>
+        <div class="xp-fade mt-10 flex flex-wrap items-center gap-4">
+          <a href="#xp-quiz" class="group inline-flex items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
+            <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-y-0.5">↓</span>
+            Commencer — 5 questions
+          </a>
+          <span class="text-xs text-white/45">2 minutes, aucune donnée stockée</span>
         </div>
       </div>
     </section>
 
-    <!-- ============ ACTE 2 — LA PAGE S'ADAPTE À VOUS ============ -->
-    <section class="relative border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Section profil — personnalisation en direct">
+    <!-- ═════════ ACTE 1 — QUIZ MATURITÉ IA ═════════ -->
+    <section id="xp-quiz" class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 1 — quiz + verdict généré par l'IA">
+      <div class="xp-depth pointer-events-none absolute -right-28 top-16 -z-10 h-[380px] w-[380px] rounded-full bg-lime/10 blur-3xl" data-depth="0.4" aria-hidden="true"></div>
       <div class="mx-auto max-w-7xl">
         <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 1 — elle s'adapte
+          <span class="h-px w-6 bg-lime"></span> Acte 1 — elle vous jauge
         </div>
         <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-          Qui êtes-vous ? <em class="text-lime">La page se reconfigure.</em>
+          Cinq questions. <em class="text-lime">Un diagnostic écrit pour vous.</em>
         </h2>
+        <p class="mt-4 max-w-xl text-white/60">
+          Pas de barème figé : l'IA lit vos cinq réponses et rédige son verdict — le même exercice que je fais en session stratégique.
+        </p>
 
-        <div class="mt-12 grid gap-4 sm:grid-cols-3" role="group" aria-label="Choisissez votre profil">
-          <button type="button" class="xp-profil cursor-pointer rounded-2xl border border-white/15 p-6 text-left transition-all hover:border-lime/60" data-profil="dirigeant">
-            <div class="text-3xl" aria-hidden="true">◆</div>
-            <div class="mt-4 text-lg font-medium">Dirigeant de TPE/PME</div>
-            <p class="mt-2 text-sm text-white/60">Votre temps part dans l'administratif et le commercial.</p>
-          </button>
-          <button type="button" class="xp-profil cursor-pointer rounded-2xl border border-white/15 p-6 text-left transition-all hover:border-lime/60" data-profil="marketing">
-            <div class="text-3xl" aria-hidden="true">◈</div>
-            <div class="mt-4 text-lg font-medium">Équipe marketing</div>
-            <p class="mt-2 text-sm text-white/60">Produire plus de contenus, sans casser la marque.</p>
-          </button>
-          <button type="button" class="xp-profil cursor-pointer rounded-2xl border border-white/15 p-6 text-left transition-all hover:border-lime/60" data-profil="agence">
-            <div class="text-3xl" aria-hidden="true">◇</div>
-            <div class="mt-4 text-lg font-medium">Agence / cabinet</div>
-            <p class="mt-2 text-sm text-white/60">Vos experts perdent des heures en production répétitive.</p>
-          </button>
-        </div>
-
-        <!-- Zone reconfigurée en direct — cartes en superposition, débordement volontaire -->
-        <div id="xp-perso" class="relative mt-16 opacity-40 transition-opacity duration-500" aria-live="polite">
-          <div class="pointer-events-none absolute -right-8 -top-10 hidden rotate-2 rounded-xl border border-white/10 bg-white/[0.03] px-5 py-3 font-mono text-[11px] text-white/40 backdrop-blur-sm lg:block" aria-hidden="true">
-            profil = <span id="xp-perso-tag" class="text-lime">en attente…</span>
-          </div>
-          <div class="grid gap-5 md:grid-cols-[1.2fr_1fr]">
-            <div class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-8">
-              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Ce que je vous installe</div>
-              <h3 id="xp-perso-titre" class="mt-4 text-2xl font-medium leading-snug">Choisissez un profil ci-dessus…</h3>
-              <ul id="xp-perso-liste" class="mt-5 space-y-3 text-[15px] text-white/75"></ul>
-            </div>
-            <div class="flex flex-col gap-5">
-              <div class="rounded-2xl border border-white/12 bg-white/[0.02] p-6">
-                <div class="text-[11px] uppercase tracking-[0.22em] text-white/45">Gain démontré en mission</div>
-                <div class="mt-3 flex items-baseline gap-3">
-                  <span id="xp-perso-avant" class="text-lg text-white/40 line-through decoration-white/25">—</span>
-                  <span class="text-lime">→</span>
-                  <span id="xp-perso-apres" class="text-4xl font-light text-lime">—</span>
-                </div>
-                <div id="xp-perso-tache" class="mt-2 text-sm text-white/60">—</div>
+        <div class="mt-12 grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+          <!-- Carrousel de questions -->
+          <div id="xp-quiz-box" class="relative min-h-[300px] rounded-2xl border border-white/12 bg-white/[0.02] p-7 md:p-9">
+            <div class="mb-6 flex items-center justify-between">
+              <div class="font-mono text-[12px] text-white/45"><span id="xp-quiz-num">01</span> / 0{QUIZ.length}</div>
+              <div class="h-1 w-40 overflow-hidden rounded-full bg-white/10">
+                <div id="xp-quiz-bar" class="h-full w-0 bg-lime transition-all duration-500"></div>
               </div>
-              <a id="xp-perso-cas" href="/realisations" class="group flex items-center justify-between rounded-2xl border border-white/12 p-6 transition-colors hover:border-lime/60">
-                <span class="text-sm text-white/70">Le cas client qui le prouve</span>
-                <span class="text-lime transition-transform group-hover:translate-x-0.5">→</span>
-              </a>
+            </div>
+            <div id="xp-quiz-slide">
+              <h3 id="xp-quiz-q" class="text-2xl font-medium leading-snug">{QUIZ[0].q}</h3>
+              <div id="xp-quiz-opts" class="mt-6 flex flex-wrap gap-3"></div>
+            </div>
+            <div id="xp-quiz-recap" class="hidden">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Vos réponses</div>
+              <ul id="xp-quiz-recap-liste" class="mt-4 space-y-2 text-sm text-white/70"></ul>
+              <button type="button" id="xp-quiz-restart" class="mt-6 cursor-pointer text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">
+                Recommencer
+              </button>
+            </div>
+          </div>
+
+          <!-- Verdict streamé -->
+          <div id="xp-verdict-box" class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-7 opacity-50 transition-opacity duration-500 md:p-9" aria-live="polite">
+            <div class="flex items-center justify-between gap-4">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Verdict — généré en direct</div>
+              <span id="xp-verdict-statut" class="font-mono text-[11px] text-white/40">en attente de vos réponses</span>
+            </div>
+            <p id="xp-verdict-texte" class="mt-5 min-h-[120px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
+              Répondez aux cinq questions : le diagnostic s'écrira ici, mot à mot, pendant que le modèle réfléchit.
+            </p>
+            <div id="xp-verdict-cta" class="mt-6 hidden">
+              <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+                En parler 30 min avec Julien →
+              </button>
             </div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ ACTE 3 — CHIFFRES VIVANTS ============ -->
-    <section class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Section chiffres — compteurs animés">
-      <div class="pointer-events-none absolute -right-24 -top-24 h-[360px] w-[360px] rounded-full bg-lime/10 blur-3xl" aria-hidden="true"></div>
+    <!-- ═════════ ACTE 2 — GÉNÉRATEUR SECTORIEL ═════════ -->
+    <section class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 2 — scénario métier généré en direct">
+      <div class="xp-depth pointer-events-none absolute -left-32 bottom-0 -z-10 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.5" aria-hidden="true"></div>
       <div class="mx-auto max-w-7xl">
         <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 2 — elle compte
+          <span class="h-px w-6 bg-lime"></span> Acte 2 — elle parle votre métier
         </div>
         <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-          Le temps que les assistants <em class="text-lime">rendent aux équipes.</em>
+          Dites-lui votre métier : <em class="text-lime">elle vous écrit votre semaine.</em>
         </h2>
-        <p class="mt-4 max-w-xl text-white/60">Chiffres cités dans mes supports de mission — regardez-les se recalculer.</p>
+        <p class="mt-4 max-w-xl text-white/60">
+          Trois moments concrets d'une semaine avec un assistant installé — pour <span id="xp-secteur-tag" class="text-lime">votre activité</span>, pas pour une entreprise générique.
+        </p>
 
-        <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-3">
-          <div class="bg-[oklch(0.17_0_0)] p-8">
-            <div class="text-sm text-white/60">Une proposition commerciale</div>
-            <div class="mt-3 text-4xl font-light text-lime"><span class="xp-count" data-from="180" data-to="30" data-suffix=" min">180 min</span></div>
-            <div class="mt-1 text-xs text-white/40">au lieu de 2 à 3 heures</div>
-          </div>
-          <div class="bg-[oklch(0.17_0_0)] p-8">
-            <div class="text-sm text-white/60">Un email de prospection ciblé</div>
-            <div class="mt-3 text-4xl font-light text-lime"><span class="xp-count" data-from="45" data-to="4" data-suffix=" min">45 min</span></div>
-            <div class="mt-1 text-xs text-white/40">au lieu de 45 minutes</div>
-          </div>
-          <div class="bg-[oklch(0.17_0_0)] p-8">
-            <div class="text-sm text-white/60">Un compte-rendu de visite</div>
-            <div class="mt-3 text-4xl font-light text-lime"><span class="xp-count" data-from="30" data-to="0.5" data-suffix=" min" data-final="30 s">30 min</span></div>
-            <div class="mt-1 text-xs text-white/40">au lieu de 30 minutes</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ ACTE 4 — LA MÉTHODE SE DESSINE ============ -->
-    <section class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Section méthode — scrollytelling">
-      <div class="mx-auto max-w-7xl">
-        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 3 — elle suit une méthode
-        </div>
-        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-          Rien de magique : <em class="text-lime">une méthode qui se déroule.</em>
-        </h2>
-
-        <div class="relative mt-16 md:pl-10">
-          <div class="absolute bottom-0 left-[7px] top-0 hidden w-px bg-white/10 md:block" aria-hidden="true">
-            <div id="xp-ligne" class="w-px origin-top bg-lime transition-transform duration-200" style="height:100%; transform: scaleY(0)"></div>
-          </div>
-          {[
-            ["Observer", "Vos vraies journées, pas un questionnaire générique. Là où le temps part vraiment."],
-            ["Construire", "Des assistants calibrés sur votre métier, votre charte, vos données — dans vos outils."],
-            ["Déployer", "Par vagues : les premiers assistants tournent dès la semaine 3, pas à la fin du projet."],
-            ["Former", "Vos équipes deviennent autonomes. Ce que je livre tourne encore des mois après mon départ."],
-          ].map(([titre, texte], i) => (
-            <div class="xp-etape relative border-b border-white/10 py-10 opacity-30 transition-all duration-700 last:border-b-0 md:pl-8" data-etape={i}>
-              <div class="absolute -left-10 top-11 hidden h-4 w-4 rounded-full border border-lime/50 bg-background transition-colors md:block" aria-hidden="true"></div>
-              <div class="grid gap-4 md:grid-cols-[220px_1fr] md:items-baseline">
-                <div class="flex items-baseline gap-4">
-                  <span class="font-mono text-sm text-lime">0{i + 1}</span>
-                  <h3 class="text-2xl font-medium">{titre}</h3>
-                </div>
-                <p class="max-w-xl text-white/65">{texte}</p>
-              </div>
+        <div class="mt-10 grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-start">
+          <div>
+            <form id="xp-secteur-form" class="flex gap-2">
+              <input
+                id="xp-secteur-input"
+                type="text"
+                maxlength="80"
+                placeholder="Votre métier ou secteur…"
+                class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
+                autocomplete="off"
+              />
+              <button type="submit" id="xp-secteur-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+                Générer
+              </button>
+            </form>
+            <div class="mt-4 flex flex-wrap gap-2">
+              {SECTEURS.map((s) => (
+                <button type="button" class="xp-secteur-chip cursor-pointer rounded-full border border-white/15 px-4 py-1.5 text-[13px] text-white/65 transition-colors hover:border-lime/60 hover:text-lime" data-secteur={s}>
+                  {s}
+                </button>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-    </section>
-
-    <!-- ============ ACTE 5 — DIAGNOSTIC EN DIRECT ============ -->
-    <section class="relative border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Section diagnostic — outil interactif">
-      <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.2fr] lg:items-start">
-        <div>
-          <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-            <span class="h-px w-6 bg-lime"></span> Acte 4 — elle vous répond
           </div>
-          <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-            Une tâche vous pèse ? <em class="text-lime">Testez-la ici.</em>
-          </h2>
-          <p class="mt-5 max-w-md text-white/65">
-            Trois curseurs, un verdict. C'est l'outil que j'utilise en session stratégique avec les
-            dirigeants — en version réduite, directement dans la page.
-          </p>
-        </div>
 
-        <div class="rounded-2xl border border-white/12 bg-background/60 p-7 backdrop-blur-sm md:p-9">
-          {[
-            ["freq", "Cette tâche revient…", "rarement", "plusieurs fois par jour"],
-            ["simple", "Elle est…", "pleine d'exceptions", "toujours pareille"],
-            ["data", "Les infos nécessaires sont…", "éparpillées", "centralisées"],
-          ].map(([id, q, lo, hi]) => (
-            <div class="mb-7 last:mb-0">
-              <div class="flex items-baseline justify-between gap-4">
-                <label for={`xp-${id}`} class="text-[15px] font-medium">{q}</label>
-              </div>
-              <input type="range" id={`xp-${id}`} class="xp-slider mt-3 w-full" min="1" max="5" step="1" value="3" />
-              <div class="mt-1.5 flex justify-between text-[11px] text-white/40">
-                <span>{lo}</span><span>{hi}</span>
-              </div>
+          <div id="xp-secteur-box" class="rounded-2xl border border-white/12 bg-background/60 p-7 backdrop-blur-sm md:p-9" aria-live="polite">
+            <div class="flex items-center justify-between gap-4">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-white/45">Votre semaine, avec assistant</div>
+              <span id="xp-secteur-statut" class="font-mono text-[11px] text-white/40">en attente</span>
             </div>
-          ))}
-          <div class="mt-8 rounded-xl border border-lime/25 bg-lime/[0.05] p-5">
-            <div class="text-[10px] uppercase tracking-[0.2em] text-lime/80">Verdict en direct</div>
-            <p id="xp-verdict" class="mt-2 text-[15px] leading-relaxed text-white/85">
-              Bougez les curseurs — le verdict se met à jour à chaque geste.
+            <p id="xp-secteur-texte" class="mt-5 min-h-[140px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
+              Choisissez un exemple ou tapez votre métier — le scénario s'écrit sous vos yeux.
             </p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ============ ACTE 6 — SOUS LE CAPOT + FINAL ============ -->
-    <section class="relative overflow-hidden border-t border-white/10 px-6 py-28 md:px-12 md:py-40" data-blueprint="Section finale — appel à l'action">
+    <!-- ═════════ ACTE 3 — BOT DE QUALIFICATION ═════════ -->
+    <section class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 3 — assistant de qualification conversationnel">
+      <div class="xp-depth pointer-events-none absolute -right-24 -top-24 -z-10 h-[360px] w-[360px] rounded-full bg-lime/10 blur-3xl" data-depth="0.45" aria-hidden="true"></div>
+      <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.25fr] lg:items-start">
+        <div>
+          <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> Acte 3 — elle vous écoute
+          </div>
+          <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+            Racontez votre activité. <em class="text-lime">Elle prépare l'audit.</em>
+          </h2>
+          <p class="mt-5 max-w-md text-white/65">
+            Quelques questions, un pré-diagnostic — exactement ce qu'un assistant de qualification fait chez mes clients,
+            à ceci près qu'ici, c'est vous le prospect.
+          </p>
+          <p class="mt-4 max-w-md text-sm text-white/45">
+            Conversation éphémère : rien n'est stocké, rien n'est envoyé à Julien. Le vrai rendez-vous, c'est le bouton sous la conversation.
+          </p>
+        </div>
+
+        <div class="rounded-2xl border border-white/12 bg-white/[0.02] p-5 md:p-7">
+          <div id="xp-chat-log" class="flex max-h-[420px] min-h-[260px] flex-col gap-4 overflow-y-auto pr-1" aria-live="polite">
+            <div class="xp-bulle-ia max-w-[85%] rounded-2xl rounded-tl-md border border-lime/20 bg-lime/[0.06] px-4 py-3 text-[14px] leading-relaxed text-white/85">
+              Bonjour — je suis l'assistant de démonstration de Julien. Dites-moi en une phrase ce que fait votre entreprise, et je vous dis où un assistant IA travaillerait pour vous.
+            </div>
+          </div>
+          <form id="xp-chat-form" class="mt-4 flex gap-2">
+            <input
+              id="xp-chat-input"
+              type="text"
+              maxlength="400"
+              placeholder="Ex. : je dirige une PME de 12 personnes dans le bâtiment…"
+              class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
+              autocomplete="off"
+            />
+            <button type="submit" id="xp-chat-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50" aria-label="Envoyer">
+              →
+            </button>
+          </form>
+          <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+            <span class="text-xs text-white/45">La suite se passe de vive voix :</span>
+            <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+              Réserver l'audit 30 min →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════ FINAL — SOUS LE CAPOT + CTA ═════════ -->
+    <section class="relative overflow-hidden border-t border-white/10 px-6 py-28 md:px-12 md:py-40" data-blueprint="Final — transparence et appel à l'action">
       <div class="pointer-events-none absolute inset-0 -z-10" style="background: radial-gradient(700px 400px at 50% 0%, oklch(0.92 0.21 125 / 0.10), transparent 70%);" aria-hidden="true"></div>
       <div class="mx-auto max-w-4xl text-center">
         <div class="mb-6 text-[11px] uppercase tracking-[0.22em] text-lime">Dernier acte — elle se laisse démonter</div>
         <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
-          Tout ce que vous venez de voir <em class="text-lime">est un système.</em>
+          Rien de magique : <em class="text-lime">un système, visible.</em>
         </h2>
         <p class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
-          Pas de studio, pas d'agence : cette page a été conçue et construite avec l'IA, comme les
-          assistants que j'installe chez mes clients. La preuve — regardez sa structure.
+          Chaque réponse que vous avez lue est sortie d'un modèle, token par token, cadré par des consignes précises.
+          Ouvrez « sous le capot » pour voir le moteur, le prompt et le flux brut — c'est exactement ce que j'installe,
+          en version calibrée sur votre métier.
         </p>
-        <div class="mt-8">
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <button type="button" id="xp-capot-open" class="cursor-pointer rounded-full border border-white/25 px-6 py-3 font-mono text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime">
+            [ sous le capot ]
+          </button>
           <button type="button" id="xp-blueprint" class="cursor-pointer rounded-full border border-white/25 px-6 py-3 font-mono text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime" aria-pressed="false">
             [ révéler la structure ]
           </button>
@@ -278,14 +303,40 @@ const jsonLd = [
     <footer class="border-t border-white/10 px-6 py-10 text-center text-xs text-white/40 md:px-12">
       © 2026 Julien Tridat — Bordeaux · <a href="/" class="hover:text-white">Version classique du site</a>
     </footer>
+
+    <!-- ═════════ PANNEAU « SOUS LE CAPOT » ═════════ -->
+    <aside
+      id="xp-capot"
+      class="fixed inset-x-3 bottom-3 z-50 hidden max-h-[55vh] flex-col overflow-hidden rounded-2xl border border-lime/30 bg-black/90 shadow-2xl shadow-black/60 backdrop-blur-md md:inset-x-auto md:right-6 md:bottom-6 md:w-[420px]"
+      aria-label="Sous le capot : détails techniques de la dernière génération"
+    >
+      <div class="flex items-center justify-between border-b border-white/10 px-5 py-3">
+        <span class="font-mono text-[12px] text-lime">sous le capot</span>
+        <button type="button" id="xp-capot-close" class="cursor-pointer font-mono text-[12px] text-white/50 hover:text-white" aria-label="Fermer">[ fermer ]</button>
+      </div>
+      <div class="grid grid-cols-3 gap-px border-b border-white/10 bg-white/10 font-mono text-[11px]">
+        <div class="bg-black/90 px-4 py-3"><div class="text-white/40">moteur</div><div id="xp-capot-moteur" class="mt-1 truncate text-lime">—</div></div>
+        <div class="bg-black/90 px-4 py-3"><div class="text-white/40">latence</div><div id="xp-capot-latence" class="mt-1 text-lime">—</div></div>
+        <div class="bg-black/90 px-4 py-3"><div class="text-white/40">fragments</div><div id="xp-capot-frags" class="mt-1 text-lime">—</div></div>
+      </div>
+      <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4 font-mono text-[11px] leading-relaxed">
+        <div>
+          <div class="text-white/40">modèle</div>
+          <div id="xp-capot-modele" class="mt-1 break-all text-white/75">aucune génération pour l'instant — lancez le quiz, le générateur ou l'assistant.</div>
+        </div>
+        <div>
+          <div class="text-white/40">consigne système (extrait, définie côté serveur)</div>
+          <pre id="xp-capot-system" class="mt-1 whitespace-pre-wrap break-words text-white/60">—</pre>
+        </div>
+        <div>
+          <div class="text-white/40">flux brut (chaque fragment reçu, dans l'ordre)</div>
+          <div id="xp-capot-flux" class="mt-1 break-words text-white/60">—</div>
+        </div>
+      </div>
+    </aside>
   </main>
 
   <style is:global>
-    /* Curseurs (sliders) à la charte */
-    .xp-slider { -webkit-appearance: none; appearance: none; height: 4px; border-radius: 999px; background: rgba(255,255,255,.15); outline: none; }
-    .xp-slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 22px; height: 22px; border-radius: 50%; background: oklch(0.92 0.21 125); cursor: pointer; border: 3px solid oklch(0.145 0 0); box-shadow: 0 0 0 1px oklch(0.92 0.21 125 / .5); }
-    .xp-slider::-moz-range-thumb { width: 16px; height: 16px; border-radius: 50%; background: oklch(0.92 0.21 125); cursor: pointer; border: 3px solid oklch(0.145 0 0); }
-
     /* Apparition du hero */
     .xp-word { display: inline-block; transform: translateY(110%); animation: xp-rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
     .xp-line:nth-child(2) .xp-word { animation-delay: .18s; }
@@ -294,190 +345,371 @@ const jsonLd = [
     @keyframes xp-rise { to { transform: translateY(0); } }
     @keyframes xp-in { to { opacity: 1; } }
 
-    /* Étapes de la méthode */
-    .xp-etape.is-on { opacity: 1; }
-    .xp-etape.is-on > div[aria-hidden] { background: oklch(0.92 0.21 125); border-color: oklch(0.92 0.21 125); }
+    /* Options du quiz */
+    .xp-opt { cursor: pointer; border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .55rem 1.1rem; font-size: 14px; color: oklch(1 0 0 / 75%); transition: border-color .2s, color .2s, background .2s, transform .2s; }
+    .xp-opt:hover { border-color: oklch(0.92 0.21 125 / .6); color: oklch(0.92 0.21 125); transform: translateY(-1px); }
+    .xp-slide-out { animation: xp-out .28s ease forwards; }
+    .xp-slide-in { animation: xp-enter .34s cubic-bezier(.2,.7,.2,1); }
+    @keyframes xp-out { to { opacity: 0; transform: translateX(-16px); } }
+    @keyframes xp-enter { from { opacity: 0; transform: translateX(20px); } }
 
-    /* Profil sélectionné */
-    .xp-profil[aria-pressed="true"] { border-color: oklch(0.92 0.21 125); background: oklch(0.92 0.21 125 / .06); }
+    /* Bulles du chat */
+    .xp-bulle-moi { align-self: flex-end; max-width: 85%; border-radius: 1rem; border-top-right-radius: .375rem; background: oklch(1 0 0 / 10%); padding: .75rem 1rem; font-size: 14px; line-height: 1.6; color: oklch(1 0 0 / .9); }
+    .xp-bulle-ia { animation: xp-enter .3s ease; }
 
-    /* Mode blueprint : la page révèle sa structure */
+    /* Curseur d'écriture pendant le stream */
+    .xp-encours::after { content: "▋"; color: oklch(0.92 0.21 125); animation: xp-clignote 1s steps(2) infinite; margin-left: 1px; }
+    @keyframes xp-clignote { 50% { opacity: 0; } }
+
+    /* Mode blueprint */
     .xp-reveal [data-blueprint] { outline: 1px dashed oklch(0.92 0.21 125 / .55); outline-offset: -8px; position: relative; }
     .xp-reveal [data-blueprint]::after { content: attr(data-blueprint); position: absolute; top: 10px; left: 10px; z-index: 40; font-family: ui-monospace, monospace; font-size: 11px; color: oklch(0.92 0.21 125); background: oklch(0.145 0 0 / .9); border: 1px solid oklch(0.92 0.21 125 / .4); padding: 4px 10px; border-radius: 999px; }
 
     @media (prefers-reduced-motion: reduce) {
       .xp-word { transform: none; animation: none; }
       .xp-fade { opacity: 1; animation: none; }
-      .xp-etape { opacity: 1 !important; transition: none; }
+      .xp-slide-in, .xp-slide-out, .xp-bulle-ia { animation: none; }
+      .xp-depth { transform: none !important; }
     }
   </style>
 
   <script>
-    // ————— Console du hero : la page « se génère »
-    const consoleEl = document.getElementById("xp-console");
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const steps = [
-      "initialisation…",
-      "analyse du contexte visiteur…",
-      "chargement de la méthode…",
-      "assemblage des sections…",
-      "page générée — à vous de jouer.",
-    ];
-    if (consoleEl) {
-      if (reduced) {
-        consoleEl.textContent = steps[steps.length - 1];
-      } else {
-        let i = 0;
-        const tick = () => {
-          consoleEl.textContent = steps[i];
-          i += 1;
-          if (i < steps.length) setTimeout(tick, i === 1 ? 500 : 700);
-        };
-        tick();
+    const $ = (id: string) => document.getElementById(id)!;
+
+    /* ————— Profondeur de champ : particules + parallaxe multi-couches ————— */
+    const canvas = $("xp-canvas") as HTMLCanvasElement;
+    const hero = $("xp-hero");
+    if (!reduced && canvas) {
+      const ctx = canvas.getContext("2d")!;
+      const N = window.innerWidth < 768 ? 34 : 70;
+      let W = 0, H = 0;
+      const dots = Array.from({ length: N }, () => ({
+        x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7,
+        vx: (Math.random() - 0.5) * 0.00022, vy: (Math.random() - 0.5) * 0.00022,
+      }));
+      const resize = () => { W = canvas.width = hero.clientWidth; H = canvas.height = hero.clientHeight; };
+      resize();
+      window.addEventListener("resize", resize);
+      const tick = () => {
+        ctx.clearRect(0, 0, W, H);
+        for (const d of dots) {
+          d.x = (d.x + d.vx * d.z + 1) % 1;
+          d.y = (d.y + d.vy * d.z + 1) % 1;
+          // z proche → net et lumineux ; z lointain → petit et estompé (profondeur de champ)
+          ctx.beginPath();
+          ctx.arc(d.x * W, d.y * H, 1 + d.z * 1.8, 0, Math.PI * 2);
+          ctx.fillStyle = `oklch(0.92 0.21 125 / ${0.06 + d.z * 0.24})`;
+          ctx.fill();
+        }
+        for (let i = 0; i < dots.length; i++) {
+          for (let j = i + 1; j < dots.length; j++) {
+            const a = dots[i], b = dots[j];
+            const dx = (a.x - b.x) * W, dy = (a.y - b.y) * H;
+            const dist = Math.hypot(dx, dy);
+            if (dist < 110) {
+              ctx.beginPath();
+              ctx.moveTo(a.x * W, a.y * H);
+              ctx.lineTo(b.x * W, b.y * H);
+              ctx.strokeStyle = `oklch(0.92 0.21 125 / ${(1 - dist / 110) * 0.10})`;
+              ctx.stroke();
+            }
+          }
+        }
+        requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    }
+
+    // Parallaxe : chaque couche .xp-depth bouge selon sa profondeur (pointeur + défilement).
+    const layers = [...document.querySelectorAll<HTMLElement>(".xp-depth")];
+    if (!reduced && layers.length) {
+      let px = 0, py = 0;
+      const apply = () => {
+        const sy = window.scrollY;
+        for (const el of layers) {
+          const depth = parseFloat(el.dataset.depth || "0.3");
+          el.style.transform = `translate3d(${px * 30 * depth}px, ${py * 20 * depth - sy * depth * 0.15}px, 0)`;
+        }
+      };
+      if (window.matchMedia("(pointer: fine)").matches) {
+        window.addEventListener("pointermove", (e) => {
+          px = (e.clientX / window.innerWidth) * 2 - 1;
+          py = (e.clientY / window.innerHeight) * 2 - 1;
+          apply();
+        }, { passive: true });
+      }
+      window.addEventListener("scroll", apply, { passive: true });
+    }
+
+    /* ————— Client SSE + panneau « sous le capot » ————— */
+    const capot = {
+      panel: $("xp-capot"),
+      open() { this.panel.classList.remove("hidden"); this.panel.classList.add("flex"); },
+      close() { this.panel.classList.add("hidden"); this.panel.classList.remove("flex"); },
+      reset(mode: string) {
+        $("xp-capot-moteur").textContent = "…";
+        $("xp-capot-latence").textContent = "…";
+        $("xp-capot-frags").textContent = "0";
+        $("xp-capot-modele").textContent = `requête « ${mode} » en cours…`;
+        $("xp-capot-system").textContent = "—";
+        $("xp-capot-flux").textContent = "";
+      },
+    };
+    $("xp-capot-open").addEventListener("click", () => capot.open());
+    $("xp-capot-close").addEventListener("click", () => capot.close());
+
+    type Handlers = { meta?: (d: any) => void; delta?: (d: any) => void; done?: (d: any) => void; error?: (d: any) => void };
+
+    async function streamIA(mode: string, messages: { role: string; content: string }[], h: Handlers) {
+      capot.reset(mode);
+      let frags = 0;
+      const flux = $("xp-capot-flux");
+      const res = await fetch("/api/experience", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ mode, messages }),
+      });
+      if (!res.ok || !res.body) throw new Error(`API ${res.status}`);
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let buffer = "";
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        buffer += decoder.decode(value, { stream: true });
+        const blocs = buffer.split("\n\n");
+        buffer = blocs.pop() ?? "";
+        for (const bloc of blocs) {
+          let event = "message", data = "";
+          for (const line of bloc.split("\n")) {
+            if (line.startsWith("event: ")) event = line.slice(7);
+            else if (line.startsWith("data: ")) data += line.slice(6);
+          }
+          if (!data) continue;
+          const parsed = JSON.parse(data);
+          if (event === "meta") {
+            $("xp-capot-moteur").textContent = parsed.engine;
+            $("xp-capot-modele").textContent = parsed.model;
+            $("xp-capot-system").textContent = parsed.system + "…";
+          } else if (event === "delta") {
+            frags += 1;
+            $("xp-capot-frags").textContent = String(frags);
+            flux.append(parsed.text);
+            flux.scrollTop = flux.scrollHeight;
+          } else if (event === "done") {
+            $("xp-capot-latence").textContent = `${parsed.ms} ms`;
+          }
+          (h as any)[event]?.(parsed);
+        }
       }
     }
 
-    // ————— Halo qui suit le pointeur (hero uniquement, désactivé en reduced-motion / tactile)
-    const spot = document.getElementById("xp-spot");
-    const hero = document.getElementById("xp-hero");
-    if (spot && hero && !reduced && window.matchMedia("(pointer: fine)").matches) {
-      hero.addEventListener("pointermove", (e) => {
-        const r = hero.getBoundingClientRect();
-        const x = ((e.clientX - r.left) / r.width) * 100;
-        const y = ((e.clientY - r.top) / r.height) * 100;
-        spot.style.background = `radial-gradient(420px 300px at ${x}% ${y}%, oklch(0.92 0.21 125 / 0.07), transparent 70%)`;
-      });
-    }
+    /* ————— Console du hero : état réel du moteur ————— */
+    const consoleEl = $("xp-console");
+    (async () => {
+      const steps = ["initialisation…", "connexion au moteur IA…"];
+      for (const s of steps) {
+        consoleEl.textContent = s;
+        if (!reduced) await new Promise((r) => setTimeout(r, 550));
+      }
+      try {
+        const res = await fetch("/api/experience");
+        const info = await res.json();
+        if (info.ok) {
+          consoleEl.textContent = `moteur ${info.engine} en ligne — à vous de jouer.`;
+        } else {
+          throw new Error("aucun moteur");
+        }
+      } catch {
+        consoleEl.textContent = "démonstration hors ligne — la page reste visitable.";
+        $("xp-led").classList.replace("bg-lime", "bg-white/40");
+        $("xp-led-ping").classList.add("hidden");
+      }
+    })();
 
-    // ————— Profils : la page se reconfigure
-    const PROFILS = {
-      dirigeant: {
-        tag: "dirigeant_tpe_pme",
-        titre: "Vos assistants de dirigeant, dans vos outils",
-        liste: [
-          "Propositions commerciales et devis générés sur votre trame",
-          "Relances clients et suivi des impayés, personnalisés",
-          "Veille et synthèses pour décider plus vite",
-        ],
-        avant: "2 à 3 h", apres: "30 min", tache: "pour une proposition commerciale complète",
-        cas: "/realisations/formation-club-affaires",
-      },
-      marketing: {
-        tag: "equipe_marketing",
-        titre: "Votre chaîne de production de contenus, conforme à la marque",
-        liste: [
-          "Visuels chartés générés en langage naturel, au pixel près",
-          "Séries de campagne déclinées en minutes",
-          "Reporting narratif : les chiffres racontés chaque mois",
-        ],
-        avant: "aller-retour prestataire", apres: "minutes", tache: "pour un visuel conforme, produit en interne",
-        cas: "/realisations/design-system-franchise-fitness",
-      },
-      agence: {
-        tag: "agence_cabinet",
-        titre: "Des assistants par pôle, calés sur vos exigences métier",
-        liste: [
-          "Premiers jets sourcés — vos règles de validation encodées",
-          "Plannings et livrables au standard maison, générés",
-          "Un assistant par pôle, qui tourne après mon départ",
-        ],
-        avant: "1h30 / jour perdue", apres: "récupérée", tache: "par utilisateur régulier, mesuré en mission",
-        cas: "/realisations/formation-ia-agence-sante",
-      },
+    /* ————— Acte 1 : quiz ————— */
+    const QUIZ: { q: string; options: string[]; cle: string }[] = JSON.parse($("xp-quiz-data").textContent!);
+    let quizIndex = 0;
+    const quizReponses: { cle: string; valeur: string }[] = [];
+
+    const renderQuestion = () => {
+      const item = QUIZ[quizIndex];
+      $("xp-quiz-num").textContent = String(quizIndex + 1).padStart(2, "0");
+      ($("xp-quiz-bar") as HTMLElement).style.width = `${(quizIndex / QUIZ.length) * 100}%`;
+      $("xp-quiz-q").textContent = item.q;
+      const opts = $("xp-quiz-opts");
+      opts.innerHTML = "";
+      for (const option of item.options) {
+        const btn = document.createElement("button");
+        btn.type = "button";
+        btn.className = "xp-opt";
+        btn.textContent = option;
+        btn.addEventListener("click", () => choisir(option));
+        opts.append(btn);
+      }
+      $("xp-quiz-slide").classList.add("xp-slide-in");
+      setTimeout(() => $("xp-quiz-slide").classList.remove("xp-slide-in"), 400);
     };
-    const persoZone = document.getElementById("xp-perso");
-    document.querySelectorAll(".xp-profil").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".xp-profil").forEach((b) => b.setAttribute("aria-pressed", "false"));
-        btn.setAttribute("aria-pressed", "true");
-        const p = PROFILS[btn.dataset.profil];
-        if (!p || !persoZone) return;
-        persoZone.style.opacity = "0.2";
-        setTimeout(() => {
-          document.getElementById("xp-perso-tag").textContent = p.tag;
-          document.getElementById("xp-perso-titre").textContent = p.titre;
-          document.getElementById("xp-perso-liste").innerHTML = p.liste
-            .map((l) => `<li class="flex gap-2"><span class="text-lime">+</span><span>${l}</span></li>`)
-            .join("");
-          document.getElementById("xp-perso-avant").textContent = p.avant;
-          document.getElementById("xp-perso-apres").textContent = p.apres;
-          document.getElementById("xp-perso-tache").textContent = p.tache;
-          document.getElementById("xp-perso-cas").setAttribute("href", p.cas);
-          persoZone.style.opacity = "1";
-        }, reduced ? 0 : 220);
+
+    const choisir = (valeur: string) => {
+      quizReponses.push({ cle: QUIZ[quizIndex].cle, valeur });
+      quizIndex += 1;
+      if (quizIndex < QUIZ.length) {
+        const slide = $("xp-quiz-slide");
+        slide.classList.add("xp-slide-out");
+        setTimeout(() => { slide.classList.remove("xp-slide-out"); renderQuestion(); }, reduced ? 0 : 260);
+      } else {
+        ($("xp-quiz-bar") as HTMLElement).style.width = "100%";
+        $("xp-quiz-slide").classList.add("hidden");
+        $("xp-quiz-recap").classList.remove("hidden");
+        $("xp-quiz-recap-liste").innerHTML = quizReponses
+          .map((r) => `<li class="flex gap-2"><span class="text-lime">+</span><span>${r.cle} : ${r.valeur}</span></li>`)
+          .join("");
+        lancerVerdict();
+      }
+    };
+
+    const lancerVerdict = async () => {
+      const box = $("xp-verdict-box");
+      const texte = $("xp-verdict-texte");
+      const statut = $("xp-verdict-statut");
+      box.style.opacity = "1";
+      texte.textContent = "";
+      texte.classList.add("xp-encours");
+      statut.textContent = "le modèle rédige…";
+      box.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "nearest" });
+      const recap = quizReponses.map((r, i) => `${i + 1}. ${r.cle} : ${r.valeur}`).join("\n");
+      try {
+        await streamIA("quiz", [{ role: "user", content: `Mes réponses au diagnostic :\n${recap}` }], {
+          meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
+          delta: (d) => { texte.append(d.text); },
+          error: (d) => { texte.textContent = d.message; },
+          done: (d) => { statut.textContent = `généré en ${(d.ms / 1000).toFixed(1)} s`; },
+        });
+      } catch {
+        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        statut.textContent = "hors ligne";
+      }
+      texte.classList.remove("xp-encours");
+      $("xp-verdict-cta").classList.remove("hidden");
+    };
+
+    $("xp-quiz-restart").addEventListener("click", () => {
+      quizIndex = 0;
+      quizReponses.length = 0;
+      $("xp-quiz-recap").classList.add("hidden");
+      $("xp-quiz-slide").classList.remove("hidden");
+      $("xp-verdict-cta").classList.add("hidden");
+      ($("xp-verdict-box") as HTMLElement).style.opacity = "0.5";
+      $("xp-verdict-texte").textContent = "Répondez aux cinq questions : le diagnostic s'écrira ici, mot à mot, pendant que le modèle réfléchit.";
+      $("xp-verdict-statut").textContent = "en attente de vos réponses";
+      renderQuestion();
+    });
+
+    renderQuestion();
+
+    /* ————— Acte 2 : générateur sectoriel ————— */
+    let secteurEnCours = false;
+    const genererSecteur = async (secteur: string) => {
+      if (secteurEnCours || !secteur.trim()) return;
+      secteurEnCours = true;
+      const go = $("xp-secteur-go") as HTMLButtonElement;
+      const texte = $("xp-secteur-texte");
+      const statut = $("xp-secteur-statut");
+      go.disabled = true;
+      $("xp-secteur-tag").textContent = secteur.toLowerCase();
+      texte.textContent = "";
+      texte.classList.add("xp-encours");
+      statut.textContent = "génération…";
+      try {
+        await streamIA("secteur", [{ role: "user", content: `Mon métier / secteur : ${secteur}` }], {
+          meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
+          delta: (d) => { texte.append(d.text); },
+          error: (d) => { texte.textContent = d.message; },
+          done: (d) => { statut.textContent = `généré en ${(d.ms / 1000).toFixed(1)} s`; },
+        });
+      } catch {
+        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        statut.textContent = "hors ligne";
+      }
+      texte.classList.remove("xp-encours");
+      go.disabled = false;
+      secteurEnCours = false;
+    };
+
+    $("xp-secteur-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      genererSecteur(($("xp-secteur-input") as HTMLInputElement).value);
+    });
+    document.querySelectorAll<HTMLElement>(".xp-secteur-chip").forEach((chip) => {
+      chip.addEventListener("click", () => {
+        ($("xp-secteur-input") as HTMLInputElement).value = chip.dataset.secteur!;
+        genererSecteur(chip.dataset.secteur!);
       });
     });
 
-    // ————— Compteurs animés (avant → après)
-    const animateCount = (el) => {
-      const from = parseFloat(el.dataset.from);
-      const to = parseFloat(el.dataset.to);
-      const suffix = el.dataset.suffix || "";
-      const final = el.dataset.final;
-      if (reduced) { el.textContent = final || `${to}${suffix}`; return; }
-      const t0 = performance.now();
-      const dur = 1600;
-      const step = (t) => {
-        const k = Math.min((t - t0) / dur, 1);
-        const eased = 1 - Math.pow(1 - k, 3);
-        const val = from + (to - from) * eased;
-        el.textContent = val >= 10 ? `${Math.round(val)}${suffix}` : `${val.toFixed(1)}${suffix}`;
-        if (k < 1) requestAnimationFrame(step);
-        else if (final) el.textContent = final;
-      };
-      requestAnimationFrame(step);
+    /* ————— Acte 3 : assistant de qualification ————— */
+    const chatMessages: { role: "user" | "assistant"; content: string }[] = [];
+    let chatEnCours = false;
+    const chatLog = $("xp-chat-log");
+    const chatInput = $("xp-chat-input") as HTMLInputElement;
+    const chatGo = $("xp-chat-go") as HTMLButtonElement;
+
+    const bulle = (classe: string) => {
+      const div = document.createElement("div");
+      div.className = classe;
+      chatLog.append(div);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      return div;
     };
-    const seen = new WeakSet();
-    const io = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting && !seen.has(e.target)) {
-          seen.add(e.target);
-          animateCount(e.target);
-        }
-      });
-    }, { threshold: 0.6 });
-    document.querySelectorAll(".xp-count").forEach((el) => io.observe(el));
 
-    // ————— Méthode : étapes + ligne qui se dessine au scroll
-    const etapes = [...document.querySelectorAll(".xp-etape")];
-    const ligne = document.getElementById("xp-ligne");
-    const ioEtapes = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("is-on");
-          const done = etapes.filter((x) => x.classList.contains("is-on")).length;
-          if (ligne) ligne.style.transform = `scaleY(${done / etapes.length})`;
-        }
-      });
-    }, { threshold: 0.5 });
-    etapes.forEach((el) => ioEtapes.observe(el));
+    $("xp-chat-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const contenu = chatInput.value.trim();
+      if (!contenu || chatEnCours) return;
+      chatEnCours = true;
+      chatInput.value = "";
+      chatInput.disabled = true;
+      chatGo.disabled = true;
 
-    // ————— Diagnostic en direct
-    const sliders = ["xp-freq", "xp-simple", "xp-data"].map((id) => document.getElementById(id));
-    const verdictEl = document.getElementById("xp-verdict");
-    const verdict = () => {
-      if (!verdictEl || sliders.some((s) => !s)) return;
-      const [f, s, d] = sliders.map((x) => parseInt(x.value, 10));
-      const total = f + s + d;
-      let msg;
-      if (total >= 12) msg = "Profil idéal : fréquente, cadrée, données accessibles. Un assistant peut être en production en 2 à 3 semaines — c'est exactement le genre de victoire rapide par laquelle on commence.";
-      else if (total >= 9) msg = d <= 2
-        ? "Bon potentiel, mais vos données éparpillées sont le verrou : on les centralise d'abord — ce travail paie même sans IA — puis l'assistant devient fiable."
-        : "Bon candidat, avec un point à cadrer. En audit, on isole le verrou et on décide : le lever, ou commencer par une tâche mieux profilée.";
-      else if (total >= 6) msg = "Profil mitigé : automatiser coûterait plus que ça ne rapporte aujourd'hui. Pas « non » — « pas en premier ». D'autres tâches de votre quotidien feront de bien meilleures premières victoires.";
-      else msg = "Cette tâche relève sans doute du jugement plus que de la production : l'IA peut la préparer (synthèses, options), pas l'exécuter. Et c'est très bien comme ça.";
-      verdictEl.textContent = msg;
-    };
-    sliders.forEach((s) => s && s.addEventListener("input", verdict));
+      bulle("xp-bulle-moi").textContent = contenu;
+      chatMessages.push({ role: "user", content: contenu });
 
-    // ————— Mode blueprint : révéler la structure
-    const bp = document.getElementById("xp-blueprint");
-    if (bp) {
-      bp.addEventListener("click", () => {
-        const on = document.documentElement.classList.toggle("xp-reveal");
-        bp.setAttribute("aria-pressed", String(on));
-        bp.textContent = on ? "[ masquer la structure ]" : "[ révéler la structure ]";
-      });
-    }
+      const reponse = bulle("xp-bulle-ia max-w-[85%] rounded-2xl rounded-tl-md border border-lime/20 bg-lime/[0.06] px-4 py-3 text-[14px] leading-relaxed text-white/85 xp-encours");
+      let texteIA = "";
+      try {
+        await streamIA("bot", chatMessages, {
+          delta: (d) => { texteIA += d.text; reponse.textContent = texteIA; chatLog.scrollTop = chatLog.scrollHeight; },
+          error: (d) => { texteIA = d.message; reponse.textContent = texteIA; },
+        });
+      } catch {
+        texteIA = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        reponse.textContent = texteIA;
+      }
+      reponse.classList.remove("xp-encours");
+      if (texteIA) chatMessages.push({ role: "assistant", content: texteIA });
+
+      // Garde-fou : au-delà de 6 échanges, on passe le relais au vrai rendez-vous.
+      if (chatMessages.filter((m) => m.role === "user").length >= 6) {
+        chatInput.placeholder = "La suite se passe de vive voix — réservez l'audit ↓";
+        chatInput.disabled = true;
+        chatGo.disabled = true;
+      } else {
+        chatInput.disabled = false;
+        chatGo.disabled = false;
+        chatInput.focus();
+      }
+      chatEnCours = false;
+    });
+
+    /* ————— Mode blueprint ————— */
+    $("xp-blueprint").addEventListener("click", () => {
+      const on = document.documentElement.classList.toggle("xp-reveal");
+      $("xp-blueprint").setAttribute("aria-pressed", String(on));
+      $("xp-blueprint").textContent = on ? "[ masquer la structure ]" : "[ révéler la structure ]";
+    });
   </script>
+
+  <script type="application/json" id="xp-quiz-data" set:html={JSON.stringify(QUIZ)} />
 </BaseLayout>
