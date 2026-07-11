@@ -61,17 +61,34 @@ Règles éditoriales (non négociables) :
 - Le sitemap, le `llms.txt` et la section « Registre » de la home se régénèrent
   automatiquement au build — rien d'autre à toucher.
 
-## Déploiement (à faire)
+## Déploiement
 
-1. Créer un repo GitHub (ex. `julientridat/julientridat-com`), pousser ce dossier.
-2. Cloudflare Pages → *Create project* → connecter le repo.
-   Build command : `npm run build` · Output : `dist` · rien d'autre.
-3. Tester sur l'URL `*.pages.dev`.
-4. Bascule DNS : dans Cloudflare Pages, *Custom domains* → `julientridat.com`,
-   puis pointer le DNS du domaine (CNAME) — l'ancien déploiement Lovable peut être
-   débranché après vérification.
-5. Google Search Console : le site est déjà vérifié (meta conservée) ; soumettre
-   `https://julientridat.com/sitemap.xml` après bascule.
+Le site est un **Cloudflare Worker** (assets statiques + endpoint `/api/experience`,
+config dans `wrangler.jsonc`), pas un déploiement Pages classique.
+
+**Automatique** (`.github/workflows/deploy.yml`) : chaque push sur `main` build et
+déploie via [`cloudflare/wrangler-action`](https://github.com/cloudflare/wrangler-action).
+Nécessite deux secrets du dépôt GitHub (*Settings → Secrets and variables → Actions*) :
+
+- `CLOUDFLARE_API_TOKEN` — jeton créé sur le
+  [dashboard Cloudflare](https://dash.cloudflare.com/profile/api-tokens) avec le modèle
+  *Edit Cloudflare Workers*.
+- `CLOUDFLARE_ACCOUNT_ID` — visible dans la barre latérale du dashboard Cloudflare
+  (n'importe quelle page du compte).
+
+Sans ces secrets, le déploiement automatique échoue silencieusement à l'étape wrangler ;
+le reste (build, tests) continue de fonctionner. Déclenchement manuel possible depuis
+l'onglet *Actions* du dépôt (`workflow_dispatch`) une fois les secrets posés.
+
+**Manuel** (fallback, ou pour le secret Anthropic — étape ponctuelle, hors CI) :
+
+```bash
+npm run build && npx wrangler deploy
+npx wrangler secret put ANTHROPIC_API_KEY   # optionnel, une seule fois
+```
+
+Google Search Console : le site est déjà vérifié (meta conservée dans `BaseLayout.astro`) ;
+sitemap à `https://julientridat.com/sitemap.xml`.
 
 ## [À VALIDER] par Julien
 
