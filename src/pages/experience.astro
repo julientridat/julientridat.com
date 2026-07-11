@@ -2,9 +2,9 @@
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import { SITE } from "@/lib/site";
 
-const title = "L'expérience — une IA au travail, en direct | Julien Tridat";
+const title = "L'expérience — votre entreprise, étudiée par l'IA en direct | Julien Tridat";
 const description =
-  "Donnez l'adresse de votre site : l'IA le lit et construit la page pour votre entreprise — analyse, quiz de maturité, scénarios métier et assistant de qualification, générés en direct.";
+  "Un parcours guidé : donnez l'adresse de votre site, les skills d'audit le mesurent en direct, puis choisissez votre étude — concurrents, cibles idéales, nouvel axe marketing — rédigée pour votre entreprise, sous vos yeux.";
 
 const jsonLd = [
   {
@@ -49,346 +49,348 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
 ---
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/experience`} jsonLd={jsonLd}>
-  <main id="xp" class="bg-background text-foreground">
-    <!-- ═════════ HERO — profondeur de champ + moteur réel ═════════ -->
-    <section id="xp-hero" class="relative isolate flex min-h-screen flex-col overflow-hidden" style="perspective: 900px" data-blueprint="Hero — état du moteur IA en direct">
-      <!-- Couches de profondeur (parallaxe + flou croissant vers l'arrière) -->
-      <canvas id="xp-canvas" class="pointer-events-none absolute inset-0 -z-40 h-full w-full" aria-hidden="true"></canvas>
-      <div class="xp-depth pointer-events-none absolute inset-0 -z-30" data-depth="0.12" aria-hidden="true">
-        <svg class="h-full w-full opacity-[0.10]" style="filter: blur(1.5px)">
-          <line x1="12%" y1="0" x2="8%" y2="100%" stroke="white" stroke-width="1" />
-          <line x1="36%" y1="0" x2="40%" y2="100%" stroke="white" stroke-width="1" />
-          <line x1="72%" y1="0" x2="66%" y2="100%" stroke="white" stroke-width="1" />
-          <line x1="0" y1="30%" x2="100%" y2="25%" stroke="white" stroke-width="1" />
-          <line x1="0" y1="74%" x2="100%" y2="80%" stroke="white" stroke-width="1" />
-        </svg>
-      </div>
-      <div class="xp-depth pointer-events-none absolute -left-44 top-1/4 -z-20 h-[520px] w-[520px] rounded-full bg-lime/15 blur-3xl" data-depth="0.35" aria-hidden="true"></div>
-      <div class="xp-depth pointer-events-none absolute -right-36 bottom-8 -z-20 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.55" aria-hidden="true"></div>
-      <div class="xp-depth pointer-events-none absolute left-1/2 top-12 -z-20 h-[260px] w-[260px] rounded-full bg-white/[0.04] blur-2xl" data-depth="0.8" aria-hidden="true"></div>
-
-      <nav class="flex items-center justify-between px-6 py-6 md:px-12 md:py-8">
+  <main id="xp" class="flex h-[100svh] flex-col overflow-hidden bg-background text-foreground">
+    <!-- ═════════ EN-TÊTE DU PARCOURS ═════════ -->
+    <nav class="z-20 flex shrink-0 items-center justify-between gap-3 border-b border-white/8 px-5 py-4 md:px-10">
+      <div class="flex items-center gap-3">
+        <button type="button" id="xp-retour" class="hidden h-9 w-9 shrink-0 cursor-pointer rounded-full border border-white/15 text-white/60 transition-colors hover:border-lime hover:text-lime" aria-label="Étape précédente">←</button>
         <a href="/" class="flex items-center gap-3 text-[15px] font-medium tracking-tight">
           <span class="grid grid-cols-3 gap-[2px]" style="width:18px;height:18px" aria-hidden="true">
             {Array.from({ length: 9 }).map(() => <span class="block rounded-[2px] bg-lime" style="width:5px;height:5px" />)}
           </span>
-          Julien Tridat
+          <span class="hidden sm:inline">Julien Tridat</span>
         </a>
-        <div class="flex items-center gap-3">
-          <a href="/" class="hidden text-[13px] text-white/50 transition-colors hover:text-white sm:block">← Version classique</a>
-          <button type="button" data-open-contact class="cursor-pointer rounded-full bg-white px-5 py-2.5 text-[15px] font-medium text-black transition-colors hover:bg-white/90">
-            Contact
-          </button>
-        </div>
-      </nav>
-
-      <div class="relative mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 pb-16 md:px-12">
-        <div class="mb-8 inline-flex w-fit items-center gap-3 rounded-full border border-lime/30 bg-black/40 px-4 py-2 font-mono text-[12px] text-lime/90 backdrop-blur-sm">
-          <span class="relative flex h-2 w-2">
-            <span id="xp-led-ping" class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60"></span>
-            <span id="xp-led" class="relative inline-flex h-2 w-2 rounded-full bg-lime"></span>
-          </span>
-          <span id="xp-console" aria-live="polite">initialisation…</span>
-        </div>
-
-        <h1 class="max-w-[1050px] text-[clamp(2.5rem,7vw,6.2rem)] font-light leading-[0.98] tracking-[-0.04em]">
-          <span class="xp-line block overflow-hidden"><span class="xp-word">Cette page ne parle</span></span>
-          <span class="xp-line block overflow-hidden"><span class="xp-word">pas d'IA. <em class="font-normal text-lime">Elle pense,</em></span></span>
-          <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">là, maintenant.</em></span></span>
-        </h1>
-
-        <p class="xp-fade mt-8 max-w-xl text-lg leading-relaxed text-white/70">
-          Collez l'adresse de votre site : l'IA le lit en direct et
-          <strong class="font-medium text-white">construit la suite de la page pour votre entreprise</strong> —
-          la même mécanique que les assistants que j'installe.
-        </p>
-
-        <form id="xp-url-form" class="xp-fade mt-10 flex w-full max-w-xl gap-2">
-          <input
-            id="xp-url-input"
-            type="text"
-            maxlength="300"
-            inputmode="url"
-            placeholder="votre-entreprise.fr"
-            class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 font-mono text-[15px] text-white placeholder:text-white/35 outline-none backdrop-blur-sm transition-colors focus:border-lime"
-            autocomplete="url"
-            autocapitalize="off"
-            spellcheck="false"
-          />
-          <button type="submit" id="xp-url-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
-            Analyser
-          </button>
-        </form>
-        <div class="xp-fade mt-3 text-xs text-white/45">
-          Lecture publique de votre site, rien n'est stocké. Pas de site ?
-          <a href="#xp-quiz" class="text-white/65 underline underline-offset-4 hover:text-lime">Faites le diagnostic en 5 questions.</a>
-        </div>
       </div>
-    </section>
+      <ol id="xp-progression" class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/35 sm:gap-3 sm:text-[11px]" aria-label="Progression du parcours">
+        {["votre site", "lecture", "études"].map((etape, i) => (
+          <li class="flex items-center gap-2" data-pas={i}>
+            <span class="xp-pas-point inline-block h-1.5 w-1.5 rounded-full bg-white/25 transition-colors"></span>
+            <span class="xp-pas-label hidden md:inline">{etape}</span>
+          </li>
+        ))}
+      </ol>
+      <div class="flex items-center gap-2">
+        <button type="button" id="xp-capot-open" class="cursor-pointer rounded-full border border-white/20 px-3 py-2 font-mono text-[11px] text-white/60 transition-colors hover:border-lime hover:text-lime sm:px-4">
+          [ capot ]
+        </button>
+        <button type="button" data-open-contact class="cursor-pointer rounded-full bg-white px-4 py-2 text-[14px] font-medium text-black transition-colors hover:bg-white/90">
+          Contact
+        </button>
+      </div>
+    </nav>
 
-    <!-- ═════════ ACTE 1 — ELLE LIT VOTRE SITE ═════════ -->
-    <section id="xp-analyse" class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 1 — analyse du site du visiteur en direct">
-      <div class="xp-depth pointer-events-none absolute -left-28 top-10 -z-10 h-[400px] w-[400px] rounded-full bg-lime/10 blur-3xl" data-depth="0.45" aria-hidden="true"></div>
-      <div class="mx-auto max-w-7xl">
-        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 1 — elle lit votre site
+    <!-- ═════════ SCÈNE : UNE VUE À LA FOIS ═════════ -->
+    <div id="xp-scene" class="relative min-h-0 flex-1">
+
+      <!-- ——— VUE ACCUEIL ——— -->
+      <section data-vue="accueil" class="xp-vue" aria-label="Étape 1 : votre site">
+        <div id="xp-hero" class="relative isolate flex min-h-full flex-col justify-center overflow-hidden px-6 py-10 md:px-12">
+          <canvas id="xp-canvas" class="pointer-events-none absolute inset-0 -z-40 h-full w-full" aria-hidden="true"></canvas>
+          <div class="xp-depth pointer-events-none absolute inset-0 -z-30" data-depth="0.12" aria-hidden="true">
+            <svg class="h-full w-full opacity-[0.10]" style="filter: blur(1.5px)">
+              <line x1="12%" y1="0" x2="8%" y2="100%" stroke="white" stroke-width="1" />
+              <line x1="36%" y1="0" x2="40%" y2="100%" stroke="white" stroke-width="1" />
+              <line x1="72%" y1="0" x2="66%" y2="100%" stroke="white" stroke-width="1" />
+              <line x1="0" y1="30%" x2="100%" y2="25%" stroke="white" stroke-width="1" />
+              <line x1="0" y1="74%" x2="100%" y2="80%" stroke="white" stroke-width="1" />
+            </svg>
+          </div>
+          <div class="xp-depth pointer-events-none absolute -left-44 top-1/4 -z-20 h-[520px] w-[520px] rounded-full bg-lime/15 blur-3xl" data-depth="0.35" aria-hidden="true"></div>
+          <div class="xp-depth pointer-events-none absolute -right-36 bottom-8 -z-20 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.55" aria-hidden="true"></div>
+
+          <div class="relative mx-auto w-full max-w-5xl">
+            <div class="mb-8 inline-flex w-fit items-center gap-3 rounded-full border border-lime/30 bg-black/40 px-4 py-2 font-mono text-[12px] text-lime/90 backdrop-blur-sm">
+              <span class="relative flex h-2 w-2">
+                <span id="xp-led-ping" class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60"></span>
+                <span id="xp-led" class="relative inline-flex h-2 w-2 rounded-full bg-lime"></span>
+              </span>
+              <span id="xp-console" aria-live="polite">initialisation…</span>
+            </div>
+
+            <h1 class="max-w-[900px] text-[clamp(2.3rem,6.5vw,5.2rem)] font-light leading-[0.98] tracking-[-0.04em]">
+              <span class="xp-line block overflow-hidden"><span class="xp-word">Votre entreprise,</span></span>
+              <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">étudiée par l'IA,</em></span></span>
+              <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">sous vos yeux.</em></span></span>
+            </h1>
+
+            <p class="xp-fade mt-7 max-w-xl text-lg leading-relaxed text-white/70">
+              Un parcours en trois temps : mes skills lisent votre site et le mesurent, puis
+              <strong class="font-medium text-white">vous choisissez l'étude</strong> — concurrents, cibles
+              idéales, nouvel axe marketing — rédigée pour vous, en direct.
+            </p>
+
+            <form id="xp-url-form" class="xp-fade mt-9 flex w-full max-w-xl gap-2">
+              <input
+                id="xp-url-input"
+                type="text"
+                maxlength="300"
+                inputmode="url"
+                placeholder="votre-entreprise.fr"
+                class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 font-mono text-[15px] text-white placeholder:text-white/35 outline-none backdrop-blur-sm transition-colors focus:border-lime"
+                autocomplete="url"
+                autocapitalize="off"
+                spellcheck="false"
+              />
+              <button type="submit" id="xp-url-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+                Analyser
+              </button>
+            </form>
+            <div class="xp-fade mt-3 text-xs text-white/45">
+              Lecture publique de votre site, rien n'est stocké. Pas de site ?
+              <button type="button" id="xp-vers-quiz" class="cursor-pointer text-white/65 underline underline-offset-4 hover:text-lime">Commencez par le diagnostic en 5 questions.</button>
+            </div>
+          </div>
         </div>
-        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-          Votre entreprise, <em class="text-lime">vue par l'IA.</em>
-        </h2>
-        <p class="mt-4 max-w-xl text-white/60">
-          Mes skills d'audit parcourent votre site public et mesurent de vrais signaux — rien n'est inventé,
-          tout s'affiche pendant qu'ils travaillent.
-        </p>
+      </section>
 
-        <div class="mt-10 grid gap-5 lg:grid-cols-[1.05fr_1fr] lg:items-stretch">
-          <!-- Terminal des skills au travail -->
-          <div class="rounded-2xl border border-white/12 bg-black/40 p-6 backdrop-blur-sm md:p-7">
-            <div class="flex items-baseline justify-between gap-3">
-              <div class="font-mono text-[12px] text-lime">mes skills au travail</div>
-              <span id="xp-analyse-statut" class="font-mono text-[11px] text-white/40">en attente d'une adresse</span>
+      <!-- ——— VUE AUDIT ——— -->
+      <section data-vue="audit" class="xp-vue" hidden aria-label="Étape 2 : lecture et audit de votre site">
+        <div class="mx-auto max-w-7xl px-6 py-10 md:px-12">
+          <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> Lecture — mes skills au travail
+          </div>
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+            Votre entreprise, <em class="text-lime">vue par l'IA.</em>
+          </h2>
+
+          <div class="mt-8 grid gap-5 lg:grid-cols-[1.05fr_1fr] lg:items-stretch">
+            <div class="rounded-2xl border border-white/12 bg-black/40 p-6 backdrop-blur-sm md:p-7">
+              <div class="flex items-baseline justify-between gap-3">
+                <div class="font-mono text-[12px] text-lime">mes skills au travail</div>
+                <span id="xp-analyse-statut" class="font-mono text-[11px] text-white/40">en attente</span>
+              </div>
+              <div id="xp-analyse-source" class="mt-2 hidden items-center gap-2 font-mono text-[11px] text-white/50">
+                <span class="inline-block h-1.5 w-1.5 rounded-full bg-lime"></span>
+                source lue : <span id="xp-analyse-domaine" class="text-white/75"></span>
+              </div>
+              <div id="xp-skills" class="mt-5 space-y-4 font-mono text-[12px]"></div>
             </div>
-            <div id="xp-analyse-source" class="mt-2 hidden items-center gap-2 font-mono text-[11px] text-white/50">
-              <span class="inline-block h-1.5 w-1.5 rounded-full bg-lime"></span>
-              source lue : <span id="xp-analyse-domaine" class="text-white/75"></span>
-            </div>
-            <div id="xp-skills" class="mt-5 space-y-4 font-mono text-[12px]">
-              <p class="text-white/40">▸ cinq skills spécialisés (performance, référencement, présence sociale, découvrabilité, lisibilité IA) attendent l'adresse de votre site…</p>
+
+            <div class="flex flex-col items-center justify-center rounded-2xl border border-white/12 bg-white/[0.02] p-6 md:p-7">
+              <div class="self-start text-[11px] uppercase tracking-[0.22em] text-white/45">Profil de présence en ligne</div>
+              <canvas id="xp-radar" width="640" height="560" class="mt-2 w-full max-w-[360px]" role="img" aria-label="Radar des cinq scores d'audit du site"></canvas>
             </div>
           </div>
 
-          <!-- Radar : profil de présence en ligne -->
-          <div class="flex flex-col items-center justify-center rounded-2xl border border-white/12 bg-white/[0.02] p-6 md:p-7">
-            <div class="self-start text-[11px] uppercase tracking-[0.22em] text-white/45">Profil de présence en ligne</div>
-            <canvas id="xp-radar" width="640" height="560" class="mt-2 w-full max-w-[360px]" role="img" aria-label="Radar des cinq scores d'audit du site"></canvas>
+          <div class="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-4">
+            {[
+              ["xp-t-ttfb", "Temps de réponse", "ms"],
+              ["xp-t-poids", "Poids de la page", "Ko"],
+              ["xp-t-jsonld", "Données structurées", "blocs"],
+              ["xp-t-alt", "Images décrites", "%"],
+            ].map(([id, label, unite]) => (
+              <div class="bg-[oklch(0.17_0_0)] p-5 md:p-6">
+                <div class="text-[12px] text-white/55">{label}</div>
+                <div class="mt-2 text-3xl font-light text-lime"><span id={id}>—</span><span class="ml-1 text-sm text-white/40">{unite}</span></div>
+              </div>
+            ))}
           </div>
-        </div>
 
-        <!-- Tuiles de mesures -->
-        <div class="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-4">
-          {[
-            ["xp-t-ttfb", "Temps de réponse", "ms"],
-            ["xp-t-poids", "Poids de la page", "Ko"],
-            ["xp-t-jsonld", "Données structurées", "blocs"],
-            ["xp-t-alt", "Images décrites", "%"],
-          ].map(([id, label, unite]) => (
-            <div class="bg-[oklch(0.17_0_0)] p-6">
-              <div class="text-[12px] text-white/55">{label}</div>
-              <div class="mt-2 text-3xl font-light text-lime"><span id={id}>—</span><span class="ml-1 text-sm text-white/40">{unite}</span></div>
+          <div id="xp-analyse-box" class="mt-5 rounded-2xl border border-lime/25 bg-lime/[0.04] p-6 md:p-8" aria-live="polite">
+            <div class="flex flex-wrap items-baseline justify-between gap-3">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Ce que Julien ferait chez vous</div>
+              <span id="xp-analyse-statut2" class="font-mono text-[11px] text-white/40"></span>
             </div>
-          ))}
-        </div>
-
-        <!-- Synthèse rédigée en direct -->
-        <div id="xp-analyse-box" class="mt-5 rounded-2xl border border-lime/25 bg-lime/[0.04] p-7 opacity-60 transition-opacity duration-500 md:p-9" aria-live="polite">
-          <div class="flex flex-wrap items-baseline justify-between gap-3">
-            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Ce que Julien ferait chez vous</div>
-            <span id="xp-analyse-statut2" class="font-mono text-[11px] text-white/40"></span>
+            <p id="xp-analyse-texte" class="mt-4 min-h-[90px] whitespace-pre-line text-[15px] leading-relaxed text-white/85"></p>
           </div>
-          <p id="xp-analyse-texte" class="mt-5 min-h-[110px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
-            Collez l'adresse de votre site dans l'encart d'ouverture : les skills mesurent, puis l'IA rédige ici
-            les trois assistants qu'elle installerait dans votre entreprise — en citant votre activité et vos mesures réelles.
-          </p>
-          <div id="xp-analyse-cta" class="mt-6 hidden">
-            <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
-              On le fait en vrai ? Audit 30 min →
+
+          <div id="xp-audit-suite" class="mt-6 hidden flex-wrap items-center gap-3">
+            <button type="button" id="xp-vers-hub" class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
+              Choisir votre étude
+              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
+            </button>
+            <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
+              Ou directement : audit 30 min
             </button>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ═════════ ACTE 2 — QUIZ MATURITÉ IA ═════════ -->
-    <section id="xp-quiz" class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 2 — quiz + verdict généré par l'IA">
-      <div class="xp-depth pointer-events-none absolute -right-28 top-16 -z-10 h-[380px] w-[380px] rounded-full bg-lime/10 blur-3xl" data-depth="0.4" aria-hidden="true"></div>
-      <div class="mx-auto max-w-7xl">
-        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 2 — elle vous jauge
-        </div>
-        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-          Cinq questions. <em class="text-lime">Un diagnostic écrit pour vous.</em>
-        </h2>
-        <p class="mt-4 max-w-xl text-white/60">
-          Pas de barème figé : l'IA lit vos cinq réponses et rédige son verdict — le même exercice que je fais en session stratégique.
-        </p>
+      <!-- ——— VUE QUIZ (branche sans site) ——— -->
+      <section data-vue="quiz" class="xp-vue" hidden aria-label="Étape 2 : diagnostic en cinq questions">
+        <div class="mx-auto max-w-7xl px-6 py-10 md:px-12">
+          <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> Diagnostic — elle vous jauge
+          </div>
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+            Cinq questions. <em class="text-lime">Un diagnostic écrit pour vous.</em>
+          </h2>
 
-        <div class="mt-12 grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-start">
-          <!-- Carrousel de questions -->
-          <div id="xp-quiz-box" class="relative min-h-[300px] rounded-2xl border border-white/12 bg-white/[0.02] p-7 md:p-9">
-            <div class="mb-6 flex items-center justify-between">
-              <div class="font-mono text-[12px] text-white/45"><span id="xp-quiz-num">01</span> / 0{QUIZ.length}</div>
-              <div class="h-1 w-40 overflow-hidden rounded-full bg-white/10">
-                <div id="xp-quiz-bar" class="h-full w-0 bg-lime transition-all duration-500"></div>
+          <div class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-start">
+            <div id="xp-quiz-box" class="relative min-h-[300px] rounded-2xl border border-white/12 bg-white/[0.02] p-7 md:p-9">
+              <div class="mb-6 flex items-center justify-between">
+                <div class="font-mono text-[12px] text-white/45"><span id="xp-quiz-num">01</span> / 0{QUIZ.length}</div>
+                <div class="h-1 w-40 overflow-hidden rounded-full bg-white/10">
+                  <div id="xp-quiz-bar" class="h-full w-0 bg-lime transition-all duration-500"></div>
+                </div>
+              </div>
+              <div id="xp-quiz-slide">
+                <h3 id="xp-quiz-q" class="text-2xl font-medium leading-snug">{QUIZ[0].q}</h3>
+                <div id="xp-quiz-opts" class="mt-6 flex flex-wrap gap-3"></div>
+              </div>
+              <div id="xp-quiz-recap" class="hidden">
+                <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Vos réponses</div>
+                <ul id="xp-quiz-recap-liste" class="mt-4 space-y-2 text-sm text-white/70"></ul>
+                <button type="button" id="xp-quiz-restart" class="mt-6 cursor-pointer text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">
+                  Recommencer
+                </button>
               </div>
             </div>
-            <div id="xp-quiz-slide">
-              <h3 id="xp-quiz-q" class="text-2xl font-medium leading-snug">{QUIZ[0].q}</h3>
-              <div id="xp-quiz-opts" class="mt-6 flex flex-wrap gap-3"></div>
-            </div>
-            <div id="xp-quiz-recap" class="hidden">
-              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Vos réponses</div>
-              <ul id="xp-quiz-recap-liste" class="mt-4 space-y-2 text-sm text-white/70"></ul>
-              <button type="button" id="xp-quiz-restart" class="mt-6 cursor-pointer text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">
-                Recommencer
-              </button>
-            </div>
-          </div>
 
-          <!-- Verdict streamé -->
-          <div id="xp-verdict-box" class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-7 opacity-50 transition-opacity duration-500 md:p-9" aria-live="polite">
-            <div class="flex items-center justify-between gap-4">
-              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Verdict — généré en direct</div>
-              <span id="xp-verdict-statut" class="font-mono text-[11px] text-white/40">en attente de vos réponses</span>
-            </div>
-            <p id="xp-verdict-texte" class="mt-5 min-h-[120px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
-              Répondez aux cinq questions : le diagnostic s'écrira ici, mot à mot, pendant que le modèle réfléchit.
-            </p>
-            <div id="xp-verdict-cta" class="mt-6 hidden">
-              <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
-                En parler 30 min avec Julien →
-              </button>
+            <div id="xp-verdict-box" class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-7 opacity-50 transition-opacity duration-500 md:p-9" aria-live="polite">
+              <div class="flex items-center justify-between gap-4">
+                <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Verdict — généré en direct</div>
+                <span id="xp-verdict-statut" class="font-mono text-[11px] text-white/40">en attente de vos réponses</span>
+              </div>
+              <p id="xp-verdict-texte" class="mt-5 min-h-[120px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
+                Répondez aux cinq questions : le diagnostic s'écrira ici, mot à mot, pendant que le modèle réfléchit.
+              </p>
+              <div id="xp-quiz-suite" class="mt-6 hidden flex-wrap gap-3">
+                <button type="button" id="xp-vers-hub2" class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+                  Poursuivre — choisir votre étude
+                  <span class="transition-transform group-hover:translate-x-0.5">→</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ═════════ ACTE 2 — GÉNÉRATEUR SECTORIEL ═════════ -->
-    <section class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 3 — scénario métier généré en direct">
-      <div class="xp-depth pointer-events-none absolute -left-32 bottom-0 -z-10 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.5" aria-hidden="true"></div>
-      <div class="mx-auto max-w-7xl">
-        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 3 — elle parle votre métier
+      <!-- ——— VUE HUB : QUE VOULEZ-VOUS ÉTUDIER ? ——— -->
+      <section data-vue="hub" class="xp-vue" hidden aria-label="Étape 3 : choisir votre étude">
+        <div class="mx-auto flex min-h-full max-w-7xl flex-col px-6 py-10 md:px-12">
+          <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> Études — mes skills raisonnent pour vous
+          </div>
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+            Que voulez-vous <em class="text-lime">étudier maintenant ?</em>
+          </h2>
+          <p id="xp-hub-contexte" class="mt-3 max-w-xl text-sm text-white/50"></p>
+
+          <div class="mt-8 grid gap-4 sm:grid-cols-2" role="list">
+            {[
+              ["concurrence", "skill concurrence", "Qui sont vos principaux concurrents ?", "Citez-les : le moteur lit leurs sites publics et compare les positionnements au vôtre."],
+              ["cibles", "skill cibles", "Vos trois cibles idéales", "Qui a le plus besoin de vous, où les toucher, et la première phrase qui leur parle."],
+              ["axe", "skill positionnement", "Un nouvel axe marketing", "Trois angles différenciants ancrés dans votre contenu réel — et le premier pas de chacun."],
+              ["semaine", "skill projection", "Votre semaine avec un assistant", "Trois moments concrets d'une semaine type où l'assistant travaille pour vous."],
+            ].map(([cle, skill, titre, desc]) => (
+              <button type="button" class="xp-carte-etude group cursor-pointer rounded-2xl border border-white/15 bg-white/[0.02] p-6 text-left transition-all hover:border-lime/60" data-etude={cle} role="listitem">
+                <div class="flex items-baseline justify-between gap-3">
+                  <span class="font-mono text-[11px] text-lime">▸ {skill}</span>
+                  <span class="xp-carte-fait hidden font-mono text-[11px] text-lime">fait ✓</span>
+                </div>
+                <div class="mt-3 text-lg font-medium leading-snug">{titre}</div>
+                <p class="mt-2 text-sm leading-relaxed text-white/55">{desc}</p>
+                <div class="mt-4 text-lime transition-transform group-hover:translate-x-0.5">→</div>
+              </button>
+            ))}
+          </div>
+
+          <div class="mt-6 flex flex-wrap items-center gap-3">
+            <button type="button" id="xp-vers-assistant" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-5 py-3 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
+              Ou discutez-en — l'assistant prépare l'audit
+            </button>
+            <button type="button" data-open-booking class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
+              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
+              Réserver l'audit 30 min
+            </button>
+          </div>
+
+          <footer class="mt-auto pt-10 text-xs text-white/35">
+            © 2026 Julien Tridat — Bordeaux · <a href="/" class="hover:text-white">Version classique du site</a> ·
+            chaque texte de ce parcours est généré en direct — ouvrez le capot pour voir le moteur.
+          </footer>
         </div>
-        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-          Dites-lui votre métier : <em class="text-lime">elle vous écrit votre semaine.</em>
-        </h2>
-        <p class="mt-4 max-w-xl text-white/60">
-          Trois moments concrets d'une semaine avec un assistant installé — pour <span id="xp-secteur-tag" class="text-lime">votre activité</span>, pas pour une entreprise générique.
-        </p>
+      </section>
 
-        <div class="mt-10 grid gap-6 lg:grid-cols-[1fr_1.2fr] lg:items-start">
+      <!-- ——— VUE ÉTUDE (générique, configurée en JS) ——— -->
+      <section data-vue="etude" class="xp-vue" hidden aria-label="Votre étude en cours">
+        <div class="mx-auto max-w-7xl px-6 py-10 md:px-12">
+          <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> <span id="xp-etude-skill">skill</span>
+          </div>
+          <h2 id="xp-etude-titre" class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]"></h2>
+          <p id="xp-etude-intro" class="mt-3 max-w-xl text-white/60"></p>
+
+          <div id="xp-etude-form" class="mt-7 max-w-xl space-y-3"></div>
+
+          <div class="mt-7 grid gap-5 lg:grid-cols-[1fr_1.25fr] lg:items-start">
+            <div class="rounded-2xl border border-white/12 bg-black/40 p-6 backdrop-blur-sm">
+              <div class="flex items-baseline justify-between gap-3">
+                <div class="font-mono text-[12px] text-lime">moteur de raisonnement</div>
+                <span id="xp-etude-statut" class="font-mono text-[11px] text-white/40">en attente</span>
+              </div>
+              <div id="xp-etude-console" class="mt-4 space-y-2 font-mono text-[12px] leading-relaxed text-white/50">
+                <p class="text-white/35">▸ le moteur attend votre entrée…</p>
+              </div>
+            </div>
+
+            <div class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-6 md:p-8" aria-live="polite">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">L'étude, rédigée en direct</div>
+              <p id="xp-etude-texte" class="mt-4 min-h-[140px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
+                Lancez le moteur : l'étude s'écrit ici, mot à mot.
+              </p>
+              <div id="xp-etude-suite" class="mt-6 hidden flex-wrap gap-3">
+                <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+                  On approfondit ? Audit 30 min →
+                </button>
+                <button type="button" id="xp-etude-retour" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
+                  ← Autres études
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ——— VUE ASSISTANT (qualification) ——— -->
+      <section data-vue="assistant" class="xp-vue" hidden aria-label="Assistant de qualification">
+        <div class="mx-auto grid min-h-full max-w-7xl content-center gap-10 px-6 py-10 md:px-12 lg:grid-cols-[1fr_1.25fr] lg:items-start">
           <div>
-            <form id="xp-secteur-form" class="flex gap-2">
+            <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+              <span class="h-px w-6 bg-lime"></span> Dernier acte — elle vous écoute
+            </div>
+            <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+              Racontez votre activité. <em class="text-lime">Elle prépare l'audit.</em>
+            </h2>
+            <p class="mt-5 max-w-md text-white/65">
+              Quelques questions, un pré-diagnostic — exactement ce qu'un assistant de qualification fait chez mes clients,
+              à ceci près qu'ici, c'est vous le prospect.
+            </p>
+            <p class="mt-4 max-w-md text-sm text-white/45">
+              Conversation éphémère : rien n'est stocké, rien n'est envoyé à Julien. Le vrai rendez-vous, c'est le bouton sous la conversation.
+            </p>
+          </div>
+
+          <div class="rounded-2xl border border-white/12 bg-white/[0.02] p-5 md:p-7">
+            <div id="xp-chat-log" class="flex max-h-[46svh] min-h-[220px] flex-col gap-4 overflow-y-auto pr-1" aria-live="polite">
+              <div class="xp-bulle-ia max-w-[85%] rounded-2xl rounded-tl-md border border-lime/20 bg-lime/[0.06] px-4 py-3 text-[14px] leading-relaxed text-white/85">
+                Bonjour — je suis l'assistant de démonstration de Julien. Dites-moi en une phrase ce que fait votre entreprise, et je vous dis où un assistant IA travaillerait pour vous.
+              </div>
+            </div>
+            <form id="xp-chat-form" class="mt-4 flex gap-2">
               <input
-                id="xp-secteur-input"
+                id="xp-chat-input"
                 type="text"
-                maxlength="80"
-                placeholder="Votre métier ou secteur…"
+                maxlength="400"
+                placeholder="Ex. : je dirige une PME de 12 personnes dans le bâtiment…"
                 class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
                 autocomplete="off"
               />
-              <button type="submit" id="xp-secteur-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
-                Générer
+              <button type="submit" id="xp-chat-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50" aria-label="Envoyer">
+                →
               </button>
             </form>
-            <div class="mt-4 flex flex-wrap gap-2">
-              {SECTEURS.map((s) => (
-                <button type="button" class="xp-secteur-chip cursor-pointer rounded-full border border-white/15 px-4 py-1.5 text-[13px] text-white/65 transition-colors hover:border-lime/60 hover:text-lime" data-secteur={s}>
-                  {s}
-                </button>
-              ))}
+            <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
+              <button type="button" id="xp-assistant-retour" class="cursor-pointer text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">← Autres études</button>
+              <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+                Réserver l'audit 30 min →
+              </button>
             </div>
           </div>
-
-          <div id="xp-secteur-box" class="rounded-2xl border border-white/12 bg-background/60 p-7 backdrop-blur-sm md:p-9" aria-live="polite">
-            <div class="flex items-center justify-between gap-4">
-              <div class="text-[11px] uppercase tracking-[0.22em] text-white/45">Votre semaine, avec assistant</div>
-              <span id="xp-secteur-statut" class="font-mono text-[11px] text-white/40">en attente</span>
-            </div>
-            <p id="xp-secteur-texte" class="mt-5 min-h-[140px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
-              Choisissez un exemple ou tapez votre métier — le scénario s'écrit sous vos yeux.
-            </p>
-          </div>
         </div>
-      </div>
-    </section>
-
-    <!-- ═════════ ACTE 3 — BOT DE QUALIFICATION ═════════ -->
-    <section class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 4 — assistant de qualification conversationnel">
-      <div class="xp-depth pointer-events-none absolute -right-24 -top-24 -z-10 h-[360px] w-[360px] rounded-full bg-lime/10 blur-3xl" data-depth="0.45" aria-hidden="true"></div>
-      <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.25fr] lg:items-start">
-        <div>
-          <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-            <span class="h-px w-6 bg-lime"></span> Acte 4 — elle vous écoute
-          </div>
-          <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
-            Racontez votre activité. <em class="text-lime">Elle prépare l'audit.</em>
-          </h2>
-          <p class="mt-5 max-w-md text-white/65">
-            Quelques questions, un pré-diagnostic — exactement ce qu'un assistant de qualification fait chez mes clients,
-            à ceci près qu'ici, c'est vous le prospect.
-          </p>
-          <p class="mt-4 max-w-md text-sm text-white/45">
-            Conversation éphémère : rien n'est stocké, rien n'est envoyé à Julien. Le vrai rendez-vous, c'est le bouton sous la conversation.
-          </p>
-        </div>
-
-        <div class="rounded-2xl border border-white/12 bg-white/[0.02] p-5 md:p-7">
-          <div id="xp-chat-log" class="flex max-h-[420px] min-h-[260px] flex-col gap-4 overflow-y-auto pr-1" aria-live="polite">
-            <div class="xp-bulle-ia max-w-[85%] rounded-2xl rounded-tl-md border border-lime/20 bg-lime/[0.06] px-4 py-3 text-[14px] leading-relaxed text-white/85">
-              Bonjour — je suis l'assistant de démonstration de Julien. Dites-moi en une phrase ce que fait votre entreprise, et je vous dis où un assistant IA travaillerait pour vous.
-            </div>
-          </div>
-          <form id="xp-chat-form" class="mt-4 flex gap-2">
-            <input
-              id="xp-chat-input"
-              type="text"
-              maxlength="400"
-              placeholder="Ex. : je dirige une PME de 12 personnes dans le bâtiment…"
-              class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
-              autocomplete="off"
-            />
-            <button type="submit" id="xp-chat-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50" aria-label="Envoyer">
-              →
-            </button>
-          </form>
-          <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
-            <span class="text-xs text-white/45">La suite se passe de vive voix :</span>
-            <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
-              Réserver l'audit 30 min →
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ═════════ FINAL — SOUS LE CAPOT + CTA ═════════ -->
-    <section class="relative overflow-hidden border-t border-white/10 px-6 py-28 md:px-12 md:py-40" data-blueprint="Final — transparence et appel à l'action">
-      <div class="pointer-events-none absolute inset-0 -z-10" style="background: radial-gradient(700px 400px at 50% 0%, oklch(0.92 0.21 125 / 0.10), transparent 70%);" aria-hidden="true"></div>
-      <div class="mx-auto max-w-4xl text-center">
-        <div class="mb-6 text-[11px] uppercase tracking-[0.22em] text-lime">Dernier acte — elle se laisse démonter</div>
-        <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
-          Rien de magique : <em class="text-lime">un système, visible.</em>
-        </h2>
-        <p class="mx-auto mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
-          Chaque réponse que vous avez lue est sortie d'un modèle, token par token, cadré par des consignes précises.
-          Ouvrez « sous le capot » pour voir le moteur, le prompt et le flux brut — c'est exactement ce que j'installe,
-          en version calibrée sur votre métier.
-        </p>
-        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
-          <button type="button" id="xp-capot-open" class="cursor-pointer rounded-full border border-white/25 px-6 py-3 font-mono text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime">
-            [ sous le capot ]
-          </button>
-          <button type="button" id="xp-blueprint" class="cursor-pointer rounded-full border border-white/25 px-6 py-3 font-mono text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime" aria-pressed="false">
-            [ révéler la structure ]
-          </button>
-        </div>
-        <div class="mt-14 flex flex-wrap items-center justify-center gap-4">
-          <button type="button" data-open-booking class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
-            <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
-            Installons ça chez vous — audit 30 min
-          </button>
-          <a href="/realisations" class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
-            Voir les cas clients
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <footer class="border-t border-white/10 px-6 py-10 text-center text-xs text-white/40 md:px-12">
-      © 2026 Julien Tridat — Bordeaux · <a href="/" class="hover:text-white">Version classique du site</a>
-    </footer>
+      </section>
+    </div>
 
     <!-- ═════════ PANNEAU « SOUS LE CAPOT » ═════════ -->
     <aside
@@ -408,7 +410,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4 font-mono text-[11px] leading-relaxed">
         <div>
           <div class="text-white/40">modèle</div>
-          <div id="xp-capot-modele" class="mt-1 break-all text-white/75">aucune génération pour l'instant — lancez le quiz, le générateur ou l'assistant.</div>
+          <div id="xp-capot-modele" class="mt-1 break-all text-white/75">aucune génération pour l'instant — lancez l'analyse, une étude ou l'assistant.</div>
         </div>
         <div>
           <div class="text-white/40">consigne système (extrait, définie côté serveur)</div>
@@ -423,6 +425,21 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
   </main>
 
   <style is:global>
+    /* Parcours plein écran : pas de défilement global, chaque vue gère le sien. */
+    html, body { height: 100%; overflow: hidden; }
+
+    /* Vues du parcours */
+    .xp-vue { position: absolute; inset: 0; overflow-y: auto; overscroll-behavior: contain; }
+    .xp-vue[hidden] { display: none; }
+    .xp-vue-sortie { opacity: 0; transform: translateY(-16px); transition: opacity .26s ease, transform .26s ease; }
+    .xp-vue-entree { animation: xp-vue-in .4s cubic-bezier(.2,.7,.2,1); }
+    @keyframes xp-vue-in { from { opacity: 0; transform: translateY(20px); } }
+
+    /* Progression */
+    .xp-pas-actif .xp-pas-point { background: oklch(0.92 0.21 125); box-shadow: 0 0 8px oklch(0.92 0.21 125 / .7); }
+    .xp-pas-actif .xp-pas-label { color: oklch(0.92 0.21 125); }
+    .xp-pas-fait .xp-pas-point { background: oklch(0.92 0.21 125 / .5); }
+
     /* Apparition du hero */
     .xp-word { display: inline-block; transform: translateY(110%); animation: xp-rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
     .xp-line:nth-child(2) .xp-word { animation-delay: .18s; }
@@ -439,6 +456,12 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     @keyframes xp-out { to { opacity: 0; transform: translateX(-16px); } }
     @keyframes xp-enter { from { opacity: 0; transform: translateX(20px); } }
 
+    /* Champs des études */
+    .xp-champ { width: 100%; border: 1px solid oklch(1 0 0 / 16%); border-radius: 999px; background: oklch(0 0 0 / .3); color: white; padding: .7rem 1.25rem; font-size: 15px; outline: none; transition: border-color .2s; }
+    .xp-champ:focus { border-color: oklch(0.92 0.21 125 / .6); }
+    .xp-chip { cursor: pointer; border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .4rem .9rem; font-size: 13px; color: oklch(1 0 0 / 65%); transition: all .2s; }
+    .xp-chip:hover { border-color: oklch(0.92 0.21 125 / .6); color: oklch(0.92 0.21 125); }
+
     /* Bulles du chat */
     .xp-bulle-moi { align-self: flex-end; max-width: 85%; border-radius: 1rem; border-top-right-radius: .375rem; background: oklch(1 0 0 / 10%); padding: .75rem 1rem; font-size: 14px; line-height: 1.6; color: oklch(1 0 0 / .9); }
     .xp-bulle-ia { animation: xp-enter .3s ease; }
@@ -447,14 +470,11 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     .xp-encours::after { content: "▋"; color: oklch(0.92 0.21 125); animation: xp-clignote 1s steps(2) infinite; margin-left: 1px; }
     @keyframes xp-clignote { 50% { opacity: 0; } }
 
-    /* Mode blueprint */
-    .xp-reveal [data-blueprint] { outline: 1px dashed oklch(0.92 0.21 125 / .55); outline-offset: -8px; position: relative; }
-    .xp-reveal [data-blueprint]::after { content: attr(data-blueprint); position: absolute; top: 10px; left: 10px; z-index: 40; font-family: ui-monospace, monospace; font-size: 11px; color: oklch(0.92 0.21 125); background: oklch(0.145 0 0 / .9); border: 1px solid oklch(0.92 0.21 125 / .4); padding: 4px 10px; border-radius: 999px; }
-
     @media (prefers-reduced-motion: reduce) {
       .xp-word { transform: none; animation: none; }
       .xp-fade { opacity: 1; animation: none; }
-      .xp-slide-in, .xp-slide-out, .xp-bulle-ia { animation: none; }
+      .xp-slide-in, .xp-slide-out, .xp-bulle-ia, .xp-vue-entree { animation: none; }
+      .xp-vue-sortie { transition: none; }
       .xp-depth { transform: none !important; }
     }
   </style>
@@ -463,7 +483,54 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const $ = (id: string) => document.getElementById(id)!;
 
-    /* ————— Profondeur de champ : particules + parallaxe multi-couches ————— */
+    /* ————— Navigation du parcours : une vue à la fois ————— */
+    const vues = new Map<string, HTMLElement>();
+    document.querySelectorAll<HTMLElement>("[data-vue]").forEach((v) => vues.set(v.dataset.vue!, v));
+    let vueActive = "accueil";
+    const PAS: Record<string, number> = { accueil: 0, audit: 1, quiz: 1, hub: 2, etude: 2, assistant: 2 };
+    const PRECEDENT: Record<string, () => string> = {
+      audit: () => "accueil",
+      quiz: () => "accueil",
+      hub: () => (auditFait ? "audit" : quizRecap ? "quiz" : "accueil"),
+      etude: () => "hub",
+      assistant: () => "hub",
+    };
+
+    function majProgression() {
+      const pas = PAS[vueActive] ?? 0;
+      document.querySelectorAll<HTMLElement>("#xp-progression [data-pas]").forEach((li) => {
+        const i = parseInt(li.dataset.pas!, 10);
+        li.classList.toggle("xp-pas-actif", i === pas);
+        li.classList.toggle("xp-pas-fait", i < pas);
+      });
+      $("xp-retour").classList.toggle("hidden", vueActive === "accueil");
+    }
+
+    function allerA(nom: string) {
+      if (nom === vueActive || !vues.has(nom)) return;
+      const courante = vues.get(vueActive)!;
+      const suivante = vues.get(nom)!;
+      const basculer = () => {
+        courante.hidden = true;
+        courante.classList.remove("xp-vue-sortie");
+        suivante.hidden = false;
+        suivante.scrollTop = 0;
+        suivante.classList.add("xp-vue-entree");
+        setTimeout(() => suivante.classList.remove("xp-vue-entree"), 450);
+        vueActive = nom;
+        majProgression();
+        window.dispatchEvent(new Event("resize"));
+      };
+      if (reduced) basculer();
+      else {
+        courante.classList.add("xp-vue-sortie");
+        setTimeout(basculer, 240);
+      }
+    }
+    $("xp-retour").addEventListener("click", () => allerA(PRECEDENT[vueActive]?.() ?? "accueil"));
+    majProgression();
+
+    /* ————— Profondeur de champ : particules + parallaxe ————— */
     const canvas = $("xp-canvas") as HTMLCanvasElement;
     const hero = $("xp-hero");
     if (!reduced && canvas) {
@@ -474,31 +541,34 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
         x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7,
         vx: (Math.random() - 0.5) * 0.00022, vy: (Math.random() - 0.5) * 0.00022,
       }));
-      const resize = () => { W = canvas.width = hero.clientWidth; H = canvas.height = hero.clientHeight; };
+      const resize = () => {
+        if (hero.clientWidth > 0) { W = canvas.width = hero.clientWidth; H = canvas.height = hero.clientHeight; }
+      };
       resize();
       window.addEventListener("resize", resize);
       const tick = () => {
-        ctx.clearRect(0, 0, W, H);
-        for (const d of dots) {
-          d.x = (d.x + d.vx * d.z + 1) % 1;
-          d.y = (d.y + d.vy * d.z + 1) % 1;
-          // z proche → net et lumineux ; z lointain → petit et estompé (profondeur de champ)
-          ctx.beginPath();
-          ctx.arc(d.x * W, d.y * H, 1 + d.z * 1.8, 0, Math.PI * 2);
-          ctx.fillStyle = `oklch(0.92 0.21 125 / ${0.06 + d.z * 0.24})`;
-          ctx.fill();
-        }
-        for (let i = 0; i < dots.length; i++) {
-          for (let j = i + 1; j < dots.length; j++) {
-            const a = dots[i], b = dots[j];
-            const dx = (a.x - b.x) * W, dy = (a.y - b.y) * H;
-            const dist = Math.hypot(dx, dy);
-            if (dist < 110) {
-              ctx.beginPath();
-              ctx.moveTo(a.x * W, a.y * H);
-              ctx.lineTo(b.x * W, b.y * H);
-              ctx.strokeStyle = `oklch(0.92 0.21 125 / ${(1 - dist / 110) * 0.10})`;
-              ctx.stroke();
+        if (vueActive === "accueil" && W > 0) {
+          ctx.clearRect(0, 0, W, H);
+          for (const d of dots) {
+            d.x = (d.x + d.vx * d.z + 1) % 1;
+            d.y = (d.y + d.vy * d.z + 1) % 1;
+            ctx.beginPath();
+            ctx.arc(d.x * W, d.y * H, 1 + d.z * 1.8, 0, Math.PI * 2);
+            ctx.fillStyle = `oklch(0.92 0.21 125 / ${0.06 + d.z * 0.24})`;
+            ctx.fill();
+          }
+          for (let i = 0; i < dots.length; i++) {
+            for (let j = i + 1; j < dots.length; j++) {
+              const a = dots[i], b = dots[j];
+              const dx = (a.x - b.x) * W, dy = (a.y - b.y) * H;
+              const dist = Math.hypot(dx, dy);
+              if (dist < 110) {
+                ctx.beginPath();
+                ctx.moveTo(a.x * W, a.y * H);
+                ctx.lineTo(b.x * W, b.y * H);
+                ctx.strokeStyle = `oklch(0.92 0.21 125 / ${(1 - dist / 110) * 0.10})`;
+                ctx.stroke();
+              }
             }
           }
         }
@@ -507,25 +577,16 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       requestAnimationFrame(tick);
     }
 
-    // Parallaxe : chaque couche .xp-depth bouge selon sa profondeur (pointeur + défilement).
     const layers = [...document.querySelectorAll<HTMLElement>(".xp-depth")];
-    if (!reduced && layers.length) {
-      let px = 0, py = 0;
-      const apply = () => {
-        const sy = window.scrollY;
+    if (!reduced && layers.length && window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("pointermove", (e) => {
+        const px = (e.clientX / window.innerWidth) * 2 - 1;
+        const py = (e.clientY / window.innerHeight) * 2 - 1;
         for (const el of layers) {
           const depth = parseFloat(el.dataset.depth || "0.3");
-          el.style.transform = `translate3d(${px * 30 * depth}px, ${py * 20 * depth - sy * depth * 0.15}px, 0)`;
+          el.style.transform = `translate3d(${px * 30 * depth}px, ${py * 20 * depth}px, 0)`;
         }
-      };
-      if (window.matchMedia("(pointer: fine)").matches) {
-        window.addEventListener("pointermove", (e) => {
-          px = (e.clientX / window.innerWidth) * 2 - 1;
-          py = (e.clientY / window.innerHeight) * 2 - 1;
-          apply();
-        }, { passive: true });
-      }
-      window.addEventListener("scroll", apply, { passive: true });
+      }, { passive: true });
     }
 
     /* ————— Client SSE + panneau « sous le capot » ————— */
@@ -547,18 +608,20 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
 
     type Handlers = { meta?: (d: any) => void; delta?: (d: any) => void; done?: (d: any) => void; error?: (d: any) => void; etape?: (d: any) => void; skill?: (d: any) => void; audit?: (d: any) => void };
 
-    // URL du site du visiteur, mémorisée après une analyse réussie :
-    // le générateur métier et l'assistant s'en servent comme contexte.
+    // Contexte du parcours, partagé entre les vues.
     let siteUrlActive: string | null = null;
+    let quizRecap: string | null = null;
+    let auditFait = false;
+    const etudesFaites = new Set<string>();
 
-    async function streamIA(mode: string, messages: { role: string; content: string }[], h: Handlers) {
+    async function streamIA(mode: string, messages: { role: string; content: string }[], h: Handlers, extra: Record<string, unknown> = {}) {
       capot.reset(mode);
       let frags = 0;
       const flux = $("xp-capot-flux");
       const res = await fetch("/api/experience", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, messages, siteUrl: siteUrlActive ?? undefined }),
+        body: JSON.stringify({ mode, messages, siteUrl: siteUrlActive ?? undefined, ...extra }),
       });
       if (!res.ok || !res.body) throw new Error(`API ${res.status}`);
       const reader = res.body.getReader();
@@ -608,11 +671,8 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       try {
         const res = await fetch("/api/experience");
         const info = await res.json();
-        if (info.ok) {
-          consoleEl.textContent = `moteur ${info.engine} en ligne — à vous de jouer.`;
-        } else {
-          throw new Error("aucun moteur");
-        }
+        if (info.ok) consoleEl.textContent = `moteur ${info.engine} en ligne — à vous de jouer.`;
+        else throw new Error("aucun moteur");
       } catch {
         consoleEl.textContent = "démonstration hors ligne — la page reste visitable.";
         $("xp-led").classList.replace("bg-lime", "bg-white/40");
@@ -620,7 +680,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       }
     })();
 
-    /* ————— Acte 1 : radar animé (profil de présence en ligne) ————— */
+    /* ————— Radar (profil de présence en ligne) ————— */
     const AXES = [
       { skill: "performance", label: "Performance" },
       { skill: "seo", label: "Référencement" },
@@ -630,8 +690,8 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     ];
     const radar = $("xp-radar") as HTMLCanvasElement;
     const rctx = radar.getContext("2d")!;
-    const radarVal: Record<string, number> = {}; // valeur affichée (animée)
-    const radarCible: Record<string, number> = {}; // valeur mesurée
+    const radarVal: Record<string, number> = {};
+    const radarCible: Record<string, number> = {};
     AXES.forEach((a) => { radarVal[a.skill] = 0; radarCible[a.skill] = 0; });
 
     function dessinerRadar() {
@@ -642,7 +702,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
         const ang = -Math.PI / 2 + (i * 2 * Math.PI) / AXES.length;
         return [cx + Math.cos(ang) * R * (v / 100), cy + Math.sin(ang) * R * (v / 100)];
       };
-      // Grille discrète : anneaux 25/50/75/100 + rayons
       rctx.strokeStyle = "rgba(255,255,255,0.10)";
       rctx.lineWidth = 1;
       for (const niveau of [25, 50, 75, 100]) {
@@ -651,7 +710,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
         rctx.closePath(); rctx.stroke();
       }
       AXES.forEach((_, i) => { const [x, y] = pt(i, 100); rctx.beginPath(); rctx.moveTo(cx, cy); rctx.lineTo(x, y); rctx.stroke(); });
-      // Série unique : contour lime 2px + remplissage translucide
       rctx.beginPath();
       AXES.forEach((a, i) => { const [x, y] = pt(i, radarVal[a.skill]); i ? rctx.lineTo(x, y) : rctx.moveTo(x, y); });
       rctx.closePath();
@@ -664,7 +722,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
         rctx.beginPath(); rctx.arc(x, y, 7, 0, Math.PI * 2);
         rctx.strokeStyle = "#0a0a0a"; rctx.lineWidth = 2; rctx.stroke();
       });
-      // Étiquettes d'axes (encre, jamais la couleur de série) + score
       rctx.font = "22px Geist, system-ui, sans-serif";
       rctx.textAlign = "center";
       AXES.forEach((a, i) => {
@@ -698,7 +755,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     }
     dessinerRadar();
 
-    /** Compteur animé pour les tuiles de mesures. */
     function animerValeur(id: string, cible: number) {
       const el = $(id);
       if (reduced) { el.textContent = String(cible); return; }
@@ -711,7 +767,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       requestAnimationFrame(pas);
     }
 
-    /** Ajoute la ligne d'un skill dans le terminal d'audit. */
     function afficherSkill(r: { skill: string; label: string; score: number; mesures: { label: string; valeur: string; ok: boolean }[] }) {
       const ligne = document.createElement("div");
       ligne.className = "xp-slide-in border-b border-white/8 pb-3 last:border-b-0";
@@ -728,7 +783,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       animerRadar();
     }
 
-    /* ————— Acte 1 : analyse du site du visiteur ————— */
+    /* ————— Étape 1 → 2 : analyse du site ————— */
     let analyseEnCours = false;
     $("xp-url-form").addEventListener("submit", async (e) => {
       e.preventDefault();
@@ -736,13 +791,10 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       if (!brut || analyseEnCours) return;
       analyseEnCours = true;
       const go = $("xp-url-go") as HTMLButtonElement;
-      const box = $("xp-analyse-box") as HTMLElement;
       const texte = $("xp-analyse-texte");
       const setStatut = (t: string) => { $("xp-analyse-statut").textContent = t; $("xp-analyse-statut2").textContent = t; };
       go.disabled = true;
-      box.style.opacity = "1";
-      $("xp-analyse").scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
-      // Remise à zéro du tableau de bord
+      allerA("audit");
       $("xp-skills").innerHTML = "";
       AXES.forEach((a) => { radarCible[a.skill] = 0; radarVal[a.skill] = 0; });
       dessinerRadar();
@@ -751,12 +803,12 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       texte.classList.add("xp-encours");
       setStatut("lecture du site…");
       $("xp-analyse-source").classList.add("hidden");
-      $("xp-analyse-cta").classList.add("hidden");
+      $("xp-audit-suite").classList.add("hidden");
       siteUrlActive = brut;
       let ok = false;
       try {
         await streamIA("analyse", [{ role: "user", content: "Analyse mon entreprise à partir du contenu de son site." }], {
-          etape: (d) => { setStatut(d.label); consoleEl.textContent = d.label; },
+          etape: (d) => { setStatut(d.label); },
           skill: (d) => afficherSkill(d),
           audit: (d) => {
             animerValeur("xp-t-ttfb", d.tuiles.ttfbMs);
@@ -785,14 +837,18 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       }
       texte.classList.remove("xp-encours");
       if (ok) {
-        $("xp-analyse-cta").classList.remove("hidden");
-        consoleEl.textContent = "site audité — la page est désormais calée sur votre entreprise.";
+        auditFait = true;
+        $("xp-audit-suite").classList.remove("hidden");
+        $("xp-audit-suite").classList.add("flex");
       }
       go.disabled = false;
       analyseEnCours = false;
     });
 
-    /* ————— Acte 2 : quiz ————— */
+    $("xp-vers-quiz").addEventListener("click", () => allerA("quiz"));
+    $("xp-vers-hub").addEventListener("click", () => { majHub(); allerA("hub"); });
+
+    /* ————— Étape 2 bis : quiz (branche sans site) ————— */
     const QUIZ: { q: string; options: string[]; cle: string }[] = JSON.parse($("xp-quiz-data").textContent!);
     let quizIndex = 0;
     const quizReponses: { cle: string; valeur: string }[] = [];
@@ -842,8 +898,8 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       texte.textContent = "";
       texte.classList.add("xp-encours");
       statut.textContent = "le modèle rédige…";
-      box.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "nearest" });
       const recap = quizReponses.map((r, i) => `${i + 1}. ${r.cle} : ${r.valeur}`).join("\n");
+      quizRecap = recap;
       try {
         await streamIA("quiz", [{ role: "user", content: `Mes réponses au diagnostic :\n${recap}` }], {
           meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
@@ -856,15 +912,17 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
         statut.textContent = "hors ligne";
       }
       texte.classList.remove("xp-encours");
-      $("xp-verdict-cta").classList.remove("hidden");
+      $("xp-quiz-suite").classList.remove("hidden");
+      $("xp-quiz-suite").classList.add("flex");
     };
 
     $("xp-quiz-restart").addEventListener("click", () => {
       quizIndex = 0;
       quizReponses.length = 0;
+      quizRecap = null;
       $("xp-quiz-recap").classList.add("hidden");
       $("xp-quiz-slide").classList.remove("hidden");
-      $("xp-verdict-cta").classList.add("hidden");
+      $("xp-quiz-suite").classList.add("hidden");
       ($("xp-verdict-box") as HTMLElement).style.opacity = "0.5";
       $("xp-verdict-texte").textContent = "Répondez aux cinq questions : le diagnostic s'écrira ici, mot à mot, pendant que le modèle réfléchit.";
       $("xp-verdict-statut").textContent = "en attente de vos réponses";
@@ -872,48 +930,200 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     });
 
     renderQuestion();
+    $("xp-vers-hub2").addEventListener("click", () => { majHub(); allerA("hub"); });
 
-    /* ————— Acte 3 : générateur sectoriel ————— */
-    let secteurEnCours = false;
-    const genererSecteur = async (secteur: string) => {
-      if (secteurEnCours || !secteur.trim()) return;
-      secteurEnCours = true;
-      const go = $("xp-secteur-go") as HTMLButtonElement;
-      const texte = $("xp-secteur-texte");
-      const statut = $("xp-secteur-statut");
-      go.disabled = true;
-      $("xp-secteur-tag").textContent = secteur.toLowerCase();
+    /* ————— Étape 3 : hub des études ————— */
+    const SECTEURS: string[] = JSON.parse($("xp-secteurs-data").textContent!);
+    function majHub() {
+      $("xp-hub-contexte").textContent = siteUrlActive
+        ? `Chaque étude s'appuie sur la lecture de ${new URL(siteUrlActive).hostname} et sur les signaux mesurés.`
+        : quizRecap
+          ? "Chaque étude s'appuie sur vos réponses au diagnostic."
+          : "Sans site ni diagnostic, chaque étude vous demandera une phrase sur votre activité.";
+      document.querySelectorAll<HTMLElement>(".xp-carte-etude").forEach((carte) => {
+        carte.querySelector(".xp-carte-fait")!.classList.toggle("hidden", !etudesFaites.has(carte.dataset.etude!));
+      });
+    }
+
+    type ConfigEtude = { skill: string; titre: string; intro: string; form: "concurrents" | "direct" | "metier" };
+    const ETUDES: Record<string, ConfigEtude & { mode: string }> = {
+      concurrence: {
+        skill: "skill concurrence", mode: "concurrents", form: "concurrents",
+        titre: "Qui sont vos principaux concurrents ?",
+        intro: "Citez jusqu'à trois concurrents — un nom, ou mieux : l'adresse de leur site. Le moteur lit ce qui est public et compare les positionnements au vôtre.",
+      },
+      cibles: {
+        skill: "skill cibles", mode: "cibles", form: "direct",
+        titre: "Vos trois cibles idéales",
+        intro: "Le moteur dessine les trois clients qui ont le plus besoin de vous — qui ils sont, où les toucher, et la première phrase qui leur parle.",
+      },
+      axe: {
+        skill: "skill positionnement", mode: "axe", form: "direct",
+        titre: "Un nouvel axe marketing",
+        intro: "Trois angles différenciants, ancrés dans votre contenu réel et vos mesures — et le premier pas concret de chacun.",
+      },
+      semaine: {
+        skill: "skill projection", mode: "secteur", form: "metier",
+        titre: "Votre semaine avec un assistant",
+        intro: "Trois moments concrets d'une semaine type où l'assistant travaille pour vous, pendant que vous faites votre métier.",
+      },
+    };
+
+    let etudeCourante = "";
+    let etudeEnCours = false;
+
+    function contexteDeclare(): string {
+      if (siteUrlActive) return "";
+      if (quizRecap) return `\nContexte déclaré via le diagnostic :\n${quizRecap}`;
+      const champ = document.getElementById("xp-etude-contexte") as HTMLInputElement | null;
+      return champ?.value.trim() ? `\nMon activité : ${champ.value.trim()}` : "";
+    }
+
+    function construireFormulaire(cle: string) {
+      const config = ETUDES[cle];
+      const zone = $("xp-etude-form");
+      zone.innerHTML = "";
+      const bouton = document.createElement("button");
+      bouton.type = "button";
+      bouton.className = "cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50";
+      bouton.textContent = "Lancer le moteur →";
+      bouton.id = "xp-etude-go";
+
+      const besoinContexte = !siteUrlActive && !quizRecap;
+      if (config.form === "concurrents") {
+        for (let i = 1; i <= 3; i++) {
+          const champ = document.createElement("input");
+          champ.type = "text";
+          champ.maxLength = 120;
+          champ.className = "xp-champ";
+          champ.id = `xp-conc-${i}`;
+          champ.placeholder = `concurrent ${i} — nom ou adresse du site${i > 1 ? " (facultatif)" : ""}`;
+          champ.autocomplete = "off";
+          zone.append(champ);
+        }
+      }
+      if (config.form === "metier") {
+        const champ = document.createElement("input");
+        champ.type = "text";
+        champ.maxLength = 80;
+        champ.className = "xp-champ";
+        champ.id = "xp-etude-metier";
+        champ.placeholder = "votre métier ou secteur…";
+        champ.autocomplete = "off";
+        zone.append(champ);
+        const chips = document.createElement("div");
+        chips.className = "flex flex-wrap gap-2";
+        for (const s of SECTEURS) {
+          const chip = document.createElement("button");
+          chip.type = "button";
+          chip.className = "xp-chip";
+          chip.textContent = s;
+          chip.addEventListener("click", () => { champ.value = s; });
+          chips.append(chip);
+        }
+        zone.append(chips);
+      }
+      if (besoinContexte && config.form !== "metier") {
+        const champ = document.createElement("input");
+        champ.type = "text";
+        champ.maxLength = 200;
+        champ.className = "xp-champ";
+        champ.id = "xp-etude-contexte";
+        champ.placeholder = "votre activité en une phrase (ex. : menuiserie sur mesure à Bordeaux)";
+        champ.autocomplete = "off";
+        zone.append(champ);
+      }
+      zone.append(bouton);
+      bouton.addEventListener("click", () => lancerEtude(cle));
+    }
+
+    function ouvrirEtude(cle: string) {
+      const config = ETUDES[cle];
+      etudeCourante = cle;
+      $("xp-etude-skill").textContent = config.skill;
+      $("xp-etude-titre").textContent = config.titre;
+      $("xp-etude-intro").textContent = config.intro;
+      $("xp-etude-statut").textContent = "en attente";
+      $("xp-etude-console").innerHTML = `<p class="text-white/35">▸ le moteur attend votre entrée…</p>`;
+      $("xp-etude-texte").textContent = "Lancez le moteur : l'étude s'écrit ici, mot à mot.";
+      $("xp-etude-suite").classList.add("hidden");
+      construireFormulaire(cle);
+      allerA("etude");
+    }
+
+    function ligneConsole(texte: string) {
+      const console = $("xp-etude-console");
+      if (console.firstElementChild?.classList.contains("text-white/35")) console.innerHTML = "";
+      const p = document.createElement("p");
+      p.className = "xp-slide-in";
+      p.innerHTML = `<span class="text-lime">▸</span> ${texte}`;
+      console.append(p);
+      console.scrollTop = console.scrollHeight;
+    }
+
+    async function lancerEtude(cle: string) {
+      if (etudeEnCours) return;
+      const config = ETUDES[cle];
+      const extra: Record<string, unknown> = {};
+      let contenu = "";
+
+      if (config.form === "concurrents") {
+        const liste = [1, 2, 3]
+          .map((i) => (document.getElementById(`xp-conc-${i}`) as HTMLInputElement).value.trim())
+          .filter(Boolean);
+        if (!liste.length) { (document.getElementById("xp-conc-1") as HTMLInputElement).focus(); return; }
+        extra.concurrents = liste;
+        contenu = `Mes concurrents : ${liste.join(", ")}.${contexteDeclare()}`;
+      } else if (config.form === "metier") {
+        const metier = (document.getElementById("xp-etude-metier") as HTMLInputElement).value.trim();
+        if (!metier) { (document.getElementById("xp-etude-metier") as HTMLInputElement).focus(); return; }
+        contenu = `Mon métier / secteur : ${metier}`;
+      } else {
+        const ctx = contexteDeclare();
+        if (!siteUrlActive && !quizRecap && !ctx) { (document.getElementById("xp-etude-contexte") as HTMLInputElement)?.focus(); return; }
+        contenu = (cle === "cibles" ? "Identifie mes trois cibles idéales." : "Propose-moi un nouvel axe marketing.") + ctx;
+      }
+
+      etudeEnCours = true;
+      const go = document.getElementById("xp-etude-go") as HTMLButtonElement | null;
+      if (go) go.disabled = true;
+      const texte = $("xp-etude-texte");
+      const statut = $("xp-etude-statut");
       texte.textContent = "";
       texte.classList.add("xp-encours");
-      statut.textContent = "génération…";
+      statut.textContent = "le moteur travaille…";
+      ligneConsole("lecture du contexte…");
+      let ok = false;
       try {
-        await streamIA("secteur", [{ role: "user", content: `Mon métier / secteur : ${secteur}` }], {
-          meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
-          delta: (d) => { texte.append(d.text); },
-          error: (d) => { texte.textContent = d.message; },
-          done: (d) => { statut.textContent = `généré en ${(d.ms / 1000).toFixed(1)} s`; },
-        });
+        await streamIA(config.mode, [{ role: "user", content: contenu }], {
+          etape: (d) => { ligneConsole(d.label); statut.textContent = d.label; },
+          meta: (d) => { ligneConsole(`moteur ${d.engine} — rédaction en cours`); statut.textContent = `${d.engine} · en direct`; },
+          delta: (d) => { texte.append(d.text); ok = true; },
+          error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
+          done: (d) => { if (ok) { statut.textContent = `étude produite en ${(d.ms / 1000).toFixed(1)} s`; ligneConsole(`terminé en ${(d.ms / 1000).toFixed(1)} s`); } },
+        }, extra);
       } catch {
         texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
         statut.textContent = "hors ligne";
       }
       texte.classList.remove("xp-encours");
-      go.disabled = false;
-      secteurEnCours = false;
-    };
+      if (ok) {
+        etudesFaites.add(cle);
+        $("xp-etude-suite").classList.remove("hidden");
+        $("xp-etude-suite").classList.add("flex");
+      }
+      if (go) go.disabled = false;
+      etudeEnCours = false;
+    }
 
-    $("xp-secteur-form").addEventListener("submit", (e) => {
-      e.preventDefault();
-      genererSecteur(($("xp-secteur-input") as HTMLInputElement).value);
+    document.querySelectorAll<HTMLElement>(".xp-carte-etude").forEach((carte) => {
+      carte.addEventListener("click", () => ouvrirEtude(carte.dataset.etude!));
     });
-    document.querySelectorAll<HTMLElement>(".xp-secteur-chip").forEach((chip) => {
-      chip.addEventListener("click", () => {
-        ($("xp-secteur-input") as HTMLInputElement).value = chip.dataset.secteur!;
-        genererSecteur(chip.dataset.secteur!);
-      });
-    });
+    $("xp-etude-retour").addEventListener("click", () => { majHub(); allerA("hub"); });
+    $("xp-vers-assistant").addEventListener("click", () => allerA("assistant"));
+    $("xp-assistant-retour").addEventListener("click", () => { majHub(); allerA("hub"); });
 
-    /* ————— Acte 4 : assistant de qualification ————— */
+    /* ————— Assistant de qualification ————— */
     const chatMessages: { role: "user" | "assistant"; content: string }[] = [];
     let chatEnCours = false;
     const chatLog = $("xp-chat-log");
@@ -954,7 +1164,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       reponse.classList.remove("xp-encours");
       if (texteIA) chatMessages.push({ role: "assistant", content: texteIA });
 
-      // Garde-fou : au-delà de 6 échanges, on passe le relais au vrai rendez-vous.
       if (chatMessages.filter((m) => m.role === "user").length >= 6) {
         chatInput.placeholder = "La suite se passe de vive voix — réservez l'audit ↓";
         chatInput.disabled = true;
@@ -966,14 +1175,8 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       }
       chatEnCours = false;
     });
-
-    /* ————— Mode blueprint ————— */
-    $("xp-blueprint").addEventListener("click", () => {
-      const on = document.documentElement.classList.toggle("xp-reveal");
-      $("xp-blueprint").setAttribute("aria-pressed", String(on));
-      $("xp-blueprint").textContent = on ? "[ masquer la structure ]" : "[ révéler la structure ]";
-    });
   </script>
 
   <script type="application/json" id="xp-quiz-data" set:html={JSON.stringify(QUIZ)} />
+  <script type="application/json" id="xp-secteurs-data" set:html={JSON.stringify(SECTEURS)} />
 </BaseLayout>
