@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 const title = "L'expérience — une IA au travail, en direct | Julien Tridat";
 const description =
-  "Quiz de maturité, générateur de scénarios pour votre métier, assistant de qualification : cette page embarque une vraie IA qui vous répond en direct.";
+  "Donnez l'adresse de votre site : l'IA le lit et construit la page pour votre entreprise — analyse, quiz de maturité, scénarios métier et assistant de qualification, générés en direct.";
 
 const jsonLd = [
   {
@@ -98,26 +98,112 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
         </h1>
 
         <p class="xp-fade mt-8 max-w-xl text-lg leading-relaxed text-white/70">
-          Trois expériences, une vraie IA branchée derrière — celle que j'installe dans les entreprises.
-          Répondez-lui : <strong class="font-medium text-white">tout ce qu'elle écrit ici est généré pour vous, en direct.</strong>
+          Collez l'adresse de votre site : l'IA le lit en direct et
+          <strong class="font-medium text-white">construit la suite de la page pour votre entreprise</strong> —
+          la même mécanique que les assistants que j'installe.
         </p>
 
-        <div class="xp-fade mt-10 flex flex-wrap items-center gap-4">
-          <a href="#xp-quiz" class="group inline-flex items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
-            <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-y-0.5">↓</span>
-            Commencer — 5 questions
-          </a>
-          <span class="text-xs text-white/45">2 minutes, aucune donnée stockée</span>
+        <form id="xp-url-form" class="xp-fade mt-10 flex w-full max-w-xl gap-2">
+          <input
+            id="xp-url-input"
+            type="text"
+            maxlength="300"
+            inputmode="url"
+            placeholder="votre-entreprise.fr"
+            class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 font-mono text-[15px] text-white placeholder:text-white/35 outline-none backdrop-blur-sm transition-colors focus:border-lime"
+            autocomplete="url"
+            autocapitalize="off"
+            spellcheck="false"
+          />
+          <button type="submit" id="xp-url-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+            Analyser
+          </button>
+        </form>
+        <div class="xp-fade mt-3 text-xs text-white/45">
+          Lecture publique de votre site, rien n'est stocké. Pas de site ?
+          <a href="#xp-quiz" class="text-white/65 underline underline-offset-4 hover:text-lime">Faites le diagnostic en 5 questions.</a>
         </div>
       </div>
     </section>
 
-    <!-- ═════════ ACTE 1 — QUIZ MATURITÉ IA ═════════ -->
-    <section id="xp-quiz" class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 1 — quiz + verdict généré par l'IA">
+    <!-- ═════════ ACTE 1 — ELLE LIT VOTRE SITE ═════════ -->
+    <section id="xp-analyse" class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 1 — analyse du site du visiteur en direct">
+      <div class="xp-depth pointer-events-none absolute -left-28 top-10 -z-10 h-[400px] w-[400px] rounded-full bg-lime/10 blur-3xl" data-depth="0.45" aria-hidden="true"></div>
+      <div class="mx-auto max-w-7xl">
+        <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+          <span class="h-px w-6 bg-lime"></span> Acte 1 — elle lit votre site
+        </div>
+        <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Votre entreprise, <em class="text-lime">vue par l'IA.</em>
+        </h2>
+        <p class="mt-4 max-w-xl text-white/60">
+          Mes skills d'audit parcourent votre site public et mesurent de vrais signaux — rien n'est inventé,
+          tout s'affiche pendant qu'ils travaillent.
+        </p>
+
+        <div class="mt-10 grid gap-5 lg:grid-cols-[1.05fr_1fr] lg:items-stretch">
+          <!-- Terminal des skills au travail -->
+          <div class="rounded-2xl border border-white/12 bg-black/40 p-6 backdrop-blur-sm md:p-7">
+            <div class="flex items-baseline justify-between gap-3">
+              <div class="font-mono text-[12px] text-lime">mes skills au travail</div>
+              <span id="xp-analyse-statut" class="font-mono text-[11px] text-white/40">en attente d'une adresse</span>
+            </div>
+            <div id="xp-analyse-source" class="mt-2 hidden items-center gap-2 font-mono text-[11px] text-white/50">
+              <span class="inline-block h-1.5 w-1.5 rounded-full bg-lime"></span>
+              source lue : <span id="xp-analyse-domaine" class="text-white/75"></span>
+            </div>
+            <div id="xp-skills" class="mt-5 space-y-4 font-mono text-[12px]">
+              <p class="text-white/40">▸ cinq skills spécialisés (performance, référencement, présence sociale, découvrabilité, lisibilité IA) attendent l'adresse de votre site…</p>
+            </div>
+          </div>
+
+          <!-- Radar : profil de présence en ligne -->
+          <div class="flex flex-col items-center justify-center rounded-2xl border border-white/12 bg-white/[0.02] p-6 md:p-7">
+            <div class="self-start text-[11px] uppercase tracking-[0.22em] text-white/45">Profil de présence en ligne</div>
+            <canvas id="xp-radar" width="640" height="560" class="mt-2 w-full max-w-[360px]" role="img" aria-label="Radar des cinq scores d'audit du site"></canvas>
+          </div>
+        </div>
+
+        <!-- Tuiles de mesures -->
+        <div class="mt-5 grid grid-cols-2 gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-4">
+          {[
+            ["xp-t-ttfb", "Temps de réponse", "ms"],
+            ["xp-t-poids", "Poids de la page", "Ko"],
+            ["xp-t-jsonld", "Données structurées", "blocs"],
+            ["xp-t-alt", "Images décrites", "%"],
+          ].map(([id, label, unite]) => (
+            <div class="bg-[oklch(0.17_0_0)] p-6">
+              <div class="text-[12px] text-white/55">{label}</div>
+              <div class="mt-2 text-3xl font-light text-lime"><span id={id}>—</span><span class="ml-1 text-sm text-white/40">{unite}</span></div>
+            </div>
+          ))}
+        </div>
+
+        <!-- Synthèse rédigée en direct -->
+        <div id="xp-analyse-box" class="mt-5 rounded-2xl border border-lime/25 bg-lime/[0.04] p-7 opacity-60 transition-opacity duration-500 md:p-9" aria-live="polite">
+          <div class="flex flex-wrap items-baseline justify-between gap-3">
+            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Ce que Julien ferait chez vous</div>
+            <span id="xp-analyse-statut2" class="font-mono text-[11px] text-white/40"></span>
+          </div>
+          <p id="xp-analyse-texte" class="mt-5 min-h-[110px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
+            Collez l'adresse de votre site dans l'encart d'ouverture : les skills mesurent, puis l'IA rédige ici
+            les trois assistants qu'elle installerait dans votre entreprise — en citant votre activité et vos mesures réelles.
+          </p>
+          <div id="xp-analyse-cta" class="mt-6 hidden">
+            <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+              On le fait en vrai ? Audit 30 min →
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═════════ ACTE 2 — QUIZ MATURITÉ IA ═════════ -->
+    <section id="xp-quiz" class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 2 — quiz + verdict généré par l'IA">
       <div class="xp-depth pointer-events-none absolute -right-28 top-16 -z-10 h-[380px] w-[380px] rounded-full bg-lime/10 blur-3xl" data-depth="0.4" aria-hidden="true"></div>
       <div class="mx-auto max-w-7xl">
         <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 1 — elle vous jauge
+          <span class="h-px w-6 bg-lime"></span> Acte 2 — elle vous jauge
         </div>
         <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
           Cinq questions. <em class="text-lime">Un diagnostic écrit pour vous.</em>
@@ -168,11 +254,11 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     </section>
 
     <!-- ═════════ ACTE 2 — GÉNÉRATEUR SECTORIEL ═════════ -->
-    <section class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 2 — scénario métier généré en direct">
+    <section class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 3 — scénario métier généré en direct">
       <div class="xp-depth pointer-events-none absolute -left-32 bottom-0 -z-10 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.5" aria-hidden="true"></div>
       <div class="mx-auto max-w-7xl">
         <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-          <span class="h-px w-6 bg-lime"></span> Acte 2 — elle parle votre métier
+          <span class="h-px w-6 bg-lime"></span> Acte 3 — elle parle votre métier
         </div>
         <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
           Dites-lui votre métier : <em class="text-lime">elle vous écrit votre semaine.</em>
@@ -219,12 +305,12 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     </section>
 
     <!-- ═════════ ACTE 3 — BOT DE QUALIFICATION ═════════ -->
-    <section class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 3 — assistant de qualification conversationnel">
+    <section class="relative overflow-hidden border-t border-white/10 bg-[oklch(0.17_0_0)] px-6 py-24 md:px-12 md:py-32" data-blueprint="Acte 4 — assistant de qualification conversationnel">
       <div class="xp-depth pointer-events-none absolute -right-24 -top-24 -z-10 h-[360px] w-[360px] rounded-full bg-lime/10 blur-3xl" data-depth="0.45" aria-hidden="true"></div>
       <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1fr_1.25fr] lg:items-start">
         <div>
           <div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-            <span class="h-px w-6 bg-lime"></span> Acte 3 — elle vous écoute
+            <span class="h-px w-6 bg-lime"></span> Acte 4 — elle vous écoute
           </div>
           <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
             Racontez votre activité. <em class="text-lime">Elle prépare l'audit.</em>
@@ -459,7 +545,11 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     $("xp-capot-open").addEventListener("click", () => capot.open());
     $("xp-capot-close").addEventListener("click", () => capot.close());
 
-    type Handlers = { meta?: (d: any) => void; delta?: (d: any) => void; done?: (d: any) => void; error?: (d: any) => void };
+    type Handlers = { meta?: (d: any) => void; delta?: (d: any) => void; done?: (d: any) => void; error?: (d: any) => void; etape?: (d: any) => void; skill?: (d: any) => void; audit?: (d: any) => void };
+
+    // URL du site du visiteur, mémorisée après une analyse réussie :
+    // le générateur métier et l'assistant s'en servent comme contexte.
+    let siteUrlActive: string | null = null;
 
     async function streamIA(mode: string, messages: { role: string; content: string }[], h: Handlers) {
       capot.reset(mode);
@@ -468,7 +558,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       const res = await fetch("/api/experience", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mode, messages }),
+        body: JSON.stringify({ mode, messages, siteUrl: siteUrlActive ?? undefined }),
       });
       if (!res.ok || !res.body) throw new Error(`API ${res.status}`);
       const reader = res.body.getReader();
@@ -490,8 +580,10 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
           const parsed = JSON.parse(data);
           if (event === "meta") {
             $("xp-capot-moteur").textContent = parsed.engine;
-            $("xp-capot-modele").textContent = parsed.model;
+            $("xp-capot-modele").textContent = parsed.model + (parsed.source ? ` · source lue : ${new URL(parsed.source.url).hostname}` : "");
             $("xp-capot-system").textContent = parsed.system + "…";
+          } else if (event === "etape") {
+            $("xp-capot-modele").textContent = parsed.label;
           } else if (event === "delta") {
             frags += 1;
             $("xp-capot-frags").textContent = String(frags);
@@ -528,7 +620,179 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       }
     })();
 
-    /* ————— Acte 1 : quiz ————— */
+    /* ————— Acte 1 : radar animé (profil de présence en ligne) ————— */
+    const AXES = [
+      { skill: "performance", label: "Performance" },
+      { skill: "seo", label: "Référencement" },
+      { skill: "reseaux", label: "Réseaux" },
+      { skill: "decouvrabilite", label: "Découvrabilité" },
+      { skill: "aeo", label: "Lisibilité IA" },
+    ];
+    const radar = $("xp-radar") as HTMLCanvasElement;
+    const rctx = radar.getContext("2d")!;
+    const radarVal: Record<string, number> = {}; // valeur affichée (animée)
+    const radarCible: Record<string, number> = {}; // valeur mesurée
+    AXES.forEach((a) => { radarVal[a.skill] = 0; radarCible[a.skill] = 0; });
+
+    function dessinerRadar() {
+      const W = radar.width, H = radar.height;
+      const cx = W / 2, cy = H / 2 + 8, R = Math.min(W, H) / 2 - 92;
+      rctx.clearRect(0, 0, W, H);
+      const pt = (i: number, v: number) => {
+        const ang = -Math.PI / 2 + (i * 2 * Math.PI) / AXES.length;
+        return [cx + Math.cos(ang) * R * (v / 100), cy + Math.sin(ang) * R * (v / 100)];
+      };
+      // Grille discrète : anneaux 25/50/75/100 + rayons
+      rctx.strokeStyle = "rgba(255,255,255,0.10)";
+      rctx.lineWidth = 1;
+      for (const niveau of [25, 50, 75, 100]) {
+        rctx.beginPath();
+        AXES.forEach((_, i) => { const [x, y] = pt(i, niveau); i ? rctx.lineTo(x, y) : rctx.moveTo(x, y); });
+        rctx.closePath(); rctx.stroke();
+      }
+      AXES.forEach((_, i) => { const [x, y] = pt(i, 100); rctx.beginPath(); rctx.moveTo(cx, cy); rctx.lineTo(x, y); rctx.stroke(); });
+      // Série unique : contour lime 2px + remplissage translucide
+      rctx.beginPath();
+      AXES.forEach((a, i) => { const [x, y] = pt(i, radarVal[a.skill]); i ? rctx.lineTo(x, y) : rctx.moveTo(x, y); });
+      rctx.closePath();
+      rctx.fillStyle = "rgba(200,255,61,0.13)"; rctx.fill();
+      rctx.strokeStyle = "#c8ff3d"; rctx.lineWidth = 2.5; rctx.stroke();
+      AXES.forEach((a, i) => {
+        const [x, y] = pt(i, radarVal[a.skill]);
+        rctx.beginPath(); rctx.arc(x, y, 5, 0, Math.PI * 2);
+        rctx.fillStyle = "#c8ff3d"; rctx.fill();
+        rctx.beginPath(); rctx.arc(x, y, 7, 0, Math.PI * 2);
+        rctx.strokeStyle = "#0a0a0a"; rctx.lineWidth = 2; rctx.stroke();
+      });
+      // Étiquettes d'axes (encre, jamais la couleur de série) + score
+      rctx.font = "22px Geist, system-ui, sans-serif";
+      rctx.textAlign = "center";
+      AXES.forEach((a, i) => {
+        const [x, y] = pt(i, 121);
+        rctx.fillStyle = "rgba(255,255,255,0.6)";
+        rctx.fillText(a.label, x, y);
+        if (radarCible[a.skill] > 0) {
+          rctx.fillStyle = "rgba(255,255,255,0.92)";
+          rctx.font = "600 22px Geist, system-ui, sans-serif";
+          rctx.fillText(String(Math.round(radarVal[a.skill])), x, y + 26);
+          rctx.font = "22px Geist, system-ui, sans-serif";
+        }
+      });
+    }
+    let radarAnime = false;
+    function animerRadar() {
+      if (radarAnime) return;
+      radarAnime = true;
+      const pas = () => {
+        let reste = false;
+        for (const a of AXES) {
+          const d = radarCible[a.skill] - radarVal[a.skill];
+          if (Math.abs(d) > 0.5) { radarVal[a.skill] += d * (reduced ? 1 : 0.09); reste = true; }
+          else radarVal[a.skill] = radarCible[a.skill];
+        }
+        dessinerRadar();
+        if (reste) requestAnimationFrame(pas);
+        else radarAnime = false;
+      };
+      requestAnimationFrame(pas);
+    }
+    dessinerRadar();
+
+    /** Compteur animé pour les tuiles de mesures. */
+    function animerValeur(id: string, cible: number) {
+      const el = $(id);
+      if (reduced) { el.textContent = String(cible); return; }
+      const t0 = performance.now();
+      const pas = (t: number) => {
+        const k = Math.min((t - t0) / 1200, 1);
+        el.textContent = String(Math.round(cible * (1 - Math.pow(1 - k, 3))));
+        if (k < 1) requestAnimationFrame(pas);
+      };
+      requestAnimationFrame(pas);
+    }
+
+    /** Ajoute la ligne d'un skill dans le terminal d'audit. */
+    function afficherSkill(r: { skill: string; label: string; score: number; mesures: { label: string; valeur: string; ok: boolean }[] }) {
+      const ligne = document.createElement("div");
+      ligne.className = "xp-slide-in border-b border-white/8 pb-3 last:border-b-0";
+      ligne.innerHTML =
+        `<div class="flex items-baseline justify-between gap-3">
+           <span class="text-lime">▸ ${r.label}</span>
+           <span class="text-white/90">${r.score}<span class="text-white/40">/100</span></span>
+         </div>
+         <div class="mt-1.5 leading-relaxed text-white/50">` +
+        r.mesures.map((m) => `${m.label} ${m.valeur} <span class="${m.ok ? "text-lime" : "text-white/35"}">${m.ok ? "✓" : "✗"}</span>`).join(" · ") +
+        `</div>`;
+      $("xp-skills").append(ligne);
+      radarCible[r.skill] = r.score;
+      animerRadar();
+    }
+
+    /* ————— Acte 1 : analyse du site du visiteur ————— */
+    let analyseEnCours = false;
+    $("xp-url-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const brut = ($("xp-url-input") as HTMLInputElement).value.trim();
+      if (!brut || analyseEnCours) return;
+      analyseEnCours = true;
+      const go = $("xp-url-go") as HTMLButtonElement;
+      const box = $("xp-analyse-box") as HTMLElement;
+      const texte = $("xp-analyse-texte");
+      const setStatut = (t: string) => { $("xp-analyse-statut").textContent = t; $("xp-analyse-statut2").textContent = t; };
+      go.disabled = true;
+      box.style.opacity = "1";
+      $("xp-analyse").scrollIntoView({ behavior: reduced ? "auto" : "smooth" });
+      // Remise à zéro du tableau de bord
+      $("xp-skills").innerHTML = "";
+      AXES.forEach((a) => { radarCible[a.skill] = 0; radarVal[a.skill] = 0; });
+      dessinerRadar();
+      for (const id of ["xp-t-ttfb", "xp-t-poids", "xp-t-jsonld", "xp-t-alt"]) $(id).textContent = "—";
+      texte.textContent = "";
+      texte.classList.add("xp-encours");
+      setStatut("lecture du site…");
+      $("xp-analyse-source").classList.add("hidden");
+      $("xp-analyse-cta").classList.add("hidden");
+      siteUrlActive = brut;
+      let ok = false;
+      try {
+        await streamIA("analyse", [{ role: "user", content: "Analyse mon entreprise à partir du contenu de son site." }], {
+          etape: (d) => { setStatut(d.label); consoleEl.textContent = d.label; },
+          skill: (d) => afficherSkill(d),
+          audit: (d) => {
+            animerValeur("xp-t-ttfb", d.tuiles.ttfbMs);
+            animerValeur("xp-t-poids", d.tuiles.poidsKo);
+            animerValeur("xp-t-jsonld", d.tuiles.jsonLd);
+            if (d.tuiles.altPct === null) $("xp-t-alt").textContent = "—";
+            else animerValeur("xp-t-alt", d.tuiles.altPct);
+          },
+          meta: (d) => {
+            setStatut(`${d.engine} · en direct`);
+            if (d.source) {
+              siteUrlActive = d.source.url;
+              $("xp-analyse-domaine").textContent = new URL(d.source.url).hostname + (d.source.titre ? ` — « ${d.source.titre} »` : "");
+              $("xp-analyse-source").classList.remove("hidden");
+              $("xp-analyse-source").classList.add("flex");
+            }
+          },
+          delta: (d) => { texte.append(d.text); ok = true; },
+          error: (d) => { texte.textContent = d.message; setStatut("échec de lecture"); siteUrlActive = null; },
+          done: (d) => { if (ok) setStatut(`mesuré et rédigé en ${(d.ms / 1000).toFixed(1)} s`); },
+        });
+      } catch {
+        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        setStatut("hors ligne");
+        siteUrlActive = null;
+      }
+      texte.classList.remove("xp-encours");
+      if (ok) {
+        $("xp-analyse-cta").classList.remove("hidden");
+        consoleEl.textContent = "site audité — la page est désormais calée sur votre entreprise.";
+      }
+      go.disabled = false;
+      analyseEnCours = false;
+    });
+
+    /* ————— Acte 2 : quiz ————— */
     const QUIZ: { q: string; options: string[]; cle: string }[] = JSON.parse($("xp-quiz-data").textContent!);
     let quizIndex = 0;
     const quizReponses: { cle: string; valeur: string }[] = [];
@@ -609,7 +873,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
 
     renderQuestion();
 
-    /* ————— Acte 2 : générateur sectoriel ————— */
+    /* ————— Acte 3 : générateur sectoriel ————— */
     let secteurEnCours = false;
     const genererSecteur = async (secteur: string) => {
       if (secteurEnCours || !secteur.trim()) return;
@@ -649,7 +913,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       });
     });
 
-    /* ————— Acte 3 : assistant de qualification ————— */
+    /* ————— Acte 4 : assistant de qualification ————— */
     const chatMessages: { role: "user" | "assistant"; content: string }[] = [];
     let chatEnCours = false;
     const chatLog = $("xp-chat-log");
