@@ -24,6 +24,29 @@ npm run build      # build statique → dist/
 npm run preview    # sert dist/ en local
 ```
 
+## Page /experience — IA en direct (Worker)
+
+La page `/experience` embarque trois expériences (quiz de maturité, générateur de
+scénarios métier, assistant de qualification) alimentées par une vraie inférence,
+servie par le Worker (`worker/index.ts`, endpoint `POST /api/experience`, flux SSE).
+
+Moteur **hybride**, dans cet ordre :
+1. **Claude** (API Anthropic) si le secret est posé :
+   `npx wrangler secret put ANTHROPIC_API_KEY`
+   Modèle par défaut : `claude-opus-4-8` (qualité maximale). Pour diviser le coût
+   par ~5 : variable `CLAUDE_MODEL=claude-haiku-4-5` dans `wrangler.jsonc` (`vars`).
+2. **Workers AI** (Llama 3.3, binding `AI`) en bascule automatique — inclus dans le
+   plan Cloudflare, zéro clé, zéro coût récurrent. C'est le mode par défaut si aucune
+   clé Anthropic n'est configurée.
+3. Message honnête d'indisponibilité si aucun moteur ne répond.
+
+Garde-fous côté serveur : prompts système non modifiables par le client, contrôle
+d'origine, taille de requête limitée, 700 tokens max par réponse, conversation
+plafonnée. Règle éditoriale encodée dans les prompts : aucun chiffre inventé.
+
+Dev local sans clé : `npx wrangler dev --var MOCK_AI:1` (flux simulé).
+Déploiement : `npm run build && npx wrangler deploy`.
+
 ## Publier un artefact
 
 **Étude de cas** : créer `src/content/realisations/<slug>.md` — frontmatter :
