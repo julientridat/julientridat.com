@@ -26,9 +26,13 @@ npm run preview    # sert dist/ en local
 
 ## Page /experience — IA en direct (Worker)
 
-La page `/experience` embarque trois expériences (quiz de maturité, générateur de
-scénarios métier, assistant de qualification) alimentées par une vraie inférence,
-servie par le Worker (`worker/index.ts`, endpoint `POST /api/experience`, flux SSE).
+La page `/experience` est un **parcours guidé** (une vue à la fois, pas de scroll
+global) : le visiteur donne l'adresse de son site → les skills d'audit le mesurent
+en direct (radar, compteurs) → il choisit son étude — concurrence (lecture des sites
+concurrents), cibles idéales, nouvel axe marketing, semaine avec assistant — puis
+l'assistant de qualification prépare l'audit. Chaque texte est généré par une vraie
+inférence servie par le Worker (`worker/index.ts`, `POST /api/experience`, flux SSE) ;
+sans site, le quiz de maturité fournit le contexte déclaré.
 
 Moteur **hybride**, dans cet ordre :
 1. **Claude** (API Anthropic) si le secret est posé :
