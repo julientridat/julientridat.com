@@ -45,7 +45,6 @@ const QUIZ = [
   },
 ];
 
-const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière", "Restaurant", "Cabinet d'avocats", "E-commerce"];
 ---
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/experience`} jsonLd={jsonLd}>
@@ -269,10 +268,10 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
 
           <div class="mt-8 grid gap-4 sm:grid-cols-2" role="list">
             {[
-              ["concurrence", "skill concurrence", "Qui sont vos principaux concurrents ?", "Citez-les : le moteur lit leurs sites publics et compare les positionnements au vôtre."],
-              ["cibles", "skill cibles", "Vos trois cibles idéales", "Qui a le plus besoin de vous, où les toucher, et la première phrase qui leur parle."],
-              ["axe", "skill positionnement", "Un nouvel axe marketing", "Trois angles différenciants ancrés dans votre contenu réel — et le premier pas de chacun."],
-              ["semaine", "skill projection", "Votre semaine avec un assistant", "Trois moments concrets d'une semaine type où l'assistant travaille pour vous."],
+              ["concurrence", "skill concurrence", "Qui sont vos concurrents ?", "L'IA reconstitue votre paysage concurrentiel à partir de votre site et trouve où vous démarquer."],
+              ["cibles", "skill cibles", "Vos trois cibles idéales", "L'IA les définit : qui a le plus besoin de vous, où les toucher, et la phrase qui leur parle."],
+              ["axe", "skill positionnement", "Un nouvel axe marketing", "L'IA propose trois angles différenciants ancrés dans votre contenu — et le premier pas de chacun."],
+              ["semaine", "skill projection", "Votre semaine avec un assistant", "L'IA projette trois moments concrets d'une semaine type où l'assistant travaille pour vous."],
             ].map(([cle, skill, titre, desc]) => (
               <button type="button" class="xp-carte-etude group cursor-pointer rounded-2xl border border-white/15 bg-white/[0.02] p-6 text-left transition-all hover:border-lime/60" data-etude={cle} role="listitem">
                 <div class="flex items-baseline justify-between gap-3">
@@ -281,7 +280,7 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
                 </div>
                 <div class="mt-3 text-lg font-medium leading-snug">{titre}</div>
                 <p class="mt-2 text-sm leading-relaxed text-white/55">{desc}</p>
-                <div class="mt-4 text-lime transition-transform group-hover:translate-x-0.5">→</div>
+                <div class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-lime transition-transform group-hover:translate-x-0.5">Lancer l'étude →</div>
               </button>
             ))}
           </div>
@@ -459,8 +458,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     /* Champs des études */
     .xp-champ { width: 100%; border: 1px solid oklch(1 0 0 / 16%); border-radius: 999px; background: oklch(0 0 0 / .3); color: white; padding: .7rem 1.25rem; font-size: 15px; outline: none; transition: border-color .2s; }
     .xp-champ:focus { border-color: oklch(0.92 0.21 125 / .6); }
-    .xp-chip { cursor: pointer; border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .4rem .9rem; font-size: 13px; color: oklch(1 0 0 / 65%); transition: all .2s; }
-    .xp-chip:hover { border-color: oklch(0.92 0.21 125 / .6); color: oklch(0.92 0.21 125); }
 
     /* Bulles du chat */
     .xp-bulle-moi { align-self: flex-end; max-width: 85%; border-radius: 1rem; border-top-right-radius: .375rem; background: oklch(1 0 0 / 10%); padding: .75rem 1rem; font-size: 14px; line-height: 1.6; color: oklch(1 0 0 / .9); }
@@ -933,7 +930,6 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
     $("xp-vers-hub2").addEventListener("click", () => { majHub(); allerA("hub"); });
 
     /* ————— Étape 3 : hub des études ————— */
-    const SECTEURS: string[] = JSON.parse($("xp-secteurs-data").textContent!);
     function majHub() {
       $("xp-hub-contexte").textContent = siteUrlActive
         ? `Chaque étude s'appuie sur la lecture de ${new URL(siteUrlActive).hostname} et sur les signaux mesurés.`
@@ -945,110 +941,43 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       });
     }
 
-    type ConfigEtude = { skill: string; titre: string; intro: string; form: "concurrents" | "direct" | "metier" };
-    const ETUDES: Record<string, ConfigEtude & { mode: string }> = {
+    type ConfigEtude = { skill: string; mode: string; titre: string; intro: string; demande: string };
+    const ETUDES: Record<string, ConfigEtude> = {
       concurrence: {
-        skill: "skill concurrence", mode: "concurrents", form: "concurrents",
-        titre: "Qui sont vos principaux concurrents ?",
-        intro: "Citez jusqu'à trois concurrents — un nom, ou mieux : l'adresse de leur site. Le moteur lit ce qui est public et compare les positionnements au vôtre.",
+        skill: "skill concurrence", mode: "concurrents",
+        titre: "Qui sont vos concurrents ?",
+        intro: "Le moteur reconstitue votre paysage concurrentiel à partir de votre site — profils de concurrents, leur faille commune, et le terrain où vous démarquer.",
+        demande: "Reconstitue mon paysage concurrentiel et dis-moi où me démarquer.",
       },
       cibles: {
-        skill: "skill cibles", mode: "cibles", form: "direct",
+        skill: "skill cibles", mode: "cibles",
         titre: "Vos trois cibles idéales",
-        intro: "Le moteur dessine les trois clients qui ont le plus besoin de vous — qui ils sont, où les toucher, et la première phrase qui leur parle.",
+        intro: "Le moteur définit les trois clients qui ont le plus besoin de vous — qui ils sont, où les toucher, et la première phrase qui leur parle.",
+        demande: "Définis mes trois cibles idéales.",
       },
       axe: {
-        skill: "skill positionnement", mode: "axe", form: "direct",
+        skill: "skill positionnement", mode: "axe",
         titre: "Un nouvel axe marketing",
-        intro: "Trois angles différenciants, ancrés dans votre contenu réel et vos mesures — et le premier pas concret de chacun.",
+        intro: "Le moteur propose trois angles différenciants, ancrés dans votre contenu réel et vos mesures — et le premier pas concret de chacun.",
+        demande: "Propose-moi un nouvel axe marketing.",
       },
       semaine: {
-        skill: "skill projection", mode: "secteur", form: "metier",
+        skill: "skill projection", mode: "secteur",
         titre: "Votre semaine avec un assistant",
-        intro: "Trois moments concrets d'une semaine type où l'assistant travaille pour vous, pendant que vous faites votre métier.",
+        intro: "Le moteur projette trois moments concrets d'une semaine type où l'assistant travaille pour vous, pendant que vous faites votre métier.",
+        demande: "Projette ma semaine type avec un assistant installé.",
       },
     };
 
-    let etudeCourante = "";
     let etudeEnCours = false;
 
-    function contexteDeclare(): string {
+    // Le contexte vient du site lu ou du diagnostic. À défaut seulement, une phrase déclarée.
+    function aDuContexte(): boolean { return !!siteUrlActive || !!quizRecap; }
+    function suffixeContexte(): string {
       if (siteUrlActive) return "";
       if (quizRecap) return `\nContexte déclaré via le diagnostic :\n${quizRecap}`;
       const champ = document.getElementById("xp-etude-contexte") as HTMLInputElement | null;
       return champ?.value.trim() ? `\nMon activité : ${champ.value.trim()}` : "";
-    }
-
-    function construireFormulaire(cle: string) {
-      const config = ETUDES[cle];
-      const zone = $("xp-etude-form");
-      zone.innerHTML = "";
-      const bouton = document.createElement("button");
-      bouton.type = "button";
-      bouton.className = "cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50";
-      bouton.textContent = "Lancer le moteur →";
-      bouton.id = "xp-etude-go";
-
-      const besoinContexte = !siteUrlActive && !quizRecap;
-      if (config.form === "concurrents") {
-        for (let i = 1; i <= 3; i++) {
-          const champ = document.createElement("input");
-          champ.type = "text";
-          champ.maxLength = 120;
-          champ.className = "xp-champ";
-          champ.id = `xp-conc-${i}`;
-          champ.placeholder = `concurrent ${i} — nom ou adresse du site${i > 1 ? " (facultatif)" : ""}`;
-          champ.autocomplete = "off";
-          zone.append(champ);
-        }
-      }
-      if (config.form === "metier") {
-        const champ = document.createElement("input");
-        champ.type = "text";
-        champ.maxLength = 80;
-        champ.className = "xp-champ";
-        champ.id = "xp-etude-metier";
-        champ.placeholder = "votre métier ou secteur…";
-        champ.autocomplete = "off";
-        zone.append(champ);
-        const chips = document.createElement("div");
-        chips.className = "flex flex-wrap gap-2";
-        for (const s of SECTEURS) {
-          const chip = document.createElement("button");
-          chip.type = "button";
-          chip.className = "xp-chip";
-          chip.textContent = s;
-          chip.addEventListener("click", () => { champ.value = s; });
-          chips.append(chip);
-        }
-        zone.append(chips);
-      }
-      if (besoinContexte && config.form !== "metier") {
-        const champ = document.createElement("input");
-        champ.type = "text";
-        champ.maxLength = 200;
-        champ.className = "xp-champ";
-        champ.id = "xp-etude-contexte";
-        champ.placeholder = "votre activité en une phrase (ex. : menuiserie sur mesure à Bordeaux)";
-        champ.autocomplete = "off";
-        zone.append(champ);
-      }
-      zone.append(bouton);
-      bouton.addEventListener("click", () => lancerEtude(cle));
-    }
-
-    function ouvrirEtude(cle: string) {
-      const config = ETUDES[cle];
-      etudeCourante = cle;
-      $("xp-etude-skill").textContent = config.skill;
-      $("xp-etude-titre").textContent = config.titre;
-      $("xp-etude-intro").textContent = config.intro;
-      $("xp-etude-statut").textContent = "en attente";
-      $("xp-etude-console").innerHTML = `<p class="text-white/35">▸ le moteur attend votre entrée…</p>`;
-      $("xp-etude-texte").textContent = "Lancez le moteur : l'étude s'écrit ici, mot à mot.";
-      $("xp-etude-suite").classList.add("hidden");
-      construireFormulaire(cle);
-      allerA("etude");
     }
 
     function ligneConsole(texte: string) {
@@ -1061,29 +990,52 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       console.scrollTop = console.scrollHeight;
     }
 
+    function ouvrirEtude(cle: string) {
+      const config = ETUDES[cle];
+      $("xp-etude-skill").textContent = config.skill;
+      $("xp-etude-titre").textContent = config.titre;
+      $("xp-etude-intro").textContent = config.intro;
+      $("xp-etude-statut").textContent = "en attente";
+      $("xp-etude-console").innerHTML = `<p class="text-white/35">▸ le moteur démarre…</p>`;
+      $("xp-etude-texte").textContent = "";
+      $("xp-etude-suite").classList.add("hidden");
+      const zone = $("xp-etude-form");
+      zone.innerHTML = "";
+
+      if (aDuContexte()) {
+        // Contexte connu : le moteur part tout seul, aucune saisie.
+        allerA("etude");
+        lancerEtude(cle);
+        return;
+      }
+
+      // Sans site ni diagnostic : une seule phrase suffit, puis le moteur fait le reste.
+      const champ = document.createElement("input");
+      champ.type = "text";
+      champ.maxLength = 200;
+      champ.className = "xp-champ";
+      champ.id = "xp-etude-contexte";
+      champ.placeholder = "votre activité en une phrase (ex. : menuiserie sur mesure à Bordeaux)";
+      champ.autocomplete = "off";
+      const bouton = document.createElement("button");
+      bouton.type = "button";
+      bouton.id = "xp-etude-go";
+      bouton.className = "cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50";
+      bouton.textContent = "Lancer l'étude →";
+      bouton.addEventListener("click", () => {
+        if (!champ.value.trim()) { champ.focus(); return; }
+        lancerEtude(cle);
+      });
+      champ.addEventListener("keydown", (e) => { if (e.key === "Enter" && champ.value.trim()) lancerEtude(cle); });
+      zone.append(champ, bouton);
+      $("xp-etude-texte").textContent = "Dites votre activité en une phrase et le moteur produit l'étude.";
+      allerA("etude");
+      setTimeout(() => champ.focus(), 300);
+    }
+
     async function lancerEtude(cle: string) {
       if (etudeEnCours) return;
       const config = ETUDES[cle];
-      const extra: Record<string, unknown> = {};
-      let contenu = "";
-
-      if (config.form === "concurrents") {
-        const liste = [1, 2, 3]
-          .map((i) => (document.getElementById(`xp-conc-${i}`) as HTMLInputElement).value.trim())
-          .filter(Boolean);
-        if (!liste.length) { (document.getElementById("xp-conc-1") as HTMLInputElement).focus(); return; }
-        extra.concurrents = liste;
-        contenu = `Mes concurrents : ${liste.join(", ")}.${contexteDeclare()}`;
-      } else if (config.form === "metier") {
-        const metier = (document.getElementById("xp-etude-metier") as HTMLInputElement).value.trim();
-        if (!metier) { (document.getElementById("xp-etude-metier") as HTMLInputElement).focus(); return; }
-        contenu = `Mon métier / secteur : ${metier}`;
-      } else {
-        const ctx = contexteDeclare();
-        if (!siteUrlActive && !quizRecap && !ctx) { (document.getElementById("xp-etude-contexte") as HTMLInputElement)?.focus(); return; }
-        contenu = (cle === "cibles" ? "Identifie mes trois cibles idéales." : "Propose-moi un nouvel axe marketing.") + ctx;
-      }
-
       etudeEnCours = true;
       const go = document.getElementById("xp-etude-go") as HTMLButtonElement | null;
       if (go) go.disabled = true;
@@ -1092,16 +1044,17 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
       texte.textContent = "";
       texte.classList.add("xp-encours");
       statut.textContent = "le moteur travaille…";
-      ligneConsole("lecture du contexte…");
+      $("xp-etude-console").innerHTML = "";
+      ligneConsole("initialisation…");
       let ok = false;
       try {
-        await streamIA(config.mode, [{ role: "user", content: contenu }], {
+        await streamIA(config.mode, [{ role: "user", content: config.demande + suffixeContexte() }], {
           etape: (d) => { ligneConsole(d.label); statut.textContent = d.label; },
-          meta: (d) => { ligneConsole(`moteur ${d.engine} — rédaction en cours`); statut.textContent = `${d.engine} · en direct`; },
+          meta: (d) => { ligneConsole(`moteur ${d.engine} — rédaction`); statut.textContent = `${d.engine} · en direct`; },
           delta: (d) => { texte.append(d.text); ok = true; },
           error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
           done: (d) => { if (ok) { statut.textContent = `étude produite en ${(d.ms / 1000).toFixed(1)} s`; ligneConsole(`terminé en ${(d.ms / 1000).toFixed(1)} s`); } },
-        }, extra);
+        });
       } catch {
         texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
         statut.textContent = "hors ligne";
@@ -1178,5 +1131,4 @@ const SECTEURS = ["Artisan menuisier", "Cabinet comptable", "Agence immobilière
   </script>
 
   <script type="application/json" id="xp-quiz-data" set:html={JSON.stringify(QUIZ)} />
-  <script type="application/json" id="xp-secteurs-data" set:html={JSON.stringify(SECTEURS)} />
 </BaseLayout>
