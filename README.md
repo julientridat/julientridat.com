@@ -24,6 +24,21 @@ npm run build      # build statique → dist/
 npm run preview    # sert dist/ en local
 ```
 
+## Outillage — MCP LinkedIn (Claude Code)
+
+`.mcp.json` déclare un serveur MCP LinkedIn ([`stickerdaniel/linkedin-mcp-server`](https://github.com/stickerdaniel/linkedin-mcp-server)),
+chargé automatiquement par Claude Code (CLI et sessions web) au démarrage — approbation
+demandée une fois. Lancé via `uvx` (nécessite [`uv`](https://docs.astral.sh/uv/) installé) ;
+authentification par session navigateur (aucune clé API), déclenchée au premier appel :
+
+```bash
+uvx mcp-server-linkedin@latest --login   # ouvre le navigateur, gère 2FA / captcha
+```
+
+> ⚠️ **CGU** : LinkedIn interdit l'accès automatisé ; un compte utilisant des outils
+> d'automatisation peut être restreint. Projet communautaire sans lien avec LinkedIn,
+> à réserver à un usage personnel et à faible fréquence, risque assumé.
+
 ## Publier un artefact
 
 **Étude de cas** : créer `src/content/realisations/<slug>.md` — frontmatter :
