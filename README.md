@@ -37,16 +37,23 @@ sans site, le quiz de maturité fournit le contexte déclaré.
 Moteur **hybride**, dans cet ordre :
 1. **Claude** (API Anthropic) si le secret est posé :
    `npx wrangler secret put ANTHROPIC_API_KEY`
-   Modèle par défaut : `claude-opus-4-8` (qualité maximale). Pour diviser le coût
-   par ~5 : variable `CLAUDE_MODEL=claude-haiku-4-5` dans `wrangler.jsonc` (`vars`).
+   Modèle par défaut : `claude-sonnet-5` — équilibre qualité/coût pour une page
+   **publique** (~5× moins cher qu'Opus, qualité proche en français). Bascule via
+   `vars.CLAUDE_MODEL` dans `wrangler.jsonc` : `claude-opus-4-8` (premium) ou
+   `claude-haiku-4-5` (économie). Le « thinking » est désactivé (démo courte).
 2. **Workers AI** (Llama 3.3, binding `AI`) en bascule automatique — inclus dans le
-   plan Cloudflare, zéro clé, zéro coût récurrent. C'est le mode par défaut si aucune
-   clé Anthropic n'est configurée.
+   plan Cloudflare, zéro clé, zéro coût récurrent. Mode par défaut sans clé Anthropic.
 3. Message honnête d'indisponibilité si aucun moteur ne répond.
 
 Garde-fous côté serveur : prompts système non modifiables par le client, contrôle
 d'origine, taille de requête limitée, 700 tokens max par réponse, conversation
-plafonnée. Règle éditoriale encodée dans les prompts : aucun chiffre inventé.
+plafonnée, **rate limit par IP** (25 req / 10 min, best-effort via Cache API — l'endpoint
+public appelle une API payante). Règle éditoriale encodée dans les prompts : aucun
+chiffre inventé.
+
+> Pour une protection dure contre l'abus (l'IP peut être contournée, le cache est
+> par centre de données), ajouter une règle **Rate Limiting** côté Cloudflare (WAF)
+> sur `POST /api/experience` — recommandé dès que la clé Claude est en place.
 
 Dev local sans clé : `npx wrangler dev --var MOCK_AI:1` (flux simulé).
 Déploiement : `npm run build && npx wrangler deploy`.
