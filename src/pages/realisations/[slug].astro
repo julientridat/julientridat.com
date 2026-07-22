@@ -63,12 +63,28 @@ const jsonLd = [
           <span class="mx-2 text-white/30">/</span>
           <a href="/realisations" class="hover:text-white">Cas clients</a>
         </nav>
-        <Eyebrow>{d.client} · {d.secteur} · {d.annee}</Eyebrow>
+        <Eyebrow>Cas client · {d.secteur}</Eyebrow>
         <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
           {d.title}
         </h1>
         <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{d.pitch}</p>
-        <div class="mt-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">
+
+        {/* Carte d'identité — scannable en un coup d'œil */}
+        <dl class="mt-9 grid grid-cols-2 gap-x-8 gap-y-5 border-t border-white/10 pt-6 sm:grid-cols-4">
+          {[
+            ["Secteur", d.secteur],
+            ["Type d'entreprise", d.typeEntreprise ?? d.client],
+            ["Effectif", d.effectif],
+            ["Année", String(d.annee)],
+          ].filter(([, v]) => v).map(([k, v]) => (
+            <div>
+              <dt class="text-[10px] uppercase tracking-[0.22em] text-white/50">{k}</dt>
+              <dd class="mt-1.5 text-[15px] leading-snug text-white/90">{v}</dd>
+            </div>
+          ))}
+        </dl>
+
+        <div class="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">
           <div>
             <span class="text-white/55">Rôle — </span>
             <span class="text-white/85">{d.role}</span>
@@ -102,7 +118,9 @@ const jsonLd = [
 
     {d.resultats.length > 0 && (
       <section class="border-b border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-12 md:px-12">
-        <div class="mx-auto flex max-w-4xl flex-wrap gap-x-14 gap-y-6">
+        <div class="mx-auto max-w-4xl">
+          <div class="mb-7 text-[11px] uppercase tracking-[0.22em] text-lime">Les gains</div>
+          <div class="flex flex-wrap gap-x-14 gap-y-6">
           {d.resultats.map((res) => (
             <div>
               <div class="text-4xl font-light text-lime">{res.chiffre}</div>
@@ -111,6 +129,7 @@ const jsonLd = [
               </div>
             </div>
           ))}
+          </div>
         </div>
       </section>
     )}

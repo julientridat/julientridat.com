@@ -12,6 +12,10 @@ const realisations = defineCollection({
     /** Alias anonymisé du client, ex. « Éditeur-formateur, secteur santé ». */
     client: z.string(),
     secteur: z.string(),
+    /** Type d'entreprise pour la carte d'identité, ex. « Agence créative indépendante ». À défaut : `client`. */
+    typeEntreprise: z.string().optional(),
+    /** Effectif lisible pour la carte d'identité, ex. « ~40 personnes ». */
+    effectif: z.string().optional(),
     annee: z.number(),
     role: z.string(),
     stack: z.array(z.string()).default([]),

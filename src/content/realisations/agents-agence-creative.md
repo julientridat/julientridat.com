@@ -2,6 +2,8 @@
 title: "Une agence créative de 40 personnes qui produit enfin avec l'IA, pôle par pôle"
 client: "Agence créative indépendante (~40 talents)"
 secteur: "Communication / création"
+typeEntreprise: "Agence créative indépendante"
+effectif: "~40 personnes"
 annee: 2026
 role: "Cartographie des usages, conception des assistants, animation des ateliers"
 stack: ["Assistants IA", "Rédaction", "Image & vidéo", "Automatisations"]
