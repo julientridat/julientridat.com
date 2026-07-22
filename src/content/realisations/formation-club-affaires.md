@@ -2,12 +2,14 @@
 title: "49 dirigeants de TPE d'un club d'affaires outillés en IA sur leur propre métier"
 client: "Club d'affaires d'un bassin économique (Sud-Ouest)"
 secteur: "Réseaux de dirigeants"
+typeEntreprise: "Club d'affaires (dirigeants de TPE/PME)"
+effectif: "49 dirigeants réunis"
 annee: 2026
-role: "Conception du programme, intégration du moyen de production, guides par métier"
+role: "Conception du programme, installation des assistants, guides par métier"
 stack: ["Démos live", "Guides par profil", "Méthode WAIT"]
 besoin: "former"
 enjeu: "49 dirigeants de métiers sans rapport — du carrossier au notaire — entendent parler d'IA sans qu'aucun sache la brancher sur son activité réelle."
-transformation: "Chaque dirigeant repart avec un premier moyen de production installé sur son propre métier : devis conforme, réponse aux avis, relance d'impayé — activable dès le lendemain."
+transformation: "Chaque dirigeant repart avec un premier assistant installé sur son propre métier : devis conforme, réponse aux avis, relance d'impayé — activable dès le lendemain."
 pitch: "Des démos montées en direct sur l'activité réelle d'un membre de la salle, la méthode WAIT pour trouver son premier cas, deux guides par métier pour reproduire seul chez soi."
 resultats:
   - chiffre: "49"
@@ -24,7 +26,7 @@ methode:
   - etape: "Cadre en trois briques"
     detail: "Personnalisation, projets et tâches automatisées : ce qui transforme un outil générique en assistant sur-mesure."
   - etape: "Construction en direct"
-    detail: "Pour chaque casquette du dirigeant, je monte le moyen de production devant eux, chronomètre à l'appui, sur un métier de la salle."
+    detail: "Pour chaque casquette du dirigeant, je monte l'assistant devant eux, chronomètre à l'appui, sur un métier de la salle."
   - etape: "Autonomie"
     detail: "La méthode WAIT pour trouver son premier cas, et des guides par métier pour reproduire seul une fois rentré."
 assistants:

@@ -2,6 +2,8 @@
 title: "Un réseau de clubs de fitness qui produit ses visuels de marque en autonomie avec l'IA"
 client: "Franchisé multi-clubs, réseau national de fitness"
 secteur: "Sport & loisirs"
+typeEntreprise: "Franchisé multi-clubs (réseau national)"
+effectif: "4 clubs + une marque ombrelle"
 annee: 2026
 role: "Audit du besoin, conception et intégration de l'assistant de production, formation"
 stack: ["Assistant IA de production", "Gabarits chartés", "Charte de marque encodée"]
@@ -42,7 +44,7 @@ assistants:
     fait: "Ne déforme ni recolore jamais un logo, n'invente aucune donnée absente (horaires, surface, tarif restent à compléter, pas fabriqués)."
 visuel:
   src: "/artefacts/visuels-marque.webp"
-  alt: "Le moyen de production livré : configurateur de visuels chartés, démontré sur une marque fictive"
+  alt: "L'assistant livré : configurateur de visuels chartés, démontré sur une marque fictive"
 demo:
   url: "/demos/visuels-marque.html"
   label: "Voir l'assistant de production en action"

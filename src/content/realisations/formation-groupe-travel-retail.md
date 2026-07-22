@@ -2,8 +2,10 @@
 title: "Un groupe de travel retail qui rend enfin productif l'outil IA qu'il payait déjà"
 client: "Groupe international de travel retail (via un organisme de formation partenaire)"
 secteur: "Retail / grande entreprise"
+typeEntreprise: "Groupe international de travel retail"
+effectif: "Équipes siège (grand groupe)"
 annee: 2026
-role: "Ingénierie du moyen de production, animation, recommandations d'outillage"
+role: "Ingénierie pédagogique, animation, recommandations d'outillage"
 stack: ["Copilot", "Gemini", "Matrice de cas d'usage", "Supports scrollytelling"]
 besoin: "former"
 enjeu: "Des licences hétérogènes, des outils bloqués par la DSI, et un outil d'entreprise déjà payé — largement sous-exploité. L'IA sous la main, sans capacité à la faire produire."

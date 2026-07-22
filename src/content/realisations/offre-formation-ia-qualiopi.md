@@ -2,9 +2,10 @@
 title: "Un organisme de formation Qualiopi qui lance son offre IA sur le bon segment"
 client: "Organisme de formation certifié Qualiopi (Gironde)"
 secteur: "Formation professionnelle"
+typeEntreprise: "Organisme de formation certifié Qualiopi"
 annee: 2026
-role: "Conception et intégration d'un moyen de production d'offre"
-stack: ["Étude de marché scorée", "Personas ICP", "Programmes Qualiopi", "Argumentaire prescripteurs"]
+role: "Conception de l'offre et de la méthode de décision"
+stack: ["Étude de marché scorée", "Personas cibles", "Programmes Qualiopi", "Argumentaire prescripteurs"]
 besoin: "cadrer"
 enjeu: "Un organisme solide sur le management, l'envie de lancer une formation IA — mais aucun moyen de décider par quel segment commencer, à quel prix, avec quel programme."
 transformation: "L'organisme lance son offre IA sur un segment scoré 87/100, avec deux programmes conformes prêts à vendre — et la méthode de scoring pour ouvrir les segments suivants seul."
@@ -40,7 +41,7 @@ assistants:
     entree: "3 cibles, 5 critères pondérés"
     sortie: "Score par segment, priorité"
     fait: "Tranche le segment de lancement : dirigeants de TPE-PME à 87/100 contre 74 et 68, décision vérifiable en 48 heures."
-  - nom: "Analyse stratégique + datasheet"
+  - nom: "Analyse stratégique + fiche marché"
     entree: "Marché, cibles, concurrence"
     sortie: "Personas, objections, messages"
     fait: "Cartographie tout le décor pour décider sur des faits : problématiques, acheteurs, cadre légal, canaux."

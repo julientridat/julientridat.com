@@ -2,8 +2,10 @@
 title: "Une agence de communication santé qui produit ses contenus scientifiques sourcés avec l'IA"
 client: "Agence de communication santé (16 personnes)"
 secteur: "Communication santé"
+typeEntreprise: "Agence de communication santé"
+effectif: "16 personnes"
 annee: 2026
-role: "Cadrage pédagogique, intégration du moyen de production, recommandation d'outillage"
+role: "Cadrage pédagogique, installation des assistants, recommandation d'outillage"
 stack: ["Claude", "ChatGPT", "Perplexity", "Cas d'usage réels"]
 besoin: "former"
 enjeu: "Chaque contenu médical devait être sourcé et référencé à la main, et tout se renumérotait au moindre changement du client — des heures perdues à chaque livrable, que la contrainte réglementaire interdisait d'automatiser à la légère."
@@ -17,7 +19,7 @@ resultats:
   - chiffre: "3"
     label: "assistants métier qui tournent après mon départ"
 pointDepart: "Une agence santé de seize personnes où chaque affirmation doit être sourcée : référence numérotée, bibliographie, pack de références remis au client. La moindre réorganisation impose de tout renuméroter à la main. Sur neuf réponses au questionnaire de cadrage, neuf plaçaient la productivité en tête."
-bilan: "L'agence dispose désormais d'un moyen de production : premier jet déjà sourcé sur ses propres autorités de référence, temps humain concentré sur la validation médicale. Environ une heure et demie récupérée par jour et par utilisateur régulier, réinvestie dans la création et le conseil."
+bilan: "L'agence dispose désormais de ses propres assistants : premier jet déjà sourcé sur ses propres autorités de référence, temps humain concentré sur la validation médicale. Environ une heure et demie récupérée par jour et par utilisateur régulier, réinvestie dans la création et le conseil."
 methode:
   - etape: "Positionnement"
     detail: "Questionnaire individuel — niveau, prompting, tâches chronophages — d'où sortent trois profils et une pédagogie différenciée socle + couche avancée."
@@ -26,7 +28,7 @@ methode:
   - etape: "Formation terrain"
     detail: "Sessions sur leurs propres documents, en enseignant les limites autant que les capacités puisqu'on est en secteur réglementé."
   - etape: "Encodage"
-    detail: "Construction et remise de deux assistants opérationnels, la règle réglementaire câblée à l'intérieur."
+    detail: "Construction et remise de deux assistants opérationnels, la règle réglementaire intégrée d'emblée à l'intérieur."
 assistants:
   - nom: "Fiche pathologie"
     entree: "Brief client + documents fournis"

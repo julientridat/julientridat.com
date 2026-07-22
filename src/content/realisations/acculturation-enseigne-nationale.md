@@ -1,12 +1,14 @@
 ---
-title: "Une équipe marketing d'enseigne nationale qui transforme son IA en chaîne de production"
+title: "Une enseigne de 600 magasins dont le marketing produit ses supports en interne, avec l'IA"
 client: "Enseigne nationale, 600+ points de vente (groupe international)"
 secteur: "Retail spécialisé"
+typeEntreprise: "Enseigne nationale (groupe international)"
+effectif: "600+ points de vente"
 annee: 2026
-role: "Conception et intégration du moyen de production"
+role: "Conception et intégration des assistants, animation"
 stack: ["Copilot", "Agents", "Feuille de route par pôle"]
 besoin: "former"
-enjeu: "Le groupe international a rationalisé ses licences IA et remis un Copilot sur chaque poste — mais l'équipe marketing du siège le sous-exploite en chatbot, sans savoir en faire une chaîne de production."
+enjeu: "Le groupe international a rationalisé ses licences IA et remis un Copilot sur chaque poste — mais l'équipe marketing du siège le sous-exploite en simple chatbot, sans savoir en faire un outil qui produit vraiment."
 transformation: "L'équipe construit ses propres assistants dans ses outils, décline un support sur 600+ points de vente sans repasser par un prestataire, et tient une feuille de route pour étendre l'usage pôle par pôle."
 pitch: "Le fil des « 5 verbes » pour cadrer, un premier assistant monté en séance sur un vrai cas réseau, une feuille de route par pôle : l'équipe produit avec l'IA au lieu de la consommer."
 resultats:
@@ -48,10 +50,10 @@ assistants:
     entree: "Avis clients du réseau"
     sortie: "Réponses prêtes à publier"
     fait: "Projeté pour absorber un réseau de centaines d'avis."
-  - nom: "L'auditeur de présence LLM"
+  - nom: "Le vérificateur de présence sur les IA"
     entree: "Requêtes marque"
     sortie: "Visibilité mesurée sur les IA"
-    fait: "Projeté pour mesurer la présence sur les IA grand public."
+    fait: "Projeté pour mesurer si la marque ressort quand on interroge les IA grand public."
 visuel:
   src: "/artefacts/feuille-de-route-enseigne.webp"
   alt: "Feuille de route post-formation par pôle — artefact réel anonymisé"
