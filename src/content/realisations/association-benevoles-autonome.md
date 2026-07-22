@@ -2,13 +2,15 @@
 title: "Une association de prévention qui démarche et communique avec ses propres assistants IA"
 client: "Association de prévention (réseau service club, Gironde)"
 secteur: "Associatif"
+typeEntreprise: "Association de prévention"
+effectif: "Portée par des bénévoles, sans salarié"
 annee: 2026
-role: "Intégration du moyen de production, outillage, infrastructure emailing"
-stack: ["Projets ChatGPT", "Brevo", "SPF/DKIM/DMARC", "Plan d'ancrage"]
+role: "Outillage IA et mise en place de l'emailing"
+stack: ["Projets ChatGPT", "Brevo", "Email sur domaine propre", "Plan d'ancrage"]
 besoin: "former"
 enjeu: "Des bénévoles sans budget ni temps, dépendants d'outils gratuits qui peuvent les lâcher — et leur emailing s'est justement retrouvé bloqué du jour au lendemain."
 transformation: "L'association démarche, finance et communique avec des moyens qui lui appartiennent : trois assistants IA prêts à l'emploi et un emailing sur son propre domaine que personne ne peut plus couper."
-pitch: "Trois Projets ChatGPT livrés clés en main, un plan d'ancrage de 3 semaines, puis un emailing souverain — domaine, délivrabilité, 537 contacts prêts. Des moyens qui restent."
+pitch: "Trois Projets ChatGPT livrés clés en main, un plan d'ancrage de 3 semaines, puis un emailing sur son propre domaine — configuré pour arriver à destination, 537 contacts prêts. Des moyens qui restent."
 resultats:
   - chiffre: "3"
     label: "assistants IA livrés prêts à produire dès la 1re minute"
@@ -40,10 +42,10 @@ assistants:
     entree: "Un seul brief"
     sortie: "Posts, pages et visuels"
     fait: "Produit posts réseaux, pages du site et visuels illustrés dans la foulée."
-  - nom: "L'emailing souverain"
+  - nom: "L'emailing qui lui appartient"
     entree: "Email grand public bloqué"
     sortie: "Domaine et 537 contacts prêts"
-    fait: "Bascule vers un email sur nom de domaine avec délivrabilité configurée (SPF, DKIM, DMARC) et base mairies importée."
+    fait: "Bascule vers un email sur son propre nom de domaine, configuré pour arriver à destination, avec la base mairies importée."
 visuel:
   src: "/artefacts/formation-association.webp"
   alt: "Support de formation ChatGPT pour bénévoles en 11 parties — artefact réel anonymisé"

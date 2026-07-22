@@ -2,9 +2,11 @@
 title: "Un organisme de conseil et formation qui pilote sa transformation IA de bout en bout"
 client: "Organisme de conseil et formation (Île-de-France, réseau de 350 experts)"
 secteur: "Formation professionnelle"
+typeEntreprise: "Organisme de conseil et formation"
+effectif: "Réseau de 350 experts"
 annee: 2026
 role: "Intégration IA de bout en bout : diagnostic, dirigeant, équipes, outillage"
-stack: ["Session stratégique dirigeant", "Formation équipes", "Stratégie GEO", "Guides d'autonomie"]
+stack: ["Session stratégique dirigeant", "Formation équipes", "Visibilité sur les IA", "Guides d'autonomie"]
 besoin: "cadrer"
 enjeu: "Un organisme établi, un suivi administratif chronophage, une génération de contacts en chute après une mise à jour Google — et l'envie de passer à l'IA sans improviser."
 transformation: "Le dirigeant cadre, les équipes pratiquent au quotidien, les assistants et les guides restent : l'organisme produit désormais avec l'IA sans dépendre du consultant."
@@ -54,6 +56,6 @@ assistants:
     fait: "Fait passer un quart d'heure de navigation à une phrase ; chaque palier livre prompt, résultat attendu et piège à éviter."
   - nom: "Deux stratégies écrites"
     entree: "Contexte de l'organisme"
-    sortie: "Feuille de route IA + GEO"
+    sortie: "Feuille de route IA + visibilité sur les IA"
     fait: "Rend l'organisme trouvable par les assistants qui conseillent ses futurs clients."
 ---

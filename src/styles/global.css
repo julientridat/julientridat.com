@@ -40,25 +40,25 @@
 :root {
   --radius: 0.5rem;
 
-  /* Brand */
-  --background: oklch(0.145 0 0);          /* ~#0a0a0a */
+  /* Brand — charbon légèrement chaud (hue ~70, chroma minime) plutôt qu'un noir neutre */
+  --background: oklch(0.15 0.009 70);      /* charbon tiède */
   --foreground: oklch(0.985 0 0);          /* white */
   --lime: oklch(0.92 0.21 125);            /* ~#c8ff3d */
   --ink: oklch(0.985 0 0);                 /* primary text */
-  --ink-2: oklch(0.78 0 0);                /* secondary */
-  --ink-3: oklch(0.6 0 0);                 /* muted */
+  --ink-2: oklch(0.8 0.004 70);            /* secondary */
+  --ink-3: oklch(0.64 0.004 70);           /* muted */
   --line: oklch(1 0 0 / 12%);
 
-  --card: oklch(0.18 0 0);
+  --card: oklch(0.19 0.009 70);
   --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.18 0 0);
+  --popover: oklch(0.19 0.009 70);
   --popover-foreground: oklch(0.985 0 0);
   --primary: var(--lime);
-  --primary-foreground: oklch(0.145 0 0);
-  --secondary: oklch(0.22 0 0);
+  --primary-foreground: oklch(0.15 0.009 70);
+  --secondary: oklch(0.23 0.008 70);
   --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.22 0 0);
-  --muted-foreground: oklch(0.7 0 0);
+  --muted: oklch(0.23 0.008 70);
+  --muted-foreground: oklch(0.72 0.004 70);
   --accent: var(--lime);
   --accent-foreground: oklch(0.145 0 0);
   --destructive: oklch(0.6 0.22 25);

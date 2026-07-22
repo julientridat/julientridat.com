@@ -2,8 +2,9 @@
 title: "Une agence de communication qui identifie où l'IA lui fera gagner du temps avant d'investir"
 client: "Agence de communication indépendante"
 secteur: "Communication"
+typeEntreprise: "Agence de communication indépendante"
 annee: 2026
-role: "Diagnostic et intégration d'une capacité de décision IA"
+role: "Diagnostic des usages et priorisation des chantiers IA"
 stack: ["Entretiens terrain", "Analyse de frictions", "Priorisation ROI", "Outil de pilotage"]
 besoin: "cadrer"
 enjeu: "Une envie de « passer à l'IA », aucune boussole : le risque d'acheter des licences et de constater six mois plus tard que rien n'a bougé dans la production."
