@@ -185,7 +185,7 @@ export default function ContactDialog() {
                 {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="c-company" className={labelCls}>Entreprise <span className="font-normal text-white/40">(facultatif)</span></label>
+                <label htmlFor="c-company" className={labelCls}>Entreprise <span className="font-normal text-white/50">(facultatif)</span></label>
                 <input id="c-company" value={company} onChange={(e) => setCompany(e.target.value)} maxLength={160} className={inputCls} />
               </div>
               <div className="sm:col-span-2">
@@ -206,7 +206,7 @@ export default function ContactDialog() {
             )}
 
             <div className="mt-8 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <a href={`mailto:${CONTACT_EMAIL}`} className="text-center text-[13px] text-white/45 hover:text-lime sm:text-left">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-center text-[13px] text-white/55 hover:text-lime sm:text-left">
                 ou {CONTACT_EMAIL}
               </a>
               <button

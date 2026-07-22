@@ -18,7 +18,7 @@ const gains = [
 ];
 ---
 
-<section class={`border-t border-white/10 px-6 py-24 md:px-12 md:py-32 ${bg ? "bg-[oklch(0.17_0_0)]" : ""}`}>
+<section class={`border-t border-white/10 px-6 py-24 md:px-12 md:py-32 ${bg ? "bg-[oklch(0.185_0.009_70)]" : ""}`}>
   <div class="mx-auto max-w-7xl">
     <div class="grid gap-10 md:grid-cols-2 md:items-end">
       <div>
@@ -37,11 +37,11 @@ const gains = [
 
     <div class="mt-16 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
       {gains.map((g) => (
-        <div class={`p-8 ${bg ? "bg-[oklch(0.17_0_0)]" : "bg-background"}`}>
+        <div class={`p-8 ${bg ? "bg-[oklch(0.185_0.009_70)]" : "bg-background"}`}>
           <div class="text-sm text-white/70">{g.tache}</div>
           <div class="mt-4 flex items-baseline gap-3">
             {g.avant !== "—" && (
-              <span class="text-lg text-white/40 line-through decoration-white/30">{g.avant}</span>
+              <span class="text-lg text-white/50 line-through decoration-white/30">{g.avant}</span>
             )}
             {g.avant !== "—" && <span class="text-lime">→</span>}
             <span class="text-3xl font-light text-lime">{g.apres}</span>

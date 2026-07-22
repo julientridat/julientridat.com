@@ -13,7 +13,7 @@ const chiffres = d.resultats.slice(0, 2);
   href={`/realisations/${entry.id}`}
   class="group flex flex-col rounded-2xl border border-white/12 bg-white/[0.02] p-7 transition-colors hover:border-lime/60"
 >
-  <div class="text-[11px] uppercase tracking-[0.18em] text-white/45">{d.secteur}</div>
+  <div class="text-[11px] uppercase tracking-[0.18em] text-white/55">{d.secteur}</div>
   <h3 class="mt-4 text-[19px] font-medium leading-snug tracking-[-0.01em]">{d.title}</h3>
   {d.transformation && (
     <p class="mt-3 line-clamp-3 text-[14px] leading-relaxed text-white/60">{d.transformation}</p>
@@ -24,7 +24,7 @@ const chiffres = d.resultats.slice(0, 2);
       {chiffres.map((res) => (
         <div>
           <div class="text-2xl font-light text-lime">{res.chiffre}</div>
-          <div class="mt-0.5 max-w-[11rem] text-[10.5px] uppercase tracking-wider text-white/45">
+          <div class="mt-0.5 max-w-[11rem] text-[10.5px] uppercase tracking-wider text-white/55">
             {res.label}
           </div>
         </div>

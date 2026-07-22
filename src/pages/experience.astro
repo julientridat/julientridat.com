@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 
 const title = "L'expérience — votre entreprise, étudiée par l'IA en direct | Julien Tridat";
 const description =
-  "Un parcours guidé : donnez l'adresse de votre site, les skills d'audit le mesurent en direct, puis choisissez votre étude — concurrents, cibles idéales, nouvel axe marketing — rédigée pour votre entreprise, sous vos yeux.";
+  "Un parcours guidé : donnez l'adresse de votre site, je l'analyse et le mesure en direct, puis vous choisissez votre étude — concurrents, cibles idéales, nouvel axe marketing — rédigée pour votre entreprise, sous vos yeux.";
 
 const jsonLd = [
   {
@@ -60,7 +60,7 @@ const QUIZ = [
           <span class="hidden sm:inline">Julien Tridat</span>
         </a>
       </div>
-      <ol id="xp-progression" class="flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.18em] text-white/35 sm:gap-3 sm:text-[11px]" aria-label="Progression du parcours">
+      <ol id="xp-progression" class="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/35 sm:gap-3 sm:text-[11px]" aria-label="Progression du parcours">
         {["votre site", "lecture", "études"].map((etape, i) => (
           <li class="flex items-center gap-2" data-pas={i}>
             <span class="xp-pas-point inline-block h-1.5 w-1.5 rounded-full bg-white/25 transition-colors"></span>
@@ -69,8 +69,8 @@ const QUIZ = [
         ))}
       </ol>
       <div class="flex items-center gap-2">
-        <button type="button" id="xp-capot-open" class="cursor-pointer rounded-full border border-white/20 px-3 py-2 font-mono text-[11px] text-white/60 transition-colors hover:border-lime hover:text-lime sm:px-4">
-          [ capot ]
+        <button type="button" id="xp-capot-open" class="cursor-pointer rounded-full border border-white/20 px-3 py-2 text-[11px] text-white/60 transition-colors hover:border-lime hover:text-lime sm:px-4">
+          Coulisses
         </button>
         <button type="button" data-open-contact class="cursor-pointer rounded-full bg-white px-4 py-2 text-[14px] font-medium text-black transition-colors hover:bg-white/90">
           Contact
@@ -84,26 +84,21 @@ const QUIZ = [
       <!-- ——— VUE ACCUEIL ——— -->
       <section data-vue="accueil" class="xp-vue" aria-label="Étape 1 : votre site">
         <div id="xp-hero" class="relative isolate flex min-h-full flex-col justify-center overflow-hidden px-6 py-10 md:px-12">
-          <canvas id="xp-canvas" class="pointer-events-none absolute inset-0 -z-40 h-full w-full" aria-hidden="true"></canvas>
-          <div class="xp-depth pointer-events-none absolute inset-0 -z-30" data-depth="0.12" aria-hidden="true">
-            <svg class="h-full w-full opacity-[0.10]" style="filter: blur(1.5px)">
-              <line x1="12%" y1="0" x2="8%" y2="100%" stroke="white" stroke-width="1" />
-              <line x1="36%" y1="0" x2="40%" y2="100%" stroke="white" stroke-width="1" />
-              <line x1="72%" y1="0" x2="66%" y2="100%" stroke="white" stroke-width="1" />
-              <line x1="0" y1="30%" x2="100%" y2="25%" stroke="white" stroke-width="1" />
-              <line x1="0" y1="74%" x2="100%" y2="80%" stroke="white" stroke-width="1" />
-            </svg>
-          </div>
-          <div class="xp-depth pointer-events-none absolute -left-44 top-1/4 -z-20 h-[520px] w-[520px] rounded-full bg-lime/15 blur-3xl" data-depth="0.35" aria-hidden="true"></div>
-          <div class="xp-depth pointer-events-none absolute -right-36 bottom-8 -z-20 h-[420px] w-[420px] rounded-full bg-lime/10 blur-3xl" data-depth="0.55" aria-hidden="true"></div>
+          <div
+            class="pointer-events-none absolute inset-0 -z-30"
+            style="background: radial-gradient(800px 520px at 22% 12%, oklch(0.92 0.21 125 / 0.08), transparent 68%);"
+            aria-hidden="true"
+          ></div>
+          <div class="xp-depth pointer-events-none absolute -left-44 top-1/4 -z-20 h-[520px] w-[520px] rounded-full bg-lime/12 blur-3xl" data-depth="0.35" aria-hidden="true"></div>
+          <div class="xp-depth pointer-events-none absolute -right-36 bottom-8 -z-20 h-[420px] w-[420px] rounded-full bg-lime/[0.07] blur-3xl" data-depth="0.55" aria-hidden="true"></div>
 
           <div class="relative mx-auto w-full max-w-5xl">
-            <div class="mb-8 inline-flex w-fit items-center gap-3 rounded-full border border-lime/30 bg-black/40 px-4 py-2 font-mono text-[12px] text-lime/90 backdrop-blur-sm">
+            <div class="mb-8 inline-flex w-fit items-center gap-3 rounded-full border border-lime/30 bg-black/40 px-4 py-2 text-[12px] text-lime/90 backdrop-blur-sm">
               <span class="relative flex h-2 w-2">
                 <span id="xp-led-ping" class="absolute inline-flex h-full w-full animate-ping rounded-full bg-lime opacity-60"></span>
                 <span id="xp-led" class="relative inline-flex h-2 w-2 rounded-full bg-lime"></span>
               </span>
-              <span id="xp-console" aria-live="polite">initialisation…</span>
+              <span id="xp-console" aria-live="polite">démarrage…</span>
             </div>
 
             <h1 class="max-w-[900px] text-[clamp(2.3rem,6.5vw,5.2rem)] font-light leading-[0.98] tracking-[-0.04em]">
@@ -113,7 +108,7 @@ const QUIZ = [
             </h1>
 
             <p class="xp-fade mt-7 max-w-xl text-lg leading-relaxed text-white/70">
-              Un parcours en trois temps : mes skills lisent votre site et le mesurent, puis
+              Un parcours en trois temps : j'analyse votre site et je le mesure, puis
               <strong class="font-medium text-white">vous choisissez l'étude</strong> — concurrents, cibles
               idéales, nouvel axe marketing — rédigée pour vous, en direct.
             </p>
@@ -125,7 +120,7 @@ const QUIZ = [
                 maxlength="300"
                 inputmode="url"
                 placeholder="votre-entreprise.fr"
-                class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 font-mono text-[15px] text-white placeholder:text-white/35 outline-none backdrop-blur-sm transition-colors focus:border-lime"
+                class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 text-[15px] text-white placeholder:text-white/35 outline-none backdrop-blur-sm transition-colors focus:border-lime"
                 autocomplete="url"
                 autocapitalize="off"
                 spellcheck="false"
@@ -134,7 +129,7 @@ const QUIZ = [
                 Analyser
               </button>
             </form>
-            <div class="xp-fade mt-3 text-xs text-white/45">
+            <div class="xp-fade mt-3 text-xs text-white/55">
               Lecture publique de votre site, rien n'est stocké. Pas de site ?
               <button type="button" id="xp-vers-quiz" class="cursor-pointer text-white/65 underline underline-offset-4 hover:text-lime">Commencez par le diagnostic en 5 questions.</button>
             </div>
@@ -146,7 +141,7 @@ const QUIZ = [
       <section data-vue="audit" class="xp-vue" hidden aria-label="Étape 2 : lecture et audit de votre site">
         <div class="mx-auto max-w-7xl px-6 py-10 md:px-12">
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-            <span class="h-px w-6 bg-lime"></span> Lecture — mes skills au travail
+            <span class="h-px w-6 bg-lime"></span> Lecture — j'analyse votre site
           </div>
           <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
             Votre entreprise, <em class="text-lime">vue par l'IA.</em>
@@ -155,18 +150,18 @@ const QUIZ = [
           <div class="mt-8 grid gap-5 lg:grid-cols-[1.05fr_1fr] lg:items-stretch">
             <div class="rounded-2xl border border-white/12 bg-black/40 p-6 backdrop-blur-sm md:p-7">
               <div class="flex items-baseline justify-between gap-3">
-                <div class="font-mono text-[12px] text-lime">mes skills au travail</div>
-                <span id="xp-analyse-statut" class="font-mono text-[11px] text-white/40">en attente</span>
+                <div class="text-[12px] text-lime">analyse en cours</div>
+                <span id="xp-analyse-statut" class="text-[11px] text-white/50">en attente</span>
               </div>
-              <div id="xp-analyse-source" class="mt-2 hidden items-center gap-2 font-mono text-[11px] text-white/50">
+              <div id="xp-analyse-source" class="mt-2 hidden items-center gap-2 text-[11px] text-white/50">
                 <span class="inline-block h-1.5 w-1.5 rounded-full bg-lime"></span>
                 source lue : <span id="xp-analyse-domaine" class="text-white/75"></span>
               </div>
-              <div id="xp-skills" class="mt-5 space-y-4 font-mono text-[12px]"></div>
+              <div id="xp-skills" class="mt-5 space-y-4 text-[12px]"></div>
             </div>
 
             <div class="flex flex-col items-center justify-center rounded-2xl border border-white/12 bg-white/[0.02] p-6 md:p-7">
-              <div class="self-start text-[11px] uppercase tracking-[0.22em] text-white/45">Profil de présence en ligne</div>
+              <div class="self-start text-[11px] uppercase tracking-[0.22em] text-white/55">Profil de présence en ligne</div>
               <canvas id="xp-radar" width="640" height="560" class="mt-2 w-full max-w-[360px]" role="img" aria-label="Radar des cinq scores d'audit du site"></canvas>
             </div>
           </div>
@@ -178,9 +173,9 @@ const QUIZ = [
               ["xp-t-jsonld", "Données structurées", "blocs"],
               ["xp-t-alt", "Images décrites", "%"],
             ].map(([id, label, unite]) => (
-              <div class="bg-[oklch(0.17_0_0)] p-5 md:p-6">
-                <div class="text-[12px] text-white/55">{label}</div>
-                <div class="mt-2 text-3xl font-light text-lime"><span id={id}>—</span><span class="ml-1 text-sm text-white/40">{unite}</span></div>
+              <div class="bg-[oklch(0.185_0.009_70)] p-5 md:p-6">
+                <div class="text-[12px] text-white/65">{label}</div>
+                <div class="mt-2 text-3xl font-light text-lime"><span id={id}>—</span><span class="ml-1 text-sm text-white/50">{unite}</span></div>
               </div>
             ))}
           </div>
@@ -188,7 +183,7 @@ const QUIZ = [
           <div id="xp-analyse-box" class="mt-5 rounded-2xl border border-lime/25 bg-lime/[0.04] p-6 md:p-8" aria-live="polite">
             <div class="flex flex-wrap items-baseline justify-between gap-3">
               <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Ce que Julien ferait chez vous</div>
-              <span id="xp-analyse-statut2" class="font-mono text-[11px] text-white/40"></span>
+              <span id="xp-analyse-statut2" class="text-[11px] text-white/50"></span>
             </div>
             <p id="xp-analyse-texte" class="mt-4 min-h-[90px] whitespace-pre-line text-[15px] leading-relaxed text-white/85"></p>
           </div>
@@ -218,7 +213,7 @@ const QUIZ = [
           <div class="mt-8 grid gap-6 lg:grid-cols-[1.1fr_1fr] lg:items-start">
             <div id="xp-quiz-box" class="relative min-h-[300px] rounded-2xl border border-white/12 bg-white/[0.02] p-7 md:p-9">
               <div class="mb-6 flex items-center justify-between">
-                <div class="font-mono text-[12px] text-white/45"><span id="xp-quiz-num">01</span> / 0{QUIZ.length}</div>
+                <div class="text-[12px] text-white/55"><span id="xp-quiz-num">01</span> / 0{QUIZ.length}</div>
                 <div class="h-1 w-40 overflow-hidden rounded-full bg-white/10">
                   <div id="xp-quiz-bar" class="h-full w-0 bg-lime transition-all duration-500"></div>
                 </div>
@@ -230,7 +225,7 @@ const QUIZ = [
               <div id="xp-quiz-recap" class="hidden">
                 <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Vos réponses</div>
                 <ul id="xp-quiz-recap-liste" class="mt-4 space-y-2 text-sm text-white/70"></ul>
-                <button type="button" id="xp-quiz-restart" class="mt-6 cursor-pointer text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">
+                <button type="button" id="xp-quiz-restart" class="mt-6 cursor-pointer text-[13px] text-white/55 underline-offset-4 hover:text-lime hover:underline">
                   Recommencer
                 </button>
               </div>
@@ -239,7 +234,7 @@ const QUIZ = [
             <div id="xp-verdict-box" class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-7 opacity-50 transition-opacity duration-500 md:p-9" aria-live="polite">
               <div class="flex items-center justify-between gap-4">
                 <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Verdict — généré en direct</div>
-                <span id="xp-verdict-statut" class="font-mono text-[11px] text-white/40">en attente de vos réponses</span>
+                <span id="xp-verdict-statut" class="text-[11px] text-white/50">en attente de vos réponses</span>
               </div>
               <p id="xp-verdict-texte" class="mt-5 min-h-[120px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
                 Répondez aux cinq questions : le diagnostic s'écrira ici, mot à mot, pendant que le modèle réfléchit.
@@ -259,7 +254,7 @@ const QUIZ = [
       <section data-vue="hub" class="xp-vue" hidden aria-label="Étape 3 : choisir votre étude">
         <div class="mx-auto flex min-h-full max-w-7xl flex-col px-6 py-10 md:px-12">
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-            <span class="h-px w-6 bg-lime"></span> Études — mes skills raisonnent pour vous
+            <span class="h-px w-6 bg-lime"></span> Études — je raisonne pour vous
           </div>
           <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
             Que voulez-vous <em class="text-lime">étudier maintenant ?</em>
@@ -268,18 +263,18 @@ const QUIZ = [
 
           <div class="mt-8 grid gap-4 sm:grid-cols-2" role="list">
             {[
-              ["concurrence", "skill concurrence", "Qui sont vos concurrents ?", "L'IA reconstitue votre paysage concurrentiel à partir de votre site et trouve où vous démarquer."],
-              ["cibles", "skill cibles", "Vos trois cibles idéales", "L'IA les définit : qui a le plus besoin de vous, où les toucher, et la phrase qui leur parle."],
-              ["axe", "skill positionnement", "Un nouvel axe marketing", "L'IA propose trois angles différenciants ancrés dans votre contenu — et le premier pas de chacun."],
-              ["semaine", "skill projection", "Votre semaine avec un assistant", "L'IA projette trois moments concrets d'une semaine type où l'assistant travaille pour vous."],
+              ["concurrence", "Concurrence", "Qui sont vos concurrents ?", "L'IA reconstitue votre paysage concurrentiel à partir de votre site et trouve où vous démarquer."],
+              ["cibles", "Cibles idéales", "Vos trois cibles idéales", "L'IA les définit : qui a le plus besoin de vous, où les toucher, et la phrase qui leur parle."],
+              ["axe", "Positionnement", "Un nouvel axe marketing", "L'IA propose trois angles différenciants ancrés dans votre contenu — et le premier pas de chacun."],
+              ["semaine", "Projection", "Votre semaine avec un assistant", "L'IA projette trois moments concrets d'une semaine type où l'assistant travaille pour vous."],
             ].map(([cle, skill, titre, desc]) => (
               <button type="button" class="xp-carte-etude group cursor-pointer rounded-2xl border border-white/15 bg-white/[0.02] p-6 text-left transition-all hover:border-lime/60" data-etude={cle} role="listitem">
                 <div class="flex items-baseline justify-between gap-3">
-                  <span class="font-mono text-[11px] text-lime">▸ {skill}</span>
-                  <span class="xp-carte-fait hidden font-mono text-[11px] text-lime">fait ✓</span>
+                  <span class="text-[11px] text-lime">{skill}</span>
+                  <span class="xp-carte-fait hidden text-[11px] text-lime">fait ✓</span>
                 </div>
                 <div class="mt-3 text-lg font-medium leading-snug">{titre}</div>
-                <p class="mt-2 text-sm leading-relaxed text-white/55">{desc}</p>
+                <p class="mt-2 text-sm leading-relaxed text-white/65">{desc}</p>
                 <div class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-lime transition-transform group-hover:translate-x-0.5">Lancer l'étude →</div>
               </button>
             ))}
@@ -297,7 +292,7 @@ const QUIZ = [
 
           <footer class="mt-auto pt-10 text-xs text-white/35">
             © 2026 Julien Tridat — Bordeaux · <a href="/" class="hover:text-white">Version classique du site</a> ·
-            chaque texte de ce parcours est généré en direct — ouvrez le capot pour voir le moteur.
+            chaque texte de ce parcours est généré en direct — ouvrez les coulisses pour voir l'IA travailler.
           </footer>
         </div>
       </section>
@@ -306,7 +301,7 @@ const QUIZ = [
       <section data-vue="etude" class="xp-vue" hidden aria-label="Votre étude en cours">
         <div class="mx-auto max-w-7xl px-6 py-10 md:px-12">
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-            <span class="h-px w-6 bg-lime"></span> <span id="xp-etude-skill">skill</span>
+            <span class="h-px w-6 bg-lime"></span> <span id="xp-etude-skill">étude</span>
           </div>
           <h2 id="xp-etude-titre" class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]"></h2>
           <p id="xp-etude-intro" class="mt-3 max-w-xl text-white/60"></p>
@@ -316,18 +311,18 @@ const QUIZ = [
           <div class="mt-7 grid gap-5 lg:grid-cols-[1fr_1.25fr] lg:items-start">
             <div class="rounded-2xl border border-white/12 bg-black/40 p-6 backdrop-blur-sm">
               <div class="flex items-baseline justify-between gap-3">
-                <div class="font-mono text-[12px] text-lime">moteur de raisonnement</div>
-                <span id="xp-etude-statut" class="font-mono text-[11px] text-white/40">en attente</span>
+                <div class="text-[12px] text-lime">analyse en cours</div>
+                <span id="xp-etude-statut" class="text-[11px] text-white/50">en attente</span>
               </div>
-              <div id="xp-etude-console" class="mt-4 space-y-2 font-mono text-[12px] leading-relaxed text-white/50">
-                <p class="text-white/35">▸ le moteur attend votre entrée…</p>
+              <div id="xp-etude-console" class="mt-4 space-y-2 text-[12px] leading-relaxed text-white/50">
+                <p class="text-white/35">en attente de votre demande…</p>
               </div>
             </div>
 
             <div class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-6 md:p-8" aria-live="polite">
               <div class="text-[11px] uppercase tracking-[0.22em] text-lime">L'étude, rédigée en direct</div>
               <p id="xp-etude-texte" class="mt-4 min-h-[140px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
-                Lancez le moteur : l'étude s'écrit ici, mot à mot.
+                Lancez l'analyse : l'étude s'écrit ici, mot à mot.
               </p>
               <div id="xp-etude-suite" class="mt-6 hidden flex-wrap gap-3">
                 <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
@@ -356,7 +351,7 @@ const QUIZ = [
               Quelques questions, un pré-diagnostic — exactement ce qu'un assistant de qualification fait chez mes clients,
               à ceci près qu'ici, c'est vous le prospect.
             </p>
-            <p class="mt-4 max-w-md text-sm text-white/45">
+            <p class="mt-4 max-w-md text-sm text-white/55">
               Conversation éphémère : rien n'est stocké, rien n'est envoyé à Julien. Le vrai rendez-vous, c'est le bouton sous la conversation.
             </p>
           </div>
@@ -381,7 +376,7 @@ const QUIZ = [
               </button>
             </form>
             <div class="mt-5 flex flex-wrap items-center justify-between gap-3 border-t border-white/10 pt-5">
-              <button type="button" id="xp-assistant-retour" class="cursor-pointer text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">← Autres études</button>
+              <button type="button" id="xp-assistant-retour" class="cursor-pointer text-[13px] text-white/55 underline-offset-4 hover:text-lime hover:underline">← Autres études</button>
               <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
                 Réserver l'audit 30 min →
               </button>
@@ -395,28 +390,28 @@ const QUIZ = [
     <aside
       id="xp-capot"
       class="fixed inset-x-3 bottom-3 z-50 hidden max-h-[55vh] flex-col overflow-hidden rounded-2xl border border-lime/30 bg-black/90 shadow-2xl shadow-black/60 backdrop-blur-md md:inset-x-auto md:right-6 md:bottom-6 md:w-[420px]"
-      aria-label="Sous le capot : détails techniques de la dernière génération"
+      aria-label="Les coulisses : ce que l'IA vient de faire"
     >
       <div class="flex items-center justify-between border-b border-white/10 px-5 py-3">
-        <span class="font-mono text-[12px] text-lime">sous le capot</span>
-        <button type="button" id="xp-capot-close" class="cursor-pointer font-mono text-[12px] text-white/50 hover:text-white" aria-label="Fermer">[ fermer ]</button>
+        <span class="text-[12px] text-lime">les coulisses</span>
+        <button type="button" id="xp-capot-close" class="cursor-pointer text-[12px] text-white/50 hover:text-white" aria-label="Fermer">Fermer</button>
       </div>
-      <div class="grid grid-cols-3 gap-px border-b border-white/10 bg-white/10 font-mono text-[11px]">
-        <div class="bg-black/90 px-4 py-3"><div class="text-white/40">moteur</div><div id="xp-capot-moteur" class="mt-1 truncate text-lime">—</div></div>
-        <div class="bg-black/90 px-4 py-3"><div class="text-white/40">latence</div><div id="xp-capot-latence" class="mt-1 text-lime">—</div></div>
-        <div class="bg-black/90 px-4 py-3"><div class="text-white/40">fragments</div><div id="xp-capot-frags" class="mt-1 text-lime">—</div></div>
+      <div class="grid grid-cols-3 gap-px border-b border-white/10 bg-white/10 text-[11px]">
+        <div class="bg-black/90 px-4 py-3"><div class="text-white/50">IA</div><div id="xp-capot-moteur" class="mt-1 truncate text-lime">—</div></div>
+        <div class="bg-black/90 px-4 py-3"><div class="text-white/50">temps de réponse</div><div id="xp-capot-latence" class="mt-1 text-lime">—</div></div>
+        <div class="bg-black/90 px-4 py-3"><div class="text-white/50">morceaux reçus</div><div id="xp-capot-frags" class="mt-1 text-lime">—</div></div>
       </div>
-      <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4 font-mono text-[11px] leading-relaxed">
+      <div class="min-h-0 flex-1 space-y-4 overflow-y-auto px-5 py-4 text-[11px] leading-relaxed">
         <div>
-          <div class="text-white/40">modèle</div>
-          <div id="xp-capot-modele" class="mt-1 break-all text-white/75">aucune génération pour l'instant — lancez l'analyse, une étude ou l'assistant.</div>
+          <div class="text-white/50">modèle</div>
+          <div id="xp-capot-modele" class="mt-1 break-all text-white/75">rien pour l'instant — lancez l'analyse, une étude ou l'assistant.</div>
         </div>
         <div>
-          <div class="text-white/40">consigne système (extrait, définie côté serveur)</div>
+          <div class="text-white/50">la consigne donnée à l'IA</div>
           <pre id="xp-capot-system" class="mt-1 whitespace-pre-wrap break-words text-white/60">—</pre>
         </div>
         <div>
-          <div class="text-white/40">flux brut (chaque fragment reçu, dans l'ordre)</div>
+          <div class="text-white/50">le texte, reçu en direct</div>
           <div id="xp-capot-flux" class="mt-1 break-words text-white/60">—</div>
         </div>
       </div>
@@ -527,53 +522,7 @@ const QUIZ = [
     $("xp-retour").addEventListener("click", () => allerA(PRECEDENT[vueActive]?.() ?? "accueil"));
     majProgression();
 
-    /* ————— Profondeur de champ : particules + parallaxe ————— */
-    const canvas = $("xp-canvas") as HTMLCanvasElement;
-    const hero = $("xp-hero");
-    if (!reduced && canvas) {
-      const ctx = canvas.getContext("2d")!;
-      const N = window.innerWidth < 768 ? 34 : 70;
-      let W = 0, H = 0;
-      const dots = Array.from({ length: N }, () => ({
-        x: Math.random(), y: Math.random(), z: 0.3 + Math.random() * 0.7,
-        vx: (Math.random() - 0.5) * 0.00022, vy: (Math.random() - 0.5) * 0.00022,
-      }));
-      const resize = () => {
-        if (hero.clientWidth > 0) { W = canvas.width = hero.clientWidth; H = canvas.height = hero.clientHeight; }
-      };
-      resize();
-      window.addEventListener("resize", resize);
-      const tick = () => {
-        if (vueActive === "accueil" && W > 0) {
-          ctx.clearRect(0, 0, W, H);
-          for (const d of dots) {
-            d.x = (d.x + d.vx * d.z + 1) % 1;
-            d.y = (d.y + d.vy * d.z + 1) % 1;
-            ctx.beginPath();
-            ctx.arc(d.x * W, d.y * H, 1 + d.z * 1.8, 0, Math.PI * 2);
-            ctx.fillStyle = `oklch(0.92 0.21 125 / ${0.06 + d.z * 0.24})`;
-            ctx.fill();
-          }
-          for (let i = 0; i < dots.length; i++) {
-            for (let j = i + 1; j < dots.length; j++) {
-              const a = dots[i], b = dots[j];
-              const dx = (a.x - b.x) * W, dy = (a.y - b.y) * H;
-              const dist = Math.hypot(dx, dy);
-              if (dist < 110) {
-                ctx.beginPath();
-                ctx.moveTo(a.x * W, a.y * H);
-                ctx.lineTo(b.x * W, b.y * H);
-                ctx.strokeStyle = `oklch(0.92 0.21 125 / ${(1 - dist / 110) * 0.10})`;
-                ctx.stroke();
-              }
-            }
-          }
-        }
-        requestAnimationFrame(tick);
-      };
-      requestAnimationFrame(tick);
-    }
-
+    /* ————— Parallaxe douce des halos (plus de réseau de particules) ————— */
     const layers = [...document.querySelectorAll<HTMLElement>(".xp-depth")];
     if (!reduced && layers.length && window.matchMedia("(pointer: fine)").matches) {
       window.addEventListener("pointermove", (e) => {
@@ -660,7 +609,7 @@ const QUIZ = [
     /* ————— Console du hero : état réel du moteur ————— */
     const consoleEl = $("xp-console");
     (async () => {
-      const steps = ["initialisation…", "connexion au moteur IA…"];
+      const steps = ["démarrage…", "connexion à l'IA…"];
       for (const s of steps) {
         consoleEl.textContent = s;
         if (!reduced) await new Promise((r) => setTimeout(r, 550));
@@ -668,7 +617,7 @@ const QUIZ = [
       try {
         const res = await fetch("/api/experience");
         const info = await res.json();
-        if (info.ok) consoleEl.textContent = `moteur ${info.engine} en ligne — à vous de jouer.`;
+        if (info.ok) consoleEl.textContent = `IA ${info.engine} en ligne — à vous de jouer.`;
         else throw new Error("aucun moteur");
       } catch {
         consoleEl.textContent = "démonstration hors ligne — la page reste visitable.";
@@ -769,8 +718,8 @@ const QUIZ = [
       ligne.className = "xp-slide-in border-b border-white/8 pb-3 last:border-b-0";
       ligne.innerHTML =
         `<div class="flex items-baseline justify-between gap-3">
-           <span class="text-lime">▸ ${r.label}</span>
-           <span class="text-white/90">${r.score}<span class="text-white/40">/100</span></span>
+           <span class="text-lime">${r.label}</span>
+           <span class="text-white/90">${r.score}<span class="text-white/50">/100</span></span>
          </div>
          <div class="mt-1.5 leading-relaxed text-white/50">` +
         r.mesures.map((m) => `${m.label} ${m.valeur} <span class="${m.ok ? "text-lime" : "text-white/35"}">${m.ok ? "✓" : "✗"}</span>`).join(" · ") +
@@ -944,27 +893,27 @@ const QUIZ = [
     type ConfigEtude = { skill: string; mode: string; titre: string; intro: string; demande: string };
     const ETUDES: Record<string, ConfigEtude> = {
       concurrence: {
-        skill: "skill concurrence", mode: "concurrents",
+        skill: "Concurrence", mode: "concurrents",
         titre: "Qui sont vos concurrents ?",
-        intro: "Le moteur reconstitue votre paysage concurrentiel à partir de votre site — profils de concurrents, leur faille commune, et le terrain où vous démarquer.",
+        intro: "L'IA reconstitue votre paysage concurrentiel à partir de votre site — profils de concurrents, leur faille commune, et le terrain où vous démarquer.",
         demande: "Reconstitue mon paysage concurrentiel et dis-moi où me démarquer.",
       },
       cibles: {
-        skill: "skill cibles", mode: "cibles",
+        skill: "Cibles idéales", mode: "cibles",
         titre: "Vos trois cibles idéales",
-        intro: "Le moteur définit les trois clients qui ont le plus besoin de vous — qui ils sont, où les toucher, et la première phrase qui leur parle.",
+        intro: "L'IA définit les trois clients qui ont le plus besoin de vous — qui ils sont, où les toucher, et la première phrase qui leur parle.",
         demande: "Définis mes trois cibles idéales.",
       },
       axe: {
-        skill: "skill positionnement", mode: "axe",
+        skill: "Positionnement", mode: "axe",
         titre: "Un nouvel axe marketing",
-        intro: "Le moteur propose trois angles différenciants, ancrés dans votre contenu réel et vos mesures — et le premier pas concret de chacun.",
+        intro: "L'IA propose trois angles différenciants, ancrés dans votre contenu réel et vos mesures — et le premier pas concret de chacun.",
         demande: "Propose-moi un nouvel axe marketing.",
       },
       semaine: {
-        skill: "skill projection", mode: "secteur",
+        skill: "Projection", mode: "secteur",
         titre: "Votre semaine avec un assistant",
-        intro: "Le moteur projette trois moments concrets d'une semaine type où l'assistant travaille pour vous, pendant que vous faites votre métier.",
+        intro: "L'IA projette trois moments concrets d'une semaine type où l'assistant travaille pour vous, pendant que vous faites votre métier.",
         demande: "Projette ma semaine type avec un assistant installé.",
       },
     };
@@ -985,7 +934,7 @@ const QUIZ = [
       if (console.firstElementChild?.classList.contains("text-white/35")) console.innerHTML = "";
       const p = document.createElement("p");
       p.className = "xp-slide-in";
-      p.innerHTML = `<span class="text-lime">▸</span> ${texte}`;
+      p.innerHTML = `<span class="text-lime">•</span> ${texte}`;
       console.append(p);
       console.scrollTop = console.scrollHeight;
     }
@@ -996,7 +945,7 @@ const QUIZ = [
       $("xp-etude-titre").textContent = config.titre;
       $("xp-etude-intro").textContent = config.intro;
       $("xp-etude-statut").textContent = "en attente";
-      $("xp-etude-console").innerHTML = `<p class="text-white/35">▸ le moteur démarre…</p>`;
+      $("xp-etude-console").innerHTML = `<p class="text-white/35">démarrage…</p>`;
       $("xp-etude-texte").textContent = "";
       $("xp-etude-suite").classList.add("hidden");
       const zone = $("xp-etude-form");
@@ -1028,7 +977,7 @@ const QUIZ = [
       });
       champ.addEventListener("keydown", (e) => { if (e.key === "Enter" && champ.value.trim()) lancerEtude(cle); });
       zone.append(champ, bouton);
-      $("xp-etude-texte").textContent = "Dites votre activité en une phrase et le moteur produit l'étude.";
+      $("xp-etude-texte").textContent = "Dites votre activité en une phrase et l'IA produit l'étude.";
       allerA("etude");
       setTimeout(() => champ.focus(), 300);
     }
@@ -1043,14 +992,14 @@ const QUIZ = [
       const statut = $("xp-etude-statut");
       texte.textContent = "";
       texte.classList.add("xp-encours");
-      statut.textContent = "le moteur travaille…";
+      statut.textContent = "analyse en cours…";
       $("xp-etude-console").innerHTML = "";
-      ligneConsole("initialisation…");
+      ligneConsole("démarrage…");
       let ok = false;
       try {
         await streamIA(config.mode, [{ role: "user", content: config.demande + suffixeContexte() }], {
           etape: (d) => { ligneConsole(d.label); statut.textContent = d.label; },
-          meta: (d) => { ligneConsole(`moteur ${d.engine} — rédaction`); statut.textContent = `${d.engine} · en direct`; },
+          meta: (d) => { ligneConsole(`${d.engine} — rédaction`); statut.textContent = `${d.engine} · en direct`; },
           delta: (d) => { texte.append(d.text); ok = true; },
           error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
           done: (d) => { if (ok) { statut.textContent = `étude produite en ${(d.ms / 1000).toFixed(1)} s`; ligneConsole(`terminé en ${(d.ms / 1000).toFixed(1)} s`); } },

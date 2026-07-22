@@ -65,10 +65,10 @@ const offres = [
           <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">{o.tag}</div>
           <div class="mt-4 text-xl font-medium">{o.name}</div>
           <div class="mt-6">
-            <div class="text-[11px] font-medium uppercase tracking-wider text-white/40">À partir de</div>
+            <div class="text-[11px] font-medium uppercase tracking-wider text-white/50">À partir de</div>
             <div class={`mt-1 text-4xl font-light tracking-tight ${o.featured ? "text-lime" : ""}`}>{o.prix}</div>
           </div>
-          <div class="mt-2 text-xs text-white/55">{o.detail}</div>
+          <div class="mt-2 text-xs text-white/65">{o.detail}</div>
           <ul class="mt-6 flex-1 space-y-3 border-t border-white/10 pt-6 text-sm text-white/80">
             {o.inclus.map((i) => (
               <li class="flex gap-2"><span class="text-lime">+</span><span>{i}</span></li>
@@ -81,7 +81,7 @@ const offres = [
       ))}
     </div>
 
-    <p class="mt-10 text-sm text-white/55">
+    <p class="mt-10 text-sm text-white/65">
       Au-delà de 80 utilisateurs : sur devis —{" "}
       <button type="button" data-open-booking class="cursor-pointer text-lime hover:underline">
         contactez-moi
