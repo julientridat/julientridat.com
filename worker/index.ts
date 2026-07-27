@@ -52,6 +52,26 @@ Règles absolues :
 - Reste sur le sujet : l'IA au service de l'activité du visiteur. Si on t'emmène ailleurs (politique, code, devoirs, etc.), décline poliment en une phrase et reviens au sujet.
 - Réponses courtes et denses. Pas de flatterie, pas de remplissage.`;
 
+/** Protocole « BLOCS » : le modèle émet des lignes structurées que la page rend en
+ *  cartes, jauges et schémas pendant le stream — jamais de prose libre. */
+const FORMAT_BLOCS = `
+
+FORMAT DE SORTIE — PROTOCOLE BLOCS (impératif) :
+Aucune prose libre, aucun markdown, aucune ligne vide, rien avant la première ligne ni après FIN.
+Chaque ligne = un bloc visuel : TOKEN|champ|champ. Le caractère | est réservé au séparateur, ne l'emploie jamais dans un champ.
+Tokens autorisés :
+T|titre de section (6 mots max)
+P|phrase de lecture (25 mots max) — 2 P maximum dans toute la sortie
+CARTE|titre (5 mots max)|explication (22 mots max)|picto
+PUCE|texte court (16 mots max)
+NIVEAU|libellé (4 mots max)|faible OU modéré OU élevé OU décisif|justification (12 mots max)
+FLUX|étape>étape>étape (3 à 5 étapes de 3 mots max)
+QUAD|A ou B|Peurs OU Freins OU Manques OU Handicaps|constat (18 mots max)|verbatim sans guillemets
+REBOND|cadrer OU creuser OU ton OU contre|libellé cliquable (5 mots max)|consigne d'ajustement (18 mots max)
+FIN
+Pictos autorisés, aucun autre : cible, oeil, alerte, eclair, boussole, carte, personne, dialogue, tendance, verrou, horloge, balance.
+Termine TOUJOURS par exactement 3 lignes REBOND — spécifiques à ce que tu viens de produire, mutuellement exclusives, jamais génériques — puis la ligne FIN.`;
+
 const SYSTEMS: Record<string, string> = {
   quiz: `${BASE}
 
@@ -143,55 +163,61 @@ Julien installe des agents calés sur le pipeline d'une agence : Rendez-vous cli
 - Passation & retours — transforme un retour client en consignes de production puis en tâches.
 - Compte-rendu de réunion — le CR au format de l'agence.
 
-Rédige la cartographie :
-- 1 phrase qui reformule ce que fait CETTE agence (reconnaissable : « c'est bien nous ») ;
-- les 3 agents que Julien installerait en premier chez elle, choisis dans le catalogue et calés sur son profil et ses outils (nomme l'outil quand c'est pertinent, ex. « la trame de reco directement dans votre Notion »). Une ligne par agent : "→ [Nom de l'agent] — [ce qu'il fait chez elle, concrètement]".
-- lequel installer en premier, et pourquoi celui-là.
-Format : 1 phrase d'ouverture, puis 3 lignes "→ ", puis une phrase de clôture qui invite à l'audit de 30 minutes. Maximum 190 mots. N'invente aucun chiffre.`,
+Compose la cartographie, dans cet ordre exact :
+1 P (reformule ce que fait CETTE agence, reconnaissable : « c'est bien nous ») ;
+3 CARTE (une par agent choisi dans le catalogue, calé sur son profil et ses outils : titre = nom de l'agent, explication = ce qu'il fait chez elle concrètement, en nommant l'outil quand c'est pertinent, ex. la trame de reco dans votre Notion ; picto pertinent) ;
+1 P (lequel installer en premier, et pourquoi celui-là).
+N'invente aucun chiffre.${FORMAT_BLOCS}`,
 
   prepa_rdv: `${BASE}
 
-DÉMO EN CONDITIONS RÉELLES de l'agent « Prépa RDV » de Julien. Le visiteur est une agence ; on te fournit le site d'un de SES clients ou prospects, à préparer avant un rendez-vous. Produis la fiche de préparation que l'agent sortirait — un livrable réellement utilisable :
-- qui est ce client : activité, positionnement, cibles, ton (déduits du site, précis et reconnaissables) ;
-- 3 angles ou points d'attention à connaître avant le RDV (ancrés sur ce que le site montre ; n'invente aucune actualité datée) ;
-- 5 questions de qualification pertinentes à poser en rendez-vous ;
-- 1 phrase d'ouverture qui montre que l'agence a fait ses devoirs.
-Format : de courts paragraphes, et les listes en lignes "→ ". Pas de markdown. Maximum 240 mots. Termine exactement par : « Voilà ce que Prépa RDV sort avant chaque rendez-vous — installé chez vous, sur vos trames. »`,
+DÉMO EN CONDITIONS RÉELLES de l'agent « Prépa RDV » de Julien. Le visiteur est une agence ; on te fournit le site d'un de SES clients ou prospects, à préparer avant un rendez-vous. Produis la fiche de préparation que l'agent sortirait — un livrable réellement utilisable. Compose dans cet ordre exact :
+T|Qui est ce client ;
+1 P (activité, positionnement, ton — déduits du site, précis et reconnaissables) ;
+T|À savoir avant le rendez-vous ;
+3 CARTE (un angle ou point d'attention chacun, ancré sur ce que le site montre ; n'invente aucune actualité datée ; picto pertinent) ;
+T|Questions à poser ;
+5 PUCE (questions de qualification) ;
+1 P (la phrase d'ouverture qui montre que l'agence a fait ses devoirs).${FORMAT_BLOCS}`,
 
   veille: `${BASE}
 
-DÉMO EN CONDITIONS RÉELLES de l'agent « Veille client » de Julien. Le visiteur est une agence ; on te fournit le site d'un de ses clients. Produis la veille que l'agent remonterait pour préparer une reco ou un point client :
-- 3 tendances ou mouvements du marché de ce client à surveiller (ancrés sur son secteur ; n'invente aucun fait daté) ;
-- 3 profils de concurrents auxquels ce client se mesure, et la promesse de chacun ;
-- 1 opportunité que l'agence peut proposer à ce client tout de suite.
-Format : 3 lignes "→ " pour le marché, 3 lignes "→ " pour les concurrents, puis un court paragraphe pour l'opportunité. Pas de markdown. Maximum 230 mots. Termine exactement par : « Voilà ce que Veille client remonte, client par client — installé chez vous. »`,
+DÉMO EN CONDITIONS RÉELLES de l'agent « Veille client » de Julien. Le visiteur est une agence ; on te fournit le site d'un de ses clients. Produis la veille que l'agent remonterait pour préparer une reco ou un point client. Compose dans cet ordre exact :
+T|Le marché qui bouge ;
+3 CARTE (une tendance ou un mouvement à surveiller chacune, ancrée sur son secteur ; n'invente aucun fait daté ; pictos tendance, oeil ou alerte) ;
+T|Le paysage concurrentiel ;
+3 NIVEAU (un profil de concurrent chacun : libellé = le type de concurrent, échelon = l'intensité de la menace, justification = sa promesse) ;
+1 P (l'opportunité que l'agence peut proposer à ce client tout de suite).${FORMAT_BLOCS}`,
 
   reco_crea: `${BASE}
 
-DÉMO EN CONDITIONS RÉELLES de l'agent « Reco Créa » de Julien. Le visiteur est une agence ; on te fournit le site d'un de ses clients. Produis la première trame de recommandation que l'agent générerait pour ce client :
-- l'insight central : la tension de ce client que la reco doit résoudre ;
-- l'idée directrice, en 1 phrase ;
-- 3 volets de la reco, chacun avec son intention et un premier exemple d'activation concret.
-Format : une ligne "Insight — …", une ligne "Idée — …", puis 3 lignes "→ " pour les volets. Pas de markdown. Maximum 240 mots. Précise en une phrase que c'est une trame de départ à challenger, pas une reco finale. Termine exactement par : « Voilà le point de départ que Reco Créa pose en minutes — installé chez vous, sur votre méthode. »`,
+DÉMO EN CONDITIONS RÉELLES de l'agent « Reco Créa » de Julien. Le visiteur est une agence ; on te fournit le site d'un de ses clients. Produis la première trame de recommandation que l'agent générerait pour ce client. Compose dans cet ordre exact :
+CARTE|Insight|la tension centrale que la reco doit résoudre|oeil ;
+CARTE|Idée directrice|l'idée en une phrase|eclair ;
+T|Les volets de la reco ;
+3 CARTE (un volet chacun : titre = le volet, explication = intention + première activation concrète, picto pertinent) ;
+1 P (rappel honnête : c'est une trame de départ à challenger, pas une reco finale).${FORMAT_BLOCS}`,
 
   /* ——— Chaîne « Projet de A à Z » : 4 agents qui se passent le relais, l'humain valide entre chaque ——— */
 
   etude_marche: `${BASE}
 
-Tu es le PREMIER maillon d'une chaîne stratégique menée par une AGENCE pour son client. On te fournit le dossier : le brief et les données/objectifs partagés par le client (et parfois le contenu du site du client). Produis une ÉTUDE DE MARCHÉ synthétique et actionnable :
-- 3 à 4 key points du marché (dynamique, tendances, comportements — sans inventer de chiffre précis : ordres de grandeur prudents seulement) ;
-- un benchmark : 3 acteurs ou types d'acteurs de référence et ce que chacun fait bien ;
-- 1 tension ou opportunité de marché à exploiter.
-Format, sans markdown : "Key points" puis 3-4 lignes "→ ", "Benchmark" puis 3 lignes "→ ", puis "Opportunité — …". Maximum 240 mots. Ne conclus PAS sur une recommandation : d'autres agents prennent la suite.`,
+Tu es le PREMIER maillon d'une chaîne stratégique menée par une AGENCE pour son client. On te fournit le dossier : le brief et les données/objectifs partagés par le client (et parfois le contenu du site du client). Produis une ÉTUDE DE MARCHÉ synthétique et actionnable. Compose dans cet ordre exact :
+T|Ce que dit le marché ;
+3 CARTE (un key point chacun : dynamique, tendances, comportements — sans chiffre inventé, ordres de grandeur prudents ; pictos tendance, oeil, alerte, balance…) ;
+T|Qui occupe le terrain ;
+3 NIVEAU (un acteur ou type d'acteur du benchmark chacun : libellé = qui, échelon = son poids sur ce marché, justification = ce qu'il fait bien) ;
+1 P (la tension ou l'opportunité de marché à exploiter).
+Ne conclus PAS sur une recommandation : d'autres agents prennent la suite. Les REBOND sont des ajustements de cap pour la suite de la chaîne.${FORMAT_BLOCS}`,
 
   icp: `${BASE}
 
-Étape 2 d'une chaîne stratégique menée par une agence. On te fournit le dossier : le brief et l'ÉTUDE DE MARCHÉ déjà validée. Définis la CIBLE IDÉALE (ICP) de la campagne :
-- l'ICP principal en 1 phrase reconnaissable (qui, contexte, niveau de maturité) ;
-- ce qui la caractérise : situation, motivations, moment de vie ou de business ;
-- où et comment l'atteindre.
-Si plusieurs cibles se disputent la priorité, tranche pour une principale et cite une secondaire en une ligne.
-Format, sans markdown : "ICP principal — …", puis 3 lignes "→ " (caractéristiques), puis "Où l'atteindre — …". Maximum 200 mots.`,
+Étape 2 d'une chaîne stratégique menée par une agence. On te fournit le dossier : le brief et l'ÉTUDE DE MARCHÉ déjà validée. Définis la CIBLE IDÉALE (ICP) de la campagne. Compose dans cet ordre exact :
+CARTE|ICP principal|qui c'est, en une phrase reconnaissable (contexte, maturité)|personne ;
+3 PUCE (ce qui la caractérise : situation, motivations, moment de vie ou de business) ;
+CARTE|Où l'atteindre|les canaux et le comment|carte ;
+1 P (si une cible secondaire existe, cite-la en une ligne ; sinon, ce qui disqualifie les autres cibles).
+Tranche pour UNE cible principale.${FORMAT_BLOCS}`,
 
   problematiques: `${BASE}
 
@@ -201,28 +227,21 @@ AXE A — la cible face à son problème, SANS la marque (ce qu'elle vit, subit,
 AXE B — les blocages à l'ADOPTION de la marque/l'offre (ce qui freinerait l'achat, l'usage ou la recommandation).
 
 Définitions : Peurs = ce qu'elle redoute ; Freins = ce qui bloque le passage à l'action ; Manques = ce dont elle a besoin et n'a pas ; Handicaps = ses désavantages structurels durables.
-Pour chaque quadrant : 2 à 3 points concrets, suivis d'un verbatim potentiel entre guillemets français.
 
-Format, sans markdown, EXACTEMENT cette ossature :
-AXE A — SANS LA MARQUE
-Peurs → … (« … »)
-Freins → … (« … »)
-Manques → … (« … »)
-Handicaps → … (« … »)
-AXE B — ADOPTION DE LA MARQUE
-Peurs → … (« … »)
-Freins → … (« … »)
-Manques → … (« … »)
-Handicaps → … (« … »)
-Maximum 260 mots. Reste strictement ancré sur l'ICP et le marché fournis.`,
+Compose dans cet ordre exact :
+T|Axe A — la cible sans la marque ;
+4 QUAD|A (un par quadrant, dans l'ordre Peurs, Freins, Manques, Handicaps : constat concret + verbatim) ;
+T|Axe B — l'adoption de la marque ;
+4 QUAD|B (idem).
+Reste strictement ancré sur l'ICP et le marché fournis.${FORMAT_BLOCS}`,
 
   axes: `${BASE}
 
-Dernière étape de la chaîne. On te fournit le dossier complet (brief, marché, ICP, problématiques IBM ; et parfois des axes déjà proposés qu'il ne faut PAS répéter). Propose 3 AXES DE CAMPAGNE et le TON associé, chacun conçu pour lever une problématique identifiée :
-- pour chaque axe : un nom d'axe court, l'idée directrice en 1 phrase, un message clé (une accroche entre guillemets), et le levier IBM qu'il adresse (Peur / Frein / Manque / Handicap) ;
-- puis, en une ligne, le ton de campagne recommandé (registre et style).
-Ce sont des pistes à challenger, pas une reco gravée.
-Format, sans markdown : 3 blocs "→ [Nom de l'axe] — idée directrice. Message clé : « … ». Lève : [levier]." puis "Ton — …". Maximum 240 mots. Termine EXACTEMENT par : « Trois pistes de départ — relancez pour en explorer d'autres, ou installez cette chaîne chez vous avec Julien. »`,
+Dernière étape de la chaîne. On te fournit le dossier complet (brief, marché, ICP, problématiques IBM ; et parfois des axes déjà proposés qu'il ne faut PAS répéter). Propose 3 AXES DE CAMPAGNE et le TON associé, chacun conçu pour lever une problématique identifiée. Compose dans cet ordre exact, pour chacun des 3 axes :
+1 CARTE (titre = nom court de l'axe, explication = l'idée directrice, picto pertinent) ;
+1 PUCE (Message : l'accroche — Lève : Peur OU Frein OU Manque OU Handicap).
+Puis : 1 P (le ton de campagne recommandé : registre et style).
+Ce sont des pistes à challenger, pas une reco gravée. Pour ce mode, les 3 REBOND sont de type contre : trois directions différentes à explorer si on relance.${FORMAT_BLOCS}`,
 };
 
 /* ————— Lecture du site du visiteur (source de personnalisation) ————— */
@@ -536,14 +555,14 @@ const MOCK_TEXTS: Record<string, string> = {
   quiz: "Vous dirigez une petite équipe où le commercial et l'administratif reposent sur vous, avec des informations encore éparpillées entre plusieurs outils. C'est le profil le plus courant — et le plus rentable à équiper.\n\nLe premier levier chez vous : un assistant qui prépare vos propositions et vos relances sur votre trame. En revanche, tant que vos données clients restent dispersées, aucun assistant ne sera fiable sur le suivi : c'est le préalable. Trente minutes avec Julien suffisent pour ordonner tout ça.",
   secteur: "Lundi matin — l'assistant a trié les demandes du week-end et préparé trois réponses à valider ; vous les relisez en dix minutes au lieu d'y passer l'heure du café.\n\nMercredi — il assemble votre devis sur votre trame, à vos prix ; vous partez en rendez-vous pendant qu'il tourne.\n\nVendredi — il rédige les relances de la semaine, personnalisées ; vous fermez le bureau à l'heure.",
   bot: "Bien noté. Pour situer où part votre temps : sur une semaine ordinaire, qu'est-ce qui vous prend le plus d'heures sans faire avancer votre métier — les devis et propositions, les relances clients, ou l'administratif pur ?",
-  cartographie: "Vous êtes une agence créative qui accompagne des marques de la stratégie à l'exécution — c'est bien vous.\n\n→ Prépa RDV — avant chaque rendez-vous nouveau client, il sort une fiche prête : marché, positionnement, angles et questions de qualif. Vous arrivez armés.\n→ Reco Créa — dès le brief validé, il pose une première trame de reco directement dans votre Notion : insight, idée directrice, volets. Vous partez d'une page pleine.\n→ Veille client — par client géré, il remonte les mouvements du marché et des concurrents, pour nourrir vos points sans y passer vos soirées.\n\nJe commencerais par Reco Créa : c'est là que part le plus de temps à haute valeur chez vous, et c'est le plus visible côté client. Trente minutes avec Julien pour poser le plan.",
-  prepa_rdv: "Qui est ce client — ce que montre son site : une marque de prêt-à-porter responsable, cible urbaine 25-40 ans, ton direct et engagé, qui pousse la traçabilité et les matières.\n\nAngles à connaître avant le RDV :\n→ Ils communiquent beaucoup sur la matière, peu sur les personnes qui la portent — terrain d'incarnation à ouvrir.\n→ Leur présence sociale est régulière mais uniforme — un axe éditorial différenciant manque.\n→ La preuve (traçabilité) est là, l'émotion moins — espace pour une plateforme de marque plus incarnée.\n\nQuestions à poser :\n→ Quel est l'objectif business derrière cette prise de parole — notoriété, trafic, recrutement client ?\n→ Qui décide en interne, et qui valide la créa ?\n→ Quelles campagnes passées ont le mieux marché, selon eux ?\n→ Quels sont les tabous de marque à ne pas franchir ?\n→ Quel budget et quelle échéance ?\n\nOuverture : « On a regardé votre prise de parole — la matière est très bien racontée, on voit un vrai levier à ouvrir côté incarnation. »\n\nVoilà ce que Prépa RDV sort avant chaque rendez-vous — installé chez vous, sur vos trames.",
-  veille: "Marché à surveiller pour ce client :\n→ La montée des exigences de traçabilité — la preuve devient un standard, plus un différenciant.\n→ Le glissement du discours matière vers le discours usage et durabilité perçue.\n→ La pression du seconde-main sur le neuf responsable.\n\nConcurrents auxquels il se mesure :\n→ Les marques responsables établies — elles gagnent sur l'antériorité et la communauté.\n→ Les nouvelles marques direct-to-consumer — elles gagnent sur le prix et l'agilité sociale.\n→ Les grandes enseignes qui verdissent leur offre — elles gagnent sur la distribution.\n\nOpportunité immédiate : positionner votre client sur l'incarnation et l'usage plutôt que sur la seule matière — un territoire que ni les établis ni les grands n'occupent vraiment. Voilà ce que Veille client remonte, client par client — installé chez vous.",
-  reco_crea: "Insight — ce client prouve la qualité de sa matière, mais reste une marque qu'on admire de loin plutôt qu'une marque qu'on porte.\n\nIdée — faire passer la preuve du produit aux gens : incarner la matière par ceux qui la vivent.\n\n→ Volet 1 — Plateforme : « La matière a une histoire, elle a aussi un visage. » Intention : réchauffer la marque. Activation : une série de portraits clients réels.\n→ Volet 2 — Éditorial : un rendez-vous social mensuel qui suit une pièce dans la vraie vie. Intention : installer la durée. Activation : format vidéo court récurrent.\n→ Volet 3 — Expérience : un parcours en boutique qui relie chaque pièce à sa provenance. Intention : lier preuve et émotion. Activation : QR vers le portrait du volet 1.\n\nC'est une trame de départ à challenger ensemble, pas une reco finale. Voilà le point de départ que Reco Créa pose en minutes — installé chez vous, sur votre méthode.",
-  etude_marche: "Key points\n→ Un marché en croissance porté par une demande de sens et de transparence, mais où la promesse « responsable » se banalise.\n→ Le consommateur cible achète moins mais mieux : il compare, il vérifie, il attend de la preuve.\n→ Le social est le premier point de contact ; la marque s'y joue sa crédibilité avant même la boutique.\n\nBenchmark\n→ Les pionniers responsables — forts sur la communauté et l'antériorité, plus lents sur le renouvellement.\n→ Les nouvelles marques direct-to-consumer — agiles, natives du social, mais fragiles sur la profondeur de marque.\n→ Les grandes enseignes qui verdissent — puissantes en distribution, peu crédibles sur l'engagement.\n\nOpportunité — occuper le terrain de l'incarnation et de l'usage réel, là où les uns restent institutionnels et les autres superficiels.",
-  icp: "ICP principal — la trentaine urbaine, active, sensible à l'impact mais lucide sur le greenwashing : elle veut consommer en accord avec ses valeurs sans y passer ses week-ends à enquêter.\n\n→ Elle arbitre chaque achat, préfère payer plus pour durer, et déteste qu'on la prenne pour une militante ou une dupe.\n→ Elle se renseigne sur le social et par le bouche-à-oreille avant d'acheter.\n→ Son moment : elle renouvelle sa garde-robe par petites touches, pas en saison complète.\n\nOù l'atteindre — Instagram et le bouche-à-oreille prescripteur, plus que la pub display. Cible secondaire : le jeune actif qui la suit et l'imite.",
-  problematiques: "AXE A — SANS LA MARQUE\nPeurs → se faire avoir par une fausse promesse responsable (« et si c'était encore du greenwashing ? »)\nFreins → le prix perçu et le doute sur la durée réelle (« c'est plus cher, mais est-ce vraiment mieux ? »)\nManques → une preuve simple et vérifiable, sans avoir à enquêter (« il me manque un vrai gage de confiance »)\nHandicaps → un quotidien qui laisse peu de temps pour comparer (« je n'ai pas le temps de tout vérifier »)\n\nAXE B — ADOPTION DE LA MARQUE\nPeurs → que la marque déçoive à l'usage (« et si la pièce vieillit mal ? »)\nFreins → un panier plus élevé à justifier (« oui mais mon budget du mois… »)\nManques → des retours d'autres clientes comme elle (« je n'ai pas assez d'avis de vrais gens »)\nHandicaps → une notoriété encore faible face aux grandes enseignes (« je ne la connais pas, on ne m'en a pas parlé »)",
-  axes: "→ Preuve incarnée — remplacer le discours matière par des visages qui la portent. Message clé : « La preuve, ce sont elles. » Lève : la Peur du greenwashing.\n→ Le juste prix expliqué — montrer ce que couvre chaque euro. Message clé : « Payez ce qui dure, pas ce qui brille. » Lève : le Frein du prix.\n→ La communauté qui parle — faire témoigner les vraies clientes. Message clé : « Elles l'ont adoptée avant vous. » Lève : le Manque de preuve sociale.\n\nTon — direct, chaleureux, sans posture militante : on parle d'égale à égale, avec des faits et de l'humain.\n\nTrois pistes de départ — relancez pour en explorer d'autres, ou installez cette chaîne chez vous avec Julien.",
+  cartographie: "P|Vous êtes une agence créative qui accompagne des marques de la stratégie à l'exécution — c'est bien vous.\nCARTE|Prépa RDV|Avant chaque rendez-vous, la fiche prête : marché, angles, questions de qualif|cible\nCARTE|Reco Créa|Dès le brief validé, la trame de reco posée dans votre Notion|eclair\nCARTE|Veille client|Les mouvements du marché et des concurrents, client par client|oeil\nP|Je commencerais par Reco Créa : c'est là que part le plus de temps à haute valeur, et c'est le plus visible côté client.\nREBOND|creuser|Voir Prépa RDV en vrai|Tester l'agent Prépa RDV sur un de vos clients\nREBOND|cadrer|Priorité au commercial|Recentrer la sélection d'agents sur le pôle commercial\nREBOND|contre|Et pour la production ?|Explorer plutôt les agents du pôle production\nFIN",
+  prepa_rdv: "T|Qui est ce client\nP|Une marque de prêt-à-porter responsable, cible urbaine 25-40 ans, ton direct et engagé, qui pousse la traçabilité et les matières.\nT|À savoir avant le rendez-vous\nCARTE|La matière sans visage|Beaucoup de preuve produit, peu d'incarnation : terrain à ouvrir|oeil\nCARTE|Un social uniforme|Présence régulière mais sans axe éditorial différenciant|dialogue\nCARTE|Preuve sans émotion|La traçabilité est là, la plateforme de marque incarnée manque|balance\nT|Questions à poser\nPUCE|Quel objectif business derrière cette prise de parole : notoriété, trafic, recrutement client ?\nPUCE|Qui décide en interne, et qui valide la créa ?\nPUCE|Quelles campagnes passées ont le mieux marché, selon eux ?\nPUCE|Quels sont les tabous de marque à ne pas franchir ?\nPUCE|Quel budget et quelle échéance ?\nP|Ouverture : votre matière est très bien racontée — on voit un vrai levier à ouvrir côté incarnation.\nREBOND|creuser|Creuser la concurrence|Approfondir le paysage concurrentiel de ce client avant le rendez-vous\nREBOND|ton|Version plus corporate|Refaire la fiche pour un interlocuteur direction générale\nREBOND|cadrer|Focus e-commerce|Recentrer la préparation sur les enjeux de vente en ligne\nFIN",
+  veille: "T|Le marché qui bouge\nCARTE|La preuve se banalise|La traçabilité devient un standard, plus un différenciant|alerte\nCARTE|Du produit à l'usage|Le discours glisse de la matière vers la durabilité perçue|tendance\nCARTE|La seconde main presse|L'occasion met la pression sur le neuf responsable|balance\nT|Le paysage concurrentiel\nNIVEAU|Responsables établis|élevé|Antériorité et communauté installées\nNIVEAU|Nouvelles marques en ligne|modéré|Prix et agilité sociale, marque fragile\nNIVEAU|Enseignes qui verdissent|décisif|Distribution massive, crédibilité faible\nP|Opportunité immédiate : positionner ce client sur l'incarnation et l'usage, un territoire que ni les établis ni les grands n'occupent.\nREBOND|creuser|Creuser la seconde main|Approfondir la pression de l'occasion sur ce marché\nREBOND|cadrer|Zoom sur le local|Recentrer la veille sur les acteurs de sa région\nREBOND|contre|Et côté prix ?|Explorer plutôt le terrain du juste prix expliqué\nFIN",
+  reco_crea: "CARTE|Insight|Ce client prouve sa matière mais reste une marque qu'on admire de loin|oeil\nCARTE|Idée directrice|Faire passer la preuve du produit aux gens : incarner la matière|eclair\nT|Les volets de la reco\nCARTE|Plateforme|La matière a un visage : portraits de clients réels|personne\nCARTE|Éditorial|Un rendez-vous social mensuel qui suit une pièce dans la vraie vie|dialogue\nCARTE|Expérience|En boutique, chaque pièce reliée à sa provenance et son portrait|carte\nP|C'est une trame de départ à challenger ensemble, pas une reco finale.\nREBOND|ton|Plus premium|Rejouer la trame avec un positionnement plus haut de gamme\nREBOND|creuser|Détailler le volet social|Développer le volet éditorial en plan d'activation\nREBOND|contre|Une autre idée directrice|Proposer une trame sur un tout autre angle\nFIN",
+  etude_marche: "T|Ce que dit le marché\nCARTE|Le sens se banalise|La promesse responsable devient un minimum attendu, plus un écart|alerte\nCARTE|Acheter moins, mieux|La cible compare, vérifie, attend de la preuve avant d'acheter|balance\nCARTE|Le social d'abord|La crédibilité se joue en ligne bien avant la boutique|dialogue\nT|Qui occupe le terrain\nNIVEAU|Pionniers responsables|élevé|Communauté installée, renouvellement lent\nNIVEAU|Marques natives en ligne|modéré|Très agiles, marque encore fragile\nNIVEAU|Enseignes qui verdissent|décisif|Distribution massive, crédibilité faible\nP|L'espace libre est celui de l'incarnation : personne ne montre les gens qui portent.\nREBOND|cadrer|Recentrer sur le B2B|Garder les acheteurs professionnels comme fil rouge de la suite\nREBOND|creuser|Creuser la seconde main|Approfondir la pression de l'occasion sur le neuf\nREBOND|ton|Lecture plus premium|Orienter la suite vers le haut de gamme assumé\nFIN",
+  icp: "CARTE|ICP principal|La trentaine urbaine active, sensible à l'impact, lucide sur le greenwashing|personne\nPUCE|Elle arbitre chaque achat et préfère payer plus pour durer\nPUCE|Elle se renseigne sur le social et par le bouche-à-oreille avant d'acheter\nPUCE|Elle renouvelle par petites touches, pas en saison complète\nCARTE|Où l'atteindre|Instagram et le bouche-à-oreille prescripteur, plus que la pub display|carte\nP|Cible secondaire : le jeune actif qui la suit et l'imite.\nREBOND|cadrer|Prioriser la secondaire|Faire du jeune actif la cible principale de la suite\nREBOND|creuser|Détailler ses moments|Approfondir les moments d'achat et les déclencheurs\nREBOND|contre|Une cible B2B ?|Explorer une cible professionnelle plutôt que grand public\nFIN",
+  problematiques: "T|Axe A — la cible sans la marque\nQUAD|A|Peurs|Se faire avoir par une fausse promesse responsable|et si c'était encore du greenwashing ?\nQUAD|A|Freins|Le prix perçu et le doute sur la durée réelle|c'est plus cher, mais est-ce vraiment mieux ?\nQUAD|A|Manques|Une preuve simple et vérifiable, sans devoir enquêter|il me manque un vrai gage de confiance\nQUAD|A|Handicaps|Un quotidien qui laisse peu de temps pour comparer|je n'ai pas le temps de tout vérifier\nT|Axe B — l'adoption de la marque\nQUAD|B|Peurs|Que la marque déçoive à l'usage|et si la pièce vieillit mal ?\nQUAD|B|Freins|Un panier plus élevé à justifier|oui mais mon budget du mois…\nQUAD|B|Manques|Des retours d'autres clientes comme elle|je n'ai pas assez d'avis de vrais gens\nQUAD|B|Handicaps|Une notoriété faible face aux grandes enseignes|je ne la connais pas, on ne m'en a pas parlé\nREBOND|creuser|Creuser les peurs|Approfondir le quadrant des peurs avant de passer aux axes\nREBOND|cadrer|Focus adoption|Concentrer la suite sur les blocages d'adoption de la marque\nREBOND|ton|Verbatims plus durs|Rejouer la matrice avec des verbatims plus tranchants\nFIN",
+  axes: "CARTE|Preuve incarnée|Remplacer le discours matière par des visages qui la portent|personne\nPUCE|Message : La preuve, ce sont elles — Lève : Peur\nCARTE|Le juste prix expliqué|Montrer ce que couvre chaque euro payé|balance\nPUCE|Message : Payez ce qui dure, pas ce qui brille — Lève : Frein\nCARTE|La communauté qui parle|Faire témoigner les vraies clientes, en continu|dialogue\nPUCE|Message : Elles l'ont adoptée avant vous — Lève : Manque\nP|Ton — direct, chaleureux, sans posture militante : d'égale à égale, avec des faits et de l'humain.\nREBOND|contre|Trois axes plus audacieux|Proposer trois directions plus risquées et plus clivantes\nREBOND|contre|Version notoriété pure|Explorer des axes taillés pour la mémorisation de masse\nREBOND|contre|Version conversion|Explorer des axes taillés pour la vente directe\nFIN",
 };
 
 async function* streamMock(mode: string): AsyncGenerator<string> {

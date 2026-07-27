@@ -211,7 +211,8 @@ const AGENTS = [
               <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Vos 3 premiers agents, branchés sur vos outils</div>
               <span id="xp-carto-statut" class="text-[11px] text-white/50">analyse en cours…</span>
             </div>
-            <p id="xp-carto-texte" class="mt-4 min-h-[140px] whitespace-pre-line text-[15px] leading-relaxed text-white/85"></p>
+            <div id="xp-carto-texte" class="mt-5 min-h-[120px] space-y-3"></div>
+            <div id="xp-carto-rebonds" class="mt-5 hidden flex-wrap gap-2 border-t border-white/10 pt-4"></div>
           </div>
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
@@ -296,9 +297,10 @@ const AGENTS = [
 
             <div class="rounded-2xl border border-lime/25 bg-lime/[0.04] p-6 md:p-8" aria-live="polite">
               <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Le livrable, rédigé en direct</div>
-              <p id="xp-essai-texte" class="mt-4 min-h-[160px] whitespace-pre-line text-[15px] leading-relaxed text-white/85">
-                Lancez l'agent : le livrable s'écrit ici, mot à mot.
-              </p>
+              <div id="xp-essai-texte" class="mt-5 min-h-[140px] space-y-3">
+                <p class="text-[15px] leading-relaxed text-white/55">Lancez l'agent : le livrable se construit ici, bloc par bloc.</p>
+              </div>
+              <div id="xp-essai-rebonds" class="mt-5 hidden flex-wrap gap-2 border-t border-white/10 pt-4"></div>
               <div id="xp-essai-suite" class="mt-6 hidden flex-wrap gap-3">
                 <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
                   Installer cet agent chez vous — audit 30 min →
@@ -337,27 +339,54 @@ const AGENTS = [
             ))}
           </ol>
 
-          <!-- Saisie du brief -->
-          <form id="xp-projet-form" class="mt-7">
-            <textarea
-              id="xp-projet-brief"
-              rows="5"
-              maxlength="6000"
-              placeholder="Le brief de votre client : son activité, sa demande, ses objectifs, ses contraintes, son budget, ce qu'il vous a partagé… Plus c'est précis, meilleure est la chaîne."
-              class="w-full resize-y rounded-2xl border border-lime/40 bg-black/40 px-5 py-4 text-[15px] leading-relaxed text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime"
-            ></textarea>
-            <div class="mt-2 flex flex-col gap-2 sm:flex-row">
+          <!-- Composition du brief : tout se clique, rien à rédiger -->
+          <form id="xp-projet-form" class="mt-7 space-y-5">
+            <div>
+              <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Le secteur de votre client</div>
+              <div id="xp-choix-secteur" class="mt-2.5 flex flex-wrap gap-2" role="radiogroup" aria-label="Secteur du client">
+                {["Mode & lifestyle", "Alimentaire & boissons", "Tech & services en ligne", "Retail & enseignes", "Santé & bien-être", "Industrie & BTP", "Tourisme & culture", "Services B2B"].map((s) => (
+                  <button type="button" class="xp-opt" data-choix="secteur" data-valeur={s} role="radio" aria-checked="false">{s}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Son objectif n°1</div>
+              <div id="xp-choix-objectif" class="mt-2.5 flex flex-wrap gap-2" role="radiogroup" aria-label="Objectif de la campagne">
+                {["Notoriété", "Lancement de produit", "Acquisition de clients", "Fidélisation", "Repositionnement"].map((s) => (
+                  <button type="button" class="xp-opt" data-choix="objectif" data-valeur={s} role="radio" aria-checked="false">{s}</button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Ses contraintes <span class="normal-case tracking-normal text-white/35">(2 max, optionnel)</span></div>
+              <div id="xp-choix-contrainte" class="mt-2.5 flex flex-wrap gap-2" aria-label="Contraintes">
+                {["Budget serré", "Délai court", "Marque premium", "Cible jeune", "Marché B2B", "Forte concurrence"].map((s) => (
+                  <button type="button" class="xp-opt" data-choix="contrainte" data-valeur={s} aria-pressed="false">{s}</button>
+                ))}
+              </div>
+            </div>
+            <div class="flex flex-col gap-2 sm:flex-row">
               <input
                 id="xp-projet-url"
                 type="text" maxlength="300" inputmode="url"
-                placeholder="site du client (optionnel) — pour nourrir l'étude de marché"
+                placeholder="site du client (optionnel) — pour nourrir l'étude"
                 class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
                 autocomplete="url" autocapitalize="off" spellcheck="false"
               />
-              <button type="submit" id="xp-projet-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+              <button type="submit" id="xp-projet-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-not-allowed disabled:opacity-40" disabled>
                 Lancer le projet
               </button>
             </div>
+            <details class="group">
+              <summary class="cursor-pointer list-none text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">J'ai déjà un brief écrit — le coller</summary>
+              <textarea
+                id="xp-projet-brief"
+                rows="5"
+                maxlength="6000"
+                placeholder="Collez ici le brief de votre client : activité, demande, objectifs, contraintes, budget…"
+                class="mt-3 w-full resize-y rounded-2xl border border-white/15 bg-black/30 px-5 py-4 text-[15px] leading-relaxed text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
+              ></textarea>
+            </details>
           </form>
 
           <!-- Les livrables s'empilent ici -->
@@ -431,6 +460,32 @@ const AGENTS = [
 
     .xp-opt { cursor: pointer; border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .55rem 1.1rem; font-size: 14px; color: oklch(1 0 0 / 80%); transition: border-color .2s, color .2s, background .2s, transform .2s; }
     .xp-opt:hover { border-color: oklch(0.92 0.21 125 / .6); color: oklch(0.92 0.21 125); transform: translateY(-1px); }
+    .xp-opt-actif { border-color: oklch(0.92 0.21 125); background: oklch(0.92 0.21 125 / .12); color: oklch(0.92 0.21 125); }
+
+    /* ——— Primitives BLOCS : les sorties IA se rendent en blocs, pas en prose ——— */
+    .xp-bloc { opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s ease; }
+    .xp-bloc-on { opacity: 1; transform: none; }
+    .xp-b-titre { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: oklch(0.92 0.21 125); padding-top: .35rem; }
+    .xp-b-p { font-size: 15px; line-height: 1.65; color: oklch(1 0 0 / .85); }
+    .xp-b-carte { display: flex; gap: .8rem; align-items: flex-start; border: 1px solid oklch(1 0 0 / 12%); border-radius: 1rem; background: oklch(1 0 0 / .02); padding: .85rem 1rem; }
+    .xp-b-carte svg { flex: none; width: 20px; height: 20px; color: oklch(0.92 0.21 125); margin-top: .1rem; }
+    .xp-b-puce { display: flex; gap: .6rem; align-items: baseline; font-size: 14px; line-height: 1.55; color: oklch(1 0 0 / .75); }
+    .xp-b-puce::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 999px; background: oklch(0.92 0.21 125); transform: translateY(-2px); }
+    .xp-b-niveau { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .25rem .8rem; align-items: center; border: 1px solid oklch(1 0 0 / 12%); border-radius: 1rem; padding: .7rem 1rem; background: oklch(1 0 0 / .02); }
+    .xp-b-jauge { display: inline-flex; gap: 3px; }
+    .xp-b-jauge i { width: 14px; height: 5px; border-radius: 3px; background: oklch(1 0 0 / .14); }
+    .xp-b-jauge i.on { background: oklch(0.92 0.21 125); }
+    .xp-b-flux { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: 13px; }
+    .xp-b-flux span { border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .3rem .8rem; color: oklch(1 0 0 / .8); }
+    .xp-b-flux i { color: oklch(0.92 0.21 125); font-style: normal; }
+    .xp-b-quads { display: grid; grid-template-columns: 1fr; gap: .6rem; }
+    @media (min-width: 640px) { .xp-b-quads { grid-template-columns: 1fr 1fr; } }
+    .xp-b-quad { border: 1px solid oklch(1 0 0 / 12%); border-radius: 1rem; padding: .8rem 1rem; background: oklch(1 0 0 / .02); }
+    .xp-b-quad .q-nom { font-size: 10px; text-transform: uppercase; letter-spacing: .18em; color: oklch(0.92 0.21 125); }
+    .xp-b-quad .q-constat { margin-top: .35rem; font-size: 13.5px; line-height: 1.5; color: oklch(1 0 0 / .82); }
+    .xp-b-quad .q-verbatim { margin-top: .45rem; font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 15px; color: oklch(0.92 0.21 125 / .9); }
+    .xp-rebond { cursor: pointer; display: inline-flex; align-items: center; gap: .45rem; border: 1px solid oklch(0.92 0.21 125 / .4); border-radius: 999px; padding: .5rem 1rem; font-size: 13.5px; color: oklch(0.92 0.21 125); background: transparent; transition: background .2s, transform .2s; }
+    .xp-rebond:hover { background: oklch(0.92 0.21 125 / .1); transform: translateY(-1px); }
     .xp-slide-out { animation: xp-out .28s ease forwards; }
     .xp-slide-in { animation: xp-enter .34s cubic-bezier(.2,.7,.2,1); }
     @keyframes xp-out { to { opacity: 0; transform: translateX(-16px); } }
@@ -575,6 +630,165 @@ const AGENTS = [
       }
     }
 
+    /* ————— Protocole BLOCS : parseur ligne-à-ligne + rendu en primitives visuelles ————— */
+
+    // Table fermée : la clé vient du modèle, on ne regarde JAMAIS la chaîne de prototypes.
+    const PICTOS = new Map<string, string>([
+      ["cible", '<circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3.5"/>'],
+      ["oeil", '<path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.5"/>'],
+      ["alerte", '<path d="M12 4 2.5 20h19L12 4z"/><path d="M12 10v4.5"/><path d="M12 17.5v.01"/>'],
+      ["eclair", '<path d="M13 3 5 13.5h5L10.5 21 19 10.5h-5L13 3z"/>'],
+      ["boussole", '<circle cx="12" cy="12" r="9"/><path d="m15 9-2 5-4 1 2-5 4-1z"/>'],
+      ["carte", '<path d="M9 4 3 6.5v13L9 17l6 2.5 6-2.5v-13L15 6.5 9 4z"/><path d="M9 4v13"/><path d="M15 6.5v13"/>'],
+      ["personne", '<circle cx="12" cy="8" r="3.5"/><path d="M5 20c1.2-3.5 3.8-5.5 7-5.5s5.8 2 7 5.5"/>'],
+      ["dialogue", '<path d="M4 5h16v11H9l-5 4V5z"/>'],
+      ["tendance", '<path d="M3 17 9.5 10.5l4 4L21 7"/><path d="M15.5 7H21v5.5"/>'],
+      ["verrou", '<rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/>'],
+      ["horloge", '<circle cx="12" cy="12" r="9"/><path d="M12 7v5.5l3.5 2"/>'],
+      ["balance", '<path d="M12 4v16"/><path d="M5 7h14"/><path d="M5 7 3 13a3.2 3.2 0 0 0 6.4 0L7 7"/><path d="M19 7l-2 6a3.2 3.2 0 0 0 6.4 0L21 7"/>'],
+    ]);
+    function svgPicto(nom: string): SVGElement {
+      const trace = PICTOS.get(String(nom).trim()) ?? PICTOS.get("boussole")!;
+      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+      svg.setAttribute("viewBox", "0 0 24 24");
+      svg.setAttribute("fill", "none");
+      svg.setAttribute("stroke", "currentColor");
+      svg.setAttribute("stroke-width", "1.5");
+      svg.setAttribute("stroke-linecap", "round");
+      svg.setAttribute("stroke-linejoin", "round");
+      svg.setAttribute("aria-hidden", "true");
+      svg.innerHTML = trace; // tracés statiques de la table fermée uniquement
+      return svg;
+    }
+
+    const ECHELONS: Record<string, number> = { faible: 1, ["modéré"]: 2, ["élevé"]: 3, ["décisif"]: 4 };
+    type Rebond = { type: string; libelle: string; consigne: string };
+
+    /** Un parseur par appel : accumule les deltas, rend chaque LIGNE COMPLÈTE en bloc. */
+    function creerParseurBlocs(conteneur: HTMLElement) {
+      let buffer = "";
+      let quads: HTMLElement | null = null; // grille QUAD courante (une par axe/section)
+      const rebonds: Rebond[] = [];
+
+      const poser = (el: HTMLElement, dans: HTMLElement = conteneur) => {
+        el.classList.add("xp-bloc");
+        dans.append(el);
+        if (reduced) el.classList.add("xp-bloc-on");
+        else requestAnimationFrame(() => requestAnimationFrame(() => el.classList.add("xp-bloc-on")));
+      };
+      const texteEl = (tag: string, classe: string, contenu: string) => {
+        const el = document.createElement(tag);
+        el.className = classe;
+        el.textContent = contenu;
+        return el;
+      };
+
+      function rendreLigne(brute: string) {
+        const ligne = brute.trim();
+        if (!ligne || ligne === "FIN") return;
+        const champs = ligne.split("|").map((c) => c.trim());
+        const token = champs[0];
+        if (token !== "QUAD") quads = null; // une série QUAD s'interrompt dès qu'autre chose arrive
+
+        if (token === "T" && champs[1]) {
+          poser(texteEl("div", "xp-b-titre", champs[1]));
+        } else if (token === "P" && champs[1]) {
+          poser(texteEl("p", "xp-b-p", champs.slice(1).join(" ")));
+        } else if (token === "PUCE" && champs[1]) {
+          poser(texteEl("div", "xp-b-puce", champs.slice(1).join(" ")));
+        } else if (token === "CARTE" && champs[1]) {
+          const carte = document.createElement("div");
+          carte.className = "xp-b-carte";
+          carte.append(svgPicto(champs[3] ?? "boussole"));
+          const corps = document.createElement("div");
+          corps.append(texteEl("div", "text-[15px] font-medium text-white leading-snug", champs[1]));
+          if (champs[2]) corps.append(texteEl("div", "mt-0.5 text-[13.5px] leading-relaxed text-white/65", champs[2]));
+          carte.append(corps);
+          poser(carte);
+        } else if (token === "NIVEAU" && champs[1]) {
+          const n = document.createElement("div");
+          n.className = "xp-b-niveau";
+          n.append(texteEl("div", "text-[14px] font-medium text-white leading-snug", champs[1]));
+          const droite = document.createElement("div");
+          droite.className = "flex items-center gap-2";
+          const jauge = document.createElement("span");
+          jauge.className = "xp-b-jauge";
+          const cran = ECHELONS[(champs[2] ?? "").toLowerCase()] ?? 2;
+          for (let k = 1; k <= 4; k++) jauge.append(Object.assign(document.createElement("i"), { className: k <= cran ? "on" : "" }));
+          droite.append(jauge, texteEl("span", "text-[11px] uppercase tracking-wider text-lime", champs[2] ?? ""));
+          n.append(droite);
+          if (champs[3]) n.append(texteEl("div", "col-span-2 text-[13px] leading-relaxed text-white/60", champs[3]));
+          poser(n);
+        } else if (token === "FLUX" && champs[1]) {
+          const flux = document.createElement("div");
+          flux.className = "xp-b-flux";
+          champs[1].split(">").map((e) => e.trim()).filter(Boolean).forEach((etape, k, arr) => {
+            flux.append(texteEl("span", "", etape));
+            if (k < arr.length - 1) flux.append(Object.assign(document.createElement("i"), { textContent: "→" }));
+          });
+          poser(flux);
+        } else if (token === "QUAD" && champs[2]) {
+          if (!quads) { quads = document.createElement("div"); quads.className = "xp-b-quads"; conteneur.append(quads); }
+          const q = document.createElement("div");
+          q.className = "xp-b-quad";
+          q.append(texteEl("div", "q-nom", champs[2]));
+          if (champs[3]) q.append(texteEl("div", "q-constat", champs[3]));
+          if (champs[4]) q.append(texteEl("div", "q-verbatim", "« " + champs[4] + " »"));
+          poser(q, quads);
+        } else if (token === "REBOND" && champs[2]) {
+          rebonds.push({ type: champs[1] ?? "creuser", libelle: champs[2], consigne: champs[3] ?? champs[2] });
+        } else {
+          // Ligne inconnue (repli Llama, prose résiduelle) : jamais jetée.
+          poser(texteEl("p", "xp-b-p", ligne.replace(/^→\s*/, "")));
+        }
+      }
+
+      return {
+        delta(txt: string) {
+          buffer += txt;
+          let i: number;
+          while ((i = buffer.indexOf("\n")) >= 0) {
+            const ligne = buffer.slice(0, i);
+            buffer = buffer.slice(i + 1);
+            rendreLigne(ligne);
+          }
+        },
+        fin() { const reste = buffer; buffer = ""; if (reste.trim()) rendreLigne(reste); },
+        erreur(message: string) { poser(texteEl("p", "xp-b-p text-white/70", message)); },
+        rebonds,
+      };
+    }
+
+    /** Barre de rebonds cliquables sous un livrable. `fixes` s'ajoute en fin (ex. Continuer). */
+    function poserRebonds(
+      zone: HTMLElement,
+      rebonds: Rebond[],
+      secours: Rebond[],
+      onRebond: (r: Rebond) => void,
+      fixes: { libelle: string; classe: string; action: () => void }[] = [],
+    ) {
+      zone.innerHTML = "";
+      const liste = rebonds.length >= 2 ? rebonds.slice(0, 3) : secours;
+      for (const r of liste) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = "xp-rebond";
+        b.textContent = r.libelle;
+        b.addEventListener("click", () => onRebond(r));
+        zone.append(b);
+      }
+      for (const f of fixes) {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.className = f.classe;
+        b.textContent = f.libelle;
+        b.addEventListener("click", f.action);
+        zone.append(b);
+      }
+      zone.classList.remove("hidden");
+      zone.classList.add("flex");
+    }
+
     /* ————— Sonde moteur (état du hero) ————— */
     (async () => {
       try {
@@ -641,7 +855,7 @@ const AGENTS = [
     }
 
     /* ————— Cartographie ————— */
-    let cartoFaite = false;
+    let cartoEnCours = false;
     function revelerPipeline() {
       const etapes = [...document.querySelectorAll<HTMLElement>(".xp-etape")];
       etapes.forEach((el, i) => {
@@ -652,30 +866,50 @@ const AGENTS = [
         }, reduced ? 0 : i * 130);
       });
     }
-    async function lancerCarto() {
-      if (cartoFaite) return;
-      cartoFaite = true;
+    const REBONDS_SECOURS_CARTO: Rebond[] = [
+      { type: "creuser", libelle: "Voir un agent en vrai", consigne: "" },
+      { type: "cadrer", libelle: "Priorité au commercial", consigne: "Recentre la sélection d'agents sur le pôle commercial." },
+      { type: "contre", libelle: "D'autres agents", consigne: "Propose trois autres agents du catalogue, différents des précédents." },
+    ];
+    async function lancerCarto(consigne = "") {
+      if (cartoEnCours) return;
+      cartoEnCours = true;
       revelerPipeline();
       $("xp-carto-contexte").textContent = siteAgence
         ? `D'après ${(() => { try { return new URL(/^https?:/.test(siteAgence!) ? siteAgence! : "https://" + siteAgence).hostname; } catch { return "votre site"; } })()} et votre profil.`
         : "D'après votre profil déclaré.";
       const texte = $("xp-carto-texte");
       const statut = $("xp-carto-statut");
-      texte.textContent = "";
-      texte.classList.add("xp-encours");
+      const zoneRebonds = $("xp-carto-rebonds");
+      texte.innerHTML = "";
+      zoneRebonds.classList.add("hidden");
+      zoneRebonds.classList.remove("flex");
+      const parseur = creerParseurBlocs(texte);
+      let ok = false;
       try {
-        await streamIA("cartographie", "Cartographie mon agence et propose les agents à installer.", {
-          etape: (d) => { statut.textContent = d.label; },
-          meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
-          delta: (d) => { texte.append(d.text); },
-          error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
-          done: (d) => { statut.textContent = `rédigé en ${(d.ms / 1000).toFixed(1)} s`; },
-        }, siteAgence ? { siteUrl: siteAgence } : {});
+        await streamIA(
+          "cartographie",
+          "Cartographie mon agence et propose les agents à installer." + (consigne ? `\nAjustement demandé : ${consigne}` : ""),
+          {
+            etape: (d) => { statut.textContent = d.label; },
+            meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
+            delta: (d) => { parseur.delta(d.text); ok = true; },
+            error: (d) => { parseur.erreur(d.message); statut.textContent = "indisponible"; },
+            done: (d) => { parseur.fin(); if (ok) statut.textContent = `cartographié en ${(d.ms / 1000).toFixed(1)} s`; },
+          },
+          siteAgence ? { siteUrl: siteAgence } : {},
+        );
       } catch {
-        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        parseur.erreur("La démonstration IA est momentanément indisponible — réessayez dans un instant.");
         statut.textContent = "hors ligne";
       }
-      texte.classList.remove("xp-encours");
+      cartoEnCours = false;
+      if (ok) {
+        poserRebonds(zoneRebonds, parseur.rebonds, REBONDS_SECOURS_CARTO, (r) => {
+          if (!r.consigne) { allerA("agents"); return; }
+          lancerCarto(r.consigne);
+        });
+      }
     }
     $("xp-vers-agents").addEventListener("click", () => allerA("agents"));
 
@@ -695,10 +929,12 @@ const AGENTS = [
         $("xp-essai-nom").textContent = cfg.nom;
         $("xp-essai-titre").textContent = cfg.titre;
         ($("xp-essai-url") as HTMLInputElement).value = "";
-        $("xp-essai-texte").textContent = "Lancez l'agent : le livrable s'écrit ici, mot à mot.";
+        $("xp-essai-texte").innerHTML = `<p class="text-[15px] leading-relaxed text-white/55">Lancez l'agent : le livrable se construit ici, bloc par bloc.</p>`;
         $("xp-essai-console").innerHTML = `<p class="text-white/35">Donnez l'URL d'un client, l'agent lit son site et produit.</p>`;
         $("xp-essai-statut").textContent = "en attente d'une URL";
         $("xp-essai-suite").classList.add("hidden");
+        $("xp-essai-rebonds").classList.add("hidden");
+        $("xp-essai-rebonds").classList.remove("flex");
         allerA("essai");
         setTimeout(() => ($("xp-essai-url") as HTMLInputElement).focus(), 300);
       });
@@ -715,8 +951,12 @@ const AGENTS = [
       c.scrollTop = c.scrollHeight;
     }
 
-    $("xp-essai-form").addEventListener("submit", async (e) => {
-      e.preventDefault();
+    const REBONDS_SECOURS_ESSAI: Rebond[] = [
+      { type: "creuser", libelle: "Creuser ce livrable", consigne: "Approfondis le point le plus décisif du livrable précédent." },
+      { type: "ton", libelle: "Version plus premium", consigne: "Rejoue le livrable avec un positionnement plus haut de gamme." },
+      { type: "contre", libelle: "Un autre angle", consigne: "Rejoue le livrable sous un angle nettement différent." },
+    ];
+    async function lancerEssai(consigne = "") {
       const url = ($("xp-essai-url") as HTMLInputElement).value.trim();
       if (!url || essaiEnCours) return;
       essaiEnCours = true;
@@ -725,32 +965,36 @@ const AGENTS = [
       const cfg = AGENTS[agentActif];
       const texte = $("xp-essai-texte");
       const statut = $("xp-essai-statut");
-      texte.textContent = "";
-      texte.classList.add("xp-encours");
+      const zoneRebonds = $("xp-essai-rebonds");
+      texte.innerHTML = "";
       $("xp-essai-console").innerHTML = "";
       $("xp-essai-suite").classList.add("hidden");
+      zoneRebonds.classList.add("hidden");
+      zoneRebonds.classList.remove("flex");
       ligneEssai("démarrage…");
+      const parseur = creerParseurBlocs(texte);
       let ok = false;
       try {
-        await streamIA(agentActif, cfg.demande, {
+        await streamIA(agentActif, cfg.demande + (consigne ? `\nAjustement demandé : ${consigne}` : ""), {
           etape: (d) => { ligneEssai(d.label); statut.textContent = d.label; },
-          meta: (d) => { ligneEssai(`${d.engine} — rédaction`); statut.textContent = `${d.engine} · en direct`; },
-          delta: (d) => { texte.append(d.text); ok = true; },
-          error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
-          done: (d) => { if (ok) { statut.textContent = `produit en ${(d.ms / 1000).toFixed(1)} s`; ligneEssai(`terminé en ${(d.ms / 1000).toFixed(1)} s`); } },
+          meta: (d) => { ligneEssai(`${d.engine} — production`); statut.textContent = `${d.engine} · en direct`; },
+          delta: (d) => { parseur.delta(d.text); ok = true; },
+          error: (d) => { parseur.erreur(d.message); statut.textContent = "indisponible"; },
+          done: (d) => { parseur.fin(); if (ok) { statut.textContent = `produit en ${(d.ms / 1000).toFixed(1)} s`; ligneEssai(`terminé en ${(d.ms / 1000).toFixed(1)} s`); } },
         }, { siteUrl: url });
       } catch {
-        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        parseur.erreur("La démonstration IA est momentanément indisponible — réessayez dans un instant.");
         statut.textContent = "hors ligne";
       }
-      texte.classList.remove("xp-encours");
       if (ok) {
+        poserRebonds(zoneRebonds, parseur.rebonds, REBONDS_SECOURS_ESSAI, (r) => lancerEssai(r.consigne));
         $("xp-essai-suite").classList.remove("hidden");
         $("xp-essai-suite").classList.add("flex");
       }
       go.disabled = false;
       essaiEnCours = false;
-    });
+    }
+    $("xp-essai-form").addEventListener("submit", (e) => { e.preventDefault(); lancerEssai(); });
 
     /* ————— Projet de A à Z : chaîne d'agents avec validation entre chaque ————— */
     $("xp-vers-projet").addEventListener("click", () => allerA("projet"));
@@ -785,11 +1029,50 @@ const AGENTS = [
       return d + "\n" + instruction;
     }
 
+    /* — Composition du brief par pastilles : tout se clique — */
+    const choix: { secteur: string | null; objectif: string | null; contraintes: string[] } = { secteur: null, objectif: null, contraintes: [] };
+    function majGoProjet() {
+      const briefColle = ($("xp-projet-brief") as HTMLTextAreaElement).value.trim();
+      ($("xp-projet-go") as HTMLButtonElement).disabled = projEnCours || !(briefColle.length >= 20 || (choix.secteur && choix.objectif));
+    }
+    document.querySelectorAll<HTMLElement>("[data-choix]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const groupe = btn.dataset.choix!;
+        const valeur = btn.dataset.valeur!;
+        if (groupe === "contrainte") {
+          const i = choix.contraintes.indexOf(valeur);
+          if (i >= 0) choix.contraintes.splice(i, 1);
+          else if (choix.contraintes.length < 2) choix.contraintes.push(valeur);
+          btn.classList.toggle("xp-opt-actif", choix.contraintes.includes(valeur));
+          btn.setAttribute("aria-pressed", String(choix.contraintes.includes(valeur)));
+        } else {
+          (choix as any)[groupe] = valeur;
+          btn.parentElement!.querySelectorAll<HTMLElement>("[data-choix]").forEach((b) => {
+            const actif = b === btn;
+            b.classList.toggle("xp-opt-actif", actif);
+            b.setAttribute("aria-checked", String(actif));
+          });
+        }
+        majGoProjet();
+      });
+    });
+    $("xp-projet-brief").addEventListener("input", majGoProjet);
+
+    function composerBrief(): string {
+      const colle = ($("xp-projet-brief") as HTMLTextAreaElement).value.trim();
+      const parts: string[] = [];
+      if (choix.secteur) parts.push(`Client du secteur : ${choix.secteur}.`);
+      if (choix.objectif) parts.push(`Objectif n°1 de la campagne : ${choix.objectif}.`);
+      if (choix.contraintes.length) parts.push(`Contraintes : ${choix.contraintes.join(", ")}.`);
+      if (colle) parts.push(`Brief remis par le client :\n${colle}`);
+      return parts.join("\n");
+    }
+
     $("xp-projet-form").addEventListener("submit", (e) => {
       e.preventDefault();
-      const brief = ($("xp-projet-brief") as HTMLTextAreaElement).value.trim();
       if (projEnCours) return;
-      if (brief.length < 20) { ($("xp-projet-brief") as HTMLElement).focus(); return; }
+      const brief = composerBrief();
+      if (!brief) { majGoProjet(); return; }
       projBrief = brief;
       projUrl = ($("xp-projet-url") as HTMLInputElement).value.trim() || null;
       projIndex = 0;
@@ -800,7 +1083,7 @@ const AGENTS = [
       lancerEtapeProjet();
     });
 
-    async function lancerEtapeProjet(relance = false) {
+    async function lancerEtapeProjet(relance = false, consigneRelance = "") {
       if (projEnCours) return;
       projEnCours = true;
       majStepper();
@@ -815,75 +1098,89 @@ const AGENTS = [
            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">${titre}</div>
            <span class="text-[11px] text-white/50" data-statut>analyse en cours…</span>
          </div>
-         <p class="mt-4 min-h-[80px] whitespace-pre-line text-[15px] leading-relaxed text-white/85" data-texte></p>
+         <div class="mt-4 min-h-[80px] space-y-3" data-texte></div>
          <div class="mt-5 hidden" data-porte></div>`;
       $("xp-projet-sorties").append(carte);
       carte.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
       const texte = carte.querySelector("[data-texte]") as HTMLElement;
       const statut = carte.querySelector("[data-statut]") as HTMLElement;
       const porte = carte.querySelector("[data-porte]") as HTMLElement;
-      texte.classList.add("xp-encours");
+      const parseur = creerParseurBlocs(texte);
+      let brut = ""; // sortie brute accumulée : c'est elle qui nourrit le dossier des étapes suivantes
 
-      const relanceExtra = (relance && projAxes.length)
+      let relanceExtra = (relance && projAxes.length)
         ? "Axes DÉJÀ proposés (ne les répète pas — propose-en 3 autres, différents) :\n" + projAxes.join("\n---\n")
         : "";
+      if (relance && consigneRelance) relanceExtra += "\nDirection demandée pour cette relance : " + consigneRelance;
       let ok = false;
       try {
         await streamIA(etape.mode, dossierProjet(etape.demande, relanceExtra), {
           etape: (d) => { statut.textContent = d.label; },
           meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
-          delta: (d) => { texte.append(d.text); ok = true; },
-          error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
-          done: (d) => { if (ok) statut.textContent = `rédigé en ${(d.ms / 1000).toFixed(1)} s`; },
+          delta: (d) => { parseur.delta(d.text); brut += d.text; ok = true; },
+          error: (d) => { parseur.erreur(d.message); statut.textContent = "indisponible"; },
+          done: (d) => { parseur.fin(); if (ok) statut.textContent = `produit en ${(d.ms / 1000).toFixed(1)} s`; },
         }, (projIndex === 0 && projUrl) ? { siteUrl: projUrl } : {});
       } catch {
-        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        parseur.erreur("La démonstration IA est momentanément indisponible — réessayez dans un instant.");
         statut.textContent = "hors ligne";
       }
-      texte.classList.remove("xp-encours");
       projEnCours = false;
-      if (ok) porteProjet(etape, texte.textContent || "", porte, estAxes);
+      if (ok) porteProjet(etape, brut, porte, estAxes, parseur.rebonds);
       else ($("xp-projet-go") as HTMLButtonElement).disabled = false;
     }
 
-    function porteProjet(etape: { nom: string }, produit: string, porte: HTMLElement, estAxes: boolean) {
+    /** Porte de validation : plus de champ vide — les rebonds de l'IA + « Continuer ». */
+    function porteProjet(etape: { nom: string }, produit: string, porte: HTMLElement, estAxes: boolean, rebonds: Rebond[]) {
       porte.classList.remove("hidden");
+      const avancer = (note: string) => {
+        projSorties.push({ nom: etape.nom, texte: produit, note });
+        porte.remove();
+        projIndex += 1;
+        lancerEtapeProjet();
+      };
       if (!estAxes) {
-        porte.innerHTML =
-          `<div class="border-t border-white/10 pt-4">
-             <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Un ajustement avant l'étape suivante ? (optionnel)</div>
-             <div class="mt-2 flex flex-col gap-2 sm:flex-row">
-               <input type="text" data-note maxlength="240" placeholder="ex. : recentre sur la cible B2B, ton plus premium…" class="w-full rounded-full border border-white/15 bg-black/30 px-4 py-2.5 text-[14px] text-white placeholder:text-white/35 outline-none focus:border-lime/60" />
-               <button type="button" data-continuer class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black hover:bg-lime/90">Continuer →</button>
-             </div>
-           </div>`;
-        (porte.querySelector("[data-continuer]") as HTMLElement).addEventListener("click", () => {
-          const note = (porte.querySelector("[data-note]") as HTMLInputElement).value.trim();
-          projSorties.push({ nom: etape.nom, texte: produit, note });
-          porte.remove();
-          projIndex += 1;
-          lancerEtapeProjet();
-        });
+        const secours: Rebond[] = [
+          { type: "cadrer", libelle: "Recentrer sur le B2B", consigne: "Recentre la suite sur une cible professionnelle." },
+          { type: "ton", libelle: "Plus premium", consigne: "Oriente la suite vers un positionnement plus haut de gamme." },
+          { type: "creuser", libelle: "Creuser ce point", consigne: "Approfondis le point le plus décisif de l'étape précédente." },
+        ];
+        const intro = document.createElement("div");
+        intro.className = "border-t border-white/10 pt-4";
+        intro.innerHTML = `<div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Ajuster le cap, ou continuer ?</div><div class="mt-2.5 flex flex-wrap gap-2" data-boutons></div>`;
+        porte.append(intro);
+        poserRebonds(
+          intro.querySelector("[data-boutons]") as HTMLElement,
+          rebonds, secours,
+          (r) => avancer(r.consigne),
+          [{ libelle: "Continuer tel quel →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black hover:bg-lime/90", action: () => avancer("") }],
+        );
       } else {
         projAxes.push(produit);
         majStepper(true);
-        porte.innerHTML =
-          `<div class="flex flex-wrap items-center gap-3 border-t border-white/10 pt-4">
-             <button type="button" data-relancer class="cursor-pointer rounded-full border border-lime/40 px-5 py-2.5 text-sm text-lime transition-colors hover:bg-lime/10">↻ 3 autres axes</button>
-             <button type="button" data-open-booking class="cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">Installer cette chaîne chez vous — audit 30 min →</button>
-             <button type="button" data-refaire class="cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">Nouveau projet</button>
-           </div>`;
-        (porte.querySelector("[data-relancer]") as HTMLElement).addEventListener("click", () => {
+        const fin = document.createElement("div");
+        fin.className = "border-t border-white/10 pt-4";
+        fin.innerHTML = `<div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Explorer d'autres directions, ou passer à l'action ?</div><div class="mt-2.5 flex flex-wrap items-center gap-2" data-boutons></div>`;
+        porte.append(fin);
+        const zone = fin.querySelector("[data-boutons]") as HTMLElement;
+        const secours: Rebond[] = [
+          { type: "contre", libelle: "3 axes plus audacieux", consigne: "Propose trois directions plus risquées et plus clivantes." },
+          { type: "contre", libelle: "Version notoriété", consigne: "Propose des axes taillés pour la mémorisation de masse." },
+          { type: "contre", libelle: "Version conversion", consigne: "Propose des axes taillés pour la vente directe." },
+        ];
+        poserRebonds(zone, rebonds, secours, (r) => {
           porte.remove();
-          lancerEtapeProjet(true);
-        });
-        (porte.querySelector("[data-refaire]") as HTMLElement).addEventListener("click", () => {
-          projIndex = 0; projSorties.length = 0; projAxes = [];
-          $("xp-projet-sorties").innerHTML = "";
-          ($("xp-projet-go") as HTMLButtonElement).disabled = false;
-          majStepper();
-          ($("xp-projet-brief") as HTMLTextAreaElement).focus();
-        });
+          lancerEtapeProjet(true, r.consigne);
+        }, [
+          { libelle: "Installer cette chaîne chez vous — audit 30 min →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90", action: () => (document.querySelector("[data-open-booking]") as HTMLElement)?.click() },
+          { libelle: "Nouveau projet", classe: "cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime", action: () => {
+            projIndex = 0; projSorties.length = 0; projAxes = [];
+            $("xp-projet-sorties").innerHTML = "";
+            majGoProjet();
+            majStepper();
+            vues.get("projet")!.scrollTop = 0;
+          } },
+        ]);
       }
     }
   </script>
