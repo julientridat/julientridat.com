@@ -215,12 +215,15 @@ const AGENTS = [
           </div>
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
-            <button type="button" id="xp-vers-agents" class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
-              Tester un agent sur un de vos clients
+            <button type="button" id="xp-vers-projet" class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
+              Mener un projet de A à Z
               <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
             </button>
+            <button type="button" id="xp-vers-agents" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
+              Ou tester un agent sur un client
+            </button>
             <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
-              Ou directement : audit 30 min
+              Audit 30 min
             </button>
           </div>
         </div>
@@ -308,6 +311,59 @@ const AGENTS = [
           </div>
         </div>
       </section>
+
+      <!-- ——— VUE PROJET DE A À Z ——— -->
+      <section data-vue="projet" class="xp-vue" hidden aria-label="Mener un projet de A à Z">
+        <div class="mx-auto max-w-4xl px-6 py-10 md:px-12">
+          <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
+            <span class="h-px w-6 bg-lime"></span> Projet de A à Z — orchestré par l'IA
+          </div>
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+            De la demande client <em class="text-lime">à la reco stratégique.</em>
+          </h2>
+          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">
+            Collez le brief et les objectifs de votre client. Les agents s'enchaînent —
+            étude de marché, cible, problématiques (matrice ICP × IBM), axes de campagne —
+            et <strong class="text-white/85">vous validez à chaque étape.</strong>
+          </p>
+
+          <!-- Le stepper : 4 étapes -->
+          <ol id="xp-stepper" class="mt-8 flex flex-wrap gap-2 text-[11px]">
+            {["Étude de marché", "Cible — ICP", "Problématiques (IBM)", "Axes & ton"].map((s, i) => (
+              <li class="xp-step flex items-center gap-2 rounded-full border border-white/12 px-3 py-1.5 text-white/45" data-step={i}>
+                <span class="xp-step-num grid h-5 w-5 place-items-center rounded-full border border-white/20 text-[10px]">{i + 1}</span>
+                <span>{s}</span>
+              </li>
+            ))}
+          </ol>
+
+          <!-- Saisie du brief -->
+          <form id="xp-projet-form" class="mt-7">
+            <textarea
+              id="xp-projet-brief"
+              rows="5"
+              maxlength="6000"
+              placeholder="Le brief de votre client : son activité, sa demande, ses objectifs, ses contraintes, son budget, ce qu'il vous a partagé… Plus c'est précis, meilleure est la chaîne."
+              class="w-full resize-y rounded-2xl border border-lime/40 bg-black/40 px-5 py-4 text-[15px] leading-relaxed text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime"
+            ></textarea>
+            <div class="mt-2 flex flex-col gap-2 sm:flex-row">
+              <input
+                id="xp-projet-url"
+                type="text" maxlength="300" inputmode="url"
+                placeholder="site du client (optionnel) — pour nourrir l'étude de marché"
+                class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
+                autocomplete="url" autocapitalize="off" spellcheck="false"
+              />
+              <button type="submit" id="xp-projet-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+                Lancer le projet
+              </button>
+            </div>
+          </form>
+
+          <!-- Les livrables s'empilent ici -->
+          <div id="xp-projet-sorties" class="mt-8 space-y-5"></div>
+        </div>
+      </section>
     </div>
 
     <!-- ═════════ PANNEAU « COULISSES » ═════════ -->
@@ -367,6 +423,12 @@ const AGENTS = [
     .xp-etape-on { opacity: 1; transform: none; }
     .xp-etape-actif { border-color: oklch(0.92 0.21 125 / .55); box-shadow: 0 0 0 1px oklch(0.92 0.21 125 / .25); }
 
+    /* Stepper du projet A→Z */
+    .xp-step-actif { border-color: oklch(0.92 0.21 125 / .55); color: oklch(0.985 0 0); }
+    .xp-step-actif .xp-step-num { border-color: oklch(0.92 0.21 125); background: oklch(0.92 0.21 125); color: #0a0a0a; }
+    .xp-step-fait { color: oklch(0.8 0 0); }
+    .xp-step-fait .xp-step-num { border-color: oklch(0.92 0.21 125 / .5); color: oklch(0.92 0.21 125); }
+
     .xp-opt { cursor: pointer; border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .55rem 1.1rem; font-size: 14px; color: oklch(1 0 0 / 80%); transition: border-color .2s, color .2s, background .2s, transform .2s; }
     .xp-opt:hover { border-color: oklch(0.92 0.21 125 / .6); color: oklch(0.92 0.21 125); transform: translateY(-1px); }
     .xp-slide-out { animation: xp-out .28s ease forwards; }
@@ -395,8 +457,8 @@ const AGENTS = [
     const vues = new Map<string, HTMLElement>();
     document.querySelectorAll<HTMLElement>("[data-vue]").forEach((v) => vues.set(v.dataset.vue!, v));
     let vueActive = "accueil";
-    const PAS: Record<string, number> = { accueil: 0, profil: 0, carto: 1, agents: 2, essai: 2 };
-    const PRECEDENT: Record<string, string> = { profil: "accueil", carto: "accueil", agents: "carto", essai: "agents" };
+    const PAS: Record<string, number> = { accueil: 0, profil: 0, carto: 1, agents: 2, essai: 2, projet: 2 };
+    const PRECEDENT: Record<string, string> = { profil: "accueil", carto: "accueil", agents: "carto", essai: "agents", projet: "carto" };
 
     function majProgression() {
       const pas = PAS[vueActive] ?? 0;
@@ -689,6 +751,141 @@ const AGENTS = [
       go.disabled = false;
       essaiEnCours = false;
     });
+
+    /* ————— Projet de A à Z : chaîne d'agents avec validation entre chaque ————— */
+    $("xp-vers-projet").addEventListener("click", () => allerA("projet"));
+
+    const ETAPES_PROJET = [
+      { mode: "etude_marche", nom: "Étude de marché", demande: "Produis l'étude de marché à partir du dossier ci-dessus." },
+      { mode: "icp", nom: "Cible — ICP", demande: "Définis la cible idéale (ICP) à partir du dossier ci-dessus." },
+      { mode: "problematiques", nom: "Problématiques — matrice ICP × IBM", demande: "Applique la matrice ICP × IBM à partir du dossier ci-dessus." },
+      { mode: "axes", nom: "Axes & ton de campagne", demande: "Propose 3 axes de campagne et le ton à partir du dossier ci-dessus." },
+    ];
+    let projBrief = "";
+    let projUrl: string | null = null;
+    let projIndex = 0;
+    let projEnCours = false;
+    const projSorties: { nom: string; texte: string; note: string }[] = [];
+    let projAxes: string[] = [];
+
+    function majStepper(tousFaits = false) {
+      document.querySelectorAll<HTMLElement>("#xp-stepper .xp-step").forEach((li) => {
+        const i = parseInt(li.dataset.step!, 10);
+        li.classList.toggle("xp-step-actif", !tousFaits && i === projIndex);
+        li.classList.toggle("xp-step-fait", tousFaits || i < projIndex);
+      });
+    }
+
+    function dossierProjet(instruction: string, extra = ""): string {
+      let d = "BRIEF & OBJECTIFS DU CLIENT :\n" + projBrief + "\n";
+      for (const s of projSorties) {
+        d += `\n--- ${s.nom} (validé${s.note ? " ; ajustement demandé : " + s.note : ""}) ---\n${s.texte}\n`;
+      }
+      if (extra) d += "\n" + extra + "\n";
+      return d + "\n" + instruction;
+    }
+
+    $("xp-projet-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const brief = ($("xp-projet-brief") as HTMLTextAreaElement).value.trim();
+      if (projEnCours) return;
+      if (brief.length < 20) { ($("xp-projet-brief") as HTMLElement).focus(); return; }
+      projBrief = brief;
+      projUrl = ($("xp-projet-url") as HTMLInputElement).value.trim() || null;
+      projIndex = 0;
+      projSorties.length = 0;
+      projAxes = [];
+      $("xp-projet-sorties").innerHTML = "";
+      ($("xp-projet-go") as HTMLButtonElement).disabled = true;
+      lancerEtapeProjet();
+    });
+
+    async function lancerEtapeProjet(relance = false) {
+      if (projEnCours) return;
+      projEnCours = true;
+      majStepper();
+      const etape = ETAPES_PROJET[projIndex];
+      const estAxes = projIndex === ETAPES_PROJET.length - 1;
+      const titre = relance ? `${etape.nom} — autres pistes` : `${projIndex + 1}. ${etape.nom}`;
+
+      const carte = document.createElement("div");
+      carte.className = "xp-slide-in rounded-2xl border border-lime/25 bg-lime/[0.04] p-6 md:p-7";
+      carte.innerHTML =
+        `<div class="flex flex-wrap items-baseline justify-between gap-3">
+           <div class="text-[11px] uppercase tracking-[0.22em] text-lime">${titre}</div>
+           <span class="text-[11px] text-white/50" data-statut>analyse en cours…</span>
+         </div>
+         <p class="mt-4 min-h-[80px] whitespace-pre-line text-[15px] leading-relaxed text-white/85" data-texte></p>
+         <div class="mt-5 hidden" data-porte></div>`;
+      $("xp-projet-sorties").append(carte);
+      carte.scrollIntoView({ behavior: reduced ? "auto" : "smooth", block: "start" });
+      const texte = carte.querySelector("[data-texte]") as HTMLElement;
+      const statut = carte.querySelector("[data-statut]") as HTMLElement;
+      const porte = carte.querySelector("[data-porte]") as HTMLElement;
+      texte.classList.add("xp-encours");
+
+      const relanceExtra = (relance && projAxes.length)
+        ? "Axes DÉJÀ proposés (ne les répète pas — propose-en 3 autres, différents) :\n" + projAxes.join("\n---\n")
+        : "";
+      let ok = false;
+      try {
+        await streamIA(etape.mode, dossierProjet(etape.demande, relanceExtra), {
+          etape: (d) => { statut.textContent = d.label; },
+          meta: (d) => { statut.textContent = `${d.engine} · en direct`; },
+          delta: (d) => { texte.append(d.text); ok = true; },
+          error: (d) => { texte.textContent = d.message; statut.textContent = "indisponible"; },
+          done: (d) => { if (ok) statut.textContent = `rédigé en ${(d.ms / 1000).toFixed(1)} s`; },
+        }, (projIndex === 0 && projUrl) ? { siteUrl: projUrl } : {});
+      } catch {
+        texte.textContent = "La démonstration IA est momentanément indisponible — réessayez dans un instant.";
+        statut.textContent = "hors ligne";
+      }
+      texte.classList.remove("xp-encours");
+      projEnCours = false;
+      if (ok) porteProjet(etape, texte.textContent || "", porte, estAxes);
+      else ($("xp-projet-go") as HTMLButtonElement).disabled = false;
+    }
+
+    function porteProjet(etape: { nom: string }, produit: string, porte: HTMLElement, estAxes: boolean) {
+      porte.classList.remove("hidden");
+      if (!estAxes) {
+        porte.innerHTML =
+          `<div class="border-t border-white/10 pt-4">
+             <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Un ajustement avant l'étape suivante ? (optionnel)</div>
+             <div class="mt-2 flex flex-col gap-2 sm:flex-row">
+               <input type="text" data-note maxlength="240" placeholder="ex. : recentre sur la cible B2B, ton plus premium…" class="w-full rounded-full border border-white/15 bg-black/30 px-4 py-2.5 text-[14px] text-white placeholder:text-white/35 outline-none focus:border-lime/60" />
+               <button type="button" data-continuer class="shrink-0 cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black hover:bg-lime/90">Continuer →</button>
+             </div>
+           </div>`;
+        (porte.querySelector("[data-continuer]") as HTMLElement).addEventListener("click", () => {
+          const note = (porte.querySelector("[data-note]") as HTMLInputElement).value.trim();
+          projSorties.push({ nom: etape.nom, texte: produit, note });
+          porte.remove();
+          projIndex += 1;
+          lancerEtapeProjet();
+        });
+      } else {
+        projAxes.push(produit);
+        majStepper(true);
+        porte.innerHTML =
+          `<div class="flex flex-wrap items-center gap-3 border-t border-white/10 pt-4">
+             <button type="button" data-relancer class="cursor-pointer rounded-full border border-lime/40 px-5 py-2.5 text-sm text-lime transition-colors hover:bg-lime/10">↻ 3 autres axes</button>
+             <button type="button" data-open-booking class="cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">Installer cette chaîne chez vous — audit 30 min →</button>
+             <button type="button" data-refaire class="cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">Nouveau projet</button>
+           </div>`;
+        (porte.querySelector("[data-relancer]") as HTMLElement).addEventListener("click", () => {
+          porte.remove();
+          lancerEtapeProjet(true);
+        });
+        (porte.querySelector("[data-refaire]") as HTMLElement).addEventListener("click", () => {
+          projIndex = 0; projSorties.length = 0; projAxes = [];
+          $("xp-projet-sorties").innerHTML = "";
+          ($("xp-projet-go") as HTMLButtonElement).disabled = false;
+          majStepper();
+          ($("xp-projet-brief") as HTMLTextAreaElement).focus();
+        });
+      }
+    }
   </script>
 
   <script type="application/json" id="xp-profil-data" set:html={JSON.stringify(PROFIL)} />
