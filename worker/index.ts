@@ -26,9 +26,9 @@ interface Env {
 const DEFAULT_CLAUDE_MODEL = "claude-sonnet-5";
 const WORKERS_AI_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";
 const MAX_TOKENS = 700;
-const MAX_BODY_BYTES = 8_000;
+const MAX_BODY_BYTES = 24_000; // dossier « Projet A→Z » : brief long + sorties accumulées
 const MAX_MESSAGES = 14;
-const MAX_MESSAGE_CHARS = 1_600;
+const MAX_MESSAGE_CHARS = 9_000;
 const SITE_FETCH_TIMEOUT_MS = 7_000;
 const SITE_MAX_HTML_BYTES = 600_000;
 const SITE_EXTRACT_CHARS = 3_800;
@@ -173,6 +173,56 @@ DÉMO EN CONDITIONS RÉELLES de l'agent « Reco Créa » de Julien. Le visiteur 
 - l'idée directrice, en 1 phrase ;
 - 3 volets de la reco, chacun avec son intention et un premier exemple d'activation concret.
 Format : une ligne "Insight — …", une ligne "Idée — …", puis 3 lignes "→ " pour les volets. Pas de markdown. Maximum 240 mots. Précise en une phrase que c'est une trame de départ à challenger, pas une reco finale. Termine exactement par : « Voilà le point de départ que Reco Créa pose en minutes — installé chez vous, sur votre méthode. »`,
+
+  /* ——— Chaîne « Projet de A à Z » : 4 agents qui se passent le relais, l'humain valide entre chaque ——— */
+
+  etude_marche: `${BASE}
+
+Tu es le PREMIER maillon d'une chaîne stratégique menée par une AGENCE pour son client. On te fournit le dossier : le brief et les données/objectifs partagés par le client (et parfois le contenu du site du client). Produis une ÉTUDE DE MARCHÉ synthétique et actionnable :
+- 3 à 4 key points du marché (dynamique, tendances, comportements — sans inventer de chiffre précis : ordres de grandeur prudents seulement) ;
+- un benchmark : 3 acteurs ou types d'acteurs de référence et ce que chacun fait bien ;
+- 1 tension ou opportunité de marché à exploiter.
+Format, sans markdown : "Key points" puis 3-4 lignes "→ ", "Benchmark" puis 3 lignes "→ ", puis "Opportunité — …". Maximum 240 mots. Ne conclus PAS sur une recommandation : d'autres agents prennent la suite.`,
+
+  icp: `${BASE}
+
+Étape 2 d'une chaîne stratégique menée par une agence. On te fournit le dossier : le brief et l'ÉTUDE DE MARCHÉ déjà validée. Définis la CIBLE IDÉALE (ICP) de la campagne :
+- l'ICP principal en 1 phrase reconnaissable (qui, contexte, niveau de maturité) ;
+- ce qui la caractérise : situation, motivations, moment de vie ou de business ;
+- où et comment l'atteindre.
+Si plusieurs cibles se disputent la priorité, tranche pour une principale et cite une secondaire en une ligne.
+Format, sans markdown : "ICP principal — …", puis 3 lignes "→ " (caractéristiques), puis "Où l'atteindre — …". Maximum 200 mots.`,
+
+  problematiques: `${BASE}
+
+Étape 3 d'une chaîne stratégique. On te fournit le dossier (brief, étude de marché, ICP validé). Applique la MATRICE ICP × IBM Design Thinking — la méthode de Julien — pour cartographier les problématiques de la cible sur DEUX axes, chacun en QUATRE quadrants : Peurs, Freins, Manques, Handicaps.
+
+AXE A — la cible face à son problème, SANS la marque (ce qu'elle vit, subit, ressent aujourd'hui).
+AXE B — les blocages à l'ADOPTION de la marque/l'offre (ce qui freinerait l'achat, l'usage ou la recommandation).
+
+Définitions : Peurs = ce qu'elle redoute ; Freins = ce qui bloque le passage à l'action ; Manques = ce dont elle a besoin et n'a pas ; Handicaps = ses désavantages structurels durables.
+Pour chaque quadrant : 2 à 3 points concrets, suivis d'un verbatim potentiel entre guillemets français.
+
+Format, sans markdown, EXACTEMENT cette ossature :
+AXE A — SANS LA MARQUE
+Peurs → … (« … »)
+Freins → … (« … »)
+Manques → … (« … »)
+Handicaps → … (« … »)
+AXE B — ADOPTION DE LA MARQUE
+Peurs → … (« … »)
+Freins → … (« … »)
+Manques → … (« … »)
+Handicaps → … (« … »)
+Maximum 260 mots. Reste strictement ancré sur l'ICP et le marché fournis.`,
+
+  axes: `${BASE}
+
+Dernière étape de la chaîne. On te fournit le dossier complet (brief, marché, ICP, problématiques IBM ; et parfois des axes déjà proposés qu'il ne faut PAS répéter). Propose 3 AXES DE CAMPAGNE et le TON associé, chacun conçu pour lever une problématique identifiée :
+- pour chaque axe : un nom d'axe court, l'idée directrice en 1 phrase, un message clé (une accroche entre guillemets), et le levier IBM qu'il adresse (Peur / Frein / Manque / Handicap) ;
+- puis, en une ligne, le ton de campagne recommandé (registre et style).
+Ce sont des pistes à challenger, pas une reco gravée.
+Format, sans markdown : 3 blocs "→ [Nom de l'axe] — idée directrice. Message clé : « … ». Lève : [levier]." puis "Ton — …". Maximum 240 mots. Termine EXACTEMENT par : « Trois pistes de départ — relancez pour en explorer d'autres, ou installez cette chaîne chez vous avec Julien. »`,
 };
 
 /* ————— Lecture du site du visiteur (source de personnalisation) ————— */
@@ -490,6 +540,10 @@ const MOCK_TEXTS: Record<string, string> = {
   prepa_rdv: "Qui est ce client — ce que montre son site : une marque de prêt-à-porter responsable, cible urbaine 25-40 ans, ton direct et engagé, qui pousse la traçabilité et les matières.\n\nAngles à connaître avant le RDV :\n→ Ils communiquent beaucoup sur la matière, peu sur les personnes qui la portent — terrain d'incarnation à ouvrir.\n→ Leur présence sociale est régulière mais uniforme — un axe éditorial différenciant manque.\n→ La preuve (traçabilité) est là, l'émotion moins — espace pour une plateforme de marque plus incarnée.\n\nQuestions à poser :\n→ Quel est l'objectif business derrière cette prise de parole — notoriété, trafic, recrutement client ?\n→ Qui décide en interne, et qui valide la créa ?\n→ Quelles campagnes passées ont le mieux marché, selon eux ?\n→ Quels sont les tabous de marque à ne pas franchir ?\n→ Quel budget et quelle échéance ?\n\nOuverture : « On a regardé votre prise de parole — la matière est très bien racontée, on voit un vrai levier à ouvrir côté incarnation. »\n\nVoilà ce que Prépa RDV sort avant chaque rendez-vous — installé chez vous, sur vos trames.",
   veille: "Marché à surveiller pour ce client :\n→ La montée des exigences de traçabilité — la preuve devient un standard, plus un différenciant.\n→ Le glissement du discours matière vers le discours usage et durabilité perçue.\n→ La pression du seconde-main sur le neuf responsable.\n\nConcurrents auxquels il se mesure :\n→ Les marques responsables établies — elles gagnent sur l'antériorité et la communauté.\n→ Les nouvelles marques direct-to-consumer — elles gagnent sur le prix et l'agilité sociale.\n→ Les grandes enseignes qui verdissent leur offre — elles gagnent sur la distribution.\n\nOpportunité immédiate : positionner votre client sur l'incarnation et l'usage plutôt que sur la seule matière — un territoire que ni les établis ni les grands n'occupent vraiment. Voilà ce que Veille client remonte, client par client — installé chez vous.",
   reco_crea: "Insight — ce client prouve la qualité de sa matière, mais reste une marque qu'on admire de loin plutôt qu'une marque qu'on porte.\n\nIdée — faire passer la preuve du produit aux gens : incarner la matière par ceux qui la vivent.\n\n→ Volet 1 — Plateforme : « La matière a une histoire, elle a aussi un visage. » Intention : réchauffer la marque. Activation : une série de portraits clients réels.\n→ Volet 2 — Éditorial : un rendez-vous social mensuel qui suit une pièce dans la vraie vie. Intention : installer la durée. Activation : format vidéo court récurrent.\n→ Volet 3 — Expérience : un parcours en boutique qui relie chaque pièce à sa provenance. Intention : lier preuve et émotion. Activation : QR vers le portrait du volet 1.\n\nC'est une trame de départ à challenger ensemble, pas une reco finale. Voilà le point de départ que Reco Créa pose en minutes — installé chez vous, sur votre méthode.",
+  etude_marche: "Key points\n→ Un marché en croissance porté par une demande de sens et de transparence, mais où la promesse « responsable » se banalise.\n→ Le consommateur cible achète moins mais mieux : il compare, il vérifie, il attend de la preuve.\n→ Le social est le premier point de contact ; la marque s'y joue sa crédibilité avant même la boutique.\n\nBenchmark\n→ Les pionniers responsables — forts sur la communauté et l'antériorité, plus lents sur le renouvellement.\n→ Les nouvelles marques direct-to-consumer — agiles, natives du social, mais fragiles sur la profondeur de marque.\n→ Les grandes enseignes qui verdissent — puissantes en distribution, peu crédibles sur l'engagement.\n\nOpportunité — occuper le terrain de l'incarnation et de l'usage réel, là où les uns restent institutionnels et les autres superficiels.",
+  icp: "ICP principal — la trentaine urbaine, active, sensible à l'impact mais lucide sur le greenwashing : elle veut consommer en accord avec ses valeurs sans y passer ses week-ends à enquêter.\n\n→ Elle arbitre chaque achat, préfère payer plus pour durer, et déteste qu'on la prenne pour une militante ou une dupe.\n→ Elle se renseigne sur le social et par le bouche-à-oreille avant d'acheter.\n→ Son moment : elle renouvelle sa garde-robe par petites touches, pas en saison complète.\n\nOù l'atteindre — Instagram et le bouche-à-oreille prescripteur, plus que la pub display. Cible secondaire : le jeune actif qui la suit et l'imite.",
+  problematiques: "AXE A — SANS LA MARQUE\nPeurs → se faire avoir par une fausse promesse responsable (« et si c'était encore du greenwashing ? »)\nFreins → le prix perçu et le doute sur la durée réelle (« c'est plus cher, mais est-ce vraiment mieux ? »)\nManques → une preuve simple et vérifiable, sans avoir à enquêter (« il me manque un vrai gage de confiance »)\nHandicaps → un quotidien qui laisse peu de temps pour comparer (« je n'ai pas le temps de tout vérifier »)\n\nAXE B — ADOPTION DE LA MARQUE\nPeurs → que la marque déçoive à l'usage (« et si la pièce vieillit mal ? »)\nFreins → un panier plus élevé à justifier (« oui mais mon budget du mois… »)\nManques → des retours d'autres clientes comme elle (« je n'ai pas assez d'avis de vrais gens »)\nHandicaps → une notoriété encore faible face aux grandes enseignes (« je ne la connais pas, on ne m'en a pas parlé »)",
+  axes: "→ Preuve incarnée — remplacer le discours matière par des visages qui la portent. Message clé : « La preuve, ce sont elles. » Lève : la Peur du greenwashing.\n→ Le juste prix expliqué — montrer ce que couvre chaque euro. Message clé : « Payez ce qui dure, pas ce qui brille. » Lève : le Frein du prix.\n→ La communauté qui parle — faire témoigner les vraies clientes. Message clé : « Elles l'ont adoptée avant vous. » Lève : le Manque de preuve sociale.\n\nTon — direct, chaleureux, sans posture militante : on parle d'égale à égale, avec des faits et de l'humain.\n\nTrois pistes de départ — relancez pour en explorer d'autres, ou installez cette chaîne chez vous avec Julien.",
 };
 
 async function* streamMock(mode: string): AsyncGenerator<string> {
@@ -642,6 +696,10 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
       prepa_rdv: ["lecture du site du client…", "repérage des angles et points d'attention…", "rédaction de la fiche de préparation…"],
       veille: ["lecture du secteur du client…", "repérage des mouvements de marché…", "reconstitution du paysage concurrentiel…"],
       reco_crea: ["lecture de la tension du client…", "formulation de l'idée directrice…", "structuration des volets de reco…"],
+      etude_marche: ["lecture du brief et des données client…", "cadrage de la dynamique de marché…", "constitution du benchmark…"],
+      icp: ["croisement brief et étude de marché…", "segmentation des cibles…", "sélection de l'ICP prioritaire…"],
+      problematiques: ["application de la matrice ICP × IBM…", "axe A : la cible sans la marque…", "axe B : les blocages à l'adoption…"],
+      axes: ["synthèse du dossier stratégique…", "génération des axes de campagne…", "calage du ton…"],
     };
     for (const label of ETAPES_ETUDE[mode] ?? []) {
       await write("etape", { label });
