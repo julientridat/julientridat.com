@@ -240,6 +240,67 @@ Dernière étape de la chaîne. On te fournit le dossier complet (brief, marché
 1 PUCE (Message : l'accroche — Lève : Peur OU Frein OU Manque OU Handicap).
 Puis : 1 P (le ton de campagne recommandé : registre et style).
 Ce sont des pistes à challenger, pas une reco gravée. Pour ce mode, les 3 REBOND sont de type contre : trois directions différentes à explorer si on relance.${FORMAT_BLOCS}`,
+
+  /* Landing agences : le visiteur donne l'adresse de son agence, on lui montre
+     l'agence qu'il pourrait devenir et ce qu'il pourrait vendre en plus. */
+  agence: `${BASE}
+
+Le visiteur dirige une agence (communication, publicité, design, digital, conseil en marketing,
+studio créatif, agence événementielle ou média). On te fournit le contenu réel de son site.
+
+Ta tâche : lui montrer l'agence qu'il pourrait devenir s'il exploitait pleinement l'IA générative —
+non pas en remplaçant ses créatifs, mais en industrialisant ce qui les épuise et en ouvrant des
+offres qu'il ne peut pas vendre aujourd'hui faute de temps.
+
+Exigences :
+- Ancre TOUT dans son site réel : ses métiers affichés, ses clients, son vocabulaire, sa taille apparente.
+  Le dirigeant doit se dire « c'est bien nous », jamais « c'est un texte générique ».
+  Reprends au moins deux éléments précis lus sur le site (un métier nommé, un type de client, une spécialité).
+- CHAQUE OFFRE doit être une offre que l'agence ne peut PAS vendre de façon rentable aujourd'hui, et que
+  l'IA générative rend possible. Le test : si l'agence pouvait déjà la vendre l'an dernier sans IA, elle
+  ne compte pas. Ne propose donc jamais « stratégie de marque », « création de contenu » ou « conseil » :
+  ce sont ses métiers actuels. Cherche du côté de ce que le coût humain interdisait — le volume continu,
+  la déclinaison massive sous contrainte de marque, la veille permanente sur chaque annonceur, la
+  personnalisation par segment, l'outillage livré au client pour qu'il produise lui-même entre deux missions.
+- Chaque offre reste vendable : un livrable clair, un acheteur identifiable, et un lien évident avec ce
+  que l'agence sait déjà faire. Pas de science-fiction, pas de produit à construire pendant un an.
+- Aucun chiffre inventé : ni tarif, ni pourcentage, ni délai précis. Aucun nom de client ou d'outil commercial.
+- Ne promets jamais de remplacer les équipes : l'angle est toujours « ce que l'agence peut vendre en plus ».
+
+Écriture (impératif) :
+- Chaque champ de texte est une phrase française complète, qui commence par une majuscule.
+  Pas de style télégraphique, pas de titre nominal en minuscules.
+- BANNIS ces mots et leurs variantes, ils ne disent rien : innovant, disruptif, solution, synergie,
+  optimisation, personnalisé, sur-mesure augmenté, à l'échelle, révolutionner, écosystème,
+  data-driven, next-gen, 360, expérience client augmentée.
+- Le champ DEVENIR n'est pas un adjectif flatteur : c'est un POSITIONNEMENT reconnaissable, qui dit ce
+  que l'agence vend désormais et que ses concurrents ne vendent pas. Il doit pouvoir se mettre sur une
+  carte de visite. Construis-le à partir du métier réel de CETTE agence — un nom de maison (studio,
+  atelier, agence, bureau…) qualifié par ce qu'elle produit désormais en continu. Ne réutilise aucune
+  formule toute faite : si ton positionnement pourrait s'appliquer à n'importe quelle autre agence,
+  recommence.
+- Si le contenu du site est trop maigre pour être spécifique, reste factuel et prudent plutôt que
+  d'inventer un positionnement flatteur.
+- Si aucun site n'a pu être lu et que tu ne disposes que d'une description écrite par le visiteur,
+  travaille à partir d'elle : elle décrit son agence. Reste alors plus prudent dans le portrait,
+  et ancre-toi sur ce qu'il a écrit plutôt que sur des suppositions.
+
+FORMAT DE SORTIE (impératif) : aucune prose libre, aucun markdown, aucune ligne vide.
+Une ligne = un bloc. Le caractère | est réservé au séparateur, ne l'emploie jamais dans un champ.
+Compose exactement, dans cet ordre :
+ACTUEL|ce que fait cette agence aujourd'hui, en une phrase reconnaissable (26 mots max)
+LEVIER|ce que son site montre déjà et sur quoi elle peut s'appuyer (20 mots max)
+DEVENIR|le type d'agence qu'elle peut devenir, 3 à 5 mots|ce qui la définirait alors (24 mots max)
+OFFRE|nom commercial de l'offre (5 mots max)|le livrable concret vendu au client (20 mots max)|à qui elle se vend (9 mots max)
+OFFRE|… (deuxième offre, différente de la première)
+OFFRE|… (troisième offre, différente des deux autres)
+CHAINE|4 étapes de sa nouvelle chaîne de production, séparées par > (3 mots max par étape)
+GARDE|la condition matérielle à régler d'abord, sinon rien ne tient (22 mots max)
+FIN
+
+Pour GARDE, nomme un obstacle CONCRET et vérifiable dans cette agence — une charte non écrite, des
+dossiers éparpillés, un ton jamais formalisé, l'absence de règle de confidentialité face aux annonceurs.
+Jamais un conseil vague du type « bien comprendre les besoins » ou « accompagner le changement ».`,
 };
 
 /* ————— Lecture du site du visiteur (source de personnalisation) ————— */
@@ -589,6 +650,17 @@ async function* streamWorkersAI(env: Env, system: string, messages: ChatMessage[
 }
 
 const MOCK_TEXTS: Record<string, string> = {
+  agence: [
+    "ACTUEL|Vous concevez des identités de marque et des campagnes pour des PME régionales, avec une équipe resserrée de créatifs polyvalents.",
+    "LEVIER|Votre site montre déjà une méthode de travail claire et des univers de marque assumés.",
+    "DEVENIR|Studio de marques opérable|Vous ne livrez plus seulement une identité : vous livrez le moyen de la produire tous les jours.",
+    "OFFRE|Charte exécutable|Un assistant qui produit les déclinaisons conformes à la charte, à la demande|Clients qui déclinent en continu",
+    "OFFRE|Abonnement contenus de marque|Un flux mensuel de contenus tenus au ton de la marque, validés par vous|Clients sans direction artistique interne",
+    "OFFRE|Atelier de mise en main|Une journée qui rend l'équipe du client autonome sur ses propres gabarits|Directions marketing de vos comptes",
+    "CHAINE|Brief cadré>Gabarits encodés>Production assistée>Validation créative",
+    "GARDE|Rien ne tient si votre charte n'est pas écrite noir sur blanc : c'est le préalable.",
+    "FIN",
+  ].join("\n"),
   concurrents: "→ Les enseignes nationales à bas prix — elles gagnent sur le prix affiché et la disponibilité immédiate, au détriment du sur-mesure et du suivi.\n→ L'artisan local établi de longue date — il gagne sur la réputation et le bouche-à-oreille, mais communique peu et digitalise lentement.\n→ Les plateformes de mise en relation — elles captent la demande en ligne en amont, puis prennent une commission sur des prestataires interchangeables.\n\nLeur faille commune : aucun ne combine sur-mesure réel et réactivité digitale. C'est exactement l'espace où vous pouvez vous installer.\n\nLe terrain le plus jouable : la réactivité perçue. Un assistant qui répond aux demandes entrantes dans l'heure, sur vos gammes et votre ton, vous donne l'avantage que ni le volume ni la lenteur ne peuvent copier. Cette carte est une hypothèse — confrontons-la : trente minutes avec Julien.",
   cibles: "→ L'architecte d'intérieur qui sous-traite la fabrication : il a besoin d'un partenaire fiable qui tient les délais ; on le touche sur LinkedIn et par recommandation. Accroche : « Vos plans, fabriqués et posés sans reprise. »\n→ Le restaurateur qui rénove : il veut un aménagement durable qui encaisse le service ; on le touche via les fournisseurs CHR locaux. Accroche : « Un comptoir qui tient dix ans de coups de feu. »\n→ Le particulier en rénovation haut de gamme : il compare longtemps, décide sur la confiance ; on le touche par le bouche-à-oreille et les avis. Accroche : « Venez voir l'atelier avant de signer. »\n\nTrente minutes avec Julien pour affiner ce ciblage et outiller la prospection.",
   axe: "→ Montrer l'atelier : votre production est votre preuve — des coulisses régulières valent mieux qu'un catalogue.\n→ La réactivité comme promesse : première réponse dans l'heure, assistée par IA, engagement affiché.\n→ Le carnet d'entretien : chaque réalisation livrée avec son suivi — personne ne le fait autour de vous.\n\nJe jouerais le premier en priorité : votre site parle déjà de fabrication sur mesure, l'angle est crédible immédiatement et il alimente tous les autres. Premier pas cette semaine : trois photos d'atelier commentées, publiées avec l'aide d'un assistant qui garde votre ton. Trente minutes avec Julien pour cadrer la suite.",
@@ -676,6 +748,8 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
   if (!system) return new Response("Mode inconnu", { status: 400 });
 
   // Modes qui exigent une URL (site à lire) : l'audit du site, et les agents testés sur un client.
+  // Le mode « agence » accepte aussi une description écrite quand le site est illisible :
+  // il n'exige donc pas d'URL, mais si on lui en donne une, elle doit être lisible (plus bas).
   const MODES_URL_REQUISE = new Set(["analyse", "prepa_rdv", "veille", "reco_crea"]);
   const siteUrl = body.siteUrl !== undefined ? validateSiteUrl(body.siteUrl) : null;
   if (MODES_URL_REQUISE.has(mode) && !siteUrl) {
@@ -729,9 +803,14 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
         systemEffectif = system + SITE_CONTEXT_PREFIX + audit.texte +
           "\n\nSignaux mesurés à l'instant par les assistants d'audit de la page :\n" + resumeAudit(audit);
         source = { url: audit.url, titre: audit.titre };
-      } else if (mode === "analyse") {
+      } else if (mode === "analyse" || mode === "agence") {
+        // Ces modes promettent une lecture du site : sans elle, on s'arrête au lieu
+        // de produire un portrait générique qui ne ressemblerait à personne.
         await write("error", {
-          message: `Impossible de lire ${siteUrl.hostname} (site indisponible, bloqué, ou construit entièrement en JavaScript). Vérifiez l'adresse — ou faites le diagnostic en 5 questions juste en dessous.`,
+          message:
+            mode === "agence"
+              ? `Je n'arrive pas à lire ${siteUrl.hostname} — le site est peut-être indisponible, protégé, ou entièrement construit en JavaScript. Vérifiez l'adresse, essayez sans « www », ou écrivez-moi : on le fera à la main.`
+              : `Impossible de lire ${siteUrl.hostname} (site indisponible, bloqué, ou construit entièrement en JavaScript). Vérifiez l'adresse — ou faites le diagnostic en 5 questions juste en dessous.`,
         });
         await write("done", { ms: Date.now() - t0 });
         await writer.close();
@@ -752,6 +831,11 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
       cibles: ["lecture de l'offre et du ton…", "segmentation des profils clients…", "rédaction des accroches…"],
       axe: ["croisement contenu et signaux mesurés…", "génération d'angles différenciants…", "sélection de l'angle prioritaire…"],
       secteur: ["déduction du métier…", "projection d'une semaine type…"],
+      agence: [
+        "lecture des pages clés de votre agence…",
+        "identification de vos métiers et de vos clients…",
+        "projection de l'agence que vous pourriez devenir…",
+      ],
       cartographie: ["lecture des pages clés de votre site…", "recherche web : votre marché, vos concurrents…", "calibrage du pack : pourquoi chaque agent chez vous…"],
       prepa_rdv: ["lecture du site du client…", "repérage des angles et points d'attention…", "rédaction de la fiche de préparation…"],
       veille: ["lecture du secteur du client…", "repérage des mouvements de marché…", "reconstitution du paysage concurrentiel…"],
