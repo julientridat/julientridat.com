@@ -1,0 +1,38 @@
+---
+/**
+ * Accueil alternatif — même contenu que la home, hero animé (vidéo ou 3D).
+ * Volontairement non indexée (aucun `canonical` transmis) : elle ne doit pas
+ * concurrencer la page d'accueil réelle tant que le choix n'est pas tranché.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroCinema from "@/components/sections/HeroCinema.astro";
+import Pains from "@/components/sections/Pains.astro";
+import Method from "@/components/sections/Method.astro";
+import Assistants from "@/components/sections/Assistants.astro";
+import Gains from "@/components/sections/Gains.astro";
+import Offres from "@/components/sections/Offres.astro";
+import Registre from "@/components/sections/Registre.astro";
+import References from "@/components/sections/References.astro";
+import About from "@/components/sections/About.astro";
+import FinalCTA from "@/components/sections/FinalCTA.astro";
+import Footer from "@/components/Footer.astro";
+
+const title = "Accueil alternatif — hero animé | Julien Tridat";
+const description = "Version de travail de la page d'accueil : hero en vidéo bouclée ou en profondeur 3D pilotée à la souris.";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="bg-background text-foreground">
+    <HeroCinema videoSrc="/hero.mp4" mode="video" comparateur />
+    <Pains />
+    <Method />
+    <Assistants />
+    <Gains />
+    <Offres />
+    <Registre />
+    <References />
+    <About />
+    <FinalCTA />
+    <Footer home />
+  </main>
+</BaseLayout>
