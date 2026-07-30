@@ -58,6 +58,30 @@ chiffre inventé.
 Dev local sans clé : `npx wrangler dev --var MOCK_AI:1` (flux simulé).
 Déploiement : `npm run build && npx wrangler deploy`.
 
+## Page /formation-ia — fiche formateur (cachée)
+
+Fiche destinée aux **organismes et centres de formation professionnelle**, pour se faire
+référencer comme formateur ou ouvrir une collaboration. Julien envoie l'URL directement.
+
+« Cachée » repose sur trois choses, à conserver ensemble :
+
+1. aucun `canonical` transmis à `BaseLayout` → `<meta name="robots" content="noindex">` ;
+2. absente de `src/pages/sitemap.xml.ts` **et** de `src/pages/llms.txt.ts` ;
+3. aucun lien depuis `Nav.astro` / `Footer.astro`.
+
+Pour la rendre publique : passer `canonical`, ajouter l'entrée au sitemap et au `llms.txt`,
+décommenter le bloc JSON-LD.
+
+**Le configurateur** (module × durée × format → programme conforme) n'appelle aucune API :
+tout est composé côté client à partir des données du frontmatter. Les cinq modules et la
+grille horaire (09 h 00 – 17 h 30) reprennent les déroulés pédagogiques réellement livrés
+sous Qualiopi pour Alfie, Maikers Institute et Adaliance. Le bouton « Copier » bascule sur
+une zone de texte pré-sélectionnée si le navigateur refuse le presse-papier.
+
+**Données administratives** : regroupées dans l'objet `ADMIN` en haut du frontmatter de
+`src/pages/formation-ia.astro`. Tant qu'une valeur vaut `null`, la fiche affiche
+`[À VALIDER]` en lime plutôt qu'un chiffre inventé. **À compléter avant toute diffusion.**
+
 ## Publier un artefact
 
 **Étude de cas** : créer `src/content/realisations/<slug>.md` — frontmatter :
@@ -102,6 +126,19 @@ Google Search Console : le site est déjà vérifié (meta conservée dans `Base
 sitemap à `https://julientridat.com/sitemap.xml`.
 
 ## [À VALIDER] par Julien
+
+- **⚠️ Fiche formateur `/formation-ia` — bloquant avant diffusion.** Renseigner l'objet
+  `ADMIN` dans `src/pages/formation-ia.astro` : forme juridique, SIRET, **numéro de
+  déclaration d'activité** (il apparaît trois fois sur la page, dont le bandeau de tête),
+  assureur et n° de police de la RC professionnelle, délai d'accès, politique de frais de
+  déplacement. Tant qu'ils sont `null`, la page affiche `[À VALIDER]`.
+- **Fiche formateur — nommage des organismes partenaires.** La page cite **Alfie**,
+  **Maikers Institute** et **Adaliance** comme organismes qui référencent déjà Julien.
+  Aucun n'est associé au nom de son client final (la clause de confidentialité du contrat
+  travel retail est ainsi respectée), mais confirmer que les trois acceptent d'être cités
+  nommément sur une page envoyée à des organismes concurrents.
+- **Fiche formateur — certification.** La page affirme explicitement l'absence de Qualiopi
+  en propre et l'intervention en sous-traitance. À confirmer si une démarche est en cours.
 
 - **⚠️ Étude « groupe travel retail »** : le contrat de sous-traitance avec l'organisme de
   formation contient une clause de confidentialité explicite couvrant l'organisme ET ses

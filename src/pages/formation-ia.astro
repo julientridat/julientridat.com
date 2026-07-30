@@ -1,0 +1,1488 @@
+---
+/**
+ * Fiche formateur — page volontairement NON INDEXÉE et NON LIÉE.
+ *
+ * Destinataire : responsable pédagogique / dirigeant d'un organisme ou centre de
+ * formation professionnelle, à qui Julien envoie l'URL directement.
+ *
+ * « Cachée » = trois choses, réunies ici :
+ *   1. aucun `canonical` transmis à BaseLayout → <meta name="robots" content="noindex">
+ *   2. absente de `src/pages/sitemap.xml.ts` et de `src/pages/llms.txt.ts`
+ *   3. aucun lien depuis Nav.astro / Footer.astro
+ * Pour la rendre publique : passer `canonical`, ajouter l'entrée au sitemap et au
+ * llms.txt, décommenter le bloc JSON-LD en bas de frontmatter.
+ *
+ * Règle éditoriale du dépôt appliquée strictement : aucun chiffre invérifiable.
+ * Tout ce qui figure ici est adossé soit aux études de cas publiées, soit aux
+ * déroulés pédagogiques réellement livrés sous Qualiopi (Alfie, Maikers, Adaliance).
+ * Les données administratives que je ne peux pas vérifier sont nulles ci-dessous
+ * et s'affichent « [À VALIDER] » plutôt que d'être inventées.
+ */
+import { getCollection } from "astro:content";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import Footer from "@/components/Footer.astro";
+
+const title = "Fiche formateur IA — Julien Tridat | Intervenant pour organismes de formation";
+const description =
+  "Formateur IA générative en sous-traitance pour organismes de formation. Modules déjà animés sous Qualiopi, programmes conformes, chaîne documentaire complète. Bordeaux et national.";
+
+/* ------------------------------------------------------------------ *
+ * Données administratives — À COMPLÉTER PAR JULIEN AVANT DIFFUSION.
+ * Tant qu'une valeur vaut null, la fiche affiche « [À VALIDER] ».
+ * ------------------------------------------------------------------ */
+const ADMIN = {
+  formeJuridique: null as string | null,
+  siret: null as string | null,
+  /** N° de déclaration d'activité de formateur (préfecture de région). */
+  nda: null as string | null,
+  ndaRegion: "Nouvelle-Aquitaine",
+  /** Assureur + n° de police de la RC professionnelle. */
+  rcPro: null as string | null,
+  /** Délai entre l'accord et la première session. */
+  delaiAcces: null as string | null,
+  /** Politique de frais de déplacement hors Nouvelle-Aquitaine. */
+  fraisDeplacement: null as string | null,
+};
+const v = (x: string | null) => x ?? "[À VALIDER]";
+
+/* ------------------------------------------------------------------ *
+ * Le configurateur.
+ *
+ * Modules = ceux réellement conçus et animés sous Qualiopi pour les trois
+ * organismes partenaires. Le séquençage reprend la grille horodatée
+ * effectivement utilisée en mission (09 h 00 – 17 h 30, 4 colonnes :
+ * horaire / thèmes / méthodes & outils / objectifs visés).
+ * ------------------------------------------------------------------ */
+
+const MODULES = [
+  {
+    id: "socle",
+    code: "SOC",
+    onglet: "Socle & acculturation",
+    titre: "Introduction à ChatGPT et aux outils d'IA générative",
+    public: "Tout collaborateur, quel que soit le métier. Aucun prérequis technique.",
+    accroche:
+      "Le module d'entrée : ce que l'outil sait faire, ce qu'il invente, et la première tâche qu'on lui confie en sortant de salle.",
+    sequences: [
+      {
+        theme: "Ce qu'est réellement l'IA générative — et ce qu'elle n'est pas",
+        moyens: "Exposé court, démonstration commentée, questions ouvertes de la salle.",
+        objectif:
+          "Distinguer ce qu'un modèle génératif sait produire de ce qu'il invente, et énoncer les limites qui s'appliquent à son propre poste.",
+      },
+      {
+        theme: "Le paysage des outils : ChatGPT, Copilot, Gemini, Perplexity, NotebookLM",
+        moyens: "Comparatif en direct sur une même demande, chacun sur son poste.",
+        objectif:
+          "Choisir l'outil pertinent selon la tâche, la donnée manipulée et la licence dont on dispose réellement.",
+      },
+      {
+        theme: "Ingénierie de prompt : de la question vague au livrable exploitable",
+        moyens: "Atelier individuel sur poste, à partir d'une tâche réelle du participant.",
+        objectif:
+          "Formuler une demande structurée — rôle, contexte, contrainte, format — et obtenir un livrable exploitable sans reprise majeure.",
+      },
+      {
+        theme: "Les cinq usages : chercher, comprendre, produire, communiquer, automatiser",
+        moyens: "Auto-positionnement, cartographie collective au tableau.",
+        objectif:
+          "Situer ses propres tâches dans les cinq usages et désigner celle à outiller en premier.",
+      },
+      {
+        theme: "Assistants personnalisés : rôle, règles, base de connaissance",
+        moyens: "Atelier de configuration guidé, sur l'outil autorisé chez le client.",
+        objectif: "Construire un assistant réutilisable sur un cas de son propre poste.",
+      },
+      {
+        theme: "Fiabilité et vérification : repérer une sortie fausse",
+        moyens: "Démonstration d'erreur provoquée, relecture croisée entre participants.",
+        objectif:
+          "Détecter une affirmation non sourcée et corriger une production non conforme.",
+      },
+      {
+        theme: "Données, confidentialité et cadre d'usage",
+        moyens: "Étude de cas, mise en situation sur des documents fictifs.",
+        objectif:
+          "Énoncer ce qui peut et ce qui ne peut pas être soumis à un outil, au regard des règles de sa structure.",
+      },
+      {
+        theme: "Plan d'action individuel et évaluation",
+        moyens: "Quiz de fin de formation (QCM), formalisation du plan d'action.",
+        objectif:
+          "Évaluer ses acquis et définir les deux premiers cas à installer dans les trente jours.",
+      },
+    ],
+    livrables: [
+      "Un livret par outil retenu (~15 pages navigables) : fonctions, bonnes pratiques, ce qu'on ne fait pas",
+    ],
+  },
+  {
+    id: "marketing",
+    code: "MKV",
+    onglet: "Marketing & ventes",
+    titre: "Maximiser ses résultats marketing et ventes avec l'IA générative",
+    public:
+      "Équipes marketing, communication et commerciales. Une pratique régulière des outils de la structure suffit.",
+    accroche:
+      "Le module le plus demandé au catalogue : contenus qui convertissent, supports commerciaux, relances et veille.",
+    sequences: [
+      {
+        theme: "Fondamentaux de l'IA générative appliqués au marketing et à la vente",
+        moyens: "Exposé, exemples de campagnes réelles, démonstration en direct.",
+        objectif:
+          "Comprendre l'impact de l'IA générative sur les stratégies marketing et commerciales, et repérer les tâches à fort gain.",
+      },
+      {
+        theme: "Créer des contenus qui captent et convertissent",
+        moyens: "Atelier : posts réseaux sociaux, e-mails de nurturing, page d'atterrissage.",
+        objectif:
+          "Produire un contenu marketing exploitable à partir d'un brief réel apporté par le participant.",
+      },
+      {
+        theme: "Optimiser ses supports commerciaux",
+        moyens: "Atelier : présentation de vente, fiche produit, argumentaire.",
+        objectif:
+          "Concevoir un support commercial personnalisé et l'adapter à plusieurs cibles.",
+      },
+      {
+        theme: "Analyser et optimiser ses campagnes",
+        moyens: "Travail sur données analytiques, construction d'un rapport automatisé.",
+        objectif:
+          "Identifier une opportunité d'amélioration à partir de ses propres indicateurs et ajuster la campagne.",
+      },
+      {
+        theme: "Automatiser les tâches commerciales",
+        moyens: "Atelier : séquences de relance, propositions sur mesure, rapports de suivi.",
+        objectif:
+          "Concevoir une séquence de relance automatisée et une proposition commerciale personnalisée.",
+      },
+      {
+        theme: "Prospection ultra-personnalisée",
+        moyens: "Simulation de prospection augmentée, enrichissement de profils.",
+        objectif:
+          "Personnaliser ses approches à l'échelle sans perdre en pertinence, et qualifier ses priorités.",
+      },
+      {
+        theme: "Veille concurrentielle et marché",
+        moyens: "Perplexity et NotebookLM appliqués au secteur des participants.",
+        objectif: "Mettre en place une veille sourcée et vérifiable sur son marché.",
+      },
+      {
+        theme: "Atelier fidélisation et évaluation",
+        moyens:
+          "Co-construction de scénarios client, quiz de fin de formation (QCM et questions ouvertes).",
+        objectif: "Élaborer un plan d'actions de fidélisation et valider ses acquis.",
+      },
+    ],
+    livrables: [
+      "La bibliothèque de prompts marketing et commerciaux construite en séance",
+      "Les scénarios client co-construits en atelier, prêts à rejouer",
+    ],
+  },
+  {
+    id: "contenu",
+    code: "CTN",
+    onglet: "Création de contenu",
+    titre: "IA et création de contenu",
+    public:
+      "Studios, agences, pôles création et communication interne. Une charte éditoriale ou graphique existante est un plus.",
+    accroche:
+      "Pour les structures qui produisent à volume : encoder la charte dans l'assistant plutôt que la rappeler à chaque relecture.",
+    sequences: [
+      {
+        theme: "Du brief au premier jet : ce que l'IA change dans la chaîne de production",
+        moyens: "Exposé court, démonstration sur un brief réel de la salle.",
+        objectif:
+          "Situer l'IA dans sa chaîne de production actuelle et repérer où elle fait gagner du temps sans dégrader la qualité.",
+      },
+      {
+        theme: "Encoder une charte éditoriale dans un assistant",
+        moyens: "Atelier : construction d'un assistant à partir de la charte de la structure.",
+        objectif:
+          "Produire un contenu conforme à la charte de sa structure, sans relecture de forme.",
+      },
+      {
+        theme: "Produire à l'échelle : décliner un support sur un réseau",
+        moyens: "Atelier : déclinaison d'un support à partir d'un fichier de destinataires.",
+        objectif:
+          "Décliner un support sur un grand nombre de cibles à partir d'un fichier structuré.",
+      },
+      {
+        theme: "Brief de création : traduire un socle validé pour le studio",
+        moyens: "Atelier : rédaction d'un brief exploitable, pistes visuelles.",
+        objectif:
+          "Rédiger un brief de création exploitable par un studio à partir d'un contenu validé.",
+      },
+      {
+        theme: "Sourcer et vérifier : le contenu à enjeu",
+        moyens: "Atelier : recherche restreinte à des autorités de référence identifiées.",
+        objectif: "Obtenir un contenu sourcé et repérer toute affirmation non étayée.",
+      },
+      {
+        theme: "Image, vidéo, son : ce qui est utilisable et ce qui ne l'est pas",
+        moyens: "Démonstration comparée, points de mention et de droit.",
+        objectif:
+          "Décider si une production générée est diffusable au regard des règles de son secteur.",
+      },
+      {
+        theme: "Industrialiser : bibliothèque de prompts et assistants d'équipe",
+        moyens: "Atelier collectif de mise en commun.",
+        objectif:
+          "Constituer une bibliothèque partagée et désigner un propriétaire par assistant.",
+      },
+      {
+        theme: "Feuille de route et évaluation",
+        moyens: "Quiz de fin de formation (QCM), feuille de route par pôle.",
+        objectif: "Établir une feuille de route d'outillage et valider ses acquis.",
+      },
+    ],
+    livrables: [
+      "L'assistant « charte maison » configuré sur la charte réelle du client",
+      "La bibliothèque de prompts de l'équipe, avec un propriétaire par assistant",
+    ],
+  },
+  {
+    id: "prompting",
+    code: "PRO",
+    onglet: "Prompting avancé",
+    titre: "Maîtriser le prompting : techniques avancées appliquées à son métier",
+    public:
+      "Collaborateurs déjà utilisateurs, dont les résultats plafonnent. Prérequis : avoir déjà utilisé un outil d'IA générative.",
+    accroche:
+      "Le module de rattrapage : ceux qui s'en servent déjà, mais obtiennent des sorties génériques et abandonnent.",
+    sequences: [
+      {
+        theme: "Anatomie d'une demande qui produit",
+        moyens: "Exposé, décorticage de prompts réels, comparaison avant / après.",
+        objectif:
+          "Structurer une demande — rôle, contexte, contrainte, format, critère de réussite — et obtenir un résultat exploitable.",
+      },
+      {
+        theme: "Prompting stratégique : partir du problème du destinataire",
+        moyens: "Atelier guidé sur un cas métier apporté par le participant.",
+        objectif:
+          "Transformer une problématique métier en demande actionnable pour un assistant.",
+      },
+      {
+        theme: "Itérer plutôt que recommencer",
+        moyens: "Atelier : correction dirigée d'une sortie insatisfaisante.",
+        objectif:
+          "Corriger une production non conforme par itération ciblée, plutôt qu'en relançant à zéro.",
+      },
+      {
+        theme: "Bibliothèque personnelle de prompts",
+        moyens: "Atelier : formalisation et classement des prompts retenus.",
+        objectif: "Constituer une bibliothèque réutilisable et la partager avec son équipe.",
+      },
+      {
+        theme: "Assistants sur mesure : industrialiser le prompt",
+        moyens: "Atelier de configuration — rôle, règles, base de connaissance.",
+        objectif:
+          "Passer d'un prompt répété à un assistant configuré une fois et réutilisé par tous.",
+      },
+      {
+        theme: "Chaîner les étapes : du document brut au livrable final",
+        moyens: "Atelier : enchaînement recherche, synthèse, production.",
+        objectif: "Enchaîner plusieurs étapes de traitement sur un même dossier.",
+      },
+      {
+        theme: "Les limites : ce que le prompt ne réparera pas",
+        moyens: "Démonstration d'échec, analyse collective.",
+        objectif: "Reconnaître les cas où l'IA n'est pas le bon outil, et le dire.",
+      },
+      {
+        theme: "Mise à l'épreuve et évaluation",
+        moyens: "Épreuve croisée entre participants, quiz de fin de formation (QCM).",
+        objectif:
+          "Faire tourner l'assistant d'un pair sur un cas non préparé et valider ses acquis.",
+      },
+    ],
+    livrables: ["La bibliothèque de prompts personnelle, classée et prête à partager"],
+  },
+  {
+    id: "organisme",
+    code: "ORG",
+    onglet: "Organismes de formation",
+    titre: "L'IA générative dans un organisme de formation",
+    public:
+      "Équipes d'un organisme de formation ou de conseil : direction, pédagogie, commercial, administration.",
+    accroche:
+      "Le module que j'anime pour vos confrères — conception de programmes, conformité, prospection, visibilité sur les IA.",
+    sequences: [
+      {
+        theme: "Fondamentaux et ingénierie de prompt appliqués à la formation",
+        moyens: "Exposé, ateliers sur les cas réels de l'organisme.",
+        objectif:
+          "Maîtriser les techniques de prompting pour transformer une problématique client en réponse structurée.",
+      },
+      {
+        theme: "Concevoir plus vite : programmes, propositions, supports",
+        moyens:
+          "Atelier : production d'un programme et d'une proposition à partir d'un besoin client réel.",
+        objectif:
+          "Produire un programme conforme et une proposition commerciale à partir d'un besoin exprimé.",
+      },
+      {
+        theme: "Assistants sur mesure pour les rôles internes",
+        moyens:
+          "Atelier de configuration : assistant commercial, pédagogique, administratif.",
+        objectif:
+          "Prototyper des assistants qui absorbent les processus récurrents de l'organisme.",
+      },
+      {
+        theme: "Veille et tableaux de bord",
+        moyens: "Démonstration Perplexity et NotebookLM, construction d'indicateurs.",
+        objectif:
+          "Mettre en œuvre une veille sectorielle et un suivi d'activité outillés.",
+      },
+      {
+        theme: "Administration et conformité qualité",
+        moyens:
+          "Cas pratiques : gestion documentaire, analyse automatique des questionnaires de satisfaction.",
+        objectif:
+          "Automatiser les suivis et l'analyse des retours pour alimenter le plan d'action qualité.",
+      },
+      {
+        theme: "Performance commerciale et prospection",
+        moyens: "Simulation de prospection augmentée, relances et enrichissement du CRM.",
+        objectif:
+          "Augmenter le volume et la qualité des approches prescripteurs et entreprises.",
+      },
+      {
+        theme: "Être cité par les IA : du référencement au GEO",
+        moyens:
+          "Atelier de rédaction optimisée, structuration technique des données (Schema.org).",
+        objectif:
+          "Produire des contenus repris par les moteurs de réponse et structurer son site pour être cité.",
+      },
+      {
+        theme: "Feuille de route et évaluation",
+        moyens: "Quiz de fin de formation (QCM), arbitrage des priorités d'industrialisation.",
+        objectif:
+          "Établir la feuille de route de déploiement et valider les acquis des équipes.",
+      },
+    ],
+    livrables: [
+      "Les assistants internes configurés en séance (commercial, pédagogique, administratif)",
+      "La feuille de route d'industrialisation, priorisée et datée",
+    ],
+  },
+];
+
+const DUREES = [
+  {
+    id: "demi",
+    code: "3H30",
+    label: "Demi-journée",
+    volume: "3 h 30",
+    detail: "3 h 30 (dont 15 min de pause)",
+    nb: 2,
+    intention: "Acculturation",
+  },
+  {
+    id: "jour",
+    code: "7H",
+    label: "1 journée",
+    volume: "7 h",
+    detail: "7 h (dont 30 min de pauses, déjeuner non compté)",
+    nb: 4,
+    intention: "Socle et mise en pratique",
+  },
+  {
+    id: "deux",
+    code: "14H",
+    label: "2 journées",
+    volume: "14 h",
+    detail: "14 h sur deux journées (dont 1 h de pauses, déjeuners non comptés)",
+    nb: 8,
+    intention: "Déploiement et industrialisation",
+  },
+];
+
+const FORMATS = [
+  {
+    id: "presentiel",
+    code: "PRES",
+    label: "Présentiel intra",
+    effectif: "8 à 12 participants",
+    modalites:
+      "Dans vos locaux ou ceux de votre client. Chaque participant sur son propre poste, avec ses propres documents. Vidéoprojection et démonstrations construites en direct — aucune capture d'écran préenregistrée. Alternance apport court / atelier : jamais plus de vingt minutes sans que la salle produise quelque chose.",
+  },
+  {
+    id: "distanciel",
+    code: "DIST",
+    label: "Classe virtuelle",
+    effectif: "6 à 10 participants",
+    modalites:
+      "Classe virtuelle en groupe réduit, pour que chacun partage son écran au moins une fois. Ateliers en sous-groupes puis restitution en plénière. Support transmis à l'issue de chaque séance ; les productions restent dans l'espace de travail du participant.",
+  },
+  {
+    id: "mixte",
+    code: "MIXTE",
+    label: "Mixte",
+    effectif: "8 à 12 participants",
+    modalites:
+      "Le présentiel pour la construction, puis deux points de suivi à distance de 45 minutes, à deux et quatre semaines : on reprend les cas qui ont bloqué en conditions réelles. C'est le format qui tient le mieux dans le temps — le blocage arrive toujours après la session, jamais pendant.",
+  },
+];
+
+/** Grilles horaires réellement utilisées en mission. */
+const GRILLES = {
+  demi: ["09 h 00 – 10 h 30", "PAUSE:10 h 30 – 10 h 45", "10 h 45 – 12 h 30"],
+  jour: [
+    "09 h 00 – 10 h 30",
+    "PAUSE:10 h 30 – 10 h 45",
+    "10 h 45 – 12 h 30",
+    "DEJEUNER:12 h 30 – 14 h 00",
+    "14 h 00 – 15 h 30",
+    "PAUSE:15 h 30 – 15 h 45",
+    "15 h 45 – 17 h 30",
+  ],
+};
+
+const EVALUATION = {
+  demi: [
+    "Questionnaire de positionnement renseigné en amont (niveau, outils réellement disponibles, tâches chronophages).",
+    "Quiz de fin de formation, corrigé et commenté en séance.",
+    "Questionnaire de satisfaction à chaud.",
+  ],
+  jour: [
+    "Questionnaire de positionnement renseigné en amont (niveau, outils réellement disponibles, tâches chronophages).",
+    "Évaluation de la production d'atelier sur critères annoncés en début de séance.",
+    "Quiz de fin de formation, corrigé et commenté en séance.",
+    "Questionnaire de satisfaction à chaud.",
+  ],
+  deux: [
+    "Questionnaire de positionnement renseigné en amont, utilisé pour constituer des groupes homogènes.",
+    "Évaluation de la production d'atelier sur critères annoncés en début de séance.",
+    "Mise à l'épreuve croisée : l'assistant construit par un participant est testé par un pair sur un cas non préparé.",
+    "Quiz de fin de formation, corrigé et commenté en séance.",
+    "Questionnaire de satisfaction à chaud, puis évaluation à froid à trois mois — usage réel, temps gagné déclaré, cas abandonnés et raisons. Restitution écrite au commanditaire.",
+  ],
+};
+
+const LIVRABLES_SOCLE = [
+  "Le support de séance, remis au format navigable",
+  "Attestation de fin de formation, feuille d'émargement et questionnaires renseignés, transmis au centre",
+];
+
+/* ------------------------------------------------------------------ *
+ * Preuves — tirées des études de cas publiées, pour rester synchrone.
+ * Le cas « club d'affaires » est volontairement exclu : hors financement
+ * de la formation professionnelle.
+ * ------------------------------------------------------------------ */
+const PREUVES_IDS = [
+  "offre-formation-ia-qualiopi",
+  "transformation-ia-organisme-formation",
+  "formation-groupe-travel-retail",
+  "formation-ia-agence-sante",
+  "acculturation-enseigne-nationale",
+  "cartographie-ia-agence",
+];
+const toutes = await getCollection("realisations", ({ data }) => data.published);
+const preuves = PREUVES_IDS.map((id) => toutes.find((r) => r.id === id)).filter(
+  (r): r is NonNullable<typeof r> => Boolean(r),
+);
+
+/** Organismes partenaires. Aucun n'est associé ici au nom de son client final. */
+const PARTENAIRES = [
+  {
+    nom: "Maikers Institute",
+    role: "Formation et audit IA en entreprise",
+    quoi: "Le volume le plus important : modules socle et création de contenu, ateliers, conférences et missions de cartographie IA, auprès de grands comptes comme de structures indépendantes.",
+  },
+  {
+    nom: "Adaliance",
+    role: "Conseil et formation, communauté de consultants",
+    quoi: "Ingénierie et animation d'un parcours IA générative déployé par vagues auprès des équipes siège d'un groupe international, et d'un parcours de deux journées pour un organisme de formation.",
+  },
+  {
+    nom: "Alfie",
+    role: "Organisme de formation professionnelle",
+    quoi: "Module catalogue « marketing et ventes avec l'IA générative » : déroulé pédagogique, supports et quiz de fin de formation conçus puis animés.",
+  },
+];
+
+const MODES = [
+  {
+    titre: "J'anime, vous vendez",
+    sous: "Sous-traitance de formateur",
+    texte:
+      "Vous portez la convention, le financement et la relation client. J'interviens comme formateur et je vous rends la chaîne documentaire complète, prête pour votre audit. C'est le mode dans lequel je travaille déjà avec trois organismes.",
+    points: [
+      "Programme conforme fourni en amont, ajusté à votre public",
+      "Chaîne documentaire complète remise après la session",
+      "Aucune approche commerciale directe de votre client",
+    ],
+  },
+  {
+    titre: "On construit votre offre IA",
+    sous: "Co-construction de catalogue",
+    texte:
+      "Vous voulez ouvrir l'IA à votre catalogue mais ne savez pas par quel segment commencer. On mesure le marché, on score les cibles, on écrit les programmes, et vous repartez avec la méthode pour ouvrir les suivants seul.",
+    points: [
+      "Étude de marché et scoring des segments sur critères pondérés",
+      "Programmes conformes prêts à commercialiser",
+      "Argumentaire de vente pour vos équipes et vos prescripteurs",
+    ],
+  },
+  {
+    titre: "J'interviens sur vos événements",
+    sous: "Conférences et démonstrations",
+    texte:
+      "Petits-déjeuners prescripteurs, salons, clubs clients, journées portes ouvertes. Je ne fais pas d'exposé sur le potentiel de l'IA : je construis un livrable réel devant la salle, en direct, et elle voit l'outil produire, se tromper, être corrigé.",
+    points: [
+      "Keynotes conçues sur mesure pour votre public",
+      "Démonstrations 100 % en direct, sans capture préenregistrée",
+      "Format court (45 à 90 minutes), calibré sur votre événement",
+    ],
+  },
+];
+
+/** Verbatims déjà publiés sur la page d'accueil — participants de sessions réelles. */
+const VERBATIMS = [
+  [
+    "Un accompagnement orienté sur les spécificités de nos métiers, parfaitement ajusté à nos besoins.",
+    "Aurélie M.",
+    "Consultante",
+  ],
+  [
+    "Julien a su adapter le programme à notre métier tout en apportant des exemples concrets et des cas pratiques pertinents. Une approche dynamique et captivante.",
+    "Daphné G.",
+    "Consultante",
+  ],
+  [
+    "Julien est passionné et cela se ressent. Il a su répéter et reprendre chaque point de manière patiente et positive. Une formation enrichissante et pleine d'énergie.",
+    "Elsa M.",
+    "Responsable administrative",
+  ],
+  [
+    "Julien a parfaitement préparé son intervention, ce qui lui a permis d'adapter son accompagnement aux besoins spécifiques de chacun. Une grande aide pour notre équipe.",
+    "Chrystelle T.",
+    "Directrice clientèle",
+  ],
+];
+
+const CONFIG = { MODULES, DUREES, FORMATS, GRILLES, EVALUATION, LIVRABLES_SOCLE };
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="bg-background text-foreground">
+    {/* ---------------------------------------------------------------- Hero */}
+    <header class="relative overflow-hidden border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-24 md:pt-44">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(760px 420px at 18% 0%, oklch(0.92 0.21 125 / 0.08), transparent 70%);"
+      >
+      </div>
+      <Nav />
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Fiche formateur — organismes &amp; centres de formation</Eyebrow>
+        <h1 class="max-w-5xl text-[clamp(2.4rem,6vw,4.6rem)] font-light leading-[1.02] tracking-[-0.03em]">
+          Un formateur IA qui tient la salle.
+          <br />
+          Et <em class="text-lime">le dossier qui passe l'audit.</em>
+        </h1>
+        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/75">
+          Je conçois et j'anime des formations à l'IA générative depuis trois ans, en
+          sous-traitance pour des organismes certifiés. Sur les documents réels des stagiaires
+          et sur leur métier réel — jamais sur un cas d'école.
+          <strong class="font-medium text-white">
+            Vous portez la convention et le financement ; je vous rends une session qui produit
+            et le dossier complet qui va avec.
+          </strong>
+        </p>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <button
+            type="button"
+            data-open-booking
+            class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90"
+          >
+            <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 text-base transition-transform group-hover:translate-x-0.5">
+              →
+            </span>
+            Réserver 30 minutes
+          </button>
+          <a
+            href="#configurateur"
+            class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:border-lime hover:text-lime"
+          >
+            Composer un programme <span class="text-xs">↓</span>
+          </a>
+        </div>
+
+        <dl class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            ["Déclaration d'activité", v(ADMIN.nda)],
+            ["Organismes qui me référencent", "3"],
+            ["Formats", "Présentiel · virtuel · mixte"],
+            ["Zone", "Bordeaux &amp; national"],
+          ].map(([k, val]) => (
+            <div class="bg-background p-6">
+              <dt class="text-[11px] uppercase tracking-[0.18em] text-white/50">{k}</dt>
+              <dd class="mt-2 text-[15px] text-white" set:html={val} />
+            </div>
+          ))}
+        </dl>
+      </div>
+    </header>
+
+    {/* ------------------------------------------------------- Ce qu'on cherche */}
+    <section class="border-b border-white/10 px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Le problème que je règle</Eyebrow>
+        <h2 class="max-w-4xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+          Trois raisons pour lesquelles un centre <em class="text-lime">m'appelle.</em>
+        </h2>
+
+        <div class="mt-14 grid gap-6 md:grid-cols-3">
+          {[
+            {
+              n: "01",
+              t: "Vos sessions IA plafonnent à la démonstration",
+              p: "Le formateur montre l'outil, la salle trouve ça impressionnant, et personne ne s'en sert le lundi matin. Je monte l'assistant en direct sur l'activité réelle d'un participant présent, chronomètre à l'appui. Le stagiaire ne repart pas avec une capture d'écran : il repart avec un assistant qui tourne sur son poste.",
+            },
+            {
+              n: "02",
+              t: "Vos stagiaires n'ont pas tous la même licence",
+              p: "Licences hétérogènes, outils bloqués par la direction informatique, environnement d'entreprise verrouillé : à compétence égale, les rythmes décrochent et la salle se frustre. Un questionnaire de positionnement en amont, des groupes homogènes, et un parcours calé sur ce que la direction informatique autorise réellement.",
+            },
+            {
+              n: "03",
+              t: "Vous voulez ouvrir l'IA à votre catalogue",
+              p: "L'envie est là, la certification et les financements aussi. Ce qui manque, c'est la décision : quel segment, à quel prix, avec quel programme. On score les cibles sur critères pondérés, on écrit les programmes du segment retenu, et vous gardez la méthode pour ouvrir les suivants sans moi.",
+            },
+          ].map((c) => (
+            <article class="rounded-2xl border border-white/15 p-7 transition-colors hover:border-white/30">
+              <div class="font-serif text-3xl leading-none text-lime">{c.n}</div>
+              <h3 class="mt-5 text-lg font-medium leading-snug">{c.t}</h3>
+              <p class="mt-4 text-[15px] leading-relaxed text-white/70">{c.p}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* --------------------------------------------------------- Configurateur */}
+    <section
+      id="configurateur"
+      class="scroll-mt-8 border-b border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-24 md:px-12 md:py-28"
+    >
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-10 md:grid-cols-2 md:items-end">
+          <div>
+            <Eyebrow>Le configurateur</Eyebrow>
+            <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+              Composez la session.
+              <br />
+              <em class="text-lime">Le programme s'écrit devant vous.</em>
+            </h2>
+          </div>
+          <p class="max-w-lg text-[15px] leading-relaxed text-white/70">
+            Cinq modules réellement conçus et animés sous Qualiopi, trois durées, trois formats.
+            La trame se recompose à chaque choix : objectifs visés, séquençage horodaté, moyens,
+            évaluation, livrables.{" "}
+            <strong class="font-medium text-white">
+              C'est ce que je vous enverrais après un premier échange
+            </strong>{" "}
+            — à ajuster ensuite sur votre public réel.
+          </p>
+        </div>
+
+        {/* Sélecteurs */}
+        <div class="no-print mt-14 space-y-7">
+          <fieldset>
+            <legend class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+              1 · Le module
+            </legend>
+            <div class="mt-3 flex flex-wrap gap-2" data-axe-groupe="module">
+              {MODULES.map((m, i) => (
+                <button
+                  type="button"
+                  data-fi-choix
+                  data-axe="module"
+                  data-val={m.id}
+                  aria-pressed={i === 0 ? "true" : "false"}
+                  class="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-black"
+                >
+                  {m.onglet}
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <div class="grid gap-7 sm:grid-cols-2">
+            <fieldset>
+              <legend class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+                2 · La durée
+              </legend>
+              <div class="mt-3 flex flex-wrap gap-2" data-axe-groupe="duree">
+                {DUREES.map((d, i) => (
+                  <button
+                    type="button"
+                    data-fi-choix
+                    data-axe="duree"
+                    data-val={d.id}
+                    aria-pressed={i === 1 ? "true" : "false"}
+                    class="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-black"
+                  >
+                    {d.label} <span class="opacity-60">· {d.volume}</span>
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+
+            <fieldset>
+              <legend class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+                3 · Le format
+              </legend>
+              <div class="mt-3 flex flex-wrap gap-2" data-axe-groupe="format">
+                {FORMATS.map((f, i) => (
+                  <button
+                    type="button"
+                    data-fi-choix
+                    data-axe="format"
+                    data-val={f.id}
+                    aria-pressed={i === 0 ? "true" : "false"}
+                    class="cursor-pointer rounded-full border border-white/20 px-4 py-2 text-[13px] text-white/70 transition-colors hover:border-lime hover:text-lime aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-black"
+                  >
+                    {f.label}
+                  </button>
+                ))}
+              </div>
+            </fieldset>
+          </div>
+        </div>
+
+        {/* Le document généré */}
+        <article
+          id="programme"
+          class="mt-12 overflow-hidden rounded-2xl border border-white/15 bg-background"
+        >
+          <header class="border-b border-white/10 border-l-2 border-l-lime px-7 py-7 md:px-9">
+            <div class="flex flex-wrap items-baseline justify-between gap-4">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">
+                Programme de formation
+              </div>
+              <div class="font-mono text-[11px] tracking-wider text-white/45" id="p-ref"></div>
+            </div>
+            <h3
+              class="mt-4 max-w-3xl text-[clamp(1.3rem,2.6vw,1.9rem)] font-light leading-tight tracking-[-0.02em]"
+              id="p-titre"
+            >
+            </h3>
+            <p class="mt-3 max-w-2xl text-[15px] leading-relaxed text-white/60" id="p-accroche"></p>
+            <dl class="mt-7 grid gap-5 sm:grid-cols-3">
+              <div>
+                <dt class="text-[11px] uppercase tracking-[0.18em] text-white/45">Volume</dt>
+                <dd class="mt-1 text-[15px] text-white" id="p-volume"></dd>
+              </div>
+              <div>
+                <dt class="text-[11px] uppercase tracking-[0.18em] text-white/45">Modalité</dt>
+                <dd class="mt-1 text-[15px] text-white" id="p-modalite"></dd>
+              </div>
+              <div>
+                <dt class="text-[11px] uppercase tracking-[0.18em] text-white/45">
+                  Effectif conseillé
+                </dt>
+                <dd class="mt-1 text-[15px] text-white" id="p-effectif"></dd>
+              </div>
+            </dl>
+          </header>
+
+          <div class="grid gap-px bg-white/10 md:grid-cols-2">
+            <section class="bg-background px-7 py-7 md:px-9">
+              <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">Public visé</h4>
+              <p class="mt-3 text-[15px] leading-relaxed text-white/75" id="p-public"></p>
+            </section>
+            <section class="bg-background px-7 py-7 md:px-9">
+              <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">Prérequis</h4>
+              <p class="mt-3 text-[15px] leading-relaxed text-white/75" id="p-prerequis"></p>
+            </section>
+          </div>
+
+          <section class="border-t border-white/10 px-7 py-8 md:px-9">
+            <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+              Objectifs pédagogiques visés
+            </h4>
+            <ul class="mt-4 space-y-3 text-[15px] leading-relaxed text-white/80" id="p-objectifs">
+            </ul>
+          </section>
+
+          <section class="border-t border-white/10 px-7 py-8 md:px-9">
+            <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+              Séquençage horodaté
+            </h4>
+            <div class="mt-5 overflow-x-auto">
+              <table class="w-full min-w-[46rem] border-collapse text-left text-[14px]">
+                <thead>
+                  <tr class="border-b border-white/15 text-[11px] uppercase tracking-[0.14em] text-white/45">
+                    <th class="w-40 py-3 pr-4 font-normal">Horaire</th>
+                    <th class="py-3 pr-4 font-normal">Thèmes abordés</th>
+                    <th class="py-3 pr-4 font-normal">Méthodes &amp; outils</th>
+                    <th class="py-3 font-normal">Objectif visé</th>
+                  </tr>
+                </thead>
+                <tbody id="p-sequences"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <div class="grid gap-px border-t border-white/10 bg-white/10 md:grid-cols-2">
+            <section class="bg-background px-7 py-8 md:px-9">
+              <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+                Moyens pédagogiques et techniques
+              </h4>
+              <p class="mt-4 text-[15px] leading-relaxed text-white/75" id="p-moyens"></p>
+            </section>
+            <section class="bg-background px-7 py-8 md:px-9">
+              <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">
+                Modalités d'évaluation
+              </h4>
+              <ul class="mt-4 space-y-2.5 text-[15px] leading-relaxed text-white/75" id="p-evaluation">
+              </ul>
+            </section>
+          </div>
+
+          <div class="grid gap-px border-t border-white/10 bg-white/10 md:grid-cols-2">
+            <section class="bg-background px-7 py-8 md:px-9">
+              <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">Livrables remis</h4>
+              <ul class="mt-4 space-y-2.5 text-[15px] leading-relaxed text-white/75" id="p-livrables">
+              </ul>
+            </section>
+            <section class="bg-background px-7 py-8 md:px-9">
+              <h4 class="text-[11px] uppercase tracking-[0.18em] text-white/50">Accessibilité</h4>
+              <p class="mt-4 text-[15px] leading-relaxed text-white/75">
+                Le besoin d'adaptation est recueilli dans le questionnaire de positionnement :
+                supports, rythme, poste de travail, sous-titrage en classe virtuelle. L'adaptation
+                est arbitrée avec le référent handicap de votre organisme avant la session, et
+                consignée par écrit.
+              </p>
+            </section>
+          </div>
+
+          <footer class="border-t border-white/10 px-7 py-6 md:px-9">
+            <div class="flex flex-wrap items-center justify-between gap-4">
+              <p class="max-w-xl text-[13px] leading-relaxed text-white/45">
+                Trame type, issue de sessions réellement animées. Elle s'ajuste sur votre public,
+                vos outils et vos contraintes lors du cadrage — elle n'est pas contractuelle en
+                l'état.
+              </p>
+              <div class="no-print flex gap-2">
+                <button
+                  type="button"
+                  id="p-copier"
+                  class="cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-[13px] font-medium transition-colors hover:border-lime hover:text-lime"
+                >
+                  Copier le programme
+                </button>
+                <button
+                  type="button"
+                  id="p-imprimer"
+                  class="cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-[13px] font-medium transition-colors hover:border-lime hover:text-lime"
+                >
+                  Imprimer
+                </button>
+              </div>
+            </div>
+
+            {/* Repli si le navigateur refuse le presse-papier : le texte reste récupérable. */}
+            <div id="p-repli" hidden class="no-print mt-5">
+              <p class="text-[13px] text-lime/80">
+                Votre navigateur a refusé la copie automatique. Le texte est sélectionné
+                ci-dessous : ⌘C (ou Ctrl+C) pour le récupérer.
+              </p>
+              <textarea
+                id="p-texte"
+                readonly
+                rows="10"
+                class="mt-3 w-full resize-y rounded-xl border border-white/15 bg-[oklch(0.185_0.009_70)] p-4 font-mono text-[12px] leading-relaxed text-white/80"
+              ></textarea>
+            </div>
+          </footer>
+        </article>
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------- Chaîne Qualiopi */}
+    <section class="border-b border-white/10 px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-10 md:grid-cols-2 md:items-end">
+          <div>
+            <Eyebrow>Ce que vous recevez</Eyebrow>
+            <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+              La chaîne documentaire,
+              <br />
+              <em class="text-lime">complète.</em>
+            </h2>
+          </div>
+          <p class="max-w-lg text-[15px] leading-relaxed text-white/70">
+            Un formateur qui vous rend un support et rien d'autre vous laisse le travail sur les
+            bras. Voici ce que je produis à chaque session, dans l'ordre où votre process le
+            demande.
+          </p>
+        </div>
+
+        <ol class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-4">
+          {[
+            [
+              "Avant",
+              "Programme et questionnaire de positionnement",
+              "Le programme conforme, transmis assez tôt pour entrer dans votre convention. Le questionnaire de positionnement individuel : niveau, outils réellement disponibles, tâches chronophages, besoin d'adaptation.",
+            ],
+            [
+              "Avant",
+              "Constitution des groupes",
+              "Les réponses au positionnement servent à composer des groupes homogènes, et à signaler en amont ce qui bloquera — licences dépareillées, outils fermés par la direction informatique.",
+            ],
+            [
+              "Pendant",
+              "Émargement et supports",
+              "Feuille d'émargement par demi-journée, support de séance remis aux participants, et les productions réalisées en atelier qui restent dans leur espace de travail.",
+            ],
+            [
+              "Après",
+              "Évaluations et attestations",
+              "Quiz de fin de formation corrigé, questionnaire de satisfaction à chaud, attestation de fin de formation par participant. Sur les parcours de deux journées, évaluation à froid à trois mois et restitution écrite au commanditaire.",
+            ],
+          ].map(([quand, t, p]) => (
+            <li class="bg-background p-7">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-lime">{quand}</div>
+              <h3 class="mt-4 text-[17px] font-medium leading-snug">{t}</h3>
+              <p class="mt-3 text-[14px] leading-relaxed text-white/65">{p}</p>
+            </li>
+          ))}
+        </ol>
+
+        <div class="mt-10 rounded-2xl border border-white/15 bg-[oklch(0.185_0.009_70)] p-7 md:p-9">
+          <h3 class="text-[17px] font-medium">Sur la certification, soyons clairs</h3>
+          <p class="mt-4 max-w-3xl text-[15px] leading-relaxed text-white/75">
+            Je suis déclaré comme formateur — déclaration d'activité n°{" "}
+            <strong class="font-medium text-white">{v(ADMIN.nda)}</strong> auprès de la préfecture
+            de région {ADMIN.ndaRegion}.{" "}
+            <strong class="font-medium text-white">
+              Je ne détiens pas de certification Qualiopi à mon nom.
+            </strong>{" "}
+            Quand le financement l'exige, j'interviens sous la vôtre, en sous-traitance — c'est
+            déjà le cas avec trois organismes. Vous restez responsable de la qualité de vos
+            sous-traitants : je vous fournis donc ce que vous devez pouvoir présenter, sans avoir
+            à me le réclamer.
+          </p>
+          <ul class="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-white/65">
+            {[
+              "CV formateur à jour",
+              "Programme daté et signé",
+              "Supports de séance",
+              "Émargements",
+              "Résultats des quiz",
+              "Questionnaires de satisfaction",
+              "Attestations",
+            ].map((d) => (
+              <li class="flex items-center gap-2">
+                <span class="text-lime">+</span>
+                {d}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------------ Partenaires */}
+    <section class="border-b border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Déjà référencé</Eyebrow>
+        <h2 class="max-w-4xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+          Trois organismes me confient
+          <br />
+          <em class="text-lime">déjà leurs sessions IA.</em>
+        </h2>
+
+        <div class="mt-14 grid gap-6 md:grid-cols-3">
+          {PARTENAIRES.map((p) => (
+            <article class="flex flex-col rounded-2xl border border-white/15 bg-background p-7">
+              <h3 class="text-xl font-medium">{p.nom}</h3>
+              <div class="mt-1 text-[13px] text-lime">{p.role}</div>
+              <p class="mt-5 flex-1 text-[15px] leading-relaxed text-white/70">{p.quoi}</p>
+            </article>
+          ))}
+        </div>
+
+        <p class="mt-8 max-w-3xl text-[14px] leading-relaxed text-white/50">
+          Je ne cite jamais le nom d'un client final rattaché à l'organisme qui m'a mandaté, et je
+          n'approche jamais en direct un client rencontré chez vous. C'est la condition pour qu'un
+          organisme puisse me confier sa salle sans arrière-pensée.
+        </p>
+      </div>
+    </section>
+
+    {/* ---------------------------------------------------------------- Preuves */}
+    <section class="border-b border-white/10 px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-10 md:grid-cols-2 md:items-end">
+          <div>
+            <Eyebrow>Les preuves</Eyebrow>
+            <h2 class="text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+              Missions documentées,
+              <br />
+              <em class="text-lime">clients anonymisés.</em>
+            </h2>
+          </div>
+          <p class="max-w-lg text-[15px] leading-relaxed text-white/70">
+            Chaque mission est publiée sur ce site en étude de cas : le déclencheur, ce qui a été
+            construit, ce que ça a produit. Aucun nom de client final, aucun chiffre que je ne
+            puisse justifier.
+          </p>
+        </div>
+
+        <div class="mt-14 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+          {preuves.map((r) => (
+            <a
+              href={`/realisations/${r.id}`}
+              class="group flex flex-col rounded-2xl border border-white/15 p-7 transition-colors hover:border-lime/60"
+            >
+              <div class="text-[11px] uppercase tracking-[0.18em] text-white/45">
+                {r.data.secteur} · {r.data.annee}
+              </div>
+              <h3 class="mt-4 flex-1 text-[17px] font-medium leading-snug transition-colors group-hover:text-lime">
+                {r.data.title}
+              </h3>
+              {r.data.resultats.length > 0 && (
+                <dl class="mt-6 flex flex-wrap gap-x-6 gap-y-3 border-t border-white/10 pt-5">
+                  {r.data.resultats.slice(0, 2).map((res) => (
+                    <div>
+                      <dt class="text-2xl font-light text-lime">{res.chiffre}</dt>
+                      <dd class="mt-1 max-w-[11rem] text-[12px] leading-snug text-white/55">
+                        {res.label}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+              )}
+              <span class="mt-6 text-[13px] text-white/45 transition-colors group-hover:text-lime">
+                Lire l'étude de cas →
+              </span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* -------------------------------------------------------------- Verbatims */}
+    <section class="border-b border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Ce que disent les stagiaires</Eyebrow>
+        <h2 class="max-w-4xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+          Les retours <em class="text-lime">de salle.</em>
+        </h2>
+        <div class="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+          {VERBATIMS.map(([q, nom, role]) => (
+            <figure class="flex flex-col rounded-2xl border border-white/10 bg-background/40 p-7">
+              <div class="font-serif text-4xl leading-none text-lime">"</div>
+              <blockquote class="mt-3 flex-1 text-[15px] leading-relaxed text-white/85">
+                {q}
+              </blockquote>
+              <figcaption class="mt-6 flex flex-col border-t border-white/10 pt-4 text-sm">
+                <span class="font-medium">{nom}</span>
+                <span class="text-white/50">{role}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------------------ Modes */}
+    <section class="border-b border-white/10 px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Travailler ensemble</Eyebrow>
+        <h2 class="max-w-4xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+          Trois façons, <em class="text-lime">selon ce qui vous manque.</em>
+        </h2>
+
+        <div class="mt-14 grid gap-6 md:grid-cols-3">
+          {MODES.map((m, i) => (
+            <article
+              class={`flex flex-col rounded-2xl border p-7 ${i === 0 ? "border-lime bg-lime/[0.04]" : "border-white/15"}`}
+            >
+              {i === 0 && (
+                <div class="mb-4 w-fit rounded-full bg-lime px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-black">
+                  ★ Le plus fréquent
+                </div>
+              )}
+              <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">{m.sous}</div>
+              <h3 class="mt-3 text-xl font-medium">{m.titre}</h3>
+              <p class="mt-5 text-[15px] leading-relaxed text-white/70">{m.texte}</p>
+              <ul class="mt-6 flex-1 space-y-3 border-t border-white/10 pt-6 text-[14px] text-white/80">
+                {m.points.map((p) => (
+                  <li class="flex gap-2">
+                    <span class="text-lime">+</span>
+                    <span>{p}</span>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                data-open-booking
+                class={`mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors ${i === 0 ? "bg-lime text-black hover:bg-lime/90" : "border border-white/20 hover:border-lime hover:text-lime"}`}
+              >
+                En parler <span>→</span>
+              </button>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------------ Cadre admin */}
+    <section class="border-b border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-24 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Cadre administratif &amp; pratique</Eyebrow>
+        <h2 class="max-w-4xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.08] tracking-[-0.03em]">
+          Tout ce qu'il vous faut
+          <br />
+          <em class="text-lime">pour me référencer.</em>
+        </h2>
+
+        <div class="mt-14 grid gap-px overflow-hidden rounded-2xl bg-white/10 md:grid-cols-2">
+          <dl class="space-y-6 bg-background p-8 md:p-10">
+            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Identité</div>
+            {[
+              ["Intervenant", "Julien Tridat — consultant et formateur IA"],
+              ["Forme juridique", v(ADMIN.formeJuridique)],
+              ["SIRET", v(ADMIN.siret)],
+              [
+                "Déclaration d'activité",
+                `${v(ADMIN.nda)} — préfecture de région ${ADMIN.ndaRegion}`,
+              ],
+              [
+                "Certification Qualiopi",
+                "Non détenue en propre. Intervention en sous-traitance sous la certification du centre.",
+              ],
+              ["Responsabilité civile professionnelle", v(ADMIN.rcPro)],
+            ].map(([k, val]) => (
+              <div class="grid gap-1 border-b border-white/10 pb-5 last:border-0 last:pb-0 sm:grid-cols-[13rem_1fr] sm:gap-4">
+                <dt class="text-[13px] text-white/50">{k}</dt>
+                <dd
+                  class:list={[
+                    "text-[15px]",
+                    String(val).includes("[À VALIDER]") ? "text-lime/80" : "text-white/90",
+                  ]}
+                >
+                  {val}
+                </dd>
+              </div>
+            ))}
+          </dl>
+
+          <dl class="space-y-6 bg-background p-8 md:p-10">
+            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Intervention</div>
+            {[
+              [
+                "Zone",
+                `Bordeaux et Nouvelle-Aquitaine en présentiel ; national et classe virtuelle partout. Frais de déplacement : ${v(ADMIN.fraisDeplacement)}`,
+              ],
+              ["Formats", "Présentiel intra, classe virtuelle, mixte avec suivi à distance"],
+              ["Langue d'animation", "Français"],
+              ["Délai d'accès", v(ADMIN.delaiAcces)],
+              [
+                "Tarifs",
+                "Sur demande. Ils dépendent du format, du volume et de la part d'ingénierie — un échange suffit à les caler.",
+              ],
+              [
+                "Outils maîtrisés",
+                "ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM — et l'outil déjà déployé chez votre client, quand il y en a un.",
+              ],
+            ].map(([k, val]) => (
+              <div class="grid gap-1 border-b border-white/10 pb-5 last:border-0 last:pb-0 sm:grid-cols-[13rem_1fr] sm:gap-4">
+                <dt class="text-[13px] text-white/50">{k}</dt>
+                <dd
+                  class:list={[
+                    "text-[15px]",
+                    String(val).includes("[À VALIDER]") ? "text-lime/80" : "text-white/90",
+                  ]}
+                >
+                  {val}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    {/* -------------------------------------------------------------- CTA final */}
+    <section class="px-6 py-24 md:px-12 md:py-32">
+      <div class="mx-auto max-w-4xl text-center">
+        <h2 class="text-[clamp(2rem,4.6vw,3.4rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          Une session à remplir&nbsp;?
+          <br />
+          <em class="text-lime">Parlons-en trente minutes.</em>
+        </h2>
+        <p class="mx-auto mt-7 max-w-xl text-[15px] leading-relaxed text-white/70">
+          Dites-moi le public, la durée et le contexte : je vous renvoie un programme ajusté sous
+          quarante-huit heures, prêt à entrer dans votre convention.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <button
+            type="button"
+            data-open-booking
+            class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90"
+          >
+            <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 text-base transition-transform group-hover:translate-x-0.5">
+              →
+            </span>
+            Réserver 30 minutes
+          </button>
+          <button
+            type="button"
+            data-open-contact
+            class="cursor-pointer rounded-full border border-white/20 px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:border-lime hover:text-lime"
+          >
+            Envoyer un message
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+
+  <script type="application/json" id="fi-config" set:html={JSON.stringify(CONFIG)} />
+
+  <script>
+    const el = document.getElementById("fi-config");
+    if (el) {
+      const { MODULES, DUREES, FORMATS, GRILLES, EVALUATION, LIVRABLES_SOCLE } = JSON.parse(
+        el.textContent || "{}",
+      );
+
+      const etat = { module: "socle", duree: "jour", format: "presentiel" };
+      const par = (liste, id) => liste.find((x) => x.id === id);
+
+      /** Assemble les lignes du séquençage : horaires réels + contenu du module. */
+      function lignes(mod, duree) {
+        const seqs = mod.sequences.slice(0, duree.nb);
+        const grille = duree.id === "deux" ? [...GRILLES.jour, ...GRILLES.jour] : GRILLES[duree.id];
+        const rows = [];
+        let i = 0;
+        let jour = 1;
+
+        grille.forEach((creneau, idx) => {
+          if (duree.id === "deux" && idx === GRILLES.jour.length) {
+            jour = 2;
+            rows.push({ type: "jour", horaire: "Journée 2" });
+          }
+          if (creneau.startsWith("PAUSE:")) {
+            rows.push({ type: "pause", horaire: creneau.slice(6), label: "Pause" });
+          } else if (creneau.startsWith("DEJEUNER:")) {
+            rows.push({ type: "pause", horaire: creneau.slice(9), label: "Déjeuner" });
+          } else {
+            const s = seqs[i++];
+            if (s) rows.push({ type: "seq", horaire: creneau, ...s });
+          }
+        });
+
+        // La dernière séquence porte toujours l'évaluation de fin.
+        const derniere = [...rows].reverse().find((r) => r.type === "seq");
+        if (derniere && !derniere.moyens.includes("Quiz")) {
+          derniere.moyens += " Quiz de fin de formation et tour de table des priorités.";
+        }
+        if (duree.id === "deux" && jour === 2) rows.unshift({ type: "jour", horaire: "Journée 1" });
+        return rows;
+      }
+
+      function objectifs(mod, duree) {
+        return mod.sequences.slice(0, duree.nb).map((s) => s.objectif);
+      }
+
+      function prerequis(mod) {
+        return (
+          mod.public +
+          " Chaque participant doit disposer d'un poste connecté et d'un accès ouvert à l'outil retenu avant le démarrage."
+        );
+      }
+
+      function livrables(mod, duree) {
+        const out = [...LIVRABLES_SOCLE, ...mod.livrables];
+        if (duree.id !== "demi") {
+          out.push("Les assistants construits en séance, exportables et partageables");
+        }
+        if (duree.id === "deux") {
+          out.push(
+            "Une matrice de cas d'usage par métier : tâche, outil, licence, règle de confidentialité",
+          );
+          out.push("Une note de recommandations écrite au commanditaire, remise après la session");
+        }
+        return out;
+      }
+
+      function rendre() {
+        const mod = par(MODULES, etat.module);
+        const duree = par(DUREES, etat.duree);
+        const format = par(FORMATS, etat.format);
+
+        document.getElementById("p-ref").textContent =
+          `JT-${mod.code}-${duree.code}-${format.code}`;
+        document.getElementById("p-titre").textContent = mod.titre;
+        document.getElementById("p-accroche").textContent = mod.accroche;
+        document.getElementById("p-volume").textContent = duree.detail;
+        document.getElementById("p-modalite").textContent = format.label;
+        document.getElementById("p-effectif").textContent = format.effectif;
+        document.getElementById("p-public").textContent = mod.public;
+        document.getElementById("p-prerequis").textContent = prerequis(mod);
+        document.getElementById("p-moyens").textContent = format.modalites;
+
+        const puce = (t) =>
+          `<li class="flex gap-3"><span class="mt-[0.55em] h-1 w-1 shrink-0 rounded-full bg-lime"></span><span>${t}</span></li>`;
+
+        document.getElementById("p-objectifs").innerHTML = objectifs(mod, duree)
+          .map(puce)
+          .join("");
+        document.getElementById("p-evaluation").innerHTML = EVALUATION[duree.id]
+          .map(puce)
+          .join("");
+        document.getElementById("p-livrables").innerHTML = livrables(mod, duree)
+          .map(puce)
+          .join("");
+
+        document.getElementById("p-sequences").innerHTML = lignes(mod, duree)
+          .map((r) => {
+            if (r.type === "jour") {
+              return `<tr><td colspan="4" class="pt-7 pb-2 text-[11px] uppercase tracking-[0.22em] text-lime">${r.horaire}</td></tr>`;
+            }
+            if (r.type === "pause") {
+              return `<tr class="border-b border-white/[0.06] text-white/35"><td class="py-2.5 pr-4 font-mono text-[12px] whitespace-nowrap">${r.horaire}</td><td class="py-2.5 pr-4 italic">${r.label}</td><td></td><td></td></tr>`;
+            }
+            return `<tr class="border-b border-white/10 align-top">
+              <td class="py-4 pr-4 font-mono text-[12px] whitespace-nowrap text-lime/80">${r.horaire}</td>
+              <td class="py-4 pr-4 text-white/90">${r.theme}</td>
+              <td class="py-4 pr-4 text-white/60">${r.moyens}</td>
+              <td class="py-4 text-white/60">${r.objectif}</td>
+            </tr>`;
+          })
+          .join("");
+      }
+
+      /** Version texte brut, pour le presse-papier. */
+      function versTexte() {
+        const mod = par(MODULES, etat.module);
+        const duree = par(DUREES, etat.duree);
+        const format = par(FORMATS, etat.format);
+        const L = [];
+        L.push(`PROGRAMME DE FORMATION — JT-${mod.code}-${duree.code}-${format.code}`);
+        L.push(mod.titre.toUpperCase());
+        L.push("");
+        L.push(`Volume : ${duree.detail}`);
+        L.push(`Modalité : ${format.label}`);
+        L.push(`Effectif conseillé : ${format.effectif}`);
+        L.push("");
+        L.push("PUBLIC VISÉ ET PRÉREQUIS");
+        L.push(prerequis(mod));
+        L.push("");
+        L.push("OBJECTIFS PÉDAGOGIQUES VISÉS");
+        objectifs(mod, duree).forEach((o) => L.push(`- ${o}`));
+        L.push("");
+        L.push("SÉQUENÇAGE");
+        lignes(mod, duree).forEach((r) => {
+          if (r.type === "jour") L.push(`\n${r.horaire.toUpperCase()}`);
+          else if (r.type === "pause") L.push(`${r.horaire}  ${r.label}`);
+          else L.push(`${r.horaire}  ${r.theme}\n    Méthodes & outils : ${r.moyens}\n    Objectif : ${r.objectif}`);
+        });
+        L.push("");
+        L.push("MOYENS PÉDAGOGIQUES ET TECHNIQUES");
+        L.push(format.modalites);
+        L.push("");
+        L.push("MODALITÉS D'ÉVALUATION");
+        EVALUATION[duree.id].forEach((e) => L.push(`- ${e}`));
+        L.push("");
+        L.push("LIVRABLES REMIS");
+        livrables(mod, duree).forEach((l) => L.push(`- ${l}`));
+        L.push("");
+        L.push("ACCESSIBILITÉ");
+        L.push(
+          "Besoin d'adaptation recueilli au questionnaire de positionnement ; adaptation arbitrée avec le référent handicap de l'organisme avant la session.",
+        );
+        L.push("");
+        L.push("Trame type — s'ajuste au public, aux outils et aux contraintes lors du cadrage.");
+        L.push("Julien Tridat — julientridat.com");
+        return L.join("\n");
+      }
+
+      document.querySelectorAll("[data-fi-choix]").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const axe = btn.dataset.axe;
+          etat[axe] = btn.dataset.val;
+          document
+            .querySelectorAll(`[data-axe="${axe}"]`)
+            .forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+          rendre();
+        });
+      });
+
+      const copier = document.getElementById("p-copier");
+      const repli = document.getElementById("p-repli");
+      const zoneTexte = document.getElementById("p-texte");
+
+      copier?.addEventListener("click", async () => {
+        const texte = versTexte();
+        try {
+          await navigator.clipboard.writeText(texte);
+          repli.hidden = true;
+          copier.textContent = "Copié ✓";
+          setTimeout(() => (copier.textContent = "Copier le programme"), 2000);
+        } catch {
+          // Presse-papier refusé (permission, contexte non sécurisé) : on rend
+          // le texte récupérable à la main plutôt que de laisser l'utilisateur bloqué.
+          zoneTexte.value = texte;
+          repli.hidden = false;
+          zoneTexte.focus();
+          zoneTexte.select();
+          copier.textContent = "Copiez ci-dessous ↓";
+          setTimeout(() => (copier.textContent = "Copier le programme"), 4000);
+        }
+      });
+
+      document.getElementById("p-imprimer")?.addEventListener("click", () => window.print());
+
+      rendre();
+    }
+  </script>
+
+  <style is:global>
+    /* Impression : seul le programme sort, en noir sur blanc. */
+    @media print {
+      body {
+        background: #fff !important;
+      }
+      body * {
+        visibility: hidden !important;
+      }
+      #programme,
+      #programme * {
+        visibility: visible !important;
+      }
+      #programme {
+        position: absolute;
+        inset: 0;
+        margin: 0;
+        border: 0 !important;
+        border-radius: 0 !important;
+      }
+      #programme * {
+        color: #000 !important;
+        background: transparent !important;
+        border-color: #bbb !important;
+      }
+      #programme table {
+        min-width: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</BaseLayout>
