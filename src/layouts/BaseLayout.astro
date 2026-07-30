@@ -52,6 +52,9 @@ const { title, description, canonical, ogType = "website", jsonLd = [] } = Astro
 
     <script type="application/ld+json" set:html={JSON.stringify(PERSON_JSONLD)} />
     {jsonLd.map((block) => <script type="application/ld+json" set:html={JSON.stringify(block)} />)}
+
+    <!-- Préchargements ou balises propres à une page (optionnel). -->
+    <slot name="head" />
   </head>
   <body>
     <slot />

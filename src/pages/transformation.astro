@@ -1,0 +1,1038 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import CtaButton from "@/components/CtaButton.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
+
+/* Ordres de grandeur démontrés en formation sur des cas réels — mêmes chiffres que
+   la section Gains de la page d'accueil. Aucun n'est inventé, aucun n'est une mesure
+   client par client. */
+const gains = [
+  { tache: "Une proposition commerciale", avant: "2 à 3 h", apres: "30 min", ratio: 0.17 },
+  { tache: "Un email de prospection ciblé", avant: "45 min", apres: "4 min", ratio: 0.09 },
+  { tache: "Un compte-rendu de visite", avant: "30 min", apres: "30 s", ratio: 0.017 },
+];
+
+const etages = [
+  {
+    num: "01",
+    cle: "cadrer",
+    titre: "Savoir où l'IA a sa place",
+    texte:
+      "Cartographier les tâches réelles, chiffrer les priorités, trancher sur des faits. Avant d'engager le moindre budget.",
+    lien: "/realisations#cadrer",
+  },
+  {
+    num: "02",
+    cle: "former",
+    titre: "Rendre les équipes autonomes",
+    texte:
+      "Des sessions bâties sur vos documents et vos métiers. Ce qui reste après mon départ compte plus que la journée elle-même.",
+    lien: "/realisations#former",
+  },
+  {
+    num: "03",
+    cle: "produire",
+    titre: "Installer les moyens de production",
+    texte:
+      "Votre charte et vos méthodes encodées dans des assistants qui produisent à la demande, conformes à chaque fois.",
+    lien: "/realisations#produire",
+  },
+  {
+    num: "04",
+    cle: "piloter",
+    titre: "Garder la main",
+    texte:
+      "La méthode transmise, les garde-fous posés, les décisions documentées. Vous rejouez le système sans moi.",
+    lien: "/realisations",
+  },
+];
+
+const temps = [
+  { t: "Cadrage", d: "Ce qui vous coûte du temps, en heures réelles — pas en promesses." },
+  { t: "Construction", d: "Les assistants sont bâtis sur vos documents, vos règles, votre charte." },
+  { t: "Déploiement", d: "Installés dans l'entreprise, essayés en conditions réelles, corrigés." },
+  { t: "Transmission", d: "L'équipe pilote seule. La méthode reste, même quand je pars." },
+];
+
+const preuves = [
+  {
+    href: "/realisations/cartographie-ia-agence",
+    tag: "Cadrer",
+    titre: "Une agence qui sait enfin où l'IA lui fait gagner du temps",
+    ligne: "Les tâches passées au crible, les priorités chiffrées.",
+  },
+  {
+    href: "/realisations/design-system-franchise-fitness",
+    tag: "Produire",
+    titre: "Un réseau de clubs qui produit ses visuels de marque en autonomie",
+    ligne: "La charte nationale encodée : plus de prestataire pour un visuel courant.",
+  },
+  {
+    href: "/realisations/formation-groupe-travel-retail",
+    tag: "Former",
+    titre: "Un groupe qui rend enfin productif l'outil IA qu'il payait déjà",
+    ligne: "L'abonnement était là. L'usage, non.",
+  },
+];
+
+/* Points chauds posés sur le volume (coordonnées en % du cadre de la scène).
+   Tous ouvrent vers la droite : la moitié gauche appartient au texte. */
+const reperes = [
+  { x: 73, y: 30, label: "L'étage", detail: "Là où se décide la stratégie" },
+  { x: 57, y: 47, label: "L'enseigne", detail: "Ce que vous montrez au marché" },
+  { x: 68, y: 71, label: "L'atelier", detail: "Là où le travail sort" },
+  { x: 62, y: 91, label: "Les fondations", detail: "La méthode qui reste" },
+];
+
+const title = "La transformation IA d'une entreprise, montrée en direct | Julien Tridat";
+const description =
+  "Ce qui change quand on installe des systèmes de production IA dans une entreprise : la même maison, une autre façon de produire. Démonstration animée, chiffres réels, cas documentés.";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: "La transformation IA d'une entreprise, montrée en direct",
+    description,
+    url: `${SITE.url}/transformation`,
+    author: { "@id": `${SITE.url}/#julien-tridat` },
+    primaryImageOfPage: `${SITE.url}/scene/agence-apres.webp`,
+  },
+];
+---
+
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/transformation`} jsonLd={jsonLd}>
+  <Fragment slot="head">
+    <link rel="preload" as="image" href="/scene/agence-avant.webp" />
+    <link rel="preload" as="image" href="/scene/agence-apres.webp" />
+  </Fragment>
+
+  <main class="bg-background text-foreground">
+    <!-- ══════════ HERO — LA MÉTAMORPHOSE ══════════ -->
+    <header class="relative overflow-hidden">
+      <Nav />
+
+      <div class="tf-scene" id="tf-scene" data-state="repos">
+        <!-- Le cadre 16:9 du visuel. Séparé du texte : si le texte a besoin de plus de
+             hauteur (fenêtre basse, texte agrandi), il pousse la scène au lieu d'être rogné. -->
+        <div class="tf-decor" id="tf-decor" aria-hidden="true">
+        <div class="tf-sol"></div>
+        <div class="tf-halo-sol"></div>
+        <div class="tf-halo-curseur"></div>
+
+        <!-- le volume -->
+        <div class="tf-stage" aria-hidden="true">
+          <div class="tf-shake">
+            <div class="tf-vol">
+              <img class="tf-img tf-av" src="/scene/agence-avant.webp" alt="" width="800" height="820" fetchpriority="high" />
+              <img class="tf-img tf-ap" src="/scene/agence-apres.webp" alt="" width="800" height="820" fetchpriority="high" />
+              <img class="tf-img tf-lum" src="/scene/agence-lumieres.webp" alt="" width="800" height="820" loading="lazy" />
+              <div class="tf-front"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- particules d'énergie -->
+        <div class="tf-part" aria-hidden="true">
+          {Array.from({ length: 14 }).map((_, i) => (
+            <i style={`--i:${i}; --lx:${8 + ((i * 37) % 84)}%; --ld:${(i % 7) * 0.42}s; --lt:${3.4 + (i % 5) * 0.7}s`}></i>
+          ))}
+        </div>
+
+        <!-- repères qui s'allument en fin de métamorphose -->
+        <div class="tf-reperes">
+          {reperes.map((r, i) => (
+            <div class="tf-repere" style={`--rx:${r.x}%; --ry:${r.y}%; --ri:${i}`}>
+              <span class="tf-point"></span>
+              <span class="tf-trait"></span>
+              <span class="tf-etiq">
+                <b>{r.label}</b>
+                {r.detail}
+              </span>
+            </div>
+          ))}
+        </div>
+        </div><!-- /tf-decor -->
+
+        <!-- texte en surimpression -->
+        <div class="tf-texte">
+          <Eyebrow>Julien Tridat — systèmes de production IA</Eyebrow>
+          <h1 class="tf-h1">
+            Votre entreprise ne change pas d'outils.<br />
+            <em class="text-lime">Elle change de forme.</em>
+          </h1>
+          <p class="tf-sub">
+            J'installe des moyens de production IA dans les PME, les agences et les organismes de
+            formation. Les murs ne bougent pas : c'est la façon dont le travail sort qui change.
+          </p>
+          <div class="tf-cta">
+            <CtaButton>Diagnostiquer mon entreprise</CtaButton>
+            <a
+              href="/realisations"
+              class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[15px] text-white/85 transition-colors hover:border-lime hover:text-lime"
+            >
+              Voir les transformations
+            </a>
+          </div>
+        </div>
+
+        <!-- pilotage + indice -->
+        <div class="tf-jauge" aria-hidden="true">
+          <div class="tf-jauge-piste"><span></span></div>
+          <div class="tf-jauge-txt"><b id="tf-pct">0 %</b> <span id="tf-etat">agence classique</span></div>
+        </div>
+        <p class="tf-indice" id="tf-indice" aria-hidden="true">
+          <span class="tf-indice-pt"></span> Approchez le curseur du bâtiment
+        </p>
+      </div>
+
+      <!-- équivalent textuel de la scène, pour lecteurs d'écran et robots -->
+      <p class="sr-only">
+        Animation : une agence classique se transforme sous vos yeux en agence augmentée par
+        l'IA — la façade se réorganise, les postes de travail s'éclairent, quatre repères
+        apparaissent : l'enseigne, l'étage de décision, l'atelier de production et les
+        fondations méthodologiques.
+      </p>
+    </header>
+
+    <!-- ══════════ CE QUI A CHANGÉ À L'INTÉRIEUR ══════════ -->
+    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
+          <div>
+            <Eyebrow>Ce qui a changé à l'intérieur</Eyebrow>
+            <h2 class="max-w-lg text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
+              Le bâtiment est le même. <em class="text-lime">Le temps de sortie, non.</em>
+            </h2>
+            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/60">
+              Trois tâches qui reviennent tous les jours dans une équipe commerciale,
+              chronométrées avant et après en formation, sur des cas réels. Des ordres de
+              grandeur — le gain exact chez vous, c'est le diagnostic qui le mesure.
+            </p>
+          </div>
+
+          <div class="tf-gains">
+            {gains.map((g) => (
+              <div class="tf-gain" style={`--r:${g.ratio}`}>
+                <div class="tf-gain-tete">
+                  <span class="tf-gain-tache">{g.tache}</span>
+                  <span class="tf-gain-apres">{g.apres}</span>
+                </div>
+                <div class="tf-gain-piste">
+                  <span class="tf-gain-part"></span>
+                  <span class="tf-gain-av">{g.avant} avant</span>
+                </div>
+              </div>
+            ))}
+            <p class="mt-7 text-[13px] leading-relaxed text-white/45">
+              Soit près d'<strong class="font-medium text-white/75">une heure et demie rendue
+              chaque jour</strong> à un commercial — sur des tâches qu'il faisait déjà, autrement.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ LES 4 NIVEAUX ══════════ -->
+    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Ce qu'on installe, niveau par niveau</Eyebrow>
+        <h2 class="max-w-3xl text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
+          Une transformation se construit <em class="text-lime">par étages.</em>
+        </h2>
+        <p class="mt-6 max-w-2xl text-[15px] leading-relaxed text-white/60">
+          On ne pose pas les machines avant d'avoir vérifié les fondations. Chaque niveau
+          s'appuie sur le précédent — et chacun a ses cas documentés.
+        </p>
+
+        <div class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {etages.map((e) => (
+            <a href={e.lien} class="tf-etage group">
+              <span class="tf-etage-num">{e.num}</span>
+              <h3 class="mt-5 text-[17px] font-medium leading-snug text-white">{e.titre}</h3>
+              <p class="mt-3 text-[14px] leading-relaxed text-white/55">{e.texte}</p>
+              <span class="tf-etage-lien">Les cas <span class="tf-fleche">→</span></span>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ MÉTHODE ══════════ -->
+    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <div class="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-20">
+          <div>
+            <Eyebrow>La méthode</Eyebrow>
+            <h2 class="text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
+              Quatre temps, <em class="text-lime">toujours les mêmes.</em>
+            </h2>
+            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/60">
+              La séquence ne change pas d'une mission à l'autre. Ce qui change, c'est ce qu'on
+              trouve au cadrage — et donc ce qu'on construit ensuite.
+            </p>
+          </div>
+          <ol class="tf-temps">
+            {temps.map((t, i) => (
+              <li>
+                <span class="tf-temps-n">{i + 1}</span>
+                <div>
+                  <h3 class="text-[16px] font-medium text-white">{t.t}</h3>
+                  <p class="mt-1.5 text-[14px] leading-relaxed text-white/55">{t.d}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ PREUVES ══════════ -->
+    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <div class="flex flex-wrap items-end justify-between gap-6">
+          <div>
+            <Eyebrow>Des maisons déjà transformées</Eyebrow>
+            <h2 class="max-w-2xl text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
+              Ce n'est pas une promesse. <em class="text-lime">C'est un registre.</em>
+            </h2>
+          </div>
+          <a href="/realisations" class="text-[15px] text-lime hover:underline">Les 12 cas →</a>
+        </div>
+
+        <div class="mt-12 grid gap-5 md:grid-cols-3">
+          {preuves.map((p) => (
+            <a href={p.href} class="tf-preuve group">
+              <span class="tf-preuve-tag">{p.tag}</span>
+              <h3 class="mt-4 text-[17px] font-medium leading-snug text-white group-hover:text-lime">
+                {p.titre}
+              </h3>
+              <p class="mt-3 text-[14px] leading-relaxed text-white/55">{p.ligne}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- ══════════ CTA ══════════ -->
+    <section class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(760px 420px at 70% 100%, oklch(0.92 0.21 125 / 0.10), transparent 70%);"
+      >
+      </div>
+      <div class="mx-auto max-w-3xl text-center">
+        <h2 class="text-[clamp(2.2rem,5vw,3.8rem)] font-light leading-[1.04] tracking-[-0.03em]">
+          On regarde ce que ça donnerait <em class="text-lime">chez vous ?</em>
+        </h2>
+        <p class="mx-auto mt-7 max-w-xl text-[16px] leading-relaxed text-white/65">
+          Trente minutes pour identifier les deux ou trois tâches où l'IA vous ferait gagner le
+          plus — et pour dire franchement si le jeu en vaut la chandelle.
+        </p>
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-4">
+          <CtaButton>Réserver le diagnostic</CtaButton>
+          <button
+            type="button"
+            data-open-contact
+            class="cursor-pointer rounded-full border border-white/20 px-6 py-3.5 text-[15px] text-white/85 transition-colors hover:border-lime hover:text-lime"
+          >
+            Écrire un message
+          </button>
+        </div>
+        <p class="mt-10 text-[13px] text-white/40">
+          Vous préférez la version sobre ? <a href="/" class="text-white/70 underline underline-offset-4 hover:text-lime">Page d'accueil classique</a>
+        </p>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</BaseLayout>
+
+<style is:global>
+  /* ════════ LA SCÈNE ════════ */
+  .tf-scene {
+    position: relative;
+    /* Le visuel est en 16:9 ; c'est la largeur qui cède, jamais le ratio.
+       Le texte est superposé dans la même cellule de grille : s'il lui faut plus
+       de hauteur que le 16:9 n'en offre, c'est la scène qui grandit. */
+    /* Le plancher de 1080px évite d'étrangler la colonne de texte sur les
+       fenêtres basses (où brider par la hauteur rétrécirait aussi la largeur). */
+    width: min(100%, max(1080px, calc((100vh - 5rem) * 16 / 9)));
+    margin-inline: auto;
+    display: grid;
+    grid-template-areas: "scene";
+    isolation: isolate;
+    --p: 0;      /* progression globale 0→1 */
+    --vib: 0;    /* amplitude de vibration */
+    --rev: 0;    /* front de métamorphose */
+    --lum: 0;    /* intensité des lumières */
+    --sx: 0px;
+    --sy: 0px;
+    --rot: 0deg;
+    --tx: 0deg;
+    --ty: 0deg;
+    --mx: 50%;
+    --my: 50%;
+    --near: 0;   /* proximité du curseur */
+    background:
+      radial-gradient(120% 90% at 68% 42%, oklch(0.28 0.06 300 / calc(0.42 * var(--lum))), transparent 62%),
+      radial-gradient(90% 70% at 30% 10%, oklch(0.92 0.21 125 / 0.05), transparent 70%),
+      var(--background);
+  }
+
+  /* le cadre du visuel : 16:9, centré, seul à rogner ce qui déborde */
+  .tf-decor {
+    grid-area: scene;
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    align-self: center;
+    overflow: hidden;
+    perspective: 1400px;
+  }
+
+  /* sol en perspective */
+  .tf-sol {
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 34%;
+    background:
+      linear-gradient(to top, oklch(0.92 0.21 125 / calc(0.1 * var(--lum))), transparent 60%),
+      repeating-linear-gradient(90deg, oklch(1 0 0 / 0.05) 0 1px, transparent 1px 74px),
+      repeating-linear-gradient(0deg, oklch(1 0 0 / 0.05) 0 1px, transparent 1px 46px);
+    transform: perspective(320px) rotateX(58deg);
+    transform-origin: bottom center;
+    opacity: calc(0.22 + 0.5 * var(--lum));
+    mask-image: linear-gradient(to top, #000 8%, transparent 88%);
+    -webkit-mask-image: linear-gradient(to top, #000 8%, transparent 88%);
+  }
+
+  /* halo au sol sous le bâtiment */
+  .tf-halo-sol {
+    position: absolute;
+    left: 68%;
+    bottom: 6%;
+    width: 46%;
+    height: 13%;
+    transform: translateX(-50%);
+    border-radius: 50%;
+    background: radial-gradient(
+      closest-side,
+      oklch(0.65 0.22 300 / calc(0.16 + 0.55 * var(--lum))),
+      transparent 78%
+    );
+    filter: blur(18px);
+  }
+
+  /* halo qui suit le curseur */
+  .tf-halo-curseur {
+    position: absolute;
+    left: var(--mx);
+    top: var(--my);
+    width: 460px;
+    height: 460px;
+    margin: -230px 0 0 -230px;
+    border-radius: 50%;
+    pointer-events: none;
+    opacity: calc(0.1 + 0.55 * var(--near));
+    background: radial-gradient(
+      closest-side,
+      oklch(0.92 0.21 125 / 0.16),
+      oklch(0.92 0.21 125 / 0.05) 45%,
+      transparent 72%
+    );
+    transition: opacity 0.35s ease;
+  }
+
+  /* volume */
+  .tf-stage {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--tx)) rotateY(var(--ty));
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tf-shake {
+    position: absolute;
+    inset: 0;
+    transform: translate3d(var(--sx), var(--sy), 0) rotate(var(--rot));
+  }
+  .tf-vol {
+    position: absolute;
+    left: 68%;
+    bottom: 4%;
+    width: min(46%, 620px);
+    aspect-ratio: 800 / 820;
+    transform: translateX(-50%) scale(calc(1 + 0.035 * var(--p)));
+    transform-origin: bottom center;
+  }
+  .tf-img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    object-position: bottom center;
+  }
+  .tf-av {
+    opacity: calc(1 - var(--rev));
+    filter: saturate(calc(1 - 0.35 * var(--p))) brightness(calc(1 - 0.12 * var(--p)));
+  }
+  /* la métamorphose monte du sol vers le toit */
+  .tf-ap {
+    opacity: 1;
+    mask-image: linear-gradient(
+      to top,
+      #000 calc(var(--rev) * 132% - 16%),
+      transparent calc(var(--rev) * 132% + 6%)
+    );
+    -webkit-mask-image: linear-gradient(
+      to top,
+      #000 calc(var(--rev) * 132% - 16%),
+      transparent calc(var(--rev) * 132% + 6%)
+    );
+  }
+  .tf-lum {
+    mix-blend-mode: screen;
+    opacity: var(--lum);
+    filter: saturate(1.25);
+  }
+  /* front lumineux de la transformation */
+  .tf-front {
+    position: absolute;
+    left: -6%;
+    right: -6%;
+    bottom: calc(var(--rev) * 100%);
+    height: 3px;
+    border-radius: 999px;
+    background: linear-gradient(90deg, transparent, var(--lime), oklch(0.7 0.24 300), transparent);
+    box-shadow: 0 0 34px 8px oklch(0.92 0.21 125 / 0.42);
+    opacity: calc(4 * var(--rev) * (1 - var(--rev)));
+  }
+
+  /* particules */
+  .tf-part {
+    position: absolute;
+    left: 68%;
+    bottom: 4%;
+    width: min(46%, 620px);
+    height: 74%;
+    transform: translateX(-50%);
+    pointer-events: none;
+    opacity: var(--lum);
+  }
+  .tf-part i {
+    position: absolute;
+    left: var(--lx);
+    bottom: 0;
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 10px 2px oklch(0.92 0.21 125 / 0.6);
+    animation: tf-monte var(--lt) linear var(--ld) infinite;
+  }
+  .tf-part i:nth-child(3n) {
+    background: oklch(0.72 0.22 300);
+    box-shadow: 0 0 10px 2px oklch(0.72 0.22 300 / 0.6);
+  }
+  @keyframes tf-monte {
+    0% { transform: translateY(0) scale(0.6); opacity: 0; }
+    12% { opacity: 1; }
+    80% { opacity: 0.7; }
+    100% { transform: translateY(-330px) scale(1.15); opacity: 0; }
+  }
+
+  /* repères */
+  .tf-reperes { position: absolute; inset: 0; pointer-events: none; }
+  .tf-repere {
+    position: absolute;
+    left: var(--rx);
+    top: var(--ry);
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-direction: row;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.5s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    transition-delay: calc(var(--ri) * 0.13s);
+  }
+  .tf-scene[data-reperes="on"] .tf-repere { opacity: 1; transform: translateY(0); }
+  .tf-point {
+    position: relative;
+    width: 9px;
+    height: 9px;
+    flex: none;
+    border-radius: 50%;
+    background: var(--lime);
+    box-shadow: 0 0 0 4px oklch(0.92 0.21 125 / 0.16);
+  }
+  .tf-point::after {
+    content: "";
+    position: absolute;
+    inset: -5px;
+    border-radius: 50%;
+    border: 1px solid oklch(0.92 0.21 125 / 0.5);
+    animation: tf-pulse 2.6s ease-out infinite;
+  }
+  @keyframes tf-pulse {
+    0% { transform: scale(0.7); opacity: 0.9; }
+    70%, 100% { transform: scale(2.1); opacity: 0; }
+  }
+  .tf-trait { width: 30px; height: 1px; background: oklch(0.92 0.21 125 / 0.42); flex: none; }
+  .tf-etiq {
+    display: block;
+    padding: 7px 12px;
+    border-radius: 10px;
+    border: 1px solid oklch(1 0 0 / 0.12);
+    background: oklch(0.145 0 0 / 0.82);
+    backdrop-filter: blur(8px);
+    font-size: 12px;
+    line-height: 1.35;
+    color: oklch(0.78 0 0);
+    white-space: nowrap;
+  }
+  .tf-etiq b { display: block; color: #fff; font-weight: 500; }
+
+  /* texte du hero — dans le flux : il peut pousser la scène, jamais être rogné.
+     Le padding du haut réserve la bande de navigation, celui du bas la jauge. */
+  .tf-texte {
+    grid-area: scene;
+    position: relative;
+    z-index: 3;
+    align-self: center;
+    justify-self: start;
+    max-width: min(46%, 620px);
+    padding: 7rem 1.5rem 4.5rem;
+  }
+  @media (min-width: 768px) { .tf-texte { padding-left: 3rem; } }
+  .tf-h1 {
+    /* le titre suit aussi la hauteur de fenêtre : sur un écran bas il se resserre
+       au lieu de partir sur six lignes */
+    font-size: clamp(2.1rem, min(4.6vw, 7vh), 4rem);
+    font-weight: 300;
+    line-height: 1.02;
+    letter-spacing: -0.035em;
+  }
+  .tf-sub {
+    margin-top: 1.6rem;
+    max-width: 30rem;
+    font-size: clamp(0.95rem, 1.2vw, 1.05rem);
+    line-height: 1.65;
+    color: oklch(1 0 0 / 0.66);
+  }
+  .tf-cta { margin-top: 2.2rem; display: flex; flex-wrap: wrap; gap: 0.85rem; }
+
+  /* jauge d'état */
+  .tf-jauge {
+    position: absolute;
+    left: 1.5rem;
+    bottom: 1.6rem;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  @media (min-width: 768px) { .tf-jauge { left: 3rem; } }
+  .tf-jauge-piste {
+    position: relative;
+    width: 132px;
+    height: 3px;
+    border-radius: 999px;
+    background: oklch(1 0 0 / 0.12);
+    overflow: hidden;
+  }
+  .tf-jauge-piste span {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: calc(var(--p) * 100%);
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--lime), oklch(0.7 0.24 300));
+  }
+  .tf-jauge-txt {
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.42);
+  }
+  .tf-jauge-txt b { color: var(--lime); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+  .tf-indice {
+    position: absolute;
+    right: 1.5rem;
+    bottom: 1.6rem;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 12px;
+    color: oklch(1 0 0 / 0.45);
+    opacity: 0;
+    transition: opacity 0.6s ease;
+  }
+  @media (min-width: 768px) { .tf-indice { right: 3rem; } }
+  .tf-scene[data-indice="on"] .tf-indice { opacity: 1; }
+  .tf-indice-pt {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--lime);
+    animation: tf-clign 1.8s ease-in-out infinite;
+  }
+  @keyframes tf-clign { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+
+  /* ── mobile : le volume passe sous le texte ── */
+  @media (max-width: 900px) {
+    .tf-scene {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 1.25rem;
+      padding-bottom: 2.75rem;
+    }
+    .tf-texte {
+      max-width: none;
+      align-self: stretch;
+      padding: 7.5rem 1.5rem 0;
+      order: 1;
+    }
+    .tf-decor { aspect-ratio: auto; height: 74vw; min-height: 330px; order: 2; }
+    .tf-part, .tf-reperes { display: none; }
+    .tf-vol { left: 50%; bottom: 0; width: min(72%, 390px); }
+    .tf-halo-sol { left: 50%; bottom: 8%; width: 62%; }
+    .tf-halo-curseur { display: none; }
+    .tf-jauge { position: static; padding: 0 1.5rem; order: 3; }
+    .tf-indice { display: none; }
+    .tf-sol { height: 26%; }
+  }
+
+  /* ── accessibilité : mouvement réduit ── */
+  @media (prefers-reduced-motion: reduce) {
+    .tf-shake { transform: none !important; }
+    .tf-stage { transition: none; transform: none !important; }
+    .tf-part i { animation: none; }
+    .tf-point::after { animation: none; }
+    .tf-indice-pt { animation: none; opacity: 0.7; }
+  }
+
+  /* ════════ GAINS ════════ */
+  .tf-gains { display: flex; flex-direction: column; gap: 1.6rem; }
+  .tf-gain { border-top: 1px solid oklch(1 0 0 / 0.1); padding-top: 1.1rem; }
+  .tf-gain-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
+  .tf-gain-tache { font-size: 14px; color: oklch(1 0 0 / 0.72); }
+  .tf-gain-apres {
+    font-size: clamp(1.5rem, 2.6vw, 2rem);
+    font-weight: 300;
+    color: var(--lime);
+    font-variant-numeric: tabular-nums;
+  }
+  /* Une seule piste : le plein représente le temps d'avant, le segment lime
+     ce qu'il reste après. L'écart se lit d'un coup d'œil. */
+  .tf-gain-piste {
+    position: relative;
+    margin-top: 0.9rem;
+    height: 14px;
+    border-radius: 999px;
+    background: oklch(1 0 0 / 0.09);
+    border: 1px solid oklch(1 0 0 / 0.07);
+    overflow: hidden;
+  }
+  .tf-gain-part {
+    position: absolute;
+    inset: 0 auto 0 0;
+    width: 0;
+    border-radius: 999px;
+    background: linear-gradient(90deg, var(--lime), oklch(0.72 0.23 300));
+    box-shadow: 0 0 20px oklch(0.92 0.21 125 / 0.45);
+    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .tf-gain[data-vu="1"] .tf-gain-part { width: max(calc(var(--r) * 100%), 16px); }
+  .tf-gain-av {
+    position: absolute;
+    right: 11px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.45);
+  }
+
+  /* ════════ ÉTAGES ════════ */
+  .tf-etage {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.1);
+    background: oklch(0.18 0 0 / 0.5);
+    padding: 1.5rem 1.4rem 1.3rem;
+    transition: border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
+  }
+  .tf-etage:hover {
+    border-color: oklch(0.92 0.21 125 / 0.5);
+    transform: translateY(-3px);
+    background: oklch(0.2 0 0 / 0.7);
+  }
+  .tf-etage-num {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--lime);
+  }
+  .tf-etage-lien {
+    margin-top: auto;
+    padding-top: 1.4rem;
+    font-size: 13px;
+    color: oklch(1 0 0 / 0.45);
+    transition: color 0.2s ease;
+  }
+  .tf-etage:hover .tf-etage-lien { color: var(--lime); }
+  .tf-fleche { display: inline-block; transition: transform 0.2s ease; }
+  .tf-etage:hover .tf-fleche { transform: translateX(3px); }
+
+  /* ════════ MÉTHODE ════════ */
+  .tf-temps { display: flex; flex-direction: column; }
+  .tf-temps li {
+    display: flex;
+    gap: 1.3rem;
+    padding: 1.4rem 0;
+    border-top: 1px solid oklch(1 0 0 / 0.1);
+  }
+  .tf-temps li:last-child { border-bottom: 1px solid oklch(1 0 0 / 0.1); }
+  .tf-temps-n {
+    flex: none;
+    width: 2rem;
+    height: 2rem;
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    border: 1px solid oklch(0.92 0.21 125 / 0.35);
+    font-size: 12px;
+    color: var(--lime);
+  }
+
+  /* ════════ PREUVES ════════ */
+  .tf-preuve {
+    display: block;
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.1);
+    background: oklch(0.18 0 0 / 0.5);
+    padding: 1.6rem 1.5rem;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .tf-preuve:hover { border-color: oklch(0.92 0.21 125 / 0.45); transform: translateY(-3px); }
+  .tf-preuve-tag {
+    display: inline-block;
+    border-radius: 999px;
+    border: 1px solid oklch(0.92 0.21 125 / 0.3);
+    padding: 3px 11px;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--lime);
+  }
+</style>
+
+<script>
+  /* ════════ MÉTAMORPHOSE — pilotée à la souris ════════
+     p = 0 → agence classique ; p = 1 → agence augmentée.
+     Trois phases enchaînées : éveil (vibration) → morphose → ignition. */
+
+  const scene = document.getElementById("tf-scene") as HTMLElement | null;
+  const decor = document.getElementById("tf-decor") as HTMLElement | null;
+  if (scene && decor) {
+    const pct = document.getElementById("tf-pct");
+    const etat = document.getElementById("tf-etat");
+    const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const souris = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+
+    let p = 0;
+    let cible = 0;
+    let auto = true; // la démo se joue d'abord toute seule
+    let t0 = 0;
+    let mx = 0.68;
+    let my = 0.5;
+    let near = 0;
+
+    const clamp = (v: number, a = 0, b = 1) => (v < a ? a : v > b ? b : v);
+    const lisse = (a: number, b: number, v: number) => {
+      const t = clamp((v - a) / (b - a));
+      return t * t * (3 - 2 * t);
+    };
+
+    /* Séquence automatique : on laisse voir l'agence telle quelle, puis ça se met
+       à vibrer, puis la forme bascule, puis les lumières prennent. */
+    const SEQ: [number, number][] = [
+      [0, 0],
+      [1700, 0], // l'agence, normale
+      [3100, 0.24], // quelque chose commence
+      [4900, 0.72], // la forme bascule
+      [6100, 1], // les lumières s'allument
+      [8600, 1], // on contemple
+      [10200, 0], // retour au calme, la main passe au visiteur
+    ];
+    const jouerAuto = (t: number) => {
+      if (t >= SEQ[SEQ.length - 1][0]) return null;
+      for (let i = 0; i < SEQ.length - 1; i++) {
+        const [ta, va] = SEQ[i];
+        const [tb, vb] = SEQ[i + 1];
+        if (t >= ta && t < tb) {
+          const k = (t - ta) / (tb - ta);
+          return va + (vb - va) * (k * k * (3 - 2 * k));
+        }
+      }
+      return null;
+    };
+
+    /* Proximité du curseur → énergie. Le bâtiment est centré à ~68 % de la largeur. */
+    let bouges = 0;
+    const onMove = (e: PointerEvent) => {
+      const r = decor.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      mx = x;
+      my = y;
+      scene.style.setProperty("--mx", `${x * 100}%`);
+      scene.style.setProperty("--my", `${y * 100}%`);
+      const dx = (x - 0.68) * (r.width / r.height);
+      const dy = y - 0.52;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      near = clamp(1 - (d - 0.12) / 0.55);
+      /* Le visiteur bouge vraiment la souris : il reprend la main sur la démo. */
+      if (auto && ++bouges > 3) auto = false;
+      cible = near;
+    };
+
+    const onLeave = () => {
+      near = 0;
+      if (!auto) cible = 0;
+    };
+
+    /* Mouvement réduit : on affiche l'état transformé, point. Aucun écouteur n'est
+       posé — sinon le curseur ou le défilement relanceraient toute la métamorphose. */
+    if (reduit) {
+      auto = false;
+      p = 1;
+      cible = 1;
+    } else if (souris) {
+      scene.addEventListener("pointermove", onMove, { passive: true });
+      scene.addEventListener("pointerleave", onLeave, { passive: true });
+    } else {
+      /* Sans souris : le défilement pilote la métamorphose. */
+      const onScroll = () => {
+        if (auto) return;
+        const r = decor.getBoundingClientRect();
+        const k = clamp((window.innerHeight * 0.85 - r.top) / (r.height * 0.75));
+        cible = k;
+      };
+      window.addEventListener("scroll", onScroll, { passive: true });
+    }
+
+    /* Boucle : une seule écriture de styles par image. */
+    let raf = 0;
+    const boucle = (t: number) => {
+      if (!t0) t0 = t;
+      if (auto) {
+        const v = jouerAuto(t - t0);
+        if (v === null) {
+          auto = false;
+          cible = souris ? near : 0;
+        } else {
+          p = v;
+        }
+      }
+      if (!auto) p += (cible - p) * 0.085;
+
+      const rev = lisse(0.24, 0.74, p);
+      const lum = lisse(0.62, 1, p);
+      /* la vibration culmine au moment du basculement puis retombe */
+      const vib = reduit ? 0 : lisse(0.03, 0.3, p) * (1 - lisse(0.55, 0.92, p));
+
+      let sx = 0;
+      let sy = 0;
+      let rot = 0;
+      if (vib > 0.001) {
+        const a = vib * 5.5;
+        sx = (Math.sin(t * 0.081) + Math.sin(t * 0.213)) * a * 0.5;
+        sy = (Math.sin(t * 0.114) + Math.sin(t * 0.271)) * a * 0.32;
+        rot = Math.sin(t * 0.063) * vib * 0.32;
+      }
+
+      const s = scene.style;
+      s.setProperty("--p", p.toFixed(4));
+      s.setProperty("--rev", rev.toFixed(4));
+      s.setProperty("--lum", lum.toFixed(4));
+      s.setProperty("--vib", vib.toFixed(4));
+      s.setProperty("--sx", `${sx.toFixed(2)}px`);
+      s.setProperty("--sy", `${sy.toFixed(2)}px`);
+      s.setProperty("--rot", `${rot.toFixed(3)}deg`);
+      s.setProperty("--near", near.toFixed(3));
+      if (souris && !reduit) {
+        s.setProperty("--ty", `${((mx - 0.5) * 6).toFixed(2)}deg`);
+        s.setProperty("--tx", `${((0.5 - my) * 3.4).toFixed(2)}deg`);
+      }
+
+      const n = Math.round(p * 100);
+      if (pct && pct.textContent !== `${n} %`) pct.textContent = `${n} %`;
+      if (etat) {
+        const txt = p < 0.22 ? "agence classique" : p < 0.72 ? "métamorphose en cours" : "agence augmentée";
+        if (etat.textContent !== txt) etat.textContent = txt;
+      }
+      const rep = p > 0.88 ? "on" : "off";
+      if (scene.dataset.reperes !== rep) scene.dataset.reperes = rep;
+      /* L'invitation ne s'affiche que quand il ne se passe rien. */
+      const ind = !auto && souris && p < 0.1 ? "on" : "off";
+      if (scene.dataset.indice !== ind) scene.dataset.indice = ind;
+
+      raf = requestAnimationFrame(boucle);
+    };
+
+    /* On ne démarre qu'une fois la scène visible (et on met en pause hors écran). */
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const en of entries) {
+          if (en.isIntersecting && !raf) {
+            t0 = 0;
+            raf = requestAnimationFrame(boucle);
+          } else if (!en.isIntersecting && raf) {
+            cancelAnimationFrame(raf);
+            raf = 0;
+          }
+        }
+      },
+      { threshold: 0.15 },
+    );
+    if (reduit) {
+      /* État final posé une fois pour toutes : aucune boucle d'animation ne démarre. */
+      const s = scene.style;
+      s.setProperty("--p", "1");
+      s.setProperty("--rev", "1");
+      s.setProperty("--lum", "1");
+      scene.dataset.reperes = "on";
+      if (pct) pct.textContent = "100 %";
+      if (etat) etat.textContent = "agence augmentée";
+    } else {
+      io.observe(scene);
+    }
+  }
+
+  /* Barres de gains : remplissage à l'entrée en vue. */
+  const gio = new IntersectionObserver(
+    (entries) => {
+      for (const en of entries) {
+        if (en.isIntersecting) {
+          (en.target as HTMLElement).dataset.vu = "1";
+          gio.unobserve(en.target);
+        }
+      }
+    },
+    { threshold: 0.4 },
+  );
+  document.querySelectorAll(".tf-gain").forEach((el) => gio.observe(el));
+</script>
