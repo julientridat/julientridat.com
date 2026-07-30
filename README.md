@@ -72,11 +72,17 @@ référencer comme formateur ou ouvrir une collaboration. Julien envoie l'URL di
 Pour la rendre publique : passer `canonical`, ajouter l'entrée au sitemap et au `llms.txt`,
 décommenter le bloc JSON-LD.
 
-**Le configurateur** (module × durée × format → programme conforme) n'appelle aucune API :
-tout est composé côté client à partir des données du frontmatter. Les cinq modules et la
-grille horaire (09 h 00 – 17 h 30) reprennent les déroulés pédagogiques réellement livrés
-sous Qualiopi pour Alfie, Maikers Institute et Adaliance. Le bouton « Copier » bascule sur
-une zone de texte pré-sélectionnée si le navigateur refuse le presse-papier.
+**Parti pris éditorial** : page courte, ton sobre, première personne. L'argument est
+l'**étendue** de l'expérience (du comité de direction à l'équipe de TPE, une dizaine de
+secteurs) — elle se démontre en laissant le lecteur y chercher son propre public, jamais
+en la revendiquant. Pas de séquençage, pas de prérequis, pas d'objectifs pédagogiques
+détaillés : ces éléments alourdissaient sans convertir.
+
+**La seule mécanique** est le « spectre » : quatre axes (taille, niveau, métier, secteur),
+une seule bande à l'écran, contenu échangé côté client depuis `SPECTRE` dans le
+frontmatter. Aucune API. La réassurance sur la capacité à produire du contenu passe par
+trois **artefacts réels déjà publiés** dans `public/demos/` — le lien vaut mieux que le
+paragraphe.
 
 **Données administratives** : regroupées dans l'objet `ADMIN` en haut du frontmatter de
 `src/pages/formation-ia.astro`. Tant qu'une valeur vaut `null`, la fiche affiche
@@ -132,11 +138,12 @@ sitemap à `https://julientridat.com/sitemap.xml`.
   déclaration d'activité** (il apparaît trois fois sur la page, dont le bandeau de tête),
   assureur et n° de police de la RC professionnelle, délai d'accès, politique de frais de
   déplacement. Tant qu'ils sont `null`, la page affiche `[À VALIDER]`.
-- **Fiche formateur — nommage des organismes partenaires.** La page cite **Alfie**,
-  **Maikers Institute** et **Adaliance** comme organismes qui référencent déjà Julien.
-  Aucun n'est associé au nom de son client final (la clause de confidentialité du contrat
-  travel retail est ainsi respectée), mais confirmer que les trois acceptent d'être cités
-  nommément sur une page envoyée à des organismes concurrents.
+- **Fiche formateur — nommer ou non les organismes partenaires.** La page mentionne
+  « trois organismes de formation certifiés » **sans les nommer** (Alfie, Maikers Institute,
+  Adaliance). Les nommer serait la réassurance la plus forte pour un prospect, mais la page
+  part chez leurs confrères : trancher. Dans tous les cas, ne jamais associer un organisme
+  au nom de son client final — le contrat travel retail porte une clause de confidentialité
+  couvrant l'organisme ET ses clients.
 - **Fiche formateur — certification.** La page affirme explicitement l'absence de Qualiopi
   en propre et l'intervention en sous-traitance. À confirmer si une démarche est en cours.
 
