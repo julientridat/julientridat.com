@@ -1,0 +1,371 @@
+---
+/**
+ * Hero alternatif — fond animé, deux modes comparables en direct :
+ *   • « video » : boucle VRAIMENT infinie par fondu croisé de deux lecteurs.
+ *     N'importe quelle vidéo boucle sans raccord visible, même si sa dernière
+ *     image ne rejoint pas la première.
+ *   • « scene » : champ de lumières en profondeur rendu en canvas, la caméra
+ *     suit la souris (parallaxe 3D). Infini par construction : les lumières se
+ *     recyclent en profondeur, il n'y a aucune boucle à raccorder.
+ *
+ * Repli automatique : si la vidéo est absente ou refuse de démarrer, on bascule
+ * en mode « scene ». Mouvement coupé si prefers-reduced-motion.
+ */
+import { Image } from "astro:assets";
+import Nav from "@/components/Nav.astro";
+import heroImg from "@/assets/hero.jpg";
+
+interface Props {
+  /** Vidéo de fond, servie depuis /public. */
+  videoSrc?: string;
+  /** Mode au chargement. */
+  mode?: "video" | "scene";
+  /** Sélecteur de comparaison (à retirer une fois le choix fait). */
+  comparateur?: boolean;
+}
+const { videoSrc = "/hero.mp4", mode = "video", comparateur = true } = Astro.props;
+
+const clients = [
+  "Dassault Systèmes",
+  "SNCF Fret",
+  "Le Nouveau Bélier",
+  "WeThePeople",
+  "Maison des Vins et des Spiritueux",
+];
+---
+
+<section
+  id="hero-cinema"
+  class="relative isolate min-h-screen overflow-hidden bg-background"
+  data-mode={mode}
+  data-video={videoSrc}
+>
+  <!-- Décor : en mode 3D, ce plan devient la scène et suit la caméra (parallaxe). -->
+  <div id="hc-decor" class="absolute inset-0 -z-30 will-change-transform">
+    <Image
+      src={heroImg}
+      alt=""
+      aria-hidden="true"
+      widths={[768, 1280, 1920, 2688]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="h-full w-full scale-110 object-cover"
+    />
+  </div>
+
+  <!-- Mode vidéo : deux lecteurs qui se relaient en fondu croisé -->
+  <div id="hc-video-couche" class="absolute inset-0 -z-20 hidden" aria-hidden="true">
+    <video class="hc-video absolute inset-0 h-full w-full object-cover opacity-0" muted playsinline preload="auto"></video>
+    <video class="hc-video absolute inset-0 h-full w-full object-cover opacity-0" muted playsinline preload="auto"></video>
+  </div>
+
+  <!-- Mode scène : profondeur rendue en canvas, caméra à la souris -->
+  <canvas id="hc-canvas" class="absolute inset-0 -z-20 hidden h-full w-full" aria-hidden="true"></canvas>
+
+  <!-- Voiles de lisibilité (identiques à la home actuelle) -->
+  <div class="absolute inset-0 -z-10 bg-black/55"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/30 to-black/85"></div>
+
+  <Nav home />
+
+  <div class="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pb-10 pt-32 md:px-12 md:pb-14 md:pt-40">
+    <div class="flex flex-1 flex-col justify-center">
+      <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm">
+        <span>Consultant IA — Bordeaux &amp; Grand Sud Ouest</span>
+      </div>
+      <h1 class="max-w-[1100px] text-[clamp(3rem,9vw,8rem)] font-light leading-[0.95] tracking-[-0.04em] text-white">
+        <span class="block">L'IA <em class="font-normal text-[#c3fb41]">dans votre</em></span>
+        <span class="block"><em class="font-normal text-[#c3fb41]">entreprise</em> en 2 mois.</span>
+        <span class="block">Pas en 2 ans.</span>
+      </h1>
+
+      <div class="mt-12 md:mt-14">
+        <button
+          type="button"
+          data-open-booking
+          aria-label="Réserver un audit IA avec un consultant à Bordeaux"
+          class="group relative inline-flex cursor-pointer items-center gap-4 rounded-full bg-lime px-3 py-3 pr-8 text-[17px] font-medium text-black shadow-[0_0_60px_-15px_oklch(0.92_0.21_125_/_0.7)] transition-all hover:bg-lime/90"
+        >
+          <span class="grid h-11 w-11 place-items-center rounded-full bg-black text-lime transition-transform group-hover:translate-x-0.5">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"></path><path d="m12 5 7 7-7 7"></path></svg>
+          </span>
+          Réserver un audit
+        </button>
+      </div>
+    </div>
+
+    <div class="mt-16 grid gap-10 md:grid-cols-2 md:items-end">
+      <div>
+        <p class="max-w-xl text-[15px] leading-relaxed text-white">
+          <strong class="font-semibold">
+            J'intègre l'IA dans vos outils, je forme vos équipes, et je mesure le gain.
+          </strong>
+          <br />
+          <strong class="font-semibold">
+            Vous gagnez 5 à 10 heures par semaine et par collaborateur.
+          </strong>
+        </p>
+        <div class="mt-6 inline-flex items-center gap-2 text-xs text-white/65">
+          Scroll <span class="text-white/70">↓</span>
+        </div>
+      </div>
+
+      <div class="md:text-right">
+        <div class="mb-3 text-[11px] text-white/65">Ils m'ont fait confiance</div>
+        <div class="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
+          {clients.map((c) => (
+            <span class="inline-flex items-center gap-2 text-sm font-semibold text-white">
+              <span class="h-1.5 w-1.5 rounded-full bg-white"></span>
+              {c}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {comparateur && (
+    <div class="absolute bottom-5 right-5 z-20 hidden items-center gap-1 rounded-full border border-white/15 bg-black/50 p-1 backdrop-blur-sm sm:flex">
+      <button type="button" data-hc-mode="video" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-white/70 transition-colors">Vidéo</button>
+      <button type="button" data-hc-mode="scene" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-white/70 transition-colors">3D</button>
+    </div>
+  )}
+</section>
+
+<style>
+  .hc-video { transition: opacity 900ms ease-in-out; }
+  .hc-tab-actif { background: oklch(0.92 0.21 125); color: #0a0a0a; }
+  @media (prefers-reduced-motion: reduce) {
+    .hc-video { transition: none; }
+  }
+</style>
+
+<script>
+  const section = document.getElementById("hero-cinema");
+  if (section) {
+    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const econome = (navigator as any).connection?.saveData === true;
+    const coucheVideo = document.getElementById("hc-video-couche") as HTMLElement;
+    const canvas = document.getElementById("hc-canvas") as HTMLCanvasElement;
+    const videos = [...section.querySelectorAll<HTMLVideoElement>(".hc-video")];
+    const srcVideo = section.dataset.video || "/hero.mp4";
+
+    /* ————— Mode vidéo : boucle infinie par fondu croisé —————
+       Une vidéo dont la fin ne rejoint pas le début boucle malgré tout sans
+       raccord : le second lecteur démarre pendant que le premier s'efface. */
+    const FONDU = 0.9; // secondes de recouvrement
+    let videoPrete = false;
+    let videoActive = 0;
+    let boucle = 0;
+
+    function armerVideo(): Promise<boolean> {
+      return new Promise((resolve) => {
+        let repondu = false;
+        const fini = (ok: boolean) => { if (!repondu) { repondu = true; resolve(ok); } };
+        const v = videos[0];
+        v.addEventListener("error", () => fini(false), { once: true });
+        v.addEventListener("loadedmetadata", () => fini(true), { once: true });
+        videos.forEach((el) => { el.src = srcVideo; el.load(); });
+        setTimeout(() => fini(false), 6000); // fichier absent ou trop lent : on n'attend pas
+      });
+    }
+
+    function demarrerVideo() {
+      const duree = videos[0].duration;
+      if (!duree || !isFinite(duree)) return;
+      videos[0].currentTime = 0;
+      videos[0].play().catch(() => {});
+      videos[0].style.opacity = "1";
+      videoActive = 0;
+
+      const tick = () => {
+        const courante = videos[videoActive];
+        const suivante = videos[(videoActive + 1) % 2];
+        if (courante.duration && courante.currentTime >= courante.duration - FONDU && suivante.paused) {
+          suivante.currentTime = 0;
+          suivante.play().catch(() => {});
+          suivante.style.opacity = "1";
+          courante.style.opacity = "0";
+          setTimeout(() => { courante.pause(); courante.currentTime = 0; }, 950);
+          videoActive = (videoActive + 1) % 2;
+        }
+        boucle = requestAnimationFrame(tick);
+      };
+      boucle = requestAnimationFrame(tick);
+    }
+
+    function arreterVideo() {
+      cancelAnimationFrame(boucle);
+      videos.forEach((v) => { v.pause(); v.style.opacity = "0"; });
+    }
+
+    /* ————— Mode scène : profondeur en canvas, caméra à la souris —————
+       Chaque lumière recule vers la caméra puis se recycle au fond : le mouvement
+       est infini par construction, il n'y a aucune boucle à raccorder. */
+    const ctx = canvas.getContext("2d");
+    const decor = document.getElementById("hc-decor") as HTMLElement;
+    let anim = 0;
+    let sceneActive = false;
+    let W = 0, H = 0, dpr = 1;
+    const PROF = 10;
+    type Lumiere = { x: number; y: number; z: number; r: number; teinte: 0 | 1 };
+    let lumieres: Lumiere[] = [];
+    let camX = 0, camY = 0, cibleX = 0, cibleY = 0;
+
+    // Les halos sont pré-rendus une fois : on ne recalcule pas un dégradé par image.
+    const sprites: HTMLCanvasElement[] = [];
+    function fabriquerSprites() {
+      const couleurs = ["rgba(255,244,225,", "rgba(200,255,61,"];
+      sprites.length = 0;
+      for (const c of couleurs) {
+        const s = document.createElement("canvas");
+        s.width = s.height = 128;
+        const sc = s.getContext("2d")!;
+        const g = sc.createRadialGradient(64, 64, 0, 64, 64, 64);
+        g.addColorStop(0, c + "0.85)");
+        g.addColorStop(0.35, c + "0.28)");
+        g.addColorStop(1, c + "0)");
+        sc.fillStyle = g;
+        sc.fillRect(0, 0, 128, 128);
+        sprites.push(s);
+      }
+    }
+
+    // Peu de halos, mais larges et diffus : de la profondeur cinéma, pas un champ de points.
+    function semer() {
+      const n = window.innerWidth < 768 ? 12 : 22;
+      lumieres = Array.from({ length: n }, () => ({
+        x: (Math.random() - 0.5) * 3.2,
+        y: (Math.random() - 0.5) * 2.2,
+        z: 0.9 + Math.random() * (PROF - 0.9),
+        r: 0.55 + Math.random() * 1.5,
+        teinte: (Math.random() < 0.3 ? 1 : 0) as 0 | 1,
+      }));
+    }
+
+    function dimensionner() {
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = section!.clientWidth;
+      H = section!.clientHeight;
+      canvas.width = Math.round(W * dpr);
+      canvas.height = Math.round(H * dpr);
+      canvas.style.width = W + "px";
+      canvas.style.height = H + "px";
+    }
+
+    function dessiner() {
+      if (!ctx) return;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.clearRect(0, 0, W, H);
+      ctx.globalCompositeOperation = "lighter";
+      camX += (cibleX - camX) * 0.05;
+      camY += (cibleY - camY) * 0.05;
+
+      // Le décor est le plan le plus lointain : il bouge peu, mais il bouge.
+      decor.style.transform = `translate3d(${(-camX * 22).toFixed(2)}px, ${(-camY * 16).toFixed(2)}px, 0)`;
+
+      const focale = Math.max(W, H);
+      const cx = W / 2, cy = H / 2;
+
+      for (const l of lumieres) {
+        if (!reduced) l.z -= 0.008;
+        if (l.z < 0.75) { // sortie du champ : on la renvoie au fond
+          l.z = PROF;
+          l.x = (Math.random() - 0.5) * 3.2;
+          l.y = (Math.random() - 0.5) * 2.2;
+        }
+        const k = focale / l.z;
+        // Plus un halo est proche, plus il réagit à la caméra : c'est ça, la profondeur.
+        const px = cx + l.x * k * 0.42 - camX * (95 / l.z);
+        const py = cy + l.y * k * 0.42 - camY * (70 / l.z);
+        const taille = l.r * k * 0.34;
+        if (px < -taille || px > W + taille || py < -taille || py > H + taille) continue;
+        // Fondu aux deux extrémités : rien n'apparaît ni ne disparaît brutalement.
+        const a = Math.min(1, (PROF - l.z) / 2.6) * Math.min(1, (l.z - 0.75) / 1.8);
+        ctx.globalAlpha = Math.max(0, a) * (l.teinte === 1 ? 0.5 : 0.34);
+        ctx.drawImage(sprites[l.teinte], px - taille, py - taille, taille * 2, taille * 2);
+      }
+      ctx.globalAlpha = 1;
+      ctx.globalCompositeOperation = "source-over";
+      anim = requestAnimationFrame(dessiner);
+    }
+
+    function demarrerScene() {
+      if (sceneActive) return;
+      sceneActive = true;
+      canvas.classList.remove("hidden");
+      fabriquerSprites();
+      semer();
+      dimensionner();
+      anim = requestAnimationFrame(dessiner);
+    }
+    function arreterScene() {
+      sceneActive = false;
+      cancelAnimationFrame(anim);
+      canvas.classList.add("hidden");
+    }
+
+    // Caméra : parallaxe à la souris (pointeur fin uniquement), inclinaison au mobile.
+    if (window.matchMedia("(pointer: fine)").matches) {
+      window.addEventListener("pointermove", (e) => {
+        cibleX = (e.clientX / window.innerWidth) * 2 - 1;
+        cibleY = (e.clientY / window.innerHeight) * 2 - 1;
+      }, { passive: true });
+    }
+    window.addEventListener("resize", () => { if (sceneActive) dimensionner(); }, { passive: true });
+
+    // Économie : on suspend tout quand le hero sort de l'écran.
+    const observateur = new IntersectionObserver((entrees) => {
+      for (const e of entrees) {
+        if (e.isIntersecting) {
+          if (section!.dataset.mode === "scene") demarrerScene();
+          else if (videoPrete) videos[videoActive].play().catch(() => {});
+        } else {
+          if (sceneActive) cancelAnimationFrame(anim);
+          videos.forEach((v) => v.pause());
+        }
+      }
+    }, { threshold: 0.01 });
+    observateur.observe(section);
+
+    function marquerMode(m: "video" | "scene") {
+      section!.dataset.mode = m;
+      document.querySelectorAll<HTMLElement>("[data-hc-mode]").forEach((b) => {
+        b.classList.toggle("hc-tab-actif", b.dataset.hcMode === m);
+      });
+    }
+
+    async function appliquerMode(m: "video" | "scene") {
+      if (m === "scene") {
+        arreterVideo();
+        coucheVideo.classList.add("hidden");
+        marquerMode("scene");
+        demarrerScene();
+        return;
+      }
+      arreterScene();
+      if (!videoPrete) videoPrete = await armerVideo();
+      if (!videoPrete) {
+        // Vidéo absente ou illisible : on bascule en scène, et on l'assume dans
+        // l'état affiché — sinon le hero resterait muet au retour de défilement.
+        coucheVideo.classList.add("hidden");
+        marquerMode("scene");
+        demarrerScene();
+        return;
+      }
+      coucheVideo.classList.remove("hidden");
+      marquerMode("video");
+      demarrerVideo();
+    }
+
+    document.querySelectorAll<HTMLElement>("[data-hc-mode]").forEach((b) => {
+      b.addEventListener("click", () => appliquerMode(b.dataset.hcMode as "video" | "scene"));
+    });
+
+    // Démarrage : la vidéo est coûteuse en données — on l'évite en mode économe.
+    const depart = (section.dataset.mode === "video" && !econome && !reduced) ? "video" : "scene";
+    appliquerMode(depart as "video" | "scene");
+  }
+</script>
