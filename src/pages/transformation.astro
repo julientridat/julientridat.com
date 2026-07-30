@@ -280,9 +280,9 @@ const jsonLd = [
       <div class="ag-res" id="ag-res" hidden>
         <div class="ag-bascule">
           <article class="ag-volet ag-volet-av">
-            <span class="ag-volet-tag">Votre agence aujourd'hui</span>
+            <span class="ag-volet-tag">Votre marque aujourd'hui</span>
             <p class="ag-actuel" id="ag-actuel"></p>
-            <p class="ag-levier" id="ag-levier"></p>
+            <p class="ag-preuve" id="ag-preuve"></p>
           </article>
 
           <div class="ag-fleche" aria-hidden="true">
@@ -293,7 +293,19 @@ const jsonLd = [
             <span class="ag-volet-tag">L'agence que vous pourriez devenir</span>
             <h3 class="ag-devenir" id="ag-devenir"></h3>
             <p class="ag-devenir-txt" id="ag-devenir-txt"></p>
+            <p class="ag-signature" id="ag-signature"></p>
           </article>
+        </div>
+
+        <div class="ag-tension-bloc" id="ag-tension-bloc" hidden>
+          <div class="ag-tension">
+            <span class="ag-mini-tag">Ce qui coince aujourd'hui</span>
+            <p id="ag-tension"></p>
+          </div>
+          <div class="ag-terrain">
+            <span class="ag-mini-tag">Le terrain que vous occupez alors</span>
+            <p id="ag-terrain"></p>
+          </div>
         </div>
 
         <div class="ag-offres-bloc" id="ag-offres-bloc" hidden>
@@ -978,8 +990,70 @@ const jsonLd = [
   }
   .ag-volet-ap .ag-volet-tag { color: var(--lime); }
   .ag-actuel { margin-top: 0.9rem; font-size: 16px; line-height: 1.6; color: oklch(1 0 0 / 0.82); }
-  .ag-levier { margin-top: 0.9rem; font-size: 13.5px; line-height: 1.6; color: oklch(1 0 0 / 0.5); }
-  .ag-levier:empty { display: none; }
+  .ag-preuve {
+    margin-top: 0.9rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid oklch(1 0 0 / 0.08);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: oklch(1 0 0 / 0.5);
+  }
+  .ag-preuve:empty { display: none; }
+  .ag-signature {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid oklch(0.92 0.21 125 / 0.2);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    line-height: 1.4;
+    color: var(--lime);
+  }
+  .ag-signature:empty { display: none; }
+
+  /* tension / terrain : le ressort de la vision */
+  .ag-tension-bloc {
+    margin-top: 1rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+  }
+  @media (min-width: 900px) { .ag-tension-bloc { grid-template-columns: 1fr 1fr; gap: 1.4rem; } }
+  .ag-tension, .ag-terrain {
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.09);
+    padding: 1.3rem 1.4rem;
+    animation: ag-entre 0.5s ease both;
+  }
+  .ag-tension { border-left: 2px solid oklch(0.6 0.22 25 / 0.5); }
+  .ag-terrain { border-left: 2px solid oklch(0.92 0.21 125 / 0.5); }
+  .ag-tension p, .ag-terrain p {
+    margin-top: 0.6rem;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: oklch(1 0 0 / 0.72);
+  }
+  .ag-mini-tag {
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.4);
+  }
+  .ag-offre-libere {
+    margin-top: 0.6rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: oklch(0.92 0.21 125 / 0.75);
+  }
+  .ag-offre-libere b {
+    display: block;
+    font-weight: 400;
+    color: oklch(1 0 0 / 0.3);
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
   .ag-devenir {
     margin-top: 0.8rem;
     font-size: clamp(1.5rem, 3vw, 2.3rem);
@@ -1455,8 +1529,12 @@ const jsonLd = [
       err.hidden = true;
       res.hidden = true;
       (document.getElementById("ag-repli") as HTMLFormElement).hidden = true;
-      for (const id of ["ag-offres-bloc", "ag-chaine-bloc", "ag-garde", "ag-suite"]) $(id).hidden = true;
-      for (const id of ["ag-actuel", "ag-levier", "ag-devenir", "ag-devenir-txt", "ag-garde"]) $(id).textContent = "";
+      for (const id of ["ag-offres-bloc", "ag-chaine-bloc", "ag-garde", "ag-suite", "ag-tension-bloc"])
+        $(id).hidden = true;
+      for (const id of [
+        "ag-actuel", "ag-preuve", "ag-devenir", "ag-devenir-txt", "ag-signature",
+        "ag-tension", "ag-terrain", "ag-garde",
+      ]) $(id).textContent = "";
     };
 
     /* Le modèle écrit parfois en style télégraphique : on rétablit la majuscule
@@ -1469,13 +1547,30 @@ const jsonLd = [
       const [token, ...champs] = ligne.split("|").map((s) => s.trim());
       if (!token) return;
       switch (token) {
+        case "MARQUE":
         case "ACTUEL":
           res.hidden = false;
           $("ag-actuel").textContent = majuscule(champs[0] ?? "");
           break;
+        case "PREUVE":
         case "LEVIER":
-          $("ag-levier").textContent = majuscule(champs[0] ?? "");
+          $("ag-preuve").textContent = majuscule(champs[0] ?? "");
           break;
+        case "TENSION":
+          if (!champs[0]) return;
+          $("ag-tension-bloc").hidden = false;
+          $("ag-tension").textContent = majuscule(champs[0]);
+          break;
+        case "TERRAIN":
+          if (!champs[0]) return;
+          $("ag-tension-bloc").hidden = false;
+          $("ag-terrain").textContent = majuscule(champs[0]);
+          break;
+        case "SIGNATURE": {
+          const sig = champs[0] ?? "";
+          if (sig) $("ag-signature").textContent = `« ${majuscule(sig).replace(/[.\s]+$/, "")} »`;
+          break;
+        }
         case "DEVENIR":
           res.hidden = false;
           $("ag-devenir").textContent = majuscule(champs[0] ?? "");
@@ -1505,6 +1600,14 @@ const jsonLd = [
             lab.textContent = "Se vend à";
             qui.append(lab, document.createTextNode(majuscule(sansPreposition(champs[2]))));
             art.append(qui);
+          }
+          if (champs[3]) {
+            const lib = document.createElement("p");
+            lib.className = "ag-offre-libere";
+            const lab2 = document.createElement("b");
+            lab2.textContent = "Ce que ça change";
+            lib.append(lab2, document.createTextNode(majuscule(champs[3])));
+            art.append(lib);
           }
           offres.append(art);
           break;
@@ -1615,7 +1718,7 @@ const jsonLd = [
           }
         }
 
-        if (!$("ag-actuel").textContent && !offres.children.length) {
+        if (!$("ag-actuel").textContent && !$("ag-devenir").textContent && !offres.children.length) {
           throw new Error(
             "Je n'ai pas réussi à lire assez de contenu sur ce site — il est peut-être entièrement construit en JavaScript, ou protégé. Écrivez-moi, on le fera à la main.",
           );
