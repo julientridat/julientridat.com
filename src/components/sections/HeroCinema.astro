@@ -34,9 +34,14 @@ const clients = [
 ];
 ---
 
+<!--
+  Hauteur verrouillée à l'écran : c'est ce qui garde le plan large. En `min-h`,
+  le moindre débordement du contenu allongeait la section, et la vidéo devait
+  zoomer d'autant pour la couvrir (jusqu'à ~26 % de largeur perdue).
+-->
 <section
   id="hero-cinema"
-  class="relative isolate min-h-screen overflow-hidden bg-background"
+  class="relative isolate h-[100svh] overflow-hidden bg-background"
   data-mode={mode}
   data-video={videoSrc}
 >
@@ -64,24 +69,25 @@ const clients = [
   <!-- Mode scène : profondeur rendue en canvas, caméra à la souris -->
   <canvas id="hc-canvas" class="absolute inset-0 -z-20 hidden h-full w-full" aria-hidden="true"></canvas>
 
-  <!-- Voiles de lisibilité (identiques à la home actuelle) -->
-  <div class="absolute inset-0 -z-10 bg-black/55"></div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/60 via-black/30 to-black/85"></div>
+  <!-- Voiles de lisibilité — allégés d'environ 10 points pour laisser voir la vidéo -->
+  <div class="absolute inset-0 -z-10 bg-black/45"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/50 via-black/20 to-black/75"></div>
 
   <Nav home />
 
-  <div class="relative mx-auto flex min-h-screen max-w-7xl flex-col px-6 pb-10 pt-32 md:px-12 md:pb-14 md:pt-40">
+  <!-- Rythme vertical indexé sur la hauteur d'écran : le bloc tient toujours -->
+  <div class="relative mx-auto flex h-full max-w-7xl flex-col px-6 pb-[clamp(1.5rem,4vh,3.5rem)] pt-[clamp(5.5rem,13vh,10rem)] md:px-12">
     <div class="flex flex-1 flex-col justify-center">
-      <div class="mb-6 inline-flex w-fit items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm">
+      <div class="mb-[clamp(0.75rem,2.2vh,1.5rem)] inline-flex w-fit items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm">
         <span>Consultant IA — Bordeaux &amp; Grand Sud Ouest</span>
       </div>
-      <h1 class="max-w-[1100px] text-[clamp(3rem,9vw,8rem)] font-light leading-[0.95] tracking-[-0.04em] text-white">
+      <h1 class="max-w-[1100px] text-[clamp(2.5rem,min(8.2vw,10.2vh),6.5rem)] font-light leading-[0.95] tracking-[-0.04em] text-white">
         <span class="block">L'IA <em class="font-normal text-[#c3fb41]">dans votre</em></span>
         <span class="block"><em class="font-normal text-[#c3fb41]">entreprise</em> en 2 mois.</span>
         <span class="block">Pas en 2 ans.</span>
       </h1>
 
-      <div class="mt-12 md:mt-14">
+      <div class="mt-[clamp(1.5rem,4.5vh,3.5rem)]">
         <button
           type="button"
           data-open-booking
@@ -96,7 +102,7 @@ const clients = [
       </div>
     </div>
 
-    <div class="mt-16 grid gap-10 md:grid-cols-2 md:items-end">
+    <div class="mt-[clamp(1.25rem,4vh,3rem)] grid gap-x-10 gap-y-[clamp(1rem,2.5vh,2.5rem)] md:grid-cols-2 md:items-end">
       <div>
         <p class="max-w-xl text-[15px] leading-relaxed text-white">
           <strong class="font-semibold">
@@ -107,7 +113,7 @@ const clients = [
             Vous gagnez 5 à 10 heures par semaine et par collaborateur.
           </strong>
         </p>
-        <div class="mt-6 inline-flex items-center gap-2 text-xs text-white/65">
+        <div class="mt-[clamp(0.75rem,2vh,1.5rem)] inline-flex items-center gap-2 text-xs text-white/65">
           Scroll <span class="text-white/70">↓</span>
         </div>
       </div>
@@ -127,7 +133,7 @@ const clients = [
   </div>
 
   {comparateur && (
-    <div class="absolute bottom-5 right-5 z-20 hidden items-center gap-1 rounded-full border border-white/15 bg-black/50 p-1 backdrop-blur-sm sm:flex">
+    <div class="absolute right-5 top-24 z-20 hidden items-center gap-1 rounded-full border border-white/15 bg-black/50 p-1 backdrop-blur-sm sm:flex">
       <button type="button" data-hc-mode="video" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-white/70 transition-colors">Vidéo</button>
       <button type="button" data-hc-mode="scene" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-white/70 transition-colors">3D</button>
     </div>
