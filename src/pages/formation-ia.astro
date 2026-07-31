@@ -18,8 +18,13 @@
  *
  * Règle éditoriale du dépôt : aucun chiffre invérifiable. Tout est adossé aux
  * études de cas publiées, aux références déjà nommées sur la page d'accueil, ou
- * aux déroulés réellement livrés. Les données administratives inconnues sont
- * nulles ci-dessous et s'affichent « [À VALIDER] ».
+ * aux déroulés réellement livrés.
+ *
+ * Deux décisions de Julien, à ne pas défaire :
+ *   — les organismes partenaires ne sont JAMAIS nommés (la fiche part chez
+ *     leurs confrères) : on s'en tient à « trois organismes certifiés » ;
+ *   — les données administratives ne sont pas affichées, elles sont
+ *     « communiquées sur demande » (voir l'objet ADMIN ci-dessous).
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
@@ -32,8 +37,14 @@ const description =
   "Formateur IA générative depuis trois ans, des comités de direction aux équipes de terrain. Intervention en sous-traitance pour organismes de formation. Bordeaux et national.";
 
 /* ------------------------------------------------------------------ *
- * Données administratives — À COMPLÉTER PAR JULIEN AVANT DIFFUSION.
- * Tant qu'une valeur vaut null, la fiche affiche « [À VALIDER] ».
+ * Données administratives.
+ *
+ * Choix de Julien : ces informations ne sont PAS affichées sur la page. Elles
+ * sont transmises au centre à sa demande, puis de toute façon dans la
+ * convention. Tant qu'une valeur vaut null, la fiche affiche « Communiqué(e)
+ * sur demande » — jamais un crochet de travail, jamais une valeur inventée.
+ *
+ * Renseigner une valeur ici suffit à l'afficher : rien d'autre à toucher.
  * ------------------------------------------------------------------ */
 const ADMIN = {
   formeJuridique: null as string | null,
@@ -46,7 +57,15 @@ const ADMIN = {
   /** Délai entre l'accord et la première session. */
   delaiAcces: null as string | null,
 };
-const v = (x: string | null) => x ?? "[À VALIDER]";
+
+/** Repli non renseigné, accordé en genre avec l'intitulé de la ligne. */
+const SUR_DEMANDE = {
+  m: "Communiqué sur demande",
+  f: "Communiquée sur demande",
+} as const;
+const v = (x: string | null, genre: "m" | "f" = "m") => x ?? SUR_DEMANDE[genre];
+const estRepli = (val: unknown) =>
+  val === SUR_DEMANDE.m || val === SUR_DEMANDE.f;
 
 /* ------------------------------------------------------------------ *
  * Le spectre — la seule mécanique de la page.
@@ -344,17 +363,19 @@ const VERBATIMS = [
           <dl class="space-y-5 bg-background p-8 md:p-9">
             <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Administratif</div>
             {[
-              ["Forme juridique", v(ADMIN.formeJuridique)],
+              ["Forme juridique", v(ADMIN.formeJuridique, "f")],
               ["SIRET", v(ADMIN.siret)],
               [
                 "Déclaration d'activité",
-                `${v(ADMIN.nda)} — préfecture de région ${ADMIN.ndaRegion}`,
+                ADMIN.nda
+                  ? `${ADMIN.nda} — préfecture de région ${ADMIN.ndaRegion}`
+                  : `${SUR_DEMANDE.f} — préfecture de région ${ADMIN.ndaRegion}`,
               ],
               [
                 "Qualiopi",
                 "Non détenue en propre. J'interviens sous la certification du centre, en sous-traitance.",
               ],
-              ["RC professionnelle", v(ADMIN.rcPro)],
+              ["RC professionnelle", v(ADMIN.rcPro, "f")],
               ["Délai d'accès", v(ADMIN.delaiAcces)],
             ].map(([k, val]) => (
               <div class="grid gap-1 border-b border-line pb-4 last:border-0 last:pb-0 sm:grid-cols-[11rem_1fr] sm:gap-4">
@@ -362,7 +383,9 @@ const VERBATIMS = [
                 <dd
                   class:list={[
                     "text-[14px]",
-                    String(val).includes("[À VALIDER]") ? "text-lime/80" : "text-foreground",
+                    estRepli(val) || String(val).startsWith(SUR_DEMANDE.f)
+                      ? "text-ink-2"
+                      : "text-foreground",
                   ]}
                 >
                   {val}

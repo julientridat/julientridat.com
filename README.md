@@ -84,9 +84,17 @@ frontmatter. Aucune API. La réassurance sur la capacité à produire du contenu
 trois **artefacts réels déjà publiés** dans `public/demos/` — le lien vaut mieux que le
 paragraphe.
 
-**Données administratives** : regroupées dans l'objet `ADMIN` en haut du frontmatter de
-`src/pages/formation-ia.astro`. Tant qu'une valeur vaut `null`, la fiche affiche
-`[À VALIDER]` en lime plutôt qu'un chiffre inventé. **À compléter avant toute diffusion.**
+**Deux décisions arrêtées, à ne pas défaire :**
+
+1. **Les organismes partenaires ne sont jamais nommés.** La fiche part chez leurs
+   confrères : on s'en tient à « trois organismes de formation certifiés ». Ne jamais
+   associer non plus un organisme au nom de son client final.
+2. **Les données administratives ne sont pas affichées.** Forme juridique, SIRET,
+   déclaration d'activité, RC professionnelle et délai d'accès s'affichent
+   « communiqué(e) sur demande » — le centre les obtient sur demande, puis dans la
+   convention. Elles restent regroupées dans l'objet `ADMIN` en haut du frontmatter de
+   `src/pages/formation-ia.astro` : renseigner une valeur suffit à l'afficher, rien
+   d'autre à toucher. Le repli s'accorde en genre avec l'intitulé de la ligne.
 
 ## Publier un artefact
 
@@ -133,19 +141,10 @@ sitemap à `https://julientridat.com/sitemap.xml`.
 
 ## [À VALIDER] par Julien
 
-- **⚠️ Fiche formateur `/formation-ia` — bloquant avant diffusion.** Renseigner l'objet
-  `ADMIN` dans `src/pages/formation-ia.astro` : forme juridique, SIRET, **numéro de
-  déclaration d'activité** (il apparaît trois fois sur la page, dont le bandeau de tête),
-  assureur et n° de police de la RC professionnelle, délai d'accès, politique de frais de
-  déplacement. Tant qu'ils sont `null`, la page affiche `[À VALIDER]`.
-- **Fiche formateur — nommer ou non les organismes partenaires.** La page mentionne
-  « trois organismes de formation certifiés » **sans les nommer** (Alfie, Maikers Institute,
-  Adaliance). Les nommer serait la réassurance la plus forte pour un prospect, mais la page
-  part chez leurs confrères : trancher. Dans tous les cas, ne jamais associer un organisme
-  au nom de son client final — le contrat travel retail porte une clause de confidentialité
-  couvrant l'organisme ET ses clients.
 - **Fiche formateur — certification.** La page affirme explicitement l'absence de Qualiopi
   en propre et l'intervention en sous-traitance. À confirmer si une démarche est en cours.
+  *(Les deux autres points de la fiche — nommage des organismes et affichage des données
+  administratives — ont été tranchés : voir la section « Page /formation-ia » plus haut.)*
 
 - **⚠️ Étude « groupe travel retail »** : le contrat de sous-traitance avec l'organisme de
   formation contient une clause de confidentialité explicite couvrant l'organisme ET ses
