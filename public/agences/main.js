@@ -142,20 +142,21 @@ revealables.forEach((el) => io.observe(el));
   new ResizeObserver(resize).observe(canvas);
   loadNext(0);
 
-  // --- Mouvement réduit : état final statique, pas d'animation
+  // --- Mouvement réduit : aucune animation spontanée (ni intro, ni oscillation,
+  //     ni bascule 3D). La scène reste pilotable au doigt / à la souris : c'est un
+  //     mouvement demandé par le visiteur, pas subi — et sans ça, elle s'affiche
+  //     figée sur J60 et se lit comme un composant cassé.
   if (reduced) {
-    mode = 'final';
-    if (hint) hint.textContent = 'La même agence, de J1 à J60.';
+    mode = 'manual';
     const finish = () => {
       resize();
-      if (nearest(LAST)) { draw(LAST); setUI(LAST); }
+      if (nearest(0)) { draw(0); setUI(0); }
       else setTimeout(finish, 250);
     };
     finish();
-    return;
   }
 
-  if (coarse && hint) hint.textContent = 'Glissez — la même agence, de J1 à J60.';
+  if (hint && coarse) hint.textContent = 'Glissez — la même agence, de J1 à J60.';
 
   // --- Interaction pointeur
   stage.addEventListener('pointermove', (e) => {
@@ -167,8 +168,10 @@ revealables.forEach((el) => io.observe(el));
     mode = 'pointer';
     lastPointerAt = performance.now();
     target = px * LAST;
-    tryy = (px - 0.5) * 7;    // rotateY : suit la souris
-    trx = (0.5 - py) * 5;     // rotateX
+    if (!reduced) {           // bascule 3D : du mouvement non demandé, on s'en passe
+      tryy = (px - 0.5) * 7;  // rotateY : suit la souris
+      trx = (0.5 - py) * 5;   // rotateX
+    }
   });
   stage.addEventListener('pointerleave', () => {
     trx = 0; tryy = 0;
@@ -182,7 +185,7 @@ revealables.forEach((el) => io.observe(el));
       const t = Math.min(1, (now - introT0) / 4200);
       target = easeInOut(t) * LAST;
       if (t >= 1) { mode = 'idle'; idlePhase = Math.PI / 2; }
-    } else if (mode === 'pointer' && now - lastPointerAt > 3500) {
+    } else if (mode === 'pointer' && !reduced && now - lastPointerAt > 3500) {
       mode = 'idle';
       idlePhase = Math.asin(Math.min(1, Math.max(-1, (cur / LAST) * 2 - 1)));
     } else if (mode === 'idle') {
@@ -190,7 +193,8 @@ revealables.forEach((el) => io.observe(el));
       target = (Math.sin(idlePhase) * 0.5 + 0.5) * LAST;
     }
 
-    cur += (target - cur) * 0.09;
+    // Mouvement réduit : on colle au doigt, sans inertie ajoutée.
+    cur += reduced ? (target - cur) : (target - cur) * 0.09;
     const idx = Math.round(Math.min(LAST, Math.max(0, cur)));
     draw(idx);
     setUI(idx);
