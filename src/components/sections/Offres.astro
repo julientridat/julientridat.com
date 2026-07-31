@@ -1,13 +1,13 @@
 ---
 import Eyebrow from "@/components/Eyebrow.astro";
 
-const cardBase = "relative flex flex-col rounded-2xl border p-7 transition-colors";
-const cardDefault = "border-white/15 hover:border-white/30";
-const cardFeatured = "border-lime bg-lime/[0.04]";
+const cardBase = "relative flex flex-col rounded-2xl border bg-card p-7 transition-all";
+const cardDefault = "border-line hover:-translate-y-0.5 hover:border-ink-3/40 hover:shadow-[0_16px_36px_-18px_rgba(24,20,60,0.16)]";
+const cardFeatured = "border-lime bg-lime/[0.05] hover:-translate-y-0.5";
 const btnDefault =
-  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors border border-white/20 hover:border-lime hover:text-lime";
+  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors border border-line hover:border-lime hover:text-lime";
 const btnFeatured =
-  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors bg-lime text-black hover:bg-lime/90";
+  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors bg-lime text-white hover:bg-lime/90";
 
 const offres = [
   {
@@ -45,10 +45,10 @@ const offres = [
 ];
 ---
 
-<section id="offres" class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+<section id="offres" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Les offres</Eyebrow>
-    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
       Une offre par taille d'équipe.
       <br />
       <em class="text-lime">Un prix forfaitaire.</em>
@@ -58,18 +58,18 @@ const offres = [
       {offres.map((o) => (
         <div class={`${cardBase} ${o.featured ? cardFeatured : cardDefault}`}>
           {o.featured && (
-            <div class="absolute -top-3 left-7 rounded-full bg-lime px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-black">
+            <div class="absolute -top-3 left-7 rounded-full bg-lime px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-white">
               ★ {o.tag}
             </div>
           )}
-          <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">{o.tag}</div>
-          <div class="mt-4 text-xl font-medium">{o.name}</div>
+          <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{o.tag}</div>
+          <div class="mt-4 text-xl font-medium text-foreground">{o.name}</div>
           <div class="mt-6">
-            <div class="text-[11px] font-medium uppercase tracking-wider text-white/50">À partir de</div>
-            <div class={`mt-1 text-4xl font-light tracking-tight ${o.featured ? "text-lime" : ""}`}>{o.prix}</div>
+            <div class="text-[11px] font-medium uppercase tracking-wider text-ink-3">À partir de</div>
+            <div class={`mt-1 font-serif text-4xl italic tracking-tight ${o.featured ? "text-lime" : "text-foreground"}`}>{o.prix}</div>
           </div>
-          <div class="mt-2 text-xs text-white/65">{o.detail}</div>
-          <ul class="mt-6 flex-1 space-y-3 border-t border-white/10 pt-6 text-sm text-white/80">
+          <div class="mt-2 text-xs text-ink-2">{o.detail}</div>
+          <ul class="mt-6 flex-1 space-y-3 border-t border-line pt-6 text-sm text-ink-2">
             {o.inclus.map((i) => (
               <li class="flex gap-2"><span class="text-lime">+</span><span>{i}</span></li>
             ))}
@@ -81,7 +81,7 @@ const offres = [
       ))}
     </div>
 
-    <p class="mt-10 text-sm text-white/65">
+    <p class="mt-10 text-sm text-ink-2">
       Au-delà de 80 utilisateurs : sur devis —{" "}
       <button type="button" data-open-booking class="cursor-pointer text-lime hover:underline">
         contactez-moi

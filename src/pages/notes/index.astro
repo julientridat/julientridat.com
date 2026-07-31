@@ -30,19 +30,19 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/notes`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-24 md:pt-44">
+    <header class="relative border-b border-line px-6 pb-16 pt-36 md:px-12 md:pb-24 md:pt-44">
       <div
         class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(700px 400px at 20% 0%, oklch(0.92 0.21 125 / 0.07), transparent 70%);"
+        style="background: radial-gradient(700px 400px at 20% 0%, rgba(108,76,241,0.08), transparent 70%);"
       >
       </div>
       <Nav />
       <div class="mx-auto max-w-7xl">
         <Eyebrow>Notes</Eyebrow>
-        <h1 class="max-w-4xl text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
+        <h1 class="max-w-4xl text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-foreground">
           Le raisonnement, <em class="text-lime">documenté.</em>
         </h1>
-        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/70">
+        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-ink-2">
           Essais, méthodes, analyses. Ce que j'apprends sur le terrain — IA en entreprise,
           marketing B2B, preuve par le faire — écrit pour être utile, pas pour flatter un
           algorithme.
@@ -55,16 +55,16 @@ const jsonLd = [
         {notes.map((n) => (
           <a
             href={`/notes/${n.id}`}
-            class="group flex flex-col gap-3 border-t border-white/10 py-10 transition-colors first:border-t-0 hover:bg-white/[0.02] md:flex-row md:items-baseline md:gap-10"
+            class="group flex flex-col gap-3 border-t border-line py-10 transition-colors first:border-t-0 hover:bg-card md:flex-row md:items-baseline md:gap-10"
           >
-            <time datetime={n.data.date.toISOString().slice(0, 10)} class="shrink-0 text-sm text-white/55 md:w-40">
+            <time datetime={n.data.date.toISOString().slice(0, 10)} class="shrink-0 text-sm text-ink-3 md:w-40">
               {fmt.format(n.data.date)}
             </time>
             <div>
-              <h2 class="text-2xl font-medium leading-snug transition-colors group-hover:text-lime">
+              <h2 class="text-2xl font-medium leading-snug text-foreground transition-colors group-hover:text-lime">
                 {n.data.title}
               </h2>
-              <p class="mt-3 max-w-2xl leading-relaxed text-white/70">{n.data.pitch}</p>
+              <p class="mt-3 max-w-2xl leading-relaxed text-ink-2">{n.data.pitch}</p>
               <div class="mt-4 inline-flex items-center gap-2 text-sm text-lime">
                 Lire la note <span class="transition-transform group-hover:translate-x-0.5">→</span>
               </div>

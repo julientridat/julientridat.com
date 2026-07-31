@@ -113,7 +113,7 @@ const jsonLd = [
   <main class="bg-background text-foreground">
     <!-- ══════════ HERO — LA MÉTAMORPHOSE ══════════ -->
     <header class="relative overflow-hidden">
-      <Nav />
+      <Nav onDark />
 
       <div class="tf-scene" id="tf-scene" data-state="repos">
         <!-- Le cadre 16:9 du visuel. Séparé du texte : si le texte a besoin de plus de
@@ -159,20 +159,23 @@ const jsonLd = [
 
         <!-- texte en surimpression -->
         <div class="tf-texte">
-          <Eyebrow>Julien Tridat — systèmes de production IA</Eyebrow>
+          <p class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-violet-soft">
+            <span class="h-px w-6 bg-violet-soft"></span>
+            Julien Tridat — systèmes de production IA
+          </p>
           <h1 class="tf-h1">
             Votre entreprise ne change pas d'outils.<br />
-            <em class="text-lime">Elle change de forme.</em>
+            <em class="text-violet-soft">Elle change de forme.</em>
           </h1>
           <p class="tf-sub">
             J'installe des moyens de production IA dans les PME, les agences et les organismes de
             formation. Les murs ne bougent pas : c'est la façon dont le travail sort qui change.
           </p>
           <div class="tf-cta">
-            <CtaButton>Diagnostiquer mon entreprise</CtaButton>
+            <CtaButton onDark>Diagnostiquer mon entreprise</CtaButton>
             <a
               href="/realisations"
-              class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[15px] text-white/85 transition-colors hover:border-lime hover:text-lime"
+              class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[15px] text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
             >
               Voir les transformations
             </a>
@@ -199,7 +202,7 @@ const jsonLd = [
     </header>
 
     <!-- ══════════ CE QUI A CHANGÉ À L'INTÉRIEUR ══════════ -->
-    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
       <div class="mx-auto max-w-7xl">
         <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
           <div>
@@ -207,7 +210,7 @@ const jsonLd = [
             <h2 class="max-w-lg text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
               Le bâtiment est le même. <em class="text-lime">Le temps de sortie, non.</em>
             </h2>
-            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/60">
+            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-ink-2">
               Trois tâches qui reviennent tous les jours dans une équipe commerciale,
               chronométrées avant et après en formation, sur des cas réels. Des ordres de
               grandeur — le gain exact chez vous, c'est le diagnostic qui le mesure.
@@ -227,8 +230,8 @@ const jsonLd = [
                 </div>
               </div>
             ))}
-            <p class="mt-7 text-[13px] leading-relaxed text-white/45">
-              Soit près d'<strong class="font-medium text-white/75">une heure et demie rendue
+            <p class="mt-7 text-[13px] leading-relaxed text-ink-3">
+              Soit près d'<strong class="font-medium text-ink-2">une heure et demie rendue
               chaque jour</strong> à un commercial — sur des tâches qu'il faisait déjà, autrement.
             </p>
           </div>
@@ -237,13 +240,13 @@ const jsonLd = [
     </section>
 
     <!-- ══════════ LES 4 NIVEAUX ══════════ -->
-    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
       <div class="mx-auto max-w-7xl">
         <Eyebrow>Ce qu'on installe, niveau par niveau</Eyebrow>
         <h2 class="max-w-3xl text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
           Une transformation se construit <em class="text-lime">par étages.</em>
         </h2>
-        <p class="mt-6 max-w-2xl text-[15px] leading-relaxed text-white/60">
+        <p class="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-2">
           On ne pose pas les machines avant d'avoir vérifié les fondations. Chaque niveau
           s'appuie sur le précédent — et chacun a ses cas documentés.
         </p>
@@ -252,8 +255,8 @@ const jsonLd = [
           {etages.map((e) => (
             <a href={e.lien} class="tf-etage group">
               <span class="tf-etage-num">{e.num}</span>
-              <h3 class="mt-5 text-[17px] font-medium leading-snug text-white">{e.titre}</h3>
-              <p class="mt-3 text-[14px] leading-relaxed text-white/55">{e.texte}</p>
+              <h3 class="mt-5 text-[17px] font-medium leading-snug text-foreground">{e.titre}</h3>
+              <p class="mt-3 text-[14px] leading-relaxed text-ink-2">{e.texte}</p>
               <span class="tf-etage-lien">Les cas <span class="tf-fleche">→</span></span>
             </a>
           ))}
@@ -262,7 +265,7 @@ const jsonLd = [
     </section>
 
     <!-- ══════════ MÉTHODE ══════════ -->
-    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
       <div class="mx-auto max-w-7xl">
         <div class="grid gap-12 lg:grid-cols-[minmax(0,0.85fr)_minmax(0,1fr)] lg:gap-20">
           <div>
@@ -270,7 +273,7 @@ const jsonLd = [
             <h2 class="text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
               Quatre temps, <em class="text-lime">toujours les mêmes.</em>
             </h2>
-            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-white/60">
+            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-ink-2">
               La séquence ne change pas d'une mission à l'autre. Ce qui change, c'est ce qu'on
               trouve au cadrage — et donc ce qu'on construit ensuite.
             </p>
@@ -280,8 +283,8 @@ const jsonLd = [
               <li>
                 <span class="tf-temps-n">{i + 1}</span>
                 <div>
-                  <h3 class="text-[16px] font-medium text-white">{t.t}</h3>
-                  <p class="mt-1.5 text-[14px] leading-relaxed text-white/55">{t.d}</p>
+                  <h3 class="text-[16px] font-medium text-foreground">{t.t}</h3>
+                  <p class="mt-1.5 text-[14px] leading-relaxed text-ink-2">{t.d}</p>
                 </div>
               </li>
             ))}
@@ -291,7 +294,7 @@ const jsonLd = [
     </section>
 
     <!-- ══════════ PREUVES ══════════ -->
-    <section class="border-t border-white/10 px-6 py-20 md:px-12 md:py-28">
+    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
       <div class="mx-auto max-w-7xl">
         <div class="flex flex-wrap items-end justify-between gap-6">
           <div>
@@ -307,10 +310,10 @@ const jsonLd = [
           {preuves.map((p) => (
             <a href={p.href} class="tf-preuve group">
               <span class="tf-preuve-tag">{p.tag}</span>
-              <h3 class="mt-4 text-[17px] font-medium leading-snug text-white group-hover:text-lime">
+              <h3 class="mt-4 text-[17px] font-medium leading-snug text-foreground group-hover:text-lime">
                 {p.titre}
               </h3>
-              <p class="mt-3 text-[14px] leading-relaxed text-white/55">{p.ligne}</p>
+              <p class="mt-3 text-[14px] leading-relaxed text-ink-2">{p.ligne}</p>
             </a>
           ))}
         </div>
@@ -318,17 +321,17 @@ const jsonLd = [
     </section>
 
     <!-- ══════════ CTA ══════════ -->
-    <section class="relative overflow-hidden border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+    <section class="relative overflow-hidden border-t border-line px-6 py-24 md:px-12 md:py-32">
       <div
         class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(760px 420px at 70% 100%, oklch(0.92 0.21 125 / 0.10), transparent 70%);"
+        style="background: radial-gradient(760px 420px at 70% 100%, rgba(108,76,241,0.10), transparent 70%);"
       >
       </div>
       <div class="mx-auto max-w-3xl text-center">
         <h2 class="text-[clamp(2.2rem,5vw,3.8rem)] font-light leading-[1.04] tracking-[-0.03em]">
           On regarde ce que ça donnerait <em class="text-lime">chez vous ?</em>
         </h2>
-        <p class="mx-auto mt-7 max-w-xl text-[16px] leading-relaxed text-white/65">
+        <p class="mx-auto mt-7 max-w-xl text-[16px] leading-relaxed text-ink-2">
           Trente minutes pour identifier les deux ou trois tâches où l'IA vous ferait gagner le
           plus — et pour dire franchement si le jeu en vaut la chandelle.
         </p>
@@ -337,13 +340,13 @@ const jsonLd = [
           <button
             type="button"
             data-open-contact
-            class="cursor-pointer rounded-full border border-white/20 px-6 py-3.5 text-[15px] text-white/85 transition-colors hover:border-lime hover:text-lime"
+            class="cursor-pointer rounded-full border border-line px-6 py-3.5 text-[15px] text-ink-2 transition-colors hover:border-lime hover:text-lime"
           >
             Écrire un message
           </button>
         </div>
-        <p class="mt-10 text-[13px] text-white/40">
-          Vous préférez la version sobre ? <a href="/" class="text-white/70 underline underline-offset-4 hover:text-lime">Page d'accueil classique</a>
+        <p class="mt-10 text-[13px] text-ink-3">
+          Vous préférez la version sobre ? <a href="/" class="text-ink-2 underline underline-offset-4 hover:text-lime">Page d'accueil classique</a>
         </p>
       </div>
     </section>
@@ -378,10 +381,12 @@ const jsonLd = [
     --mx: 50%;
     --my: 50%;
     --near: 0;   /* proximité du curseur */
+    /* Le hero garde un fond volontairement sombre (registre photo/vidéo du site) :
+       littéral, indépendant de --background qui porte désormais le papier clair. */
     background:
       radial-gradient(120% 90% at 68% 42%, oklch(0.28 0.06 300 / calc(0.42 * var(--lum))), transparent 62%),
-      radial-gradient(90% 70% at 30% 10%, oklch(0.92 0.21 125 / 0.05), transparent 70%),
-      var(--background);
+      radial-gradient(90% 70% at 30% 10%, rgba(185, 166, 255, 0.05), transparent 70%),
+      #111216;
   }
 
   /* le cadre du visuel : 16:9, centré, seul à rogner ce qui déborde */
@@ -401,7 +406,7 @@ const jsonLd = [
     inset: auto 0 0 0;
     height: 34%;
     background:
-      linear-gradient(to top, oklch(0.92 0.21 125 / calc(0.1 * var(--lum))), transparent 60%),
+      linear-gradient(to top, rgba(185, 166, 255, calc(0.1 * var(--lum))), transparent 60%),
       repeating-linear-gradient(90deg, oklch(1 0 0 / 0.05) 0 1px, transparent 1px 74px),
       repeating-linear-gradient(0deg, oklch(1 0 0 / 0.05) 0 1px, transparent 1px 46px);
     transform: perspective(320px) rotateX(58deg);
@@ -441,8 +446,8 @@ const jsonLd = [
     opacity: calc(0.1 + 0.55 * var(--near));
     background: radial-gradient(
       closest-side,
-      oklch(0.92 0.21 125 / 0.16),
-      oklch(0.92 0.21 125 / 0.05) 45%,
+      rgba(185, 166, 255, 0.16),
+      rgba(185, 166, 255, 0.05) 45%,
       transparent 72%
     );
     transition: opacity 0.35s ease;
@@ -509,8 +514,8 @@ const jsonLd = [
     bottom: calc(var(--rev) * 100%);
     height: 3px;
     border-radius: 999px;
-    background: linear-gradient(90deg, transparent, var(--lime), oklch(0.7 0.24 300), transparent);
-    box-shadow: 0 0 34px 8px oklch(0.92 0.21 125 / 0.42);
+    background: linear-gradient(90deg, transparent, var(--violet-soft), oklch(0.7 0.24 300), transparent);
+    box-shadow: 0 0 34px 8px rgba(185, 166, 255, 0.42);
     opacity: calc(4 * var(--rev) * (1 - var(--rev)));
   }
 
@@ -532,8 +537,8 @@ const jsonLd = [
     width: 3px;
     height: 3px;
     border-radius: 50%;
-    background: var(--lime);
-    box-shadow: 0 0 10px 2px oklch(0.92 0.21 125 / 0.6);
+    background: var(--violet-soft);
+    box-shadow: 0 0 10px 2px rgba(185, 166, 255, 0.6);
     animation: tf-monte var(--lt) linear var(--ld) infinite;
   }
   .tf-part i:nth-child(3n) {
@@ -569,22 +574,22 @@ const jsonLd = [
     height: 9px;
     flex: none;
     border-radius: 50%;
-    background: var(--lime);
-    box-shadow: 0 0 0 4px oklch(0.92 0.21 125 / 0.16);
+    background: var(--violet-soft);
+    box-shadow: 0 0 0 4px rgba(185, 166, 255, 0.16);
   }
   .tf-point::after {
     content: "";
     position: absolute;
     inset: -5px;
     border-radius: 50%;
-    border: 1px solid oklch(0.92 0.21 125 / 0.5);
+    border: 1px solid rgba(185, 166, 255, 0.5);
     animation: tf-pulse 2.6s ease-out infinite;
   }
   @keyframes tf-pulse {
     0% { transform: scale(0.7); opacity: 0.9; }
     70%, 100% { transform: scale(2.1); opacity: 0; }
   }
-  .tf-trait { width: 30px; height: 1px; background: oklch(0.92 0.21 125 / 0.42); flex: none; }
+  .tf-trait { width: 30px; height: 1px; background: rgba(185, 166, 255, 0.42); flex: none; }
   .tf-etiq {
     display: block;
     padding: 7px 12px;
@@ -618,6 +623,9 @@ const jsonLd = [
     font-weight: 300;
     line-height: 1.02;
     letter-spacing: -0.035em;
+    /* Couleur explicite : le hero reste sombre alors que --foreground (héritée
+       par défaut) porte désormais l'encre claire de la page. */
+    color: #fff;
   }
   .tf-sub {
     margin-top: 1.6rem;
@@ -652,7 +660,7 @@ const jsonLd = [
     inset: 0 auto 0 0;
     width: calc(var(--p) * 100%);
     border-radius: 999px;
-    background: linear-gradient(90deg, var(--lime), oklch(0.7 0.24 300));
+    background: linear-gradient(90deg, var(--violet-soft), oklch(0.7 0.24 300));
   }
   .tf-jauge-txt {
     font-size: 11px;
@@ -660,7 +668,7 @@ const jsonLd = [
     text-transform: uppercase;
     color: oklch(1 0 0 / 0.42);
   }
-  .tf-jauge-txt b { color: var(--lime); font-weight: 500; font-variant-numeric: tabular-nums; }
+  .tf-jauge-txt b { color: var(--violet-soft); font-weight: 500; font-variant-numeric: tabular-nums; }
 
   .tf-indice {
     position: absolute;
@@ -681,7 +689,7 @@ const jsonLd = [
     width: 6px;
     height: 6px;
     border-radius: 50%;
-    background: var(--lime);
+    background: var(--violet-soft);
     animation: tf-clign 1.8s ease-in-out infinite;
   }
   @keyframes tf-clign { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
@@ -722,24 +730,25 @@ const jsonLd = [
 
   /* ════════ GAINS ════════ */
   .tf-gains { display: flex; flex-direction: column; gap: 1.6rem; }
-  .tf-gain { border-top: 1px solid oklch(1 0 0 / 0.1); padding-top: 1.1rem; }
+  .tf-gain { border-top: 1px solid var(--line); padding-top: 1.1rem; }
   .tf-gain-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-  .tf-gain-tache { font-size: 14px; color: oklch(1 0 0 / 0.72); }
+  .tf-gain-tache { font-size: 14px; color: var(--ink-2); }
   .tf-gain-apres {
-    font-size: clamp(1.5rem, 2.6vw, 2rem);
-    font-weight: 300;
-    color: var(--lime);
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.6rem, 2.8vw, 2.1rem);
+    color: var(--foreground);
     font-variant-numeric: tabular-nums;
   }
-  /* Une seule piste : le plein représente le temps d'avant, le segment lime
+  /* Une seule piste : le plein représente le temps d'avant, le segment violet
      ce qu'il reste après. L'écart se lit d'un coup d'œil. */
   .tf-gain-piste {
     position: relative;
     margin-top: 0.9rem;
     height: 14px;
     border-radius: 999px;
-    background: oklch(1 0 0 / 0.09);
-    border: 1px solid oklch(1 0 0 / 0.07);
+    background: var(--secondary);
+    border: 1px solid var(--line);
     overflow: hidden;
   }
   .tf-gain-part {
@@ -748,7 +757,7 @@ const jsonLd = [
     width: 0;
     border-radius: 999px;
     background: linear-gradient(90deg, var(--lime), oklch(0.72 0.23 300));
-    box-shadow: 0 0 20px oklch(0.92 0.21 125 / 0.45);
+    box-shadow: 0 0 20px rgba(108, 76, 241, 0.45);
     transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .tf-gain[data-vu="1"] .tf-gain-part { width: max(calc(var(--r) * 100%), 16px); }
@@ -760,7 +769,7 @@ const jsonLd = [
     font-size: 10px;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: oklch(1 0 0 / 0.45);
+    color: var(--ink-3);
   }
 
   /* ════════ ÉTAGES ════════ */
@@ -768,15 +777,15 @@ const jsonLd = [
     display: flex;
     flex-direction: column;
     border-radius: 1rem;
-    border: 1px solid oklch(1 0 0 / 0.1);
-    background: oklch(0.18 0 0 / 0.5);
+    border: 1px solid var(--line);
+    background: var(--card);
     padding: 1.5rem 1.4rem 1.3rem;
     transition: border-color 0.25s ease, transform 0.25s ease, background-color 0.25s ease;
   }
   .tf-etage:hover {
-    border-color: oklch(0.92 0.21 125 / 0.5);
+    border-color: rgba(108, 76, 241, 0.5);
     transform: translateY(-3px);
-    background: oklch(0.2 0 0 / 0.7);
+    background: var(--secondary);
   }
   .tf-etage-num {
     font-family: var(--font-serif);
@@ -789,7 +798,7 @@ const jsonLd = [
     margin-top: auto;
     padding-top: 1.4rem;
     font-size: 13px;
-    color: oklch(1 0 0 / 0.45);
+    color: var(--ink-3);
     transition: color 0.2s ease;
   }
   .tf-etage:hover .tf-etage-lien { color: var(--lime); }
@@ -802,9 +811,9 @@ const jsonLd = [
     display: flex;
     gap: 1.3rem;
     padding: 1.4rem 0;
-    border-top: 1px solid oklch(1 0 0 / 0.1);
+    border-top: 1px solid var(--line);
   }
-  .tf-temps li:last-child { border-bottom: 1px solid oklch(1 0 0 / 0.1); }
+  .tf-temps li:last-child { border-bottom: 1px solid var(--line); }
   .tf-temps-n {
     flex: none;
     width: 2rem;
@@ -812,7 +821,7 @@ const jsonLd = [
     display: grid;
     place-items: center;
     border-radius: 50%;
-    border: 1px solid oklch(0.92 0.21 125 / 0.35);
+    border: 1px solid rgba(108, 76, 241, 0.35);
     font-size: 12px;
     color: var(--lime);
   }
@@ -821,16 +830,16 @@ const jsonLd = [
   .tf-preuve {
     display: block;
     border-radius: 1rem;
-    border: 1px solid oklch(1 0 0 / 0.1);
-    background: oklch(0.18 0 0 / 0.5);
+    border: 1px solid var(--line);
+    background: var(--card);
     padding: 1.6rem 1.5rem;
     transition: border-color 0.25s ease, transform 0.25s ease;
   }
-  .tf-preuve:hover { border-color: oklch(0.92 0.21 125 / 0.45); transform: translateY(-3px); }
+  .tf-preuve:hover { border-color: rgba(108, 76, 241, 0.45); transform: translateY(-3px); }
   .tf-preuve-tag {
     display: inline-block;
     border-radius: 999px;
-    border: 1px solid oklch(0.92 0.21 125 / 0.3);
+    border: 1px solid rgba(108, 76, 241, 0.3);
     padding: 3px 11px;
     font-size: 10px;
     letter-spacing: 0.16em;

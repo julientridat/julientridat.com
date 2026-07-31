@@ -10,6 +10,9 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+  /* Rayon de carte du design system pages de vente (22px) : override direct du
+     cran "2xl", dominant dans le codebase — propage sans toucher aux composants. */
+  --radius-2xl: 22px;
 
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -31,6 +34,7 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-lime: var(--lime);
+  --color-violet-soft: var(--violet-soft);
   --color-ink: var(--ink);
   --color-ink-2: var(--ink-2);
   --color-ink-3: var(--ink-3);
@@ -40,32 +44,38 @@
 :root {
   --radius: 0.5rem;
 
-  /* Brand — charbon légèrement chaud (hue ~70, chroma minime) plutôt qu'un noir neutre */
-  --background: oklch(0.15 0.009 70);      /* charbon tiède */
-  --foreground: oklch(0.985 0 0);          /* white */
-  --lime: oklch(0.92 0.21 125);            /* ~#c8ff3d */
-  --ink: oklch(0.985 0 0);                 /* primary text */
-  --ink-2: oklch(0.8 0.004 70);            /* secondary */
-  --ink-3: oklch(0.64 0.004 70);           /* muted */
-  --line: oklch(1 0 0 / 12%);
+  /* Brand — design system « pages de vente » (docs/design-system-pages-vente.md) :
+     papier clair, accent violet. `--lime` garde son nom de variable (repris par
+     toutes les classes bg-lime/text-lime/border-lime existantes) mais porte
+     désormais le violet — c'est le nouvel accent unique du site. */
+  --background: #F1F2F4;   /* paper */
+  --foreground: #111216;   /* ink */
+  --lime: #6C4CF1;          /* violet — accent */
+  --ink: #111216;
+  --ink-2: #43464E;         /* ink-soft */
+  --ink-3: #7A7E88;         /* muted */
+  --line: rgba(17, 18, 22, 0.10);
 
-  --card: oklch(0.19 0.009 70);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.19 0.009 70);
-  --popover-foreground: oklch(0.985 0 0);
+  --card: #FBFBFC;          /* white — surfaces élevées, nav, cartes */
+  --card-foreground: var(--foreground);
+  --popover: var(--card);
+  --popover-foreground: var(--foreground);
   --primary: var(--lime);
-  --primary-foreground: oklch(0.15 0.009 70);
-  --secondary: oklch(0.23 0.008 70);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.23 0.008 70);
-  --muted-foreground: oklch(0.72 0.004 70);
+  --primary-foreground: #FBFBFC;
+  --secondary: #E7E8EB;     /* survols discrets sur papier */
+  --secondary-foreground: var(--foreground);
+  --muted: #E7E8EB;
+  --muted-foreground: var(--ink-3);
   --accent: var(--lime);
-  --accent-foreground: oklch(0.145 0 0);
-  --destructive: oklch(0.6 0.22 25);
+  --accent-foreground: #FBFBFC;
+  --destructive: oklch(0.55 0.22 25);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 12%);
-  --input: oklch(1 0 0 / 15%);
+  --border: var(--line);
+  --input: var(--line);
   --ring: var(--lime);
+
+  /* Accent réservé aux fonds sombres — hero photo, sections .section-dark. */
+  --violet-soft: #B9A6FF;
 }
 
 @layer base {
@@ -73,21 +83,21 @@
   html, body { background-color: var(--color-background); color: var(--color-foreground); }
   body { font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
   em { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
-  ::selection { background: var(--lime); color: #0a0a0a; }
+  ::selection { background: var(--lime); color: #FBFBFC; }
   html { scroll-behavior: smooth; }
 }
 
-/* Corps de texte des artefacts (réalisations, notes) */
+/* Corps de texte des artefacts (réalisations, notes) — sur papier, plus prose-invert */
 .prose-artefact {
-  @apply prose prose-invert max-w-none
+  @apply prose max-w-none
     prose-headings:font-light prose-headings:tracking-tight
     prose-h2:text-3xl prose-h3:text-xl prose-h3:font-medium
-    prose-p:text-white/75 prose-p:leading-relaxed
-    prose-li:text-white/75
-    prose-strong:text-white prose-strong:font-medium
+    prose-p:text-ink-2 prose-p:leading-relaxed
+    prose-li:text-ink-2
+    prose-strong:text-foreground prose-strong:font-medium
     prose-a:text-lime prose-a:no-underline hover:prose-a:underline
-    prose-blockquote:border-lime prose-blockquote:text-white/85
+    prose-blockquote:border-lime prose-blockquote:text-ink-2
     prose-code:text-lime prose-code:before:content-none prose-code:after:content-none
-    prose-hr:border-white/10;
+    prose-hr:border-line;
 }
 .prose-artefact em { color: var(--lime); }

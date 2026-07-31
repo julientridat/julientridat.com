@@ -136,14 +136,14 @@ export default function ContactDialog() {
       aria-modal="true"
       aria-label="Écrivez-moi un message"
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={close} />
-      <div className="relative max-h-[92vh] w-[calc(100vw-1rem)] max-w-xl overflow-y-auto rounded-2xl border border-white/15 bg-card shadow-2xl">
+      <div className="absolute inset-0 bg-foreground/60 backdrop-blur-sm" onClick={close} />
+      <div className="relative max-h-[92vh] w-[calc(100vw-1rem)] max-w-xl overflow-y-auto rounded-2xl border border-line bg-card shadow-2xl">
         <button
           ref={closeBtnRef}
           type="button"
           onClick={close}
           aria-label="Fermer"
-          className="absolute right-4 top-4 z-10 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          className="absolute right-4 top-4 z-10 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-ink-3 transition-colors hover:bg-secondary hover:text-foreground"
         >
           ✕
         </button>
@@ -151,25 +151,25 @@ export default function ContactDialog() {
         {status === "done" ? (
           <div className="px-6 py-12 text-center sm:px-12 sm:py-16">
             <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-lime/15 text-2xl text-lime">✓</div>
-            <h2 className="mt-5 text-2xl font-semibold tracking-tight">Message envoyé.</h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/65">
+            <h2 className="mt-5 text-2xl font-semibold tracking-tight text-foreground">Message envoyé.</h2>
+            <p className="mt-3 text-sm leading-relaxed text-ink-2">
               Merci {name.split(" ")[0]}. Je vous réponds au plus vite, en général sous 24-48 h.
             </p>
             <button
               type="button"
               onClick={close}
-              className="mt-8 cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90"
+              className="mt-8 cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90"
             >
               Fermer
             </button>
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="px-6 py-8 sm:px-10 sm:py-10">
-            <p className="text-xs uppercase tracking-[0.18em] text-white/50">Contact</p>
-            <h2 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Contact</p>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               Écrivez-moi un message
             </h2>
-            <p className="mt-2 text-sm text-white/60">
+            <p className="mt-2 text-sm text-ink-2">
               Une question, un projet, une intervention ? Dites-moi tout — je réponds vite.
             </p>
 
@@ -185,7 +185,7 @@ export default function ContactDialog() {
                 {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
               </div>
               <div className="sm:col-span-2">
-                <label htmlFor="c-company" className={labelCls}>Entreprise <span className="font-normal text-white/50">(facultatif)</span></label>
+                <label htmlFor="c-company" className={labelCls}>Entreprise <span className="font-normal text-ink-3">(facultatif)</span></label>
                 <input id="c-company" value={company} onChange={(e) => setCompany(e.target.value)} maxLength={160} className={inputCls} />
               </div>
               <div className="sm:col-span-2">
@@ -196,7 +196,7 @@ export default function ContactDialog() {
             </div>
 
             {status === "error" && (
-              <p className="mt-4 text-sm text-white/70">
+              <p className="mt-4 text-sm text-ink-2">
                 L'envoi automatique n'a pas fonctionné.{" "}
                 <a href={mailtoHref()} className="text-lime underline underline-offset-4">
                   Cliquez ici pour m'écrire directement
@@ -206,13 +206,13 @@ export default function ContactDialog() {
             )}
 
             <div className="mt-8 flex flex-col-reverse items-stretch gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <a href={`mailto:${CONTACT_EMAIL}`} className="text-center text-[13px] text-white/55 hover:text-lime sm:text-left">
+              <a href={`mailto:${CONTACT_EMAIL}`} className="text-center text-[13px] text-ink-3 hover:text-lime sm:text-left">
                 ou {CONTACT_EMAIL}
               </a>
               <button
                 type="submit"
                 disabled={status === "sending"}
-                className="cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:opacity-60"
+                className="cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90 disabled:opacity-60"
               >
                 {status === "sending" ? "Envoi…" : "Envoyer le message"}
               </button>
