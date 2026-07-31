@@ -69,21 +69,22 @@ const clients = [
   <!-- Mode scène : profondeur rendue en canvas, caméra à la souris -->
   <canvas id="hc-canvas" class="absolute inset-0 -z-20 hidden h-full w-full" aria-hidden="true"></canvas>
 
-  <!-- Voiles de lisibilité — allégés d'environ 10 points pour laisser voir la vidéo -->
-  <div class="absolute inset-0 -z-10 bg-black/45"></div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-black/50 via-black/20 to-black/75"></div>
+  <!-- Voiles de lisibilité — clairs : on éclaircit la scène plutôt que l'assombrir.
+       Allégés : l'image doit rester lisible, pas juste deviner. -->
+  <div class="absolute inset-0 -z-10 bg-background/22"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-background/38 via-background/10 to-background/50"></div>
 
-  <Nav home onDark />
+  <Nav home />
 
   <!-- Rythme vertical indexé sur la hauteur d'écran : le bloc tient toujours -->
   <div class="relative mx-auto flex h-full max-w-7xl flex-col px-6 pb-[clamp(1.5rem,4vh,3.5rem)] pt-[clamp(5.5rem,13vh,10rem)] md:px-12">
     <div class="flex flex-1 flex-col justify-center">
-      <div class="mb-[clamp(0.75rem,2.2vh,1.5rem)] inline-flex w-fit items-center gap-2 rounded-full border border-violet-soft/40 bg-violet-soft/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-violet-soft backdrop-blur-sm">
+      <div class="mb-[clamp(0.75rem,2.2vh,1.5rem)] inline-flex w-fit items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm">
         <span>Consultant IA — Bordeaux &amp; Grand Sud Ouest</span>
       </div>
-      <h1 class="max-w-[1100px] text-[clamp(2.5rem,min(8.2vw,10.2vh),6.5rem)] font-light leading-[0.95] tracking-[-0.04em] text-white">
-        <span class="block">L'IA <em class="font-normal text-violet-soft">dans votre</em></span>
-        <span class="block"><em class="font-normal text-violet-soft">entreprise</em> en 2 mois.</span>
+      <h1 class="max-w-[1100px] text-[clamp(2.5rem,min(8.2vw,10.2vh),6.5rem)] font-light leading-[0.95] tracking-[-0.04em] text-foreground">
+        <span class="block">L'IA <em class="font-normal text-lime">dans votre</em></span>
+        <span class="block"><em class="font-normal text-lime">entreprise</em> en 2 mois.</span>
         <span class="block">Pas en 2 ans.</span>
       </h1>
 
@@ -102,9 +103,9 @@ const clients = [
       </div>
     </div>
 
-    <div class="mt-[clamp(1.25rem,4vh,3rem)] grid gap-x-10 gap-y-[clamp(1rem,2.5vh,2.5rem)] md:grid-cols-2 md:items-end">
+    <div class="mt-[clamp(1.25rem,4vh,3rem)] grid gap-x-10 gap-y-[clamp(1rem,2.5vh,2.5rem)] rounded-2xl bg-background/55 p-4 backdrop-blur-md md:grid-cols-2 md:items-end md:p-5">
       <div>
-        <p class="max-w-xl text-[15px] leading-relaxed text-white">
+        <p class="max-w-xl text-[15px] leading-relaxed text-foreground">
           <strong class="font-semibold">
             J'intègre l'IA dans vos outils, je forme vos équipes, et je mesure le gain.
           </strong>
@@ -113,17 +114,17 @@ const clients = [
             Vous gagnez 5 à 10 heures par semaine et par collaborateur.
           </strong>
         </p>
-        <div class="mt-[clamp(0.75rem,2vh,1.5rem)] inline-flex items-center gap-2 text-xs text-white/65">
-          Scroll <span class="text-white/70">↓</span>
+        <div class="mt-[clamp(0.75rem,2vh,1.5rem)] inline-flex items-center gap-2 text-xs text-ink-3">
+          Scroll <span class="text-ink-2">↓</span>
         </div>
       </div>
 
       <div class="md:text-right">
-        <div class="mb-3 text-[11px] text-white/65">Ils m'ont fait confiance</div>
+        <div class="mb-3 text-[11px] text-ink-3">Ils m'ont fait confiance</div>
         <div class="flex flex-wrap gap-x-6 gap-y-2 md:justify-end">
           {clients.map((c) => (
-            <span class="inline-flex items-center gap-2 text-sm font-semibold text-white">
-              <span class="h-1.5 w-1.5 rounded-full bg-white"></span>
+            <span class="inline-flex items-center gap-2 text-sm font-semibold text-foreground">
+              <span class="h-1.5 w-1.5 rounded-full bg-lime"></span>
               {c}
             </span>
           ))}
@@ -133,9 +134,9 @@ const clients = [
   </div>
 
   {comparateur && (
-    <div class="absolute right-5 top-24 z-20 hidden items-center gap-1 rounded-full border border-white/15 bg-black/50 p-1 backdrop-blur-sm sm:flex">
-      <button type="button" data-hc-mode="video" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-white/70 transition-colors">Vidéo</button>
-      <button type="button" data-hc-mode="scene" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-white/70 transition-colors">3D</button>
+    <div class="absolute right-5 top-24 z-20 hidden items-center gap-1 rounded-full border border-border bg-card/90 p-1 backdrop-blur-sm sm:flex">
+      <button type="button" data-hc-mode="video" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-ink-3 transition-colors">Vidéo</button>
+      <button type="button" data-hc-mode="scene" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-ink-3 transition-colors">3D</button>
     </div>
   )}
 </section>
@@ -221,17 +222,19 @@ const clients = [
     let camX = 0, camY = 0, cibleX = 0, cibleY = 0;
 
     // Les halos sont pré-rendus une fois : on ne recalcule pas un dégradé par image.
+    // Sur fond clair, on ne peut plus éclaircir (lighter est invisible sur blanc) :
+    // les halos deviennent des lavis de couleur qui teintent le papier (multiply).
     const sprites: HTMLCanvasElement[] = [];
     function fabriquerSprites() {
-      const couleurs = ["rgba(255,244,225,", "rgba(185,166,255,"];
+      const couleurs = ["rgba(214,158,46,", "rgba(108,76,241,"];
       sprites.length = 0;
       for (const c of couleurs) {
         const s = document.createElement("canvas");
         s.width = s.height = 128;
         const sc = s.getContext("2d")!;
         const g = sc.createRadialGradient(64, 64, 0, 64, 64, 64);
-        g.addColorStop(0, c + "0.85)");
-        g.addColorStop(0.35, c + "0.28)");
+        g.addColorStop(0, c + "0.65)");
+        g.addColorStop(0.35, c + "0.24)");
         g.addColorStop(1, c + "0)");
         sc.fillStyle = g;
         sc.fillRect(0, 0, 128, 128);
@@ -265,7 +268,7 @@ const clients = [
       if (!ctx) return;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       ctx.clearRect(0, 0, W, H);
-      ctx.globalCompositeOperation = "lighter";
+      ctx.globalCompositeOperation = "multiply";
       camX += (cibleX - camX) * 0.05;
       camY += (cibleY - camY) * 0.05;
 

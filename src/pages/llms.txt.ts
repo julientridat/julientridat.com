@@ -47,7 +47,6 @@ export const GET: APIRoute = async () => {
     "",
     `- [Accueil](${SITE.url}/) : offres, méthode en 4 étapes, références`,
     `- [Cas clients](${SITE.url}/realisations) : le registre des transformations`,
-    `- [La métamorphose](${SITE.url}/transformation) : ce que change l'installation de systèmes de production IA, démontré en animation (chiffres réels)`,
     `- [Notes](${SITE.url}/notes) : les analyses`,
     "",
   ];
