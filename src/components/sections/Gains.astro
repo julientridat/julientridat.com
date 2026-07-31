@@ -18,39 +18,39 @@ const gains = [
 ];
 ---
 
-<section class={`border-t border-white/10 px-6 py-24 md:px-12 md:py-32 ${bg ? "bg-[oklch(0.185_0.009_70)]" : ""}`}>
+<section class={`border-t border-line px-6 py-24 md:px-12 md:py-32 ${bg ? "bg-card" : ""}`}>
   <div class="mx-auto max-w-7xl">
     <div class="grid gap-10 md:grid-cols-2 md:items-end">
       <div>
         <Eyebrow>Les gains</Eyebrow>
-        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
           Ce que les assistants
           <br />
           <em class="text-lime">font gagner.</em>
         </h2>
       </div>
-      <p class="max-w-md text-lg leading-relaxed text-white/75">
+      <p class="max-w-md text-lg leading-relaxed text-ink-2">
         Chiffres cités dans mes supports de formation et les cas d'usage déployés en mission.{" "}
-        <strong class="font-medium text-white">Des tâches concrètes, avant et après.</strong>
+        <strong class="font-medium text-foreground">Des tâches concrètes, avant et après.</strong>
       </p>
     </div>
 
-    <div class="mt-16 grid gap-px overflow-hidden rounded-2xl bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+    <div class="mt-16 grid gap-px overflow-hidden rounded-2xl bg-line sm:grid-cols-2 lg:grid-cols-3">
       {gains.map((g) => (
-        <div class={`p-8 ${bg ? "bg-[oklch(0.185_0.009_70)]" : "bg-background"}`}>
-          <div class="text-sm text-white/70">{g.tache}</div>
+        <div class={`p-8 ${bg ? "bg-card" : "bg-background"}`}>
+          <div class="text-sm text-ink-2">{g.tache}</div>
           <div class="mt-4 flex items-baseline gap-3">
             {g.avant !== "—" && (
-              <span class="text-lg text-white/50 line-through decoration-white/30">{g.avant}</span>
+              <span class="text-lg text-ink-3 line-through decoration-ink-3/40">{g.avant}</span>
             )}
             {g.avant !== "—" && <span class="text-lime">→</span>}
-            <span class="text-3xl font-light text-lime">{g.apres}</span>
+            <span class="font-serif text-3xl italic text-foreground">{g.apres}</span>
           </div>
         </div>
       ))}
     </div>
 
-    <p class="mt-8 max-w-3xl text-sm leading-relaxed text-white/50">
+    <p class="mt-8 max-w-3xl text-sm leading-relaxed text-ink-3">
       Chaque mission comprend 3 à 10 assistants sur mesure. Ces ordres de grandeur sont ceux
       démontrés en formation sur des cas réels ; le gain exact dépend de vos méthodes et de vos
       données — et c'est précisément ce que l'audit mesure avant tout engagement.

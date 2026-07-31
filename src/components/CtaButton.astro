@@ -1,20 +1,28 @@
 ---
 interface Props {
   variant?: "lime" | "outline" | "ghost";
+  /** Bouton posé sur un fond sombre (hero photo/vidéo, .section-dark) : plein violet, jamais l'encre. */
+  onDark?: boolean;
 }
-const { variant = "lime" } = Astro.props;
+const { variant = "lime", onDark = false } = Astro.props;
 const base =
   "inline-flex cursor-pointer items-center gap-3 rounded-full px-6 py-3.5 text-[15px] font-medium transition-all duration-200 group";
+// Bouton primaire du design system : repose sur l'encre, ne bascule en violet
+// qu'au survol (§5.2) — le violet reste un signal d'interaction, pas un aplat par défaut.
+// Sur fond sombre, l'encre se confondrait avec le fond : le violet devient l'aplat par défaut.
 const styles =
   variant === "lime"
-    ? "bg-lime text-black hover:bg-lime/90"
+    ? onDark
+      ? "bg-lime text-white shadow-[0_0_60px_-15px_rgba(108,76,241,0.65)] hover:-translate-y-0.5 hover:bg-lime/90"
+      : "bg-foreground text-card shadow-none hover:-translate-y-0.5 hover:bg-lime hover:shadow-[0_12px_28px_-10px_rgba(108,76,241,0.45)]"
     : variant === "outline"
-      ? "border border-white/20 text-white hover:border-lime hover:text-lime"
-      : "text-white/80 hover:text-white";
+      ? "border border-line text-foreground hover:border-lime hover:text-lime"
+      : "text-ink-2 hover:text-foreground";
+const cercle = onDark ? "bg-black/25 text-white" : "bg-card/15";
 ---
 
 <button type="button" data-open-booking class={`${base} ${styles}`}>
-  <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 text-base transition-transform group-hover:translate-x-0.5">
+  <span class={`grid h-7 w-7 place-items-center rounded-full text-base transition-transform group-hover:translate-x-0.5 ${cercle}`}>
     →
   </span>
   <span><slot /></span>

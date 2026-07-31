@@ -132,25 +132,25 @@ export default function BookingDialog() {
       aria-modal="true"
       aria-label="Réservez votre diagnostic IA"
     >
-      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" onClick={close} />
-      <div className="relative max-h-[92vh] w-[calc(100vw-1rem)] max-w-3xl overflow-y-auto rounded-2xl border border-white/15 bg-card shadow-2xl">
+      <div className="absolute inset-0 bg-foreground/60 backdrop-blur-sm" onClick={close} />
+      <div className="relative max-h-[92vh] w-[calc(100vw-1rem)] max-w-3xl overflow-y-auto rounded-2xl border border-line bg-card shadow-2xl">
         <button
           ref={closeBtnRef}
           type="button"
           onClick={close}
           aria-label="Fermer"
-          className="absolute right-4 top-4 z-10 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-white/60 transition-colors hover:bg-white/10 hover:text-white"
+          className="absolute right-4 top-4 z-10 grid h-8 w-8 cursor-pointer place-items-center rounded-full text-ink-3 transition-colors hover:bg-secondary hover:text-foreground"
         >
           ✕
         </button>
 
         {step === "intro" && (
           <div className="px-6 py-10 sm:px-12 sm:py-14">
-            <p className="text-xs uppercase tracking-[0.18em] text-white/50">Diagnostic IA</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight sm:text-3xl">
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Diagnostic IA</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
               Réservez un échange de 30 minutes
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-white/65 sm:text-base">
+            <p className="mt-3 text-sm leading-relaxed text-ink-2 sm:text-base">
               On fait le point sur vos enjeux, je vous partage des pistes concrètes pour
               intégrer l'IA dans vos process. Gratuit, sans engagement.
             </p>
@@ -162,8 +162,8 @@ export default function BookingDialog() {
                 "Créneaux disponibles cette semaine",
                 "Une rapide qualification, puis le créneau",
               ].map((label) => (
-                <li key={label} className="flex items-center gap-3 text-sm text-white/90">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-lime">✓</span>
+                <li key={label} className="flex items-center gap-3 text-sm text-foreground">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-lime/10 text-lime">✓</span>
                   {label}
                 </li>
               ))}
@@ -173,14 +173,14 @@ export default function BookingDialog() {
               <button
                 type="button"
                 onClick={() => setStep("qualify")}
-                className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 sm:w-auto"
+                className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90 sm:w-auto"
               >
                 Commencer
               </button>
               <button
                 type="button"
                 onClick={close}
-                className="w-full cursor-pointer rounded-full px-6 py-3 text-sm text-white/70 transition-colors hover:text-white sm:w-auto"
+                className="w-full cursor-pointer rounded-full px-6 py-3 text-sm text-ink-2 transition-colors hover:text-foreground sm:w-auto"
               >
                 Plus tard
               </button>
@@ -190,11 +190,11 @@ export default function BookingDialog() {
 
         {step === "qualify" && (
           <form onSubmit={handleSubmit} className="px-6 py-8 sm:px-10 sm:py-10">
-            <p className="text-xs uppercase tracking-[0.18em] text-white/50">Étape 1 / 2</p>
-            <h2 className="mt-2 text-xl font-semibold tracking-tight sm:text-2xl">
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Étape 1 / 2</p>
+            <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
               Quelques infos pour préparer l'échange
             </h2>
-            <p className="mt-2 text-sm text-white/60">Tous les champs sont obligatoires.</p>
+            <p className="mt-2 text-sm text-ink-2">Tous les champs sont obligatoires.</p>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div className="sm:col-span-2">
@@ -251,8 +251,8 @@ export default function BookingDialog() {
                         aria-pressed={checked}
                         className={`flex cursor-pointer items-center gap-2 rounded-full border px-3.5 py-1.5 text-sm transition-colors ${
                           checked
-                            ? "border-lime bg-lime text-black"
-                            : "border-white/20 bg-transparent text-white hover:bg-white/10"
+                            ? "border-lime bg-lime text-white"
+                            : "border-line bg-transparent text-foreground hover:bg-secondary"
                         }`}
                       >
                         {checked && "✓"}
@@ -282,14 +282,14 @@ export default function BookingDialog() {
               <button
                 type="button"
                 onClick={() => setStep("intro")}
-                className="w-full cursor-pointer rounded-full px-6 py-3 text-sm text-white/70 transition-colors hover:text-white sm:w-auto"
+                className="w-full cursor-pointer rounded-full px-6 py-3 text-sm text-ink-2 transition-colors hover:text-foreground sm:w-auto"
               >
                 ← Retour
               </button>
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-black transition-colors hover:bg-lime/90 disabled:opacity-60 sm:w-auto"
+                className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90 disabled:opacity-60 sm:w-auto"
               >
                 {submitting ? "Envoi…" : "Voir les créneaux"}
               </button>
@@ -299,7 +299,7 @@ export default function BookingDialog() {
 
         {step === "schedule" && (
           <div className="px-3 py-3 sm:px-5 sm:py-5">
-            <div className="relative overflow-hidden rounded-xl border border-white/15 bg-white shadow-inner">
+            <div className="relative overflow-hidden rounded-xl border border-line bg-white shadow-inner">
               {!loaded && (
                 <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
                   <div className="flex flex-col items-center gap-3">

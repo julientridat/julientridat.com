@@ -50,27 +50,27 @@ const jsonLd = [
 
 <BaseLayout title={`${d.title} | Julien Tridat`} description={metaDescription} canonical={canonical} ogType="article" jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    <header class="relative border-b border-white/10 px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
+    <header class="relative border-b border-line px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
       <div
         class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(700px 400px at 20% 0%, oklch(0.92 0.21 125 / 0.07), transparent 70%);"
+        style="background: radial-gradient(700px 400px at 20% 0%, rgba(108,76,241,0.08), transparent 70%);"
       >
       </div>
       <Nav />
       <div class="mx-auto max-w-4xl">
-        <nav class="mb-8 text-sm text-white/50" aria-label="Fil d'Ariane">
-          <a href="/" class="hover:text-white">Accueil</a>
-          <span class="mx-2 text-white/30">/</span>
-          <a href="/realisations" class="hover:text-white">Cas clients</a>
+        <nav class="mb-8 text-sm text-ink-3" aria-label="Fil d'Ariane">
+          <a href="/" class="hover:text-foreground">Accueil</a>
+          <span class="mx-2 text-ink-3/60">/</span>
+          <a href="/realisations" class="hover:text-foreground">Cas clients</a>
         </nav>
         <Eyebrow>Cas client · {d.secteur}</Eyebrow>
-        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
           {d.title}
         </h1>
-        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-white/70">{d.pitch}</p>
+        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">{d.pitch}</p>
 
         {/* Carte d'identité — scannable en un coup d'œil */}
-        <dl class="mt-9 grid grid-cols-2 gap-x-8 gap-y-5 border-t border-white/10 pt-6 sm:grid-cols-4">
+        <dl class="mt-9 grid grid-cols-2 gap-x-8 gap-y-5 border-t border-line pt-6 sm:grid-cols-4">
           {[
             ["Secteur", d.secteur],
             ["Type d'entreprise", d.typeEntreprise ?? d.client],
@@ -78,16 +78,16 @@ const jsonLd = [
             ["Année", String(d.annee)],
           ].filter(([, v]) => v).map(([k, v]) => (
             <div>
-              <dt class="text-[10px] uppercase tracking-[0.22em] text-white/50">{k}</dt>
-              <dd class="mt-1.5 text-[15px] leading-snug text-white/90">{v}</dd>
+              <dt class="text-[10px] uppercase tracking-[0.22em] text-ink-3">{k}</dt>
+              <dd class="mt-1.5 text-[15px] leading-snug text-foreground">{v}</dd>
             </div>
           ))}
         </dl>
 
         <div class="mt-6 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">
           <div>
-            <span class="text-white/55">Rôle — </span>
-            <span class="text-white/85">{d.role}</span>
+            <span class="text-ink-3">Rôle — </span>
+            <span class="text-ink-2">{d.role}</span>
           </div>
           {d.stack.length > 0 && (
             <div class="flex flex-wrap items-center gap-2">
@@ -101,30 +101,30 @@ const jsonLd = [
     </header>
 
     {(d.enjeu || d.transformation) && (
-      <section class="border-b border-white/10 px-6 py-14 md:px-12 md:py-16">
+      <section class="border-b border-line px-6 py-14 md:px-12 md:py-16">
         <div class="mx-auto grid max-w-4xl gap-8 md:grid-cols-[1fr_auto_1fr] md:items-center">
           <div>
-            <div class="text-[11px] uppercase tracking-[0.22em] text-white/50">Avant — l'enjeu</div>
-            <p class="mt-3 text-lg leading-relaxed text-white/65">{d.enjeu}</p>
+            <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Avant — l'enjeu</div>
+            <p class="mt-3 text-lg leading-relaxed text-ink-2">{d.enjeu}</p>
           </div>
           <div class="hidden text-3xl text-lime md:block" aria-hidden="true">→</div>
           <div>
             <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Après — la transformation</div>
-            <p class="mt-3 text-lg leading-relaxed text-white">{d.transformation}</p>
+            <p class="mt-3 text-lg leading-relaxed text-foreground">{d.transformation}</p>
           </div>
         </div>
       </section>
     )}
 
     {d.resultats.length > 0 && (
-      <section class="border-b border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-12 md:px-12">
+      <section class="border-b border-line bg-card px-6 py-12 md:px-12">
         <div class="mx-auto max-w-4xl">
           <div class="mb-7 text-[11px] uppercase tracking-[0.22em] text-lime">Les gains</div>
           <div class="flex flex-wrap gap-x-14 gap-y-6">
           {d.resultats.map((res) => (
             <div>
-              <div class="text-4xl font-light text-lime">{res.chiffre}</div>
-              <div class="mt-2 max-w-[11rem] text-[11px] uppercase tracking-wider text-white/65">
+              <div class="font-serif text-4xl italic text-foreground">{res.chiffre}</div>
+              <div class="mt-2 max-w-[11rem] text-[11px] uppercase tracking-wider text-ink-2">
                 {res.label}
               </div>
             </div>
@@ -138,13 +138,13 @@ const jsonLd = [
       <section class="px-6 py-16 md:px-12 md:py-20">
         <div class="mx-auto max-w-3xl">
           <Eyebrow>Le point de départ</Eyebrow>
-          <p class="text-xl font-light leading-relaxed text-white/85">{d.pointDepart}</p>
+          <p class="text-xl font-light leading-relaxed text-ink-2">{d.pointDepart}</p>
         </div>
       </section>
     )}
 
     {d.methode.length > 0 && (
-      <section class="border-t border-white/10 px-6 py-16 md:px-12 md:py-20">
+      <section class="border-t border-line px-6 py-16 md:px-12 md:py-20">
         <div class="mx-auto max-w-4xl">
           <Eyebrow>La méthode, sur le terrain</Eyebrow>
           <MethodeFlow etapes={d.methode} />
@@ -153,10 +153,10 @@ const jsonLd = [
     )}
 
     {d.assistants.length > 0 && (
-      <section class="border-t border-white/10 bg-[oklch(0.185_0.009_70)] px-6 py-16 md:px-12 md:py-20">
+      <section class="border-t border-line bg-card px-6 py-16 md:px-12 md:py-20">
         <div class="mx-auto max-w-4xl">
           <Eyebrow>Les assistants installés</Eyebrow>
-          <p class="mb-8 max-w-2xl text-[15px] leading-relaxed text-white/60">
+          <p class="mb-8 max-w-2xl text-[15px] leading-relaxed text-ink-2">
             Pas des démonstrations : des assistants qui tournent encore dans leurs outils, des mois après.
           </p>
           <AssistantsSchema assistants={d.assistants} />
@@ -165,16 +165,16 @@ const jsonLd = [
     )}
 
     {d.bilan && (
-      <section class="border-t border-white/10 px-6 py-16 md:px-12 md:py-20">
+      <section class="border-t border-line px-6 py-16 md:px-12 md:py-20">
         <div class="mx-auto max-w-3xl">
           <Eyebrow>Ce qui a changé</Eyebrow>
-          <p class="text-xl font-light leading-relaxed text-white/85">{d.bilan}</p>
+          <p class="text-xl font-light leading-relaxed text-ink-2">{d.bilan}</p>
         </div>
       </section>
     )}
 
     {hasBody && (
-      <article class="border-t border-white/10 px-6 py-16 md:px-12 md:py-20">
+      <article class="border-t border-line px-6 py-16 md:px-12 md:py-20">
         <div class="prose-artefact mx-auto max-w-3xl">
           <Content />
         </div>
@@ -182,22 +182,22 @@ const jsonLd = [
     )}
 
     {d.visuel && (
-      <section class="border-t border-white/10 px-6 py-12 md:px-12">
+      <section class="border-t border-line px-6 py-12 md:px-12">
         <figure class="mx-auto max-w-3xl">
-          <figcaption class="mb-4 text-[11px] uppercase tracking-[0.2em] text-white/50">
+          <figcaption class="mb-4 text-[11px] uppercase tracking-[0.2em] text-ink-3">
             Un aperçu — pour la preuve, pas pour la démonstration
           </figcaption>
-          <div class="overflow-hidden rounded-xl border border-white/10">
+          <div class="overflow-hidden rounded-xl border border-line">
             {d.demo ? (
               <a href={d.demo.url} target="_blank" rel="noopener" class="block">
-                <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-75 transition-opacity hover:opacity-100" />
+                <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-90 transition-opacity hover:opacity-100" />
               </a>
             ) : (
-              <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-75" />
+              <img src={d.visuel.src} alt={d.visuel.alt} width="1200" height="675" loading="lazy" class="w-full opacity-90" />
             )}
           </div>
           {d.demo && (
-            <a href={d.demo.url} target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-1.5 text-[13px] text-white/50 hover:text-lime">
+            <a href={d.demo.url} target="_blank" rel="noopener" class="mt-3 inline-flex items-center gap-1.5 text-[13px] text-ink-3 hover:text-lime">
               {d.demo.label} <span>→</span>
             </a>
           )}
@@ -205,9 +205,9 @@ const jsonLd = [
       </section>
     )}
 
-    <section class="border-t border-white/10 px-6 py-16 md:px-12">
+    <section class="border-t border-line px-6 py-16 md:px-12">
       <div class="mx-auto flex max-w-3xl flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-        <p class="max-w-md text-lg leading-relaxed text-white/75">
+        <p class="max-w-md text-lg leading-relaxed text-ink-2">
           Un contexte proche du vôtre ? <em class="text-lime">Parlons-en 30 minutes.</em>
         </p>
         <CtaButton>Réserver un audit</CtaButton>

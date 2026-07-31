@@ -74,7 +74,7 @@ const AGENTS = [
 ---
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/experience`} jsonLd={jsonLd}>
-  <main id="xp" class="flex h-[100svh] flex-col overflow-hidden bg-background text-foreground">
+  <main id="xp" class="flex h-[100svh] flex-col overflow-hidden bg-foreground text-white">
     <!-- ═════════ EN-TÊTE DU PARCOURS ═════════ -->
     <nav class="z-20 flex shrink-0 items-center justify-between gap-3 border-b border-white/8 px-5 py-4 md:px-10">
       <div class="flex items-center gap-3">
@@ -110,7 +110,7 @@ const AGENTS = [
       <!-- ——— VUE ACCUEIL ——— -->
       <section data-vue="accueil" class="xp-vue" aria-label="Étape 1 : votre agence">
         <div id="xp-hero" class="relative isolate flex min-h-full flex-col justify-center overflow-hidden px-6 py-10 md:px-12">
-          <div class="pointer-events-none absolute inset-0 -z-30" style="background: radial-gradient(820px 520px at 22% 12%, oklch(0.92 0.21 125 / 0.08), transparent 68%);" aria-hidden="true"></div>
+          <div class="pointer-events-none absolute inset-0 -z-30" style="background: radial-gradient(820px 520px at 22% 12%, rgba(108, 76, 241, 0.08), transparent 68%);" aria-hidden="true"></div>
           <div class="xp-depth pointer-events-none absolute -left-44 top-1/4 -z-20 h-[520px] w-[520px] rounded-full bg-lime/12 blur-3xl" data-depth="0.35" aria-hidden="true"></div>
           <div class="xp-depth pointer-events-none absolute -right-36 bottom-8 -z-20 h-[420px] w-[420px] rounded-full bg-lime/[0.07] blur-3xl" data-depth="0.55" aria-hidden="true"></div>
 
@@ -147,7 +147,7 @@ const AGENTS = [
                 autocapitalize="off"
                 spellcheck="false"
               />
-              <button type="submit" id="xp-url-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+              <button type="submit" id="xp-url-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
                 Cartographier mon agence
               </button>
             </form>
@@ -216,9 +216,9 @@ const AGENTS = [
           </div>
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
-            <button type="button" id="xp-vers-projet" class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
+            <button type="button" id="xp-vers-projet" class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-white transition-all hover:bg-lime/90">
               Mener un projet de A à Z
-              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
+              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/25 transition-transform group-hover:translate-x-0.5">→</span>
             </button>
             <button type="button" id="xp-vers-agents" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
               Ou tester un agent sur un client
@@ -253,8 +253,8 @@ const AGENTS = [
           </div>
 
           <div class="mt-6 flex flex-wrap items-center gap-3">
-            <button type="button" data-open-booking class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-all hover:bg-lime/90">
-              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/10 transition-transform group-hover:translate-x-0.5">→</span>
+            <button type="button" data-open-booking class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-white transition-all hover:bg-lime/90">
+              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/25 transition-transform group-hover:translate-x-0.5">→</span>
               Installer ces agents chez vous — audit 30 min
             </button>
           </div>
@@ -279,7 +279,7 @@ const AGENTS = [
               class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime"
               autocomplete="url" autocapitalize="off" spellcheck="false"
             />
-            <button type="submit" id="xp-essai-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
+            <button type="submit" id="xp-essai-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
               Lancer l'agent
             </button>
           </form>
@@ -302,7 +302,7 @@ const AGENTS = [
               </div>
               <div id="xp-essai-rebonds" class="mt-5 hidden flex-wrap gap-2 border-t border-white/10 pt-4"></div>
               <div id="xp-essai-suite" class="mt-6 hidden flex-wrap gap-3">
-                <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90">
+                <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-lime/90">
                   Installer cet agent chez vous — audit 30 min →
                 </button>
                 <button type="button" id="xp-essai-retour" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
@@ -373,7 +373,7 @@ const AGENTS = [
                 class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
                 autocomplete="url" autocapitalize="off" spellcheck="false"
               />
-              <button type="submit" id="xp-projet-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-black transition-colors hover:bg-lime/90 disabled:cursor-not-allowed disabled:opacity-40" disabled>
+              <button type="submit" id="xp-projet-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-lime/90 disabled:cursor-not-allowed disabled:opacity-40" disabled>
                 Lancer le projet
               </button>
             </div>
@@ -436,9 +436,9 @@ const AGENTS = [
     .xp-vue-entree { animation: xp-vue-in .4s cubic-bezier(.2,.7,.2,1); }
     @keyframes xp-vue-in { from { opacity: 0; transform: translateY(20px); } }
 
-    .xp-pas-actif .xp-pas-point { background: oklch(0.92 0.21 125); box-shadow: 0 0 8px oklch(0.92 0.21 125 / .7); }
-    .xp-pas-actif .xp-pas-label { color: oklch(0.92 0.21 125); }
-    .xp-pas-fait .xp-pas-point { background: oklch(0.92 0.21 125 / .5); }
+    .xp-pas-actif .xp-pas-point { background: rgb(108, 76, 241); box-shadow: 0 0 8px rgba(108, 76, 241, .7); }
+    .xp-pas-actif .xp-pas-label { color: rgb(108, 76, 241); }
+    .xp-pas-fait .xp-pas-point { background: rgba(108, 76, 241, .5); }
 
     .xp-word { display: inline-block; transform: translateY(110%); animation: xp-rise .9s cubic-bezier(.2,.7,.2,1) forwards; }
     .xp-line:nth-child(2) .xp-word { animation-delay: .18s; }
@@ -450,48 +450,48 @@ const AGENTS = [
     /* Étapes du pipeline : révélées une à une */
     .xp-etape { opacity: 0; transform: translateY(10px); transition: opacity .5s ease, transform .5s ease, border-color .3s ease; }
     .xp-etape-on { opacity: 1; transform: none; }
-    .xp-etape-actif { border-color: oklch(0.92 0.21 125 / .55); box-shadow: 0 0 0 1px oklch(0.92 0.21 125 / .25); }
+    .xp-etape-actif { border-color: rgba(108, 76, 241, .55); box-shadow: 0 0 0 1px rgba(108, 76, 241, .25); }
 
     /* Stepper du projet A→Z */
-    .xp-step-actif { border-color: oklch(0.92 0.21 125 / .55); color: oklch(0.985 0 0); }
-    .xp-step-actif .xp-step-num { border-color: oklch(0.92 0.21 125); background: oklch(0.92 0.21 125); color: #0a0a0a; }
+    .xp-step-actif { border-color: rgba(108, 76, 241, .55); color: oklch(0.985 0 0); }
+    .xp-step-actif .xp-step-num { border-color: rgb(108, 76, 241); background: rgb(108, 76, 241); color: #FBFBFC; }
     .xp-step-fait { color: oklch(0.8 0 0); }
-    .xp-step-fait .xp-step-num { border-color: oklch(0.92 0.21 125 / .5); color: oklch(0.92 0.21 125); }
+    .xp-step-fait .xp-step-num { border-color: rgba(108, 76, 241, .5); color: rgb(108, 76, 241); }
 
     .xp-opt { cursor: pointer; border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .55rem 1.1rem; font-size: 14px; color: oklch(1 0 0 / 80%); transition: border-color .2s, color .2s, background .2s, transform .2s; }
-    .xp-opt:hover { border-color: oklch(0.92 0.21 125 / .6); color: oklch(0.92 0.21 125); transform: translateY(-1px); }
-    .xp-opt-actif { border-color: oklch(0.92 0.21 125); background: oklch(0.92 0.21 125 / .12); color: oklch(0.92 0.21 125); }
+    .xp-opt:hover { border-color: rgba(108, 76, 241, .6); color: rgb(108, 76, 241); transform: translateY(-1px); }
+    .xp-opt-actif { border-color: rgb(108, 76, 241); background: rgba(108, 76, 241, .12); color: rgb(108, 76, 241); }
 
     /* ——— Primitives BLOCS : les sorties IA se rendent en blocs, pas en prose ——— */
     .xp-bloc { opacity: 0; transform: translateY(8px); transition: opacity .45s ease, transform .45s ease; }
     .xp-bloc-on { opacity: 1; transform: none; }
-    .xp-b-titre { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: oklch(0.92 0.21 125); padding-top: .35rem; }
+    .xp-b-titre { font-size: 11px; text-transform: uppercase; letter-spacing: .2em; color: rgb(108, 76, 241); padding-top: .35rem; }
     .xp-b-p { font-size: 15px; line-height: 1.65; color: oklch(1 0 0 / .85); }
     .xp-b-carte { display: flex; gap: .8rem; align-items: flex-start; border: 1px solid oklch(1 0 0 / 12%); border-radius: 1rem; background: oklch(1 0 0 / .02); padding: .85rem 1rem; }
-    .xp-b-carte svg { flex: none; width: 20px; height: 20px; color: oklch(0.92 0.21 125); margin-top: .1rem; }
+    .xp-b-carte svg { flex: none; width: 20px; height: 20px; color: rgb(108, 76, 241); margin-top: .1rem; }
     .xp-b-puce { display: flex; gap: .6rem; align-items: baseline; font-size: 14px; line-height: 1.55; color: oklch(1 0 0 / .75); }
-    .xp-b-puce::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 999px; background: oklch(0.92 0.21 125); transform: translateY(-2px); }
+    .xp-b-puce::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 999px; background: rgb(108, 76, 241); transform: translateY(-2px); }
     .xp-b-niveau { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: .25rem .8rem; align-items: center; border: 1px solid oklch(1 0 0 / 12%); border-radius: 1rem; padding: .7rem 1rem; background: oklch(1 0 0 / .02); }
     .xp-b-jauge { display: inline-flex; gap: 3px; }
     .xp-b-jauge i { width: 14px; height: 5px; border-radius: 3px; background: oklch(1 0 0 / .14); }
-    .xp-b-jauge i.on { background: oklch(0.92 0.21 125); }
+    .xp-b-jauge i.on { background: rgb(108, 76, 241); }
     .xp-b-flux { display: flex; flex-wrap: wrap; gap: .4rem; align-items: center; font-size: 13px; }
     .xp-b-flux span { border: 1px solid oklch(1 0 0 / 15%); border-radius: 999px; padding: .3rem .8rem; color: oklch(1 0 0 / .8); }
-    .xp-b-flux i { color: oklch(0.92 0.21 125); font-style: normal; }
+    .xp-b-flux i { color: rgb(108, 76, 241); font-style: normal; }
     .xp-b-quads { display: grid; grid-template-columns: 1fr; gap: .6rem; }
     @media (min-width: 640px) { .xp-b-quads { grid-template-columns: 1fr 1fr; } }
     .xp-b-quad { border: 1px solid oklch(1 0 0 / 12%); border-radius: 1rem; padding: .8rem 1rem; background: oklch(1 0 0 / .02); }
-    .xp-b-quad .q-nom { font-size: 10px; text-transform: uppercase; letter-spacing: .18em; color: oklch(0.92 0.21 125); }
+    .xp-b-quad .q-nom { font-size: 10px; text-transform: uppercase; letter-spacing: .18em; color: rgb(108, 76, 241); }
     .xp-b-quad .q-constat { margin-top: .35rem; font-size: 13.5px; line-height: 1.5; color: oklch(1 0 0 / .82); }
-    .xp-b-quad .q-verbatim { margin-top: .45rem; font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 15px; color: oklch(0.92 0.21 125 / .9); }
-    .xp-rebond { cursor: pointer; display: inline-flex; align-items: center; gap: .45rem; border: 1px solid oklch(0.92 0.21 125 / .4); border-radius: 999px; padding: .5rem 1rem; font-size: 13.5px; color: oklch(0.92 0.21 125); background: transparent; transition: background .2s, transform .2s; }
-    .xp-rebond:hover { background: oklch(0.92 0.21 125 / .1); transform: translateY(-1px); }
+    .xp-b-quad .q-verbatim { margin-top: .45rem; font-family: "Instrument Serif", Georgia, serif; font-style: italic; font-size: 15px; color: rgba(108, 76, 241, .9); }
+    .xp-rebond { cursor: pointer; display: inline-flex; align-items: center; gap: .45rem; border: 1px solid rgba(108, 76, 241, .4); border-radius: 999px; padding: .5rem 1rem; font-size: 13.5px; color: rgb(108, 76, 241); background: transparent; transition: background .2s, transform .2s; }
+    .xp-rebond:hover { background: rgba(108, 76, 241, .1); transform: translateY(-1px); }
     .xp-slide-out { animation: xp-out .28s ease forwards; }
     .xp-slide-in { animation: xp-enter .34s cubic-bezier(.2,.7,.2,1); }
     @keyframes xp-out { to { opacity: 0; transform: translateX(-16px); } }
     @keyframes xp-enter { from { opacity: 0; transform: translateX(20px); } }
 
-    .xp-encours::after { content: "▋"; color: oklch(0.92 0.21 125); animation: xp-clignote 1s steps(2) infinite; margin-left: 1px; }
+    .xp-encours::after { content: "▋"; color: rgb(108, 76, 241); animation: xp-clignote 1s steps(2) infinite; margin-left: 1px; }
     @keyframes xp-clignote { 50% { opacity: 0; } }
 
     @media (prefers-reduced-motion: reduce) {
@@ -1153,7 +1153,7 @@ const AGENTS = [
           intro.querySelector("[data-boutons]") as HTMLElement,
           rebonds, secours,
           (r) => avancer(r.consigne),
-          [{ libelle: "Continuer tel quel →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black hover:bg-lime/90", action: () => avancer("") }],
+          [{ libelle: "Continuer tel quel →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-white hover:bg-lime/90", action: () => avancer("") }],
         );
       } else {
         projAxes.push(produit);
@@ -1172,7 +1172,7 @@ const AGENTS = [
           porte.remove();
           lancerEtapeProjet(true, r.consigne);
         }, [
-          { libelle: "Installer cette chaîne chez vous — audit 30 min →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-black transition-colors hover:bg-lime/90", action: () => (document.querySelector("[data-open-booking]") as HTMLElement)?.click() },
+          { libelle: "Installer cette chaîne chez vous — audit 30 min →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-lime/90", action: () => (document.querySelector("[data-open-booking]") as HTMLElement)?.click() },
           { libelle: "Nouveau projet", classe: "cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime", action: () => {
             projIndex = 0; projSorties.length = 0; projAxes = [];
             $("xp-projet-sorties").innerHTML = "";

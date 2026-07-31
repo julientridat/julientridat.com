@@ -8,20 +8,20 @@ const realisations = (await getCollection("realisations", ({ data }) => data.pub
   .slice(0, 3);
 ---
 
-<section id="registre" class="border-t border-white/10 px-6 py-24 md:px-12 md:py-32">
+<section id="registre" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
   <div class="mx-auto max-w-7xl">
     <div class="grid gap-10 md:grid-cols-2 md:items-end">
       <div>
         <Eyebrow>Cas clients</Eyebrow>
-        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em]">
+        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
           Des entreprises
           <br />
           <em class="text-lime">transformées.</em>
         </h2>
       </div>
-      <p class="max-w-md text-lg leading-relaxed text-white/75">
+      <p class="max-w-md text-lg leading-relaxed text-ink-2">
         À travers moi, chacune s'est dotée d'un moyen de production qu'elle n'avait pas.{" "}
-        <strong class="font-medium text-white">L'enjeu, le système déployé, la transformation — vérifiables.</strong>
+        <strong class="font-medium text-foreground">L'enjeu, le système déployé, la transformation — vérifiables.</strong>
       </p>
     </div>
 
