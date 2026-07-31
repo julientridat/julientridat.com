@@ -72,14 +72,16 @@ const clients = [
   <!-- Voiles de lisibilité — clairs : on éclaircit la scène plutôt que l'assombrir.
        Allégés : l'image doit rester lisible, pas juste deviner. -->
   <div class="absolute inset-0 -z-10 bg-background/22"></div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-background/38 via-background/10 to-background/50"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-background/40 via-background/28 to-background/55"></div>
 
   <Nav home />
 
   <!-- Rythme vertical indexé sur la hauteur d'écran : le bloc tient toujours -->
   <div class="relative mx-auto flex h-full max-w-7xl flex-col px-6 pb-[clamp(1.5rem,4vh,3.5rem)] pt-[clamp(5.5rem,13vh,10rem)] md:px-12">
     <div class="flex flex-1 flex-col justify-center">
-      <div class="mb-[clamp(0.75rem,2.2vh,1.5rem)] inline-flex w-fit items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm">
+      <!-- max-w réserve le coin haut-droit pour le sélecteur Vidéo/3D en mobile,
+           où le badge occuperait sinon toute la largeur et passerait dessous. -->
+      <div class="mb-[clamp(0.75rem,2.2vh,1.5rem)] inline-flex w-fit max-w-[70%] items-center gap-2 rounded-full border border-lime/40 bg-lime/10 px-4 py-1.5 text-[11px] font-medium uppercase tracking-[0.18em] text-lime backdrop-blur-sm sm:max-w-none">
         <span>Consultant IA — Bordeaux &amp; Grand Sud Ouest</span>
       </div>
       <h1 class="max-w-[1100px] text-[clamp(2.5rem,min(8.2vw,10.2vh),6.5rem)] font-light leading-[0.95] tracking-[-0.04em] text-foreground">
@@ -134,9 +136,11 @@ const clients = [
   </div>
 
   {comparateur && (
-    <div class="absolute right-5 top-24 z-20 hidden items-center gap-1 rounded-full border border-border bg-card/90 p-1 backdrop-blur-sm sm:flex">
-      <button type="button" data-hc-mode="video" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-ink-3 transition-colors">Vidéo</button>
-      <button type="button" data-hc-mode="scene" class="hc-tab cursor-pointer rounded-full px-3.5 py-1.5 text-[12px] text-ink-3 transition-colors">3D</button>
+    <!-- Empilé verticalement sous ~640px : plus étroit, ça évite de chevaucher
+         le badge « Consultant IA » qui peut passer sur deux lignes en mobile. -->
+    <div class="absolute right-3 top-20 z-20 flex flex-col items-stretch gap-1 rounded-2xl border border-border bg-card/90 p-1 backdrop-blur-sm sm:right-5 sm:top-24 sm:flex-row sm:items-center sm:rounded-full">
+      <button type="button" data-hc-mode="video" class="hc-tab cursor-pointer rounded-full px-3 py-1.5 text-[11px] text-ink-3 transition-colors sm:px-3.5 sm:text-[12px]">Vidéo</button>
+      <button type="button" data-hc-mode="scene" class="hc-tab cursor-pointer rounded-full px-3 py-1.5 text-[11px] text-ink-3 transition-colors sm:px-3.5 sm:text-[12px]">3D</button>
     </div>
   )}
 </section>
