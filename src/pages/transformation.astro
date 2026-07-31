@@ -6,75 +6,93 @@ import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
-/* Ordres de grandeur démontrés en formation sur des cas réels — mêmes chiffres que
-   la section Gains de la page d'accueil. Aucun n'est inventé, aucun n'est une mesure
-   client par client. */
-const gains = [
-  { tache: "Une proposition commerciale", avant: "2 à 3 h", apres: "30 min", ratio: 0.17 },
-  { tache: "Un email de prospection ciblé", avant: "45 min", apres: "4 min", ratio: 0.09 },
-  { tache: "Un compte-rendu de visite", avant: "30 min", apres: "30 s", ratio: 0.017 },
+/* Faits tirés de missions réelles en agence — voir les fiches liées. Rien d'inventé. */
+const faits = [
+  {
+    chiffre: "1 h 30",
+    unite: "par jour et par personne",
+    detail: "récupérées dans une agence de communication santé de 16 personnes, sur la production de contenus sourcés",
+    href: "/realisations/formation-ia-agence-sante",
+  },
+  {
+    chiffre: "4",
+    unite: "assistants métier",
+    detail: "livrés à une agence créative de 40 talents, prêts à produire dès le lendemain, pôle commercial et pôle création",
+    href: "/realisations/agents-agence-creative",
+  },
+  {
+    chiffre: "14",
+    unite: "personnes autonomes",
+    detail: "l'équipe texte entière montée en autonomie, avec 3 assistants qui tournent toujours après mon départ",
+    href: "/realisations/formation-ia-agence-sante",
+  },
+];
+
+/* Assistants réellement installés en agence (cas agents-agence-creative et
+   formation-ia-agence-sante). Ce sont des livrables, pas des promesses. */
+const assistants = [
+  { nom: "Préparation de rendez-vous", quoi: "La fiche du prospect, ses angles et ses points d'attention, prêtes avant le rendez-vous." },
+  { nom: "Compte rendu & brief créa", quoi: "La réunion client devient un brief créatif exploitable, au format de l'agence." },
+  { nom: "Veille client", quoi: "Les mouvements du marché de l'annonceur, résumés pour nourrir la recommandation." },
+  { nom: "Retours & passation", quoi: "Les retours client consolidés et transmis sans perte entre les pôles." },
 ];
 
 const etages = [
   {
     num: "01",
-    cle: "cadrer",
     titre: "Savoir où l'IA a sa place",
     texte:
-      "Cartographier les tâches réelles, chiffrer les priorités, trancher sur des faits. Avant d'engager le moindre budget.",
+      "Cartographier les tâches réelles de vos pôles, chiffrer les priorités, distinguer ce qui s'automatise de ce qui se juge. Avant d'acheter la moindre licence.",
     lien: "/realisations#cadrer",
   },
   {
     num: "02",
-    cle: "former",
-    titre: "Rendre les équipes autonomes",
+    titre: "Outiller les pôles, pas l'agence en général",
     texte:
-      "Des sessions bâties sur vos documents et vos métiers. Ce qui reste après mon départ compte plus que la journée elle-même.",
+      "Le commercial et la création n'ont pas les mêmes gestes. Chaque pôle repart avec ses assistants, calibrés sur le style de la maison.",
     lien: "/realisations#former",
   },
   {
     num: "03",
-    cle: "produire",
-    titre: "Installer les moyens de production",
+    titre: "Encoder ce qui vous distingue",
     texte:
-      "Votre charte et vos méthodes encodées dans des assistants qui produisent à la demande, conformes à chaque fois.",
+      "Votre charte, vos formats, vos autorités de référence, votre ton. C'est ce qui rend la production assistée conforme — et défendable devant l'annonceur.",
     lien: "/realisations#produire",
   },
   {
     num: "04",
-    cle: "piloter",
-    titre: "Garder la main",
+    titre: "Vendre ce que vous ne pouviez pas vendre",
     texte:
-      "La méthode transmise, les garde-fous posés, les décisions documentées. Vous rejouez le système sans moi.",
+      "Une fois la chaîne en place, des offres deviennent rentables qui ne l'étaient pas : abonnements de contenus, chartes exécutables, ateliers de mise en main.",
     lien: "/realisations",
   },
 ];
 
 const temps = [
-  { t: "Cadrage", d: "Ce qui vous coûte du temps, en heures réelles — pas en promesses." },
-  { t: "Construction", d: "Les assistants sont bâtis sur vos documents, vos règles, votre charte." },
-  { t: "Déploiement", d: "Installés dans l'entreprise, essayés en conditions réelles, corrigés." },
-  { t: "Transmission", d: "L'équipe pilote seule. La méthode reste, même quand je pars." },
+  { t: "Cadrage", d: "Vos vraies journées, pôle par pôle. Ce qui coûte du temps, en heures — pas en promesses." },
+  { t: "Construction", d: "Les assistants sont bâtis sur vos dossiers, vos formats, votre charte." },
+  { t: "Déploiement", d: "Installés dans l'agence, essayés sur de vrais projets, corrigés." },
+  { t: "Transmission", d: "Les pôles pilotent seuls. Les assistants tournent après mon départ." },
 ];
 
 const preuves = [
   {
+    href: "/realisations/agents-agence-creative",
+    tag: "Agence créative · 40 talents",
+    titre: "Deux ans de formations, et toujours rien qui tournait au quotidien",
+    ligne: "Quatre assistants métier livrés, prêts à produire dès le lendemain — et une règle de confidentialité défendable face aux annonceurs.",
+  },
+  {
+    href: "/realisations/formation-ia-agence-sante",
+    tag: "Agence santé · 16 personnes",
+    titre: "Chaque contenu médical sourcé à la main, tout à renuméroter au moindre changement",
+    ligne: "Premier jet déjà sourcé sur leurs propres autorités de référence. Une heure trente récupérée par jour et par personne.",
+  },
+  {
     href: "/realisations/cartographie-ia-agence",
-    tag: "Cadrer",
-    titre: "Une agence qui sait enfin où l'IA lui fait gagner du temps",
-    ligne: "Les tâches passées au crible, les priorités chiffrées.",
-  },
-  {
-    href: "/realisations/design-system-franchise-fitness",
-    tag: "Produire",
-    titre: "Un réseau de clubs qui produit ses visuels de marque en autonomie",
-    ligne: "La charte nationale encodée : plus de prestataire pour un visuel courant.",
-  },
-  {
-    href: "/realisations/formation-groupe-travel-retail",
-    tag: "Former",
-    titre: "Un groupe qui rend enfin productif l'outil IA qu'il payait déjà",
-    ligne: "L'abonnement était là. L'usage, non.",
+    tag: "Agence de communication",
+    titre: "L'envie de passer à l'IA, mais aucune boussole pour investir",
+    ligne: "Ce qui s'automatise, ce qui se juge, et dans quel ordre. Une base de décision que l'agence tient elle-même.",
   },
 ];
 
@@ -87,19 +105,23 @@ const reperes = [
   { x: 62, y: 91, label: "Les fondations", detail: "La méthode qui reste" },
 ];
 
-const title = "La transformation IA d'une entreprise, montrée en direct | Julien Tridat";
+const title = "Quelle agence pourriez-vous devenir avec l'IA générative ? | Julien Tridat";
 const description =
-  "Ce qui change quand on installe des systèmes de production IA dans une entreprise : la même maison, une autre façon de produire. Démonstration animée, chiffres réels, cas documentés.";
+  "Donnez l'adresse de votre agence : l'analyse lit votre site et vous montre le type d'agence que vous pourriez devenir, et les offres que vous pourriez vendre en exploitant l'IA générative. Cas d'agences documentés.";
 
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "WebPage",
-    name: "La transformation IA d'une entreprise, montrée en direct",
+    name: "Quelle agence pourriez-vous devenir avec l'IA générative ?",
     description,
     url: `${SITE.url}/transformation`,
     author: { "@id": `${SITE.url}/#julien-tridat` },
     primaryImageOfPage: `${SITE.url}/scene/agence-apres.webp`,
+    audience: {
+      "@type": "Audience",
+      audienceType: "Agences de communication, de publicité, de design, studios créatifs",
+    },
   },
 ];
 ---
@@ -161,23 +183,31 @@ const jsonLd = [
         <div class="tf-texte">
           <p class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-violet-soft">
             <span class="h-px w-6 bg-violet-soft"></span>
-            Julien Tridat — systèmes de production IA
+            Pour les agences
           </p>
           <h1 class="tf-h1">
-            Votre entreprise ne change pas d'outils.<br />
+            Votre agence ne change pas d'outils.<br />
             <em class="text-violet-soft">Elle change de forme.</em>
           </h1>
           <p class="tf-sub">
-            J'installe des moyens de production IA dans les PME, les agences et les organismes de
-            formation. Les murs ne bougent pas : c'est la façon dont le travail sort qui change.
+            L'IA générative ne remplace pas vos créatifs : elle industrialise ce qui les épuise et
+            ouvre des offres que vous ne pouvez pas vendre aujourd'hui, faute de temps.
           </p>
           <div class="tf-cta">
-            <CtaButton onDark>Diagnostiquer mon entreprise</CtaButton>
             <a
-              href="/realisations"
+              href="#tester"
+              class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-white transition-all duration-200 hover:-translate-y-0.5 hover:bg-lime/90"
+            >
+              <span class="grid h-7 w-7 place-items-center rounded-full bg-black/25 text-base transition-transform group-hover:translate-y-0.5">
+                ↓
+              </span>
+              <span>Tester mon agence</span>
+            </a>
+            <a
+              href="#preuves"
               class="inline-flex items-center gap-2 rounded-full border border-white/20 px-6 py-3.5 text-[15px] text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
             >
-              Voir les transformations
+              Voir des agences transformées
             </a>
           </div>
         </div>
@@ -201,40 +231,172 @@ const jsonLd = [
       </p>
     </header>
 
-    <!-- ══════════ CE QUI A CHANGÉ À L'INTÉRIEUR ══════════ -->
-    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
-      <div class="mx-auto max-w-7xl">
-        <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)] lg:gap-20">
-          <div>
-            <Eyebrow>Ce qui a changé à l'intérieur</Eyebrow>
-            <h2 class="max-w-lg text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
-              Le bâtiment est le même. <em class="text-lime">Le temps de sortie, non.</em>
-            </h2>
-            <p class="mt-6 max-w-md text-[15px] leading-relaxed text-ink-2">
-              Trois tâches qui reviennent tous les jours dans une équipe commerciale,
-              chronométrées avant et après en formation, sur des cas réels. Des ordres de
-              grandeur — le gain exact chez vous, c'est le diagnostic qui le mesure.
-            </p>
+    <!-- ══════════ L'ESSAI : TESTEZ VOTRE AGENCE ══════════ -->
+    <!-- Registre volontairement sombre : démo IA en direct, continuité visuelle avec le hero. -->
+    <section id="tester" class="relative scroll-mt-6 overflow-hidden border-t border-white/10 bg-foreground px-6 py-20 text-white md:px-12 md:py-28">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(900px 500px at 50% 0%, rgba(185,166,255,0.07), transparent 68%);"
+      >
+      </div>
+
+      <div class="mx-auto max-w-4xl text-center">
+        <p class="mb-6 inline-flex items-center justify-center gap-2 text-[11px] uppercase tracking-[0.22em] text-violet-soft">
+          <span class="h-px w-6 bg-violet-soft"></span>
+          L'essai — moins d'une minute
+        </p>
+        <h2 class="mx-auto max-w-3xl text-[clamp(2rem,4.4vw,3.4rem)] font-light leading-[1.06] tracking-[-0.03em]">
+          Quelle agence pourriez-vous <em class="text-violet-soft">devenir ?</em>
+        </h2>
+        <p class="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-white/65">
+          Donnez l'adresse de votre site. Je lis vos pages — vos métiers, vos clients, votre ton —
+          et je vous montre le type d'agence que vous pourriez devenir, avec les offres que vous
+          pourriez vendre en exploitant vraiment l'IA générative.
+        </p>
+
+        <form class="ag-form" id="ag-form" novalidate>
+          <div class="ag-champ">
+            <span class="ag-prefixe" aria-hidden="true">https://</span>
+            <input
+              type="text"
+              id="ag-url"
+              name="url"
+              inputmode="url"
+              autocomplete="url"
+              spellcheck="false"
+              placeholder="votre-agence.fr"
+              aria-label="Adresse du site de votre agence"
+              required
+            />
+          </div>
+          <button type="submit" id="ag-go" class="ag-go">
+            <span class="ag-go-txt">Analyser mon agence</span>
+            <span class="ag-go-spin" aria-hidden="true"></span>
+          </button>
+        </form>
+        <p class="ag-note" id="ag-note">
+          Lecture publique de votre site, comme le ferait un moteur de recherche. Rien n'est
+          enregistré, aucune adresse email demandée.
+        </p>
+      </div>
+
+      <!-- déroulé de l'analyse -->
+      <div class="ag-etapes" id="ag-etapes" aria-live="polite"></div>
+
+      <!-- résultat -->
+      <div class="ag-res" id="ag-res" hidden>
+        <div class="ag-bascule">
+          <article class="ag-volet ag-volet-av">
+            <span class="ag-volet-tag">Votre marque aujourd'hui</span>
+            <p class="ag-actuel" id="ag-actuel"></p>
+            <p class="ag-preuve" id="ag-preuve"></p>
+          </article>
+
+          <div class="ag-fleche" aria-hidden="true">
+            <span></span><em>devient</em><span></span>
           </div>
 
-          <div class="tf-gains">
-            {gains.map((g) => (
-              <div class="tf-gain" style={`--r:${g.ratio}`}>
-                <div class="tf-gain-tete">
-                  <span class="tf-gain-tache">{g.tache}</span>
-                  <span class="tf-gain-apres">{g.apres}</span>
-                </div>
-                <div class="tf-gain-piste">
-                  <span class="tf-gain-part"></span>
-                  <span class="tf-gain-av">{g.avant} avant</span>
-                </div>
+          <article class="ag-volet ag-volet-ap">
+            <span class="ag-volet-tag">L'agence que vous pourriez devenir</span>
+            <h3 class="ag-devenir" id="ag-devenir"></h3>
+            <p class="ag-devenir-txt" id="ag-devenir-txt"></p>
+            <p class="ag-signature" id="ag-signature"></p>
+          </article>
+        </div>
+
+        <div class="ag-tension-bloc" id="ag-tension-bloc" hidden>
+          <div class="ag-tension">
+            <span class="ag-mini-tag">Ce qui coince aujourd'hui</span>
+            <p id="ag-tension"></p>
+          </div>
+          <div class="ag-terrain">
+            <span class="ag-mini-tag">Le terrain que vous occupez alors</span>
+            <p id="ag-terrain"></p>
+          </div>
+        </div>
+
+        <div class="ag-offres-bloc" id="ag-offres-bloc" hidden>
+          <h3 class="ag-sous-titre">Ce que vous pourriez vendre <span>en plus</span></h3>
+          <div class="ag-offres" id="ag-offres"></div>
+        </div>
+
+        <div class="ag-chaine-bloc" id="ag-chaine-bloc" hidden>
+          <h3 class="ag-sous-titre">Votre nouvelle chaîne de production</h3>
+          <ol class="ag-chaine" id="ag-chaine"></ol>
+        </div>
+
+        <p class="ag-garde" id="ag-garde" hidden></p>
+
+        <div class="ag-suite" id="ag-suite" hidden>
+          <p>
+            Ce portrait est une hypothèse produite à partir de votre site public — pas un audit.
+            La version sérieuse dure trente minutes et se fait avec vous.
+          </p>
+          <div class="ag-suite-cta">
+            <CtaButton onDark>En parler trente minutes</CtaButton>
+            <button type="button" class="ag-refaire" id="ag-refaire">Tester une autre agence</button>
+          </div>
+        </div>
+      </div>
+
+      <p class="ag-err" id="ag-err" hidden></p>
+
+      <!-- repli : certains sites d'agence sont illisibles (tout en JavaScript, ou protégés).
+           Plutôt que de laisser le visiteur dans le mur, on lui propose de décrire son agence. -->
+      <form class="ag-repli" id="ag-repli" hidden>
+        <label for="ag-desc">Décrivez votre agence en une phrase, je pars de là.</label>
+        <textarea
+          id="ag-desc"
+          rows="2"
+          maxlength="400"
+          placeholder="Ex. : agence de communication de 12 personnes à Bordeaux, identité de marque et campagnes pour des PME industrielles."
+        ></textarea>
+        <button type="submit" class="ag-go ag-go-repli">
+          <span class="ag-go-txt">Faire le portrait quand même</span>
+          <span class="ag-go-spin" aria-hidden="true"></span>
+        </button>
+      </form>
+    </section>
+
+    <!-- ══════════ CE QUE ÇA DONNE DANS UNE AGENCE ══════════ -->
+    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Ce que ça donne dans une agence</Eyebrow>
+        <h2 class="max-w-3xl text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
+          Les murs ne bougent pas. <em class="text-lime">La production, si.</em>
+        </h2>
+        <p class="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-2">
+          Trois faits tirés de missions réelles en agence. Chacun renvoie à sa fiche — clients
+          anonymisés, rien d'inventé.
+        </p>
+
+        <div class="mt-12 grid gap-5 md:grid-cols-3">
+          {faits.map((f) => (
+            <a href={f.href} class="tf-fait group">
+              <span class="tf-fait-chiffre">{f.chiffre}</span>
+              <span class="tf-fait-unite">{f.unite}</span>
+              <p class="tf-fait-detail">{f.detail}</p>
+              <span class="tf-etage-lien">La fiche <span class="tf-fleche">→</span></span>
+            </a>
+          ))}
+        </div>
+
+        <div class="mt-14 border-t border-line pt-12">
+          <h3 class="text-[15px] font-medium uppercase tracking-[0.14em] text-ink-3">
+            Les assistants qu'on installe dans une agence
+          </h3>
+          <div class="mt-7 grid gap-x-10 gap-y-6 sm:grid-cols-2 lg:grid-cols-4">
+            {assistants.map((a) => (
+              <div class="tf-assist">
+                <h4 class="text-[15px] font-medium text-foreground">{a.nom}</h4>
+                <p class="mt-2 text-[14px] leading-relaxed text-ink-2">{a.quoi}</p>
               </div>
             ))}
-            <p class="mt-7 text-[13px] leading-relaxed text-ink-3">
-              Soit près d'<strong class="font-medium text-ink-2">une heure et demie rendue
-              chaque jour</strong> à un commercial — sur des tâches qu'il faisait déjà, autrement.
-            </p>
           </div>
+          <p class="mt-7 text-[13px] leading-relaxed text-ink-3">
+            Ceux-là ont été livrés à une agence créative de quarante talents. Les vôtres seront
+            différents — ils dépendent de vos pôles et de vos dossiers.
+          </p>
         </div>
       </div>
     </section>
@@ -294,16 +456,16 @@ const jsonLd = [
     </section>
 
     <!-- ══════════ PREUVES ══════════ -->
-    <section class="border-t border-line px-6 py-20 md:px-12 md:py-28">
+    <section id="preuves" class="scroll-mt-6 border-t border-line px-6 py-20 md:px-12 md:py-28">
       <div class="mx-auto max-w-7xl">
         <div class="flex flex-wrap items-end justify-between gap-6">
           <div>
-            <Eyebrow>Des maisons déjà transformées</Eyebrow>
+            <Eyebrow>Des agences déjà transformées</Eyebrow>
             <h2 class="max-w-2xl text-[clamp(2rem,4.2vw,3.2rem)] font-light leading-[1.06] tracking-[-0.03em]">
               Ce n'est pas une promesse. <em class="text-lime">C'est un registre.</em>
             </h2>
           </div>
-          <a href="/realisations" class="text-[15px] text-lime hover:underline">Les 12 cas →</a>
+          <a href="/realisations" class="text-[15px] text-lime hover:underline">Tous les cas →</a>
         </div>
 
         <div class="mt-12 grid gap-5 md:grid-cols-3">
@@ -728,49 +890,322 @@ const jsonLd = [
     .tf-indice-pt { animation: none; opacity: 0.7; }
   }
 
-  /* ════════ GAINS ════════ */
-  .tf-gains { display: flex; flex-direction: column; gap: 1.6rem; }
-  .tf-gain { border-top: 1px solid var(--line); padding-top: 1.1rem; }
-  .tf-gain-tete { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; }
-  .tf-gain-tache { font-size: 14px; color: var(--ink-2); }
-  .tf-gain-apres {
+  /* ════════ L'ESSAI ════════ */
+  .ag-form {
+    margin: 2.6rem auto 0;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.7rem;
+    max-width: 40rem;
+  }
+  .ag-champ {
+    flex: 1 1 20rem;
+    display: flex;
+    align-items: center;
+    gap: 0.1rem;
+    border-radius: 999px;
+    border: 1px solid oklch(1 0 0 / 0.16);
+    background: oklch(0.18 0 0 / 0.7);
+    padding: 0 0.4rem 0 1.15rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .ag-champ:focus-within {
+    border-color: var(--violet-soft);
+    box-shadow: 0 0 0 4px rgba(185, 166, 255, 0.12);
+  }
+  .ag-prefixe { font-size: 14px; color: oklch(1 0 0 / 0.35); }
+  .ag-champ input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    padding: 0.95rem 0.5rem;
+    font: inherit;
+    font-size: 15px;
+    color: #fff;
+    outline: none;
+  }
+  .ag-champ input::placeholder { color: oklch(1 0 0 / 0.3); }
+  .ag-go {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    cursor: pointer;
+    border: 0;
+    border-radius: 999px;
+    background: var(--lime);
+    padding: 0.95rem 1.6rem;
+    font: inherit;
+    font-size: 15px;
+    font-weight: 500;
+    color: #fff;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+  }
+  .ag-go:hover { background: rgba(108, 76, 241, 0.9); }
+  .ag-go[disabled] { opacity: 0.55; cursor: progress; }
+  .ag-go-spin { display: none; width: 14px; height: 14px; border-radius: 50%;
+    border: 2px solid rgba(255, 255, 255, 0.35); border-top-color: #fff; animation: ag-tourne 0.7s linear infinite; }
+  .ag-go[data-charge="1"] .ag-go-spin { display: block; }
+  @keyframes ag-tourne { to { transform: rotate(360deg); } }
+  .ag-note { margin: 1.1rem auto 0; max-width: 34rem; font-size: 12.5px; line-height: 1.6; color: oklch(1 0 0 / 0.42); }
+
+  .ag-etapes {
+    margin: 2.2rem auto 0;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    font-size: 13px;
+    color: oklch(1 0 0 / 0.5);
+  }
+  .ag-etapes:empty { display: none; }
+  .ag-etape { display: flex; align-items: center; gap: 0.65rem; animation: ag-entre 0.4s ease both; }
+  .ag-etape::before {
+    content: "";
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--violet-soft); flex: none;
+    box-shadow: 0 0 9px rgba(185, 166, 255, 0.6);
+  }
+  .ag-etape[data-fini="1"] { color: oklch(1 0 0 / 0.3); }
+  .ag-etape[data-fini="1"]::before { background: oklch(1 0 0 / 0.25); box-shadow: none; }
+  @keyframes ag-entre { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: none; } }
+
+  .ag-res { margin: 3rem auto 0; max-width: 72rem; }
+  .ag-bascule {
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  @media (min-width: 900px) { .ag-bascule { grid-template-columns: 1fr auto 1.25fr; gap: 1.4rem; } }
+  .ag-volet {
+    border-radius: 1.1rem;
+    border: 1px solid oklch(1 0 0 / 0.1);
+    padding: 1.7rem 1.6rem;
+    animation: ag-entre 0.5s ease both;
+  }
+  .ag-volet-av { background: oklch(0.19 0 0 / 0.55); }
+  .ag-volet-ap {
+    background:
+      radial-gradient(120% 130% at 100% 0%, oklch(0.35 0.09 300 / 0.5), transparent 62%),
+      oklch(0.19 0 0 / 0.72);
+    border-color: rgba(185, 166, 255, 0.3);
+  }
+  .ag-volet-tag {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.42);
+  }
+  .ag-volet-ap .ag-volet-tag { color: var(--violet-soft); }
+  .ag-actuel { margin-top: 0.9rem; font-size: 16px; line-height: 1.6; color: oklch(1 0 0 / 0.82); }
+  .ag-preuve {
+    margin-top: 0.9rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid oklch(1 0 0 / 0.08);
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: oklch(1 0 0 / 0.5);
+  }
+  .ag-preuve:empty { display: none; }
+  .ag-signature {
+    margin-top: 1.1rem;
+    padding-top: 0.9rem;
+    border-top: 1px solid rgba(185, 166, 255, 0.2);
     font-family: var(--font-serif);
     font-style: italic;
-    font-size: clamp(1.6rem, 2.8vw, 2.1rem);
-    color: var(--foreground);
-    font-variant-numeric: tabular-nums;
+    font-size: clamp(1rem, 1.6vw, 1.25rem);
+    line-height: 1.4;
+    color: var(--violet-soft);
   }
-  /* Une seule piste : le plein représente le temps d'avant, le segment violet
-     ce qu'il reste après. L'écart se lit d'un coup d'œil. */
-  .tf-gain-piste {
-    position: relative;
-    margin-top: 0.9rem;
-    height: 14px;
-    border-radius: 999px;
-    background: var(--secondary);
-    border: 1px solid var(--line);
-    overflow: hidden;
+  .ag-signature:empty { display: none; }
+
+  /* tension / terrain : le ressort de la vision */
+  .ag-tension-bloc {
+    margin-top: 1rem;
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 1fr;
   }
-  .tf-gain-part {
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 0;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--lime), oklch(0.72 0.23 300));
-    box-shadow: 0 0 20px rgba(108, 76, 241, 0.45);
-    transition: width 1.2s cubic-bezier(0.22, 1, 0.36, 1);
+  @media (min-width: 900px) { .ag-tension-bloc { grid-template-columns: 1fr 1fr; gap: 1.4rem; } }
+  .ag-tension, .ag-terrain {
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.09);
+    padding: 1.3rem 1.4rem;
+    animation: ag-entre 0.5s ease both;
   }
-  .tf-gain[data-vu="1"] .tf-gain-part { width: max(calc(var(--r) * 100%), 16px); }
-  .tf-gain-av {
-    position: absolute;
-    right: 11px;
-    top: 50%;
-    transform: translateY(-50%);
+  .ag-tension { border-left: 2px solid oklch(0.6 0.22 25 / 0.5); }
+  .ag-terrain { border-left: 2px solid rgba(185, 166, 255, 0.5); }
+  .ag-tension p, .ag-terrain p {
+    margin-top: 0.6rem;
+    font-size: 14.5px;
+    line-height: 1.6;
+    color: oklch(1 0 0 / 0.72);
+  }
+  .ag-mini-tag {
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.4);
+  }
+  .ag-offre-libere {
+    margin-top: 0.6rem;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(185, 166, 255, 0.75);
+  }
+  .ag-offre-libere b {
+    display: block;
+    font-weight: 400;
+    color: oklch(1 0 0 / 0.3);
     font-size: 10px;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    margin-bottom: 0.25rem;
+  }
+  .ag-devenir {
+    margin-top: 0.8rem;
+    font-size: clamp(1.5rem, 3vw, 2.3rem);
+    font-weight: 300;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: #fff;
+  }
+  .ag-devenir-txt { margin-top: 0.85rem; font-size: 15px; line-height: 1.6; color: oklch(1 0 0 / 0.7); }
+  .ag-fleche {
+    display: flex; align-items: center; justify-content: center; gap: 0.6rem;
+    color: oklch(1 0 0 / 0.35); font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  }
+  .ag-fleche span { display: block; height: 1px; width: 28px; background: linear-gradient(90deg, transparent, rgba(185, 166, 255, 0.6)); }
+  .ag-fleche span:last-child { background: linear-gradient(90deg, rgba(185, 166, 255, 0.6), transparent); }
+  .ag-fleche em { font-family: var(--font-serif); font-style: italic; text-transform: none; letter-spacing: 0; font-size: 14px; color: var(--violet-soft); }
+  @media (min-width: 900px) { .ag-fleche { flex-direction: column; } .ag-fleche span { width: 1px; height: 26px; background: linear-gradient(180deg, transparent, rgba(185, 166, 255, 0.6)); } .ag-fleche span:last-child { background: linear-gradient(180deg, rgba(185, 166, 255, 0.6), transparent); } }
+
+  .ag-sous-titre {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: oklch(1 0 0 / 0.5);
+  }
+  .ag-sous-titre span { color: var(--violet-soft); }
+  .ag-offres-bloc, .ag-chaine-bloc { margin-top: 2.6rem; }
+  .ag-offres { margin-top: 1.2rem; display: grid; gap: 1rem; }
+  @media (min-width: 800px) { .ag-offres { grid-template-columns: repeat(3, 1fr); } }
+  .ag-offre {
+    border-radius: 1rem;
+    border: 1px solid oklch(1 0 0 / 0.1);
+    background: oklch(0.18 0 0 / 0.5);
+    padding: 1.4rem 1.35rem;
+    animation: ag-entre 0.5s ease both;
+  }
+  .ag-offre-n { font-family: var(--font-serif); font-style: italic; font-size: 1.5rem; line-height: 1; color: var(--violet-soft); }
+  .ag-offre-nom { margin-top: 0.7rem; font-size: 16px; font-weight: 500; line-height: 1.3; color: #fff; }
+  .ag-offre-quoi { margin-top: 0.7rem; font-size: 14px; line-height: 1.6; color: oklch(1 0 0 / 0.6); }
+  .ag-offre-qui {
+    margin-top: 0.9rem; padding-top: 0.8rem; border-top: 1px solid oklch(1 0 0 / 0.08);
+    font-size: 12px; color: oklch(1 0 0 / 0.45);
+  }
+  .ag-offre-qui b { display: block; font-weight: 400; color: oklch(1 0 0 / 0.3); font-size: 10px; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.25rem; }
+
+  .ag-chaine { margin-top: 1.2rem; display: flex; flex-wrap: wrap; align-items: stretch; gap: 0.6rem; }
+  .ag-chaine li {
+    flex: 1 1 10rem;
+    position: relative;
+    border-radius: 0.8rem;
+    border: 1px solid rgba(185, 166, 255, 0.22);
+    background: rgba(185, 166, 255, 0.05);
+    padding: 0.9rem 1rem;
+    font-size: 14px;
+    color: oklch(1 0 0 / 0.85);
+    animation: ag-entre 0.45s ease both;
+  }
+  .ag-chaine li span {
+    display: block; font-size: 10px; letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--violet-soft); margin-bottom: 0.3rem;
+  }
+
+  .ag-garde {
+    margin-top: 2.4rem;
+    border-left: 2px solid rgba(185, 166, 255, 0.5);
+    padding: 0.4rem 0 0.4rem 1.1rem;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: oklch(1 0 0 / 0.62);
+  }
+  .ag-suite { margin-top: 2.6rem; border-top: 1px solid oklch(1 0 0 / 0.1); padding-top: 2rem; }
+  .ag-suite p { max-width: 40rem; font-size: 14px; line-height: 1.65; color: oklch(1 0 0 / 0.5); }
+  .ag-suite-cta { margin-top: 1.4rem; display: flex; flex-wrap: wrap; align-items: center; gap: 1rem; }
+  .ag-refaire {
+    cursor: pointer; border: 0; background: none; padding: 0.5rem 0;
+    font: inherit; font-size: 14px; color: oklch(1 0 0 / 0.5);
+    text-decoration: underline; text-underline-offset: 4px;
+  }
+  .ag-refaire:hover { color: var(--violet-soft); }
+  .ag-repli {
+    margin: 1.2rem auto 0;
+    max-width: 40rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    animation: ag-entre 0.4s ease both;
+  }
+  .ag-repli label { font-size: 14px; color: oklch(1 0 0 / 0.7); }
+  .ag-repli textarea {
+    width: 100%;
+    border-radius: 0.9rem;
+    border: 1px solid oklch(1 0 0 / 0.16);
+    background: oklch(0.18 0 0 / 0.7);
+    padding: 0.85rem 1rem;
+    font: inherit;
+    font-size: 14.5px;
+    line-height: 1.55;
+    color: #fff;
+    outline: none;
+    resize: vertical;
+  }
+  .ag-repli textarea::placeholder { color: oklch(1 0 0 / 0.28); }
+  .ag-repli textarea:focus { border-color: var(--violet-soft); box-shadow: 0 0 0 4px rgba(185, 166, 255, 0.12); }
+  .ag-go-repli { align-self: flex-start; }
+
+  .ag-err {
+    margin: 2rem auto 0; max-width: 40rem;
+    border-radius: 0.8rem; border: 1px solid oklch(0.6 0.22 25 / 0.35);
+    background: oklch(0.6 0.22 25 / 0.08);
+    padding: 1rem 1.2rem; font-size: 14px; line-height: 1.6; color: oklch(1 0 0 / 0.78);
+  }
+
+  /* ════════ FAITS D'AGENCE ════════ */
+  .tf-fait {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1rem;
+    border: 1px solid var(--line);
+    background: var(--card);
+    padding: 1.6rem 1.5rem 1.3rem;
+    transition: border-color 0.25s ease, transform 0.25s ease;
+  }
+  .tf-fait:hover { border-color: rgba(108, 76, 241, 0.45); transform: translateY(-3px); }
+  .tf-fait-chiffre {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(2.2rem, 4.6vw, 3.1rem);
+    line-height: 1;
+    letter-spacing: -0.01em;
+    color: var(--foreground);
+  }
+  .tf-fait-unite {
+    margin-top: 0.5rem;
+    font-size: 11px;
+    letter-spacing: 0.16em;
     text-transform: uppercase;
     color: var(--ink-3);
   }
+  .tf-fait-detail { margin-top: 1rem; font-size: 14px; line-height: 1.6; color: var(--ink-2); }
+  .tf-assist { border-top: 1px solid var(--line); padding-top: 1rem; }
 
   /* ════════ ÉTAGES ════════ */
   .tf-etage {
@@ -1031,17 +1466,282 @@ const jsonLd = [
     }
   }
 
-  /* Barres de gains : remplissage à l'entrée en vue. */
-  const gio = new IntersectionObserver(
-    (entries) => {
-      for (const en of entries) {
-        if (en.isIntersecting) {
-          (en.target as HTMLElement).dataset.vu = "1";
-          gio.unobserve(en.target);
+  /* ════════ L'ESSAI — on lit le site de l'agence, on rend le portrait ════════
+     Le worker renvoie des lignes TOKEN|champ|champ (une par bloc visuel) en flux ;
+     on les rend au fil de l'eau. Le contenu du site du visiteur est traité côté
+     serveur comme une donnée, jamais comme une consigne. */
+
+  const form = document.getElementById("ag-form") as HTMLFormElement | null;
+  if (form) {
+    const $ = (id: string) => document.getElementById(id)!;
+    const champ = $("ag-url") as HTMLInputElement;
+    const go = $("ag-go") as HTMLButtonElement;
+    const etapes = $("ag-etapes");
+    const res = $("ag-res");
+    const err = $("ag-err");
+    const offres = $("ag-offres");
+    const chaine = $("ag-chaine");
+
+    let enCours = false;
+
+    const etape = (txt: string) => {
+      etapes.querySelectorAll(".ag-etape").forEach((e) => ((e as HTMLElement).dataset.fini = "1"));
+      const d = document.createElement("div");
+      d.className = "ag-etape";
+      d.textContent = txt;
+      etapes.append(d);
+    };
+
+    const raz = () => {
+      etapes.replaceChildren();
+      offres.replaceChildren();
+      chaine.replaceChildren();
+      err.hidden = true;
+      res.hidden = true;
+      (document.getElementById("ag-repli") as HTMLFormElement).hidden = true;
+      for (const id of ["ag-offres-bloc", "ag-chaine-bloc", "ag-garde", "ag-suite", "ag-tension-bloc"])
+        $(id).hidden = true;
+      for (const id of [
+        "ag-actuel", "ag-preuve", "ag-devenir", "ag-devenir-txt", "ag-signature",
+        "ag-tension", "ag-terrain", "ag-garde",
+      ]) $(id).textContent = "";
+    };
+
+    /* Le modèle écrit parfois en style télégraphique : on rétablit la majuscule
+       initiale et on retire la préposition qui doublerait l'étiquette « Se vend à ». */
+    const majuscule = (s: string) => (s ? s.charAt(0).toUpperCase() + s.slice(1) : s);
+    const sansPreposition = (s: string) => s.replace(/^(aux|au|à la|à l'|à|pour les|pour)\s+/i, "");
+
+    /* Une ligne du protocole = un bloc visuel. Toute ligne non conforme est ignorée. */
+    const rendre = (ligne: string) => {
+      const [token, ...champs] = ligne.split("|").map((s) => s.trim());
+      if (!token) return;
+      switch (token) {
+        case "MARQUE":
+        case "ACTUEL":
+          res.hidden = false;
+          $("ag-actuel").textContent = majuscule(champs[0] ?? "");
+          break;
+        case "PREUVE":
+        case "LEVIER":
+          $("ag-preuve").textContent = majuscule(champs[0] ?? "");
+          break;
+        case "TENSION":
+          if (!champs[0]) return;
+          $("ag-tension-bloc").hidden = false;
+          $("ag-tension").textContent = majuscule(champs[0]);
+          break;
+        case "TERRAIN":
+          if (!champs[0]) return;
+          $("ag-tension-bloc").hidden = false;
+          $("ag-terrain").textContent = majuscule(champs[0]);
+          break;
+        case "SIGNATURE": {
+          const sig = champs[0] ?? "";
+          if (sig) $("ag-signature").textContent = `« ${majuscule(sig).replace(/[.\s]+$/, "")} »`;
+          break;
+        }
+        case "DEVENIR":
+          res.hidden = false;
+          $("ag-devenir").textContent = majuscule(champs[0] ?? "");
+          $("ag-devenir-txt").textContent = majuscule(champs[1] ?? "");
+          break;
+        case "OFFRE": {
+          if (!champs[0] || offres.children.length >= 4) return;
+          $("ag-offres-bloc").hidden = false;
+          const n = offres.children.length + 1;
+          const art = document.createElement("article");
+          art.className = "ag-offre";
+          art.style.animationDelay = `${(n - 1) * 0.09}s`;
+          const num = document.createElement("span");
+          num.className = "ag-offre-n";
+          num.textContent = `0${n}`;
+          const nom = document.createElement("h4");
+          nom.className = "ag-offre-nom";
+          nom.textContent = majuscule(champs[0]);
+          const quoi = document.createElement("p");
+          quoi.className = "ag-offre-quoi";
+          quoi.textContent = majuscule(champs[1] ?? "");
+          art.append(num, nom, quoi);
+          if (champs[2]) {
+            const qui = document.createElement("p");
+            qui.className = "ag-offre-qui";
+            const lab = document.createElement("b");
+            lab.textContent = "Se vend à";
+            qui.append(lab, document.createTextNode(majuscule(sansPreposition(champs[2]))));
+            art.append(qui);
+          }
+          if (champs[3]) {
+            const lib = document.createElement("p");
+            lib.className = "ag-offre-libere";
+            const lab2 = document.createElement("b");
+            lab2.textContent = "Ce que ça change";
+            lib.append(lab2, document.createTextNode(majuscule(champs[3])));
+            art.append(lib);
+          }
+          offres.append(art);
+          break;
+        }
+        case "CHAINE": {
+          const pas = (champs[0] ?? "").split(">").map((s) => s.trim()).filter(Boolean).slice(0, 5);
+          if (!pas.length) return;
+          $("ag-chaine-bloc").hidden = false;
+          chaine.replaceChildren();
+          pas.forEach((p, i) => {
+            const li = document.createElement("li");
+            li.style.animationDelay = `${i * 0.08}s`;
+            const s = document.createElement("span");
+            s.textContent = `Étape ${i + 1}`;
+            li.append(s, document.createTextNode(majuscule(p)));
+            chaine.append(li);
+          });
+          break;
+        }
+        case "GARDE": {
+          const g = $("ag-garde");
+          g.hidden = false;
+          g.textContent = majuscule(champs[0] ?? "");
+          break;
         }
       }
-    },
-    { threshold: 0.4 },
-  );
-  document.querySelectorAll(".tf-gain").forEach((el) => gio.observe(el));
+    };
+
+    const analyser = async (siteUrl: string | null, description = "") => {
+      enCours = true;
+      const bouton = (siteUrl ? go : (document.querySelector(".ag-go-repli") as HTMLButtonElement)) ?? go;
+      bouton.disabled = true;
+      bouton.dataset.charge = "1";
+      raz();
+      etape(siteUrl ? "connexion…" : "lecture de votre description…");
+
+      try {
+        const rep = await fetch("/api/experience", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mode: "agence",
+            ...(siteUrl ? { siteUrl } : {}),
+            ...(description ? { profil: `Description de son agence par le visiteur : ${description}` } : {}),
+            messages: [
+              {
+                role: "user",
+                content:
+                  "Montre-moi l'agence que je pourrais devenir en exploitant pleinement l'IA générative, et ce que je pourrais vendre en plus.",
+              },
+            ],
+          }),
+        });
+
+        if (rep.status === 429) throw new Error("Beaucoup de monde teste en ce moment. Réessayez dans quelques minutes.");
+        if (rep.status === 400) throw new Error("Cette adresse ne semble pas valide. Vérifiez, puis réessayez.");
+        if (!rep.ok || !rep.body) throw new Error("L'analyse n'a pas pu démarrer. Réessayez dans un instant.");
+
+        const lecteur = rep.body.getReader();
+        const dec = new TextDecoder();
+        let tampon = "";
+        let texte = "";
+        let renduJusqua = 0;
+        let fini = false;
+
+        while (!fini) {
+          const { done, value } = await lecteur.read();
+          if (done) break;
+          tampon += dec.decode(value, { stream: true });
+          const blocs = tampon.split("\n\n");
+          tampon = blocs.pop() ?? "";
+
+          for (const bloc of blocs) {
+            let evt = "message";
+            let data = "";
+            for (const l of bloc.split("\n")) {
+              if (l.startsWith("event: ")) evt = l.slice(7);
+              else if (l.startsWith("data: ")) data += l.slice(6);
+            }
+            if (!data) continue;
+            let p: any;
+            try {
+              p = JSON.parse(data);
+            } catch {
+              continue;
+            }
+
+            if (evt === "etape") etape(p.label);
+            else if (evt === "error") throw new Error(p.message || "Analyse impossible.");
+            else if (evt === "delta") {
+              texte += p.text ?? "";
+              /* on ne rend que les lignes complètes */
+              const lignes = texte.split("\n");
+              for (let i = renduJusqua; i < lignes.length - 1; i++) {
+                const l = lignes[i].trim();
+                if (l === "FIN") { fini = true; break; }
+                if (l) rendre(l);
+              }
+              renduJusqua = Math.max(renduJusqua, lignes.length - 1);
+            } else if (evt === "done") {
+              const reste = texte.split("\n").slice(renduJusqua).map((s) => s.trim());
+              for (const l of reste) {
+                if (l === "FIN" || !l) continue;
+                rendre(l);
+              }
+              fini = true;
+            }
+          }
+        }
+
+        if (!$("ag-actuel").textContent && !$("ag-devenir").textContent && !offres.children.length) {
+          throw new Error(
+            "Je n'ai pas réussi à lire assez de contenu sur ce site — il est peut-être entièrement construit en JavaScript, ou protégé. Écrivez-moi, on le fera à la main.",
+          );
+        }
+        etape("portrait terminé.");
+        $("ag-suite").hidden = false;
+      } catch (e) {
+        etapes.replaceChildren();
+        err.hidden = false;
+        err.textContent = e instanceof Error ? e.message : "Une erreur est survenue.";
+        /* Lecture impossible : on propose de décrire l'agence plutôt que d'en rester là. */
+        if (siteUrl) {
+          const repli = document.getElementById("ag-repli") as HTMLFormElement;
+          repli.hidden = false;
+          (document.getElementById("ag-desc") as HTMLTextAreaElement)?.focus();
+        }
+      } finally {
+        enCours = false;
+        bouton.disabled = false;
+        delete bouton.dataset.charge;
+      }
+    };
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (enCours) return;
+      const v = champ.value.trim().replace(/^https?:\/\//i, "").replace(/\/+$/, "");
+      if (!v || !v.includes(".")) {
+        err.hidden = false;
+        err.textContent = "Indiquez l'adresse de votre site, par exemple votre-agence.fr";
+        return;
+      }
+      analyser(v);
+      document.getElementById("ag-etapes")?.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+
+    document.getElementById("ag-repli")?.addEventListener("submit", (e) => {
+      e.preventDefault();
+      if (enCours) return;
+      const d = (document.getElementById("ag-desc") as HTMLTextAreaElement).value.trim();
+      if (d.length < 15) {
+        err.hidden = false;
+        err.textContent = "Donnez-moi un peu plus de matière : votre métier, votre taille, vos clients.";
+        return;
+      }
+      analyser(null, d.slice(0, 400));
+    });
+
+    document.getElementById("ag-refaire")?.addEventListener("click", () => {
+      raz();
+      champ.value = "";
+      champ.focus();
+      form.scrollIntoView({ block: "center", behavior: "smooth" });
+    });
+  }
 </script>
