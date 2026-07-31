@@ -1,0 +1,368 @@
+---
+/**
+ * LP agences — page volontairement NON INDEXÉE et NON LIÉE (pas de canonical,
+ * absente de sitemap.xml et llms.txt, aucun lien depuis Nav/Footer).
+ *
+ * DA autonome (fond papier clair, accent violet, scrubber J1→J60 en canvas) —
+ * volontairement en dehors de la charte noire/lime du reste du site : voir
+ * `docs/design-system-pages-vente.md`. Ne PAS passer par BaseLayout (son
+ * `global.css` casse cette DA) : page 100% autonome, assets dans
+ * `public/agences/`.
+ *
+ * Coexiste avec "/transformation" (même positionnement agences, mécanique et
+ * ton différents) le temps que Julien tranche laquelle garder — voir échange
+ * du 2026-07-31. Pour la republier : ajouter `<meta name="robots"
+ * content="index,follow">` (ci-dessous, retirer le noindex), l'entrée dans
+ * sitemap.xml.ts / llms.txt.ts, et un lien depuis Footer.astro si voulu.
+ */
+import { SITE } from "@/lib/site";
+
+const title = "Julien Tridat — L'IA opérationnelle dans votre agence en 60 jours";
+const description =
+  "Intégration opérationnelle de l'IA dans les agences de communication, marketing, brand content et media. Outils connectés, process refondus, agents IA sur mesure. En 60 jours, pas en deux ans.";
+const ogImage = `${SITE.url}/agences/hero-poster.jpg`;
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex">
+  <title>{title}</title>
+  <meta name="description" content={description}>
+  <meta property="og:title" content="L'IA opérationnelle dans votre agence. En 60 jours, pas en deux ans.">
+  <meta property="og:description" content="Outils connectés, process refondus, agents IA sur mesure en production. Votre agence produit plus vite, à marge supérieure — sans recruter.">
+  <meta property="og:image" content={ogImage}>
+  <meta property="og:type" content="website">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111216'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%236C4CF1'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/agences/styles.css">
+</head>
+<body>
+
+  <!-- ===== NAV ===== -->
+  <header class="nav" id="nav">
+    <div class="container nav-inner">
+      <a class="wordmark" href="#top">Julien Tridat <span>Marketing &amp; IA</span></a>
+      <div class="nav-right">
+        <span class="nav-loc">Bordeaux · France entière</span>
+        <a class="btn btn-sm" href="#contact">Réserver un diagnostic</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-text">
+          <p class="eyebrow reveal"><span class="dot"></span><span class="eyebrow-text">Agences de com, marketing, brand content &amp; media — 5 à 150 personnes</span></p>
+          <h1 class="reveal">L'IA opérationnelle<br class="br-desktop">
+dans votre agence.<br>En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.</h1>
+          <p class="hero-sub reveal">Outils connectés, process refondus, agents IA sur mesure en production.
+          Votre agence produit plus vite, à marge supérieure — <strong>sans recruter</strong>.</p>
+          <div class="hero-cta reveal">
+            <a class="btn" href="#contact">Réserver un diagnostic</a>
+            <span class="cta-hint">30 minutes, en visio. Pas de démo, pas de slides.</span>
+          </div>
+        </div>
+
+        <div class="hero-stage reveal" id="stage" role="img" aria-label="La même agence, du jour 1 au jour 60 : le bâtiment classique se transforme en agence augmentée par l'IA. Déplacez la souris pour parcourir la transformation.">
+          <div class="stage-tilt" id="stageTilt">
+            <canvas id="morphCanvas"></canvas>
+            <noscript><img src="/agences/hero-poster.jpg" alt="Agence créative" style="width:100%;border-radius:22px"></noscript>
+            <span class="day-counter serif" id="dayLabel" aria-hidden="true">J1</span>
+          </div>
+          <div class="scrub" aria-hidden="true">
+            <span class="scrub-end">J1</span>
+            <div class="scrub-track"><div class="scrub-fill" id="scrubFill"></div></div>
+            <span class="scrub-end">J60</span>
+          </div>
+          <p class="stage-hint" id="stageHint">Survolez — la même agence, de J1 à J60.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== PROOF STRIP ===== -->
+    <div class="proof reveal">
+      <div class="container proof-inner">
+        <span class="proof-label">20 ans dans le métier</span>
+        <ul>
+          <li>Publicis</li>
+          <li>Canal+</li>
+          <li>France 24</li>
+          <li>France 2</li>
+          <li>Formateur IA</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- ===== 01 CONSTAT ===== -->
+    <section class="section" id="constat">
+      <div class="container narrow">
+        <p class="kicker reveal">01 — Le constat</p>
+        <h2 class="reveal">Vos marges se font manger par du travail que personne ne facture.</h2>
+        <p class="lead reveal">Ce ne sont pas les clients qui manquent. C'est la rentabilité de chaque mission qui s'effrite.</p>
+
+        <ul class="pain-list">
+          <li class="reveal">Les clients demandent l'IA dans le brief — et une remise dans la foulée.</li>
+          <li class="reveal">Vos chefs de projet passent leurs journées en comptes-rendus, reformatages et relances.</li>
+          <li class="reveal">Le savoir de l'agence dort dans des dossiers que personne ne rouvre.</li>
+          <li class="reveal">Vous avez empilé les outils. Aucun ne se parle.</li>
+          <li class="reveal">Les tests IA s'accumulent. Rien ne tient en production.</li>
+        </ul>
+
+        <p class="closer reveal">Pendant ce temps, des agences de votre taille livrent deux fois plus vite. Pas parce qu'elles ont recruté. <em class="serif">Parce qu'elles ont installé.</em></p>
+      </div>
+    </section>
+
+    <!-- ===== 02 OPÉRATEUR ===== -->
+    <section class="section section-alt" id="operateur">
+      <div class="container narrow">
+        <p class="kicker reveal">02 — Qui installe</p>
+        <h2 class="reveal">Pas un vendeur d'outils.<br>Pas un évangéliste. <em class="serif">Un opérateur.</em></h2>
+        <p class="lead reveal">Publicis. La production TV pour France 24, Canal+ et France 2. Trois ans à former dirigeants et équipes à l'IA. Vingt ans à vivre les process d'agence de l'intérieur — les validations client, les allers-retours créa, les urgences du vendredi 18&nbsp;h.</p>
+        <p class="lead reveal">Je ne laisse personne avec un PDF et de la motivation. Je construis les agents dont vos équipes ont besoin, je les déploie dans vos outils, je forme vos équipes à les utiliser. <em class="serif">Ce que je livre tourne encore six mois plus tard.</em></p>
+
+        <dl class="stats">
+          <div class="reveal"><dt>20 ans</dt><dd>dans les métiers de la com et de la production</dd></div>
+          <div class="reveal"><dt>50+</dt><dd>organisations accompagnées dans leur transformation</dd></div>
+          <div class="reveal"><dt>60 jours</dt><dd>du diagnostic à la passation</dd></div>
+          <div class="reveal"><dt>0 embauche</dt><dd>nécessaire pour produire plus</dd></div>
+        </dl>
+
+        <div class="refs reveal">
+          <p class="refs-label">Ils m'ont fait confiance</p>
+          <ul class="refs-names">
+            <li>Dassault Systèmes</li>
+            <li>SNCF Fret</li>
+            <li>Maison Chapoutier</li>
+            <li>Cogefi</li>
+            <li>Zorba Group</li>
+            <li>WeThePeople</li>
+            <li>Le Nouveau Bélier</li>
+            <li>Bordeaux Négoce</li>
+            <li>Maison des Vins et des Spiritueux</li>
+            <li>Asqua BTP</li>
+            <li>Qwertys</li>
+            <li>Club d'Affaires Bassin Marmandais</li>
+          </ul>
+        </div>
+
+        <div class="quotes">
+          <figure class="quote reveal">
+            <blockquote>«&nbsp;L'accompagnement était très concret et orienté vers des solutions pratiques. J'ai particulièrement apprécié la création d'assistants IA personnalisés.&nbsp;»</blockquote>
+            <figcaption><strong>Séverine G.</strong> Chargée de développement</figcaption>
+          </figure>
+          <figure class="quote reveal">
+            <blockquote>«&nbsp;Un accompagnement orienté sur les spécificités de nos métiers, parfaitement ajusté à nos besoins.&nbsp;»</blockquote>
+            <figcaption><strong>Aurélie M.</strong> Consultante</figcaption>
+          </figure>
+          <figure class="quote reveal">
+            <blockquote>«&nbsp;Julien a parfaitement préparé son intervention, ce qui lui a permis d'adapter son accompagnement aux besoins spécifiques de chacun. Une grande aide pour notre équipe.&nbsp;»</blockquote>
+            <figcaption><strong>Chrystelle T.</strong> Directrice clientèle</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 03 CE QU'ON INSTALLE ===== -->
+    <section class="section" id="installation">
+      <div class="container">
+        <p class="kicker reveal">03 — Ce qu'on installe</p>
+        <h2 class="reveal">Trois chantiers. Un système qui tourne.</h2>
+
+        <div class="cards">
+          <article class="card reveal">
+            <span class="card-num serif">1</span>
+            <h3>Vos outils, enfin connectés</h3>
+            <p>CRM, drive, messagerie, gestion de production&nbsp;: l'information circule sans ressaisie. On part de votre stack existante — on ne vous vend pas la nôtre.</p>
+          </article>
+          <article class="card reveal">
+            <span class="card-num serif">2</span>
+            <h3>Vos process, refondus</h3>
+            <p>De la prise de brief à la livraison, chaque étape repensée avec l'IA à sa place. Des process que je connais de l'intérieur — et que vos équipes valident.</p>
+          </article>
+          <article class="card reveal">
+            <span class="card-num serif">3</span>
+            <h3>Vos agents IA, sur mesure</h3>
+            <p>Pas des chatbots génériques&nbsp;: trois à dix agents par mission, conçus sur vos méthodes, vos formats, vos clients — et déployés sur les fonctions productives de l'agence.</p>
+          </article>
+        </div>
+
+        <div class="functions reveal">
+          <p class="functions-label">Cinq fonctions couvertes</p>
+          <ul>
+            <li>Veille &amp; analyse</li>
+            <li>Stratégie &amp; reco</li>
+            <li>Production de contenu</li>
+            <li>Capitalisation du savoir</li>
+            <li>Créativité assistée</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 04 LES 60 JOURS ===== -->
+    <section class="section section-alt" id="methode">
+      <div class="container">
+        <p class="kicker reveal">04 — La méthode</p>
+        <h2 class="reveal">Soixante jours. Trois phases.<br>Zéro interruption de production.</h2>
+
+        <ol class="timeline">
+          <li class="reveal">
+            <span class="days serif">J1 → J15</span>
+            <h3>Audit terrain</h3>
+            <p>Immersion dans vos missions réelles. Cartographie des outils, des flux et des temps non facturables. On choisit les chantiers au retour le plus court.</p>
+          </li>
+          <li class="reveal">
+            <span class="days serif">J16 → J45</span>
+            <h3>Installation</h3>
+            <p>Connexion des outils, refonte des process prioritaires, premiers agents IA testés sur des missions en cours — pas sur des cas d'école.</p>
+          </li>
+          <li class="reveal">
+            <span class="days serif">J46 → J60</span>
+            <h3>Adoption</h3>
+            <p>Formation des équipes sur leurs vrais dossiers, ajustements, passation complète. Le système tourne sans moi.</p>
+          </li>
+        </ol>
+
+        <p class="pull serif reveal">Le jour 61, je pars. Le système reste.</p>
+      </div>
+    </section>
+
+    <!-- ===== 05 ANTI-ARGUMENT (dark) ===== -->
+    <section class="section section-dark" id="equipes">
+      <div class="container narrow">
+        <p class="kicker reveal">05 — Parlons de vos équipes</p>
+        <h2 class="reveal">L'IA ne remplace pas vos équipes.<br><em class="serif accent">Elle supprime ce que personne ne facture.</em></h2>
+        <p class="lead reveal">Regardez une semaine type dans votre agence. La différence entre ce que vos équipes font et ce que vos clients paient, c'est là que vivent vos marges perdues. C'est cette partie-là que l'IA absorbe.</p>
+
+        <div class="split">
+          <div class="split-col reveal">
+            <h3>Ce que l'IA prend</h3>
+            <ul class="list-minus">
+              <li>Comptes-rendus et synthèses de réunion</li>
+              <li>Ressaisie d'informations entre outils</li>
+              <li>Recherche dans les archives et anciens dossiers</li>
+              <li>Premiers jets, déclinaisons et reformatages</li>
+              <li>Reporting et bilans de campagne</li>
+            </ul>
+          </div>
+          <div class="split-col reveal">
+            <h3>Ce que vos équipes gardent</h3>
+            <ul class="list-plus">
+              <li>La stratégie et la vision client</li>
+              <li>La direction de création</li>
+              <li>La relation et la confiance</li>
+              <li>L'arbitrage et le jugement</li>
+              <li>Tout ce qui se vend — et se facture</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="pull serif accent reveal">On ne réduit pas la masse salariale. On augmente ce qu'elle produit.</p>
+      </div>
+    </section>
+
+    <!-- ===== 06 INVESTISSEMENT ===== -->
+    <section class="section section-alt" id="prix">
+      <div class="container">
+        <p class="kicker reveal">06 — L'investissement</p>
+        <h2 class="reveal">Des prix fermes. <em class="serif">Connus avant de signer.</em></h2>
+        <p class="lead reveal">Tout commence par l'audit. Il fixe le périmètre, le plan d'installation et le format — et il est offert si vous enchaînez.</p>
+
+        <div class="price-audit reveal">
+          <div class="pa-text">
+            <h3>Audit</h3>
+            <p>Immersion dans vos missions, cartographie des outils et des temps non facturables, plan d'installation chiffré. <strong>Offert si vous enchaînez sur une installation.</strong></p>
+          </div>
+          <p class="price serif">1 500 €</p>
+        </div>
+
+        <div class="price-grid">
+          <article class="price-card reveal">
+            <h3>TPE</h3>
+            <p class="price serif">8 000 €</p>
+            <p class="pc-desc">L'installation complète, à l'échelle d'une petite équipe.</p>
+          </article>
+          <article class="price-card reveal">
+            <h3>PME</h3>
+            <p class="price serif">15 000 €</p>
+            <p class="pc-desc">L'installation complète pour une agence structurée, plusieurs pôles.</p>
+          </article>
+          <article class="price-card reveal">
+            <h3>PME+</h3>
+            <p class="price serif">32 000 €</p>
+            <p class="pc-desc">Le déploiement étendu&nbsp;: multi-pôles, multi-marques.</p>
+          </article>
+        </div>
+
+        <div class="price-formation reveal">
+          <div class="pa-text">
+            <h3>Formation intra</h3>
+            <p>En complément de l'installation ou en format autonome. Certification Qualiopi.</p>
+          </div>
+          <p class="price serif">1 900 € <span class="price-unit">HT / jour</span></p>
+        </div>
+
+        <p class="price-note reveal">Chaque installation couvre les trois chantiers — outils, process, agents — et se dimensionne lors de l'audit. Tarifs HT.</p>
+      </div>
+    </section>
+
+    <!-- ===== 07 OBJECTIONS ===== -->
+    <section class="section" id="objections">
+      <div class="container narrow">
+        <p class="kicker reveal">07 — Vos objections</p>
+        <h2 class="reveal">Les questions qu'on me pose. <em class="serif">Les vraies réponses.</em></h2>
+
+        <div class="faq">
+          <details class="reveal">
+            <summary>« On a déjà testé ChatGPT. Ça n'a rien changé. »<span class="faq-icon"></span></summary>
+            <p>Un outil sans process ni connexion, c'est un gadget. La différence ne se joue pas sur l'outil mais sur l'installation&nbsp;: connecté à vos données, inséré dans vos étapes de production, adopté par vos équipes. C'est tout l'objet des 60 jours.</p>
+          </details>
+          <details class="reveal">
+            <summary>« Nos données clients sont confidentielles. »<span class="faq-icon"></span></summary>
+            <p>Tout est installé dans votre environnement, avec vos accès et vos droits. Rien ne part entraîner un modèle public. La confidentialité n'est pas une option du chantier — c'en est un prérequis.</p>
+          </details>
+          <details class="reveal">
+            <summary>« Mes équipes n'ont pas le temps. Elles vont résister. »<span class="faq-icon"></span></summary>
+            <p>Le chantier se fait sur vos missions réelles, pas en séminaire. Et les équipes adoptent vite ce qui leur enlève les tâches qu'elles détestent. Les quinze derniers jours sont entièrement consacrés à cette adoption.</p>
+          </details>
+          <details class="reveal">
+            <summary>« Pourquoi 60 jours suffiraient, quand d'autres parlent d'années&nbsp;? »<span class="faq-icon"></span></summary>
+            <p>Parce qu'on ne « transforme » pas votre agence — on l'équipe. Périmètre fermé, chantiers au retour le plus court, un opérateur qui décide vite. Les plans de transformation à deux ans servent surtout ceux qui les vendent.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CTA FINAL ===== -->
+    <section class="section section-cta" id="contact">
+      <div class="container narrow center">
+        <h2 class="reveal">Deux mois. <em class="serif">Pas deux ans.</em></h2>
+        <p class="lead reveal">Trente minutes en visio. Vous repartez avec une lecture claire des endroits où l'IA rapporte dans votre agence — qu'on travaille ensemble ou pas.</p>
+        <div class="hero-cta reveal">
+          <a class="btn btn-lg" href="mailto:julien.tridat@gmail.com?subject=Diagnostic%20IA%20%E2%80%94%20%5Bnom%20de%20votre%20agence%5D">Réserver un diagnostic</a>
+          <span class="cta-hint">Un opérateur, pas un cabinet&nbsp;: je mène peu de chantiers en parallèle.</span>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-inner">
+      <span>Julien Tridat — Consultant &amp; formateur IA</span>
+      <span>Basé à Bordeaux · Interventions partout en France</span>
+      <a href="mailto:julien.tridat@gmail.com">julien.tridat@gmail.com</a>
+    </div>
+  </footer>
+
+  <script src="/agences/main.js" is:inline></script>
+</body>
+</html>

@@ -1,4 +1,16 @@
 ---
+/**
+ * Mise en pause — non indexée (pas de `canonical`), non liée (retirée du
+ * Footer), absente de sitemap.xml et llms.txt.
+ *
+ * Coexiste avec la LP "/agences" (one-page prix fermes, scrubber J1→J60) sur
+ * le même positionnement agences. Julien compare les deux en privé avant de
+ * choisir laquelle garder — voir échange du 2026-07-31.
+ *
+ * Pour la republier : remettre `canonical={`${SITE.url}/transformation`}`
+ * ci-dessous, remettre le lien dans Footer.astro, et les entrées dans
+ * sitemap.xml.ts / llms.txt.ts.
+ */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
@@ -126,7 +138,7 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={title} description={description} canonical={`${SITE.url}/transformation`} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} jsonLd={jsonLd}>
   <Fragment slot="head">
     <link rel="preload" as="image" href="/scene/agence-avant.webp" />
     <link rel="preload" as="image" href="/scene/agence-apres.webp" />
