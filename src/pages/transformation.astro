@@ -1397,8 +1397,11 @@ const jsonLd = [
       if (auto) {
         const v = jouerAuto(t - t0);
         if (v === null) {
-          auto = false;
-          cible = souris ? near : 0;
+          /* La démo boucle tant que le visiteur n'a pas vraiment pris la main
+             (voir bouges>3 dans onMove) — sinon un visiteur qui ne touche pas
+             sa souris voit la scène se figer à 0 % en permanence. */
+          t0 = t;
+          p = 0;
         } else {
           p = v;
         }
