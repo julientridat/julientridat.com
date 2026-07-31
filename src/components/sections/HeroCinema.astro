@@ -69,9 +69,10 @@ const clients = [
   <!-- Mode scène : profondeur rendue en canvas, caméra à la souris -->
   <canvas id="hc-canvas" class="absolute inset-0 -z-20 hidden h-full w-full" aria-hidden="true"></canvas>
 
-  <!-- Voiles de lisibilité — clairs : on éclaircit la scène plutôt que l'assombrir -->
-  <div class="absolute inset-0 -z-10 bg-background/55"></div>
-  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-background/65 via-background/35 to-background/82"></div>
+  <!-- Voiles de lisibilité — clairs : on éclaircit la scène plutôt que l'assombrir.
+       Allégés : l'image doit rester lisible, pas juste deviner. -->
+  <div class="absolute inset-0 -z-10 bg-background/22"></div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-b from-background/38 via-background/10 to-background/50"></div>
 
   <Nav home />
 
