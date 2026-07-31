@@ -58,6 +58,36 @@ chiffre inventé.
 Dev local sans clé : `npx wrangler dev --var MOCK_AI:1` (flux simulé).
 Déploiement : `npm run build && npx wrangler deploy`.
 
+## Page /formation-ia — fiche formateur (cachée)
+
+Fiche destinée aux **organismes et centres de formation professionnelle**, pour se faire
+référencer comme formateur ou ouvrir une collaboration. Julien envoie l'URL directement.
+
+« Cachée » repose sur trois choses, à conserver ensemble :
+
+1. aucun `canonical` transmis à `BaseLayout` → `<meta name="robots" content="noindex">` ;
+2. absente de `src/pages/sitemap.xml.ts` **et** de `src/pages/llms.txt.ts` ;
+3. aucun lien depuis `Nav.astro` / `Footer.astro`.
+
+Pour la rendre publique : passer `canonical`, ajouter l'entrée au sitemap et au `llms.txt`,
+décommenter le bloc JSON-LD.
+
+**Parti pris éditorial** : page courte, ton sobre, première personne. L'argument est
+l'**étendue** de l'expérience (du comité de direction à l'équipe de TPE, une dizaine de
+secteurs) — elle se démontre en laissant le lecteur y chercher son propre public, jamais
+en la revendiquant. Pas de séquençage, pas de prérequis, pas d'objectifs pédagogiques
+détaillés : ces éléments alourdissaient sans convertir.
+
+**La seule mécanique** est le « spectre » : quatre axes (taille, niveau, métier, secteur),
+une seule bande à l'écran, contenu échangé côté client depuis `SPECTRE` dans le
+frontmatter. Aucune API. La réassurance sur la capacité à produire du contenu passe par
+trois **artefacts réels déjà publiés** dans `public/demos/` — le lien vaut mieux que le
+paragraphe.
+
+**Données administratives** : regroupées dans l'objet `ADMIN` en haut du frontmatter de
+`src/pages/formation-ia.astro`. Tant qu'une valeur vaut `null`, la fiche affiche
+`[À VALIDER]` en lime plutôt qu'un chiffre inventé. **À compléter avant toute diffusion.**
+
 ## Publier un artefact
 
 **Étude de cas** : créer `src/content/realisations/<slug>.md` — frontmatter :
@@ -102,6 +132,20 @@ Google Search Console : le site est déjà vérifié (meta conservée dans `Base
 sitemap à `https://julientridat.com/sitemap.xml`.
 
 ## [À VALIDER] par Julien
+
+- **⚠️ Fiche formateur `/formation-ia` — bloquant avant diffusion.** Renseigner l'objet
+  `ADMIN` dans `src/pages/formation-ia.astro` : forme juridique, SIRET, **numéro de
+  déclaration d'activité** (il apparaît trois fois sur la page, dont le bandeau de tête),
+  assureur et n° de police de la RC professionnelle, délai d'accès, politique de frais de
+  déplacement. Tant qu'ils sont `null`, la page affiche `[À VALIDER]`.
+- **Fiche formateur — nommer ou non les organismes partenaires.** La page mentionne
+  « trois organismes de formation certifiés » **sans les nommer** (Alfie, Maikers Institute,
+  Adaliance). Les nommer serait la réassurance la plus forte pour un prospect, mais la page
+  part chez leurs confrères : trancher. Dans tous les cas, ne jamais associer un organisme
+  au nom de son client final — le contrat travel retail porte une clause de confidentialité
+  couvrant l'organisme ET ses clients.
+- **Fiche formateur — certification.** La page affirme explicitement l'absence de Qualiopi
+  en propre et l'intervention en sous-traitance. À confirmer si une démarche est en cours.
 
 - **⚠️ Étude « groupe travel retail »** : le contrat de sous-traitance avec l'organisme de
   formation contient une clause de confidentialité explicite couvrant l'organisme ET ses
