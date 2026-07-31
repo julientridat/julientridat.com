@@ -1330,8 +1330,8 @@ const jsonLd = [
       [3100, 0.24], // quelque chose commence
       [4900, 0.72], // la forme bascule
       [6100, 1], // les lumières s'allument
-      [8600, 1], // on contemple
-      [10200, 0], // retour au calme, la main passe au visiteur
+      [7300, 1], // on contemple — court, pour ne pas lire comme figé sur un aperçu rapide
+      [8900, 0], // retour au calme, la main passe au visiteur
     ];
     const jouerAuto = (t: number) => {
       if (t >= SEQ[SEQ.length - 1][0]) return null;
@@ -1370,13 +1370,17 @@ const jsonLd = [
       if (!auto) cible = 0;
     };
 
-    /* Mouvement réduit : on affiche l'état transformé, point. Aucun écouteur n'est
-       posé — sinon le curseur ou le défilement relanceraient toute la métamorphose. */
+    /* Mouvement réduit : aucune séquence ne se joue d'elle-même (ni démo auto, ni
+       vibration, ni bascule 3D — voir `vib` et `--tx/--ty` plus bas). La scène reste
+       en revanche pilotable par le visiteur : c'est un mouvement demandé, pas subi.
+       Auparavant on figeait la scène à 100 % sans aucun écouteur — elle se lisait
+       alors comme un affichage cassé. */
     if (reduit) {
       auto = false;
-      p = 1;
-      cible = 1;
-    } else if (souris) {
+      p = 0;
+      cible = 0;
+    }
+    if (souris) {
       scene.addEventListener("pointermove", onMove, { passive: true });
       scene.addEventListener("pointerleave", onLeave, { passive: true });
     } else {
@@ -1388,6 +1392,7 @@ const jsonLd = [
         cible = k;
       };
       window.addEventListener("scroll", onScroll, { passive: true });
+      onScroll();
     }
 
     /* Boucle : une seule écriture de styles par image. */
@@ -1467,18 +1472,9 @@ const jsonLd = [
       },
       { threshold: 0.15 },
     );
-    if (reduit) {
-      /* État final posé une fois pour toutes : aucune boucle d'animation ne démarre. */
-      const s = scene.style;
-      s.setProperty("--p", "1");
-      s.setProperty("--rev", "1");
-      s.setProperty("--lum", "1");
-      scene.dataset.reperes = "on";
-      if (pct) pct.textContent = "100 %";
-      if (etat) etat.textContent = "agence augmentée";
-    } else {
-      io.observe(scene);
-    }
+    /* La boucle tourne dans les deux cas : en mouvement réduit elle ne fait que
+       suivre le geste du visiteur (`auto` est déjà à false), elle ne joue rien. */
+    io.observe(scene);
   }
 
   /* ════════ L'ESSAI — on lit le site de l'agence, on rend le portrait ════════
