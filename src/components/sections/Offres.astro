@@ -1,45 +1,34 @@
 ---
 import Eyebrow from "@/components/Eyebrow.astro";
+import CtaButton from "@/components/CtaButton.astro";
 
 const cardBase = "relative flex flex-col rounded-2xl border bg-card p-7 transition-all";
 const cardDefault = "border-line hover:-translate-y-0.5 hover:border-ink-3/40 hover:shadow-[0_16px_36px_-18px_rgba(24,20,60,0.16)]";
 const cardFeatured = "border-lime bg-lime/[0.05] hover:-translate-y-0.5";
-const btnDefault =
-  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors border border-line hover:border-lime hover:text-lime";
-const btnFeatured =
-  "mt-6 inline-flex cursor-pointer items-center justify-between rounded-full px-5 py-3 text-sm font-medium transition-colors bg-lime text-white hover:bg-lime/90";
 
 const offres = [
   {
-    tag: "Solo",
-    name: "Dirigeant Augmenté",
-    prix: "2 500 €",
-    detail: "1 dirigeant · 2 semaines",
-    inclus: ["3 assistants IA sur-mesure", "Audit de vos processus", "Formation individuelle"],
-    featured: false,
-  },
-  {
     tag: "JUSQU'À 10 SALARIÉS",
     name: "TPE Augmentée",
-    prix: "6 000 €",
-    detail: "1 équipe · 4-6 semaines",
-    inclus: ["3 à 5 assistants IA sur-mesure", "Audit terrain intégré", "Déploiement dès sem. 3", "Formation métier incluse"],
+    prix: "8 000 €",
+    detail: "4 à 6 semaines · 3 à 5 assistants IA",
+    note: null,
     featured: false,
   },
   {
     tag: "JUSQU'À 30 SALARIÉS",
     name: "PME Augmentée",
-    prix: "12 000 €",
-    detail: "2–3 départements · 6-8 semaines",
-    inclus: ["5 à 7 assistants IA sur-mesure", "Audit terrain approfondi", "Déploiement par vague", "2–3 demi-journées formation"],
+    prix: "15 000 €",
+    detail: "6 à 8 semaines · 5 à 7 assistants IA",
+    note: "Pour l'entreprise dont 5 à 15 personnes produisent du document au quotidien. Dix personnes qui récupèrent 5 à 10 heures par semaine : l'équivalent d'un à deux temps pleins que vous ne recruterez pas.",
     featured: true,
   },
   {
     tag: "JUSQU'À 80 SALARIÉS",
     name: "PME Augmentée +",
-    prix: "25 000 €",
-    detail: "4+ départements · 8 semaines",
-    inclus: ["7 à 10 assistants IA sur-mesure", "Transformation à l'échelle", "Multi-départements", "Programme formation complet"],
+    prix: "32 000 €",
+    detail: "8 semaines · 7 à 10 assistants IA · coordination managériale et gouvernance",
+    note: null,
     featured: false,
   },
 ];
@@ -49,43 +38,45 @@ const offres = [
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Les offres</Eyebrow>
     <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
-      Une offre par taille d'équipe.
+      Trois offres.
       <br />
-      <em class="text-lime">Un prix forfaitaire.</em>
+      <em class="text-lime">Un critère : votre effectif.</em>
     </h2>
+    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
+      Un prix ferme. Un délai contractualisé. Le déploiement commence en semaine 3.
+    </p>
 
-    <div class="mt-16 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-16 grid gap-6 md:grid-cols-3">
       {offres.map((o) => (
         <div class={`${cardBase} ${o.featured ? cardFeatured : cardDefault}`}>
           {o.featured && (
             <div class="absolute -top-3 left-7 rounded-full bg-lime px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-white">
-              ★ {o.tag}
+              Offre de référence
             </div>
           )}
           <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{o.tag}</div>
           <div class="mt-4 text-xl font-medium text-foreground">{o.name}</div>
           <div class="mt-6">
-            <div class="text-[11px] font-medium uppercase tracking-wider text-ink-3">À partir de</div>
-            <div class={`mt-1 font-serif text-4xl italic tracking-tight ${o.featured ? "text-lime" : "text-foreground"}`}>{o.prix}</div>
+            <div class={`font-serif text-4xl italic tracking-tight ${o.featured ? "text-lime" : "text-foreground"}`}>{o.prix}</div>
           </div>
           <div class="mt-2 text-xs text-ink-2">{o.detail}</div>
-          <ul class="mt-6 flex-1 space-y-3 border-t border-line pt-6 text-sm text-ink-2">
-            {o.inclus.map((i) => (
-              <li class="flex gap-2"><span class="text-lime">+</span><span>{i}</span></li>
-            ))}
-          </ul>
-          <button type="button" data-open-booking class={o.featured ? btnFeatured : btnDefault}>
-            Démarrer <span>→</span>
-          </button>
+          {o.note && (
+            <p class="mt-6 flex-1 border-t border-line pt-6 text-sm leading-relaxed text-ink-2">{o.note}</p>
+          )}
         </div>
       ))}
     </div>
 
-    <p class="mt-10 text-sm text-ink-2">
-      Au-delà de 80 utilisateurs : sur devis —{" "}
-      <button type="button" data-open-booking class="cursor-pointer text-lime hover:underline">
-        contactez-moi
-      </button>
-    </p>
+    <div class="mt-10 rounded-2xl border border-line bg-card p-7">
+      <p class="text-base leading-relaxed text-ink-2">
+        <strong class="font-medium text-foreground">La porte d'entrée : l'audit — 1 500 €.</strong>{" "}
+        Déduits de la mission si elle démarre sous 30 jours. Vous ne payez pas deux fois pour savoir
+        où vous allez.
+      </p>
+    </div>
+
+    <div class="mt-10">
+      <CtaButton>Vérifier que c'est fait pour vous — 30 minutes</CtaButton>
+    </div>
   </div>
 </section>

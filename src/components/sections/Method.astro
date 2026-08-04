@@ -1,31 +1,30 @@
 ---
 import Eyebrow from "@/components/Eyebrow.astro";
-import CtaButton from "@/components/CtaButton.astro";
 
 const stages = [
   {
     num: "01",
-    week: "Audit intégré",
-    title: "On observe vos vraies journées.",
-    desc: "J'observe vos processus, j'identifie les tâches à forte répétition et faible valeur ajoutée. Pas un diagnostic théorique — un relevé terrain.",
+    week: "Audit terrain",
+    title: "Les vraies journées de ceux qui produisent.",
+    desc: "J'observe les vraies journées de ceux qui produisent. Relevé des tâches à forte répétition et faible valeur — pas un diagnostic théorique.",
   },
   {
     num: "02",
     week: "Construction des assistants",
     title: "Directement dans vos outils.",
-    desc: "Je construis les assistants IA directement dans vos outils. Calibrés sur votre métier, votre charte, vos données.",
+    desc: "Bâtis directement dans vos outils — Microsoft 365, Google Workspace, Notion. Calibrés sur vos métiers, votre charte, vos données.",
   },
   {
     num: "03",
     week: "Déploiement par vague",
     title: "En production dès la semaine 3.",
-    desc: "Les premiers assistants tournent en production dès la semaine 3 ou 4. Vous commencez à gagner du temps avant la fin du projet.",
+    desc: "Les premiers assistants tournent en production dès la semaine 3. Vos équipes gagnent avant la fin du projet.",
   },
   {
     num: "04",
     week: "Formation métier",
     title: "Vos équipes deviennent autonomes.",
-    desc: "Vos équipes apprennent à utiliser les assistants créés pour elles. 2 à 3 demi-journées. Pas de théorie IA — juste des cas d'usage réels.",
+    desc: "2 à 3 demi-journées. Pas de théorie IA — vos cas réels, vos documents, vos clients.",
   },
 ];
 ---
@@ -38,7 +37,7 @@ const stages = [
         <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
           4 étapes.
           <br />
-          <em class="text-lime">Pas une de plus.</em>
+          <em class="text-lime">Un système qui tourne dès la semaine 3.</em>
         </h2>
       </div>
       <p class="max-w-md text-lg leading-relaxed text-ink-2">
@@ -64,12 +63,11 @@ const stages = [
       </div>
     </div>
 
-    <div class="mt-20 grid gap-8 border-t border-line pt-10 md:grid-cols-[1fr_auto] md:items-center">
+    <div class="mt-20 border-t border-line pt-10">
       <p class="max-w-2xl text-lg leading-relaxed text-ink-2">
-        À la fin des 8 semaines, chaque membre de votre équipe aura gagné{" "}
-        <em class="text-lime">jusqu'à 10 heures par semaine</em> — sans stress et sans friction.
+        <strong class="font-medium text-foreground">Vos équipes gardent leurs outils.</strong>{" "}
+        <strong class="font-medium text-foreground">Vos données restent chez vous.</strong>
       </p>
-      <CtaButton>Réserver un audit</CtaButton>
     </div>
   </div>
 </section>
