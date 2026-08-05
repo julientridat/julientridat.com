@@ -1,0 +1,39 @@
+---
+/**
+ * « La méthode en 3 minutes — sur un cas réel. » — EN ATTENTE DE L'ASSET VIDÉO.
+ * Composant prêt, non importé sur index.astro tant que la vidéo n'existe pas
+ * (mieux vaut l'absence de section qu'un lecteur qui pointe vers du vide).
+ * Pour activer : fournir videoSrc (mp4 sous /public) et posterSrc, puis
+ * ajouter <VideoMethode /> dans index.astro juste après <Hero />.
+ */
+interface Props {
+  videoSrc: string;
+  posterSrc: string;
+}
+const { videoSrc, posterSrc } = Astro.props;
+---
+
+<section id="methode-video" class="border-t border-line bg-card px-6 py-16 md:px-12 md:py-20">
+  <div class="mx-auto max-w-4xl">
+    <div class="overflow-hidden rounded-2xl border border-line bg-foreground">
+      <video
+        class="aspect-video w-full"
+        controls
+        preload="metadata"
+        poster={posterSrc}
+      >
+        <source src={videoSrc} type="video/mp4" />
+      </video>
+    </div>
+    <div class="mt-6 flex flex-col items-center gap-5 text-center">
+      <p class="text-base text-ink-2">La méthode en 3 minutes — sur un cas réel.</p>
+      <button
+        type="button"
+        data-open-booking
+        class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90"
+      >
+        Vérifier que c'est fait pour vous
+      </button>
+    </div>
+  </div>
+</section>

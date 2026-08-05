@@ -1,0 +1,76 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const cas = [
+  {
+    tag: "14 personnes qui écrivent toute la journée",
+    titre: "Agence de communication santé",
+    desc: "Pôle texte monté en autonomie.",
+    chiffre: "1 100 €",
+    chiffreLabel: "rendus chaque mois par personne — 1 h 30 récupérée par jour au coût horaire chargé de 35 €",
+    href: "/realisations/formation-ia-agence-sante",
+  },
+  {
+    tag: "40 personnes, production sous charte",
+    titre: "Agence créative",
+    desc: "Deux pôles outillés — commercial et création — sans jamais mélanger les annonceurs.",
+    chiffre: "4",
+    chiffreLabel: "assistants métier livrés, opérationnels dès le lendemain",
+    href: "/realisations/agents-agence-creative",
+  },
+];
+---
+
+<section id="preuve" class="border-t border-line bg-card px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>La preuve</Eyebrow>
+    <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+      Des équipes qui produisent du document.
+      <br />
+      <em class="text-lime">Comme la vôtre.</em>
+    </h2>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-2">
+      {cas.map((c) => (
+        <a href={c.href} class="group flex flex-col rounded-2xl border border-line bg-background p-8 transition-all hover:-translate-y-0.5 hover:border-ink-3/40 hover:shadow-[0_16px_36px_-18px_rgba(24,20,60,0.16)]">
+          <div class="text-[11px] uppercase tracking-[0.22em] text-lime">{c.tag}</div>
+          <h3 class="mt-3 text-xl font-medium text-foreground">{c.titre}</h3>
+          <p class="mt-2 text-sm leading-relaxed text-ink-2">{c.desc}</p>
+          <div class="mt-6 flex-1 border-t border-line pt-6">
+            <div class="font-serif text-4xl italic text-foreground">{c.chiffre}</div>
+            <div class="mt-2 text-sm leading-relaxed text-ink-2">{c.chiffreLabel}</div>
+          </div>
+          <div class="mt-6 inline-flex items-center gap-2 text-sm text-lime">
+            Voir le cas <span class="transition-transform group-hover:translate-x-1">→</span>
+          </div>
+        </a>
+      ))}
+
+      <a href="/realisations/cartographie-ia-agence" class="group flex flex-col justify-between rounded-2xl border border-line bg-background p-8 transition-all hover:-translate-y-0.5 hover:border-ink-3/40 hover:shadow-[0_16px_36px_-18px_rgba(24,20,60,0.16)] md:col-span-2">
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Savoir avant d'investir</div>
+          <p class="mt-3 max-w-2xl text-lg leading-relaxed text-ink-2">
+            Cartographie IA complète : un diagnostic et un tableau de pilotage encore utilisés dans la durée.
+          </p>
+        </div>
+        <div class="mt-6 inline-flex items-center gap-2 text-sm text-lime">
+          Voir le cas <span class="transition-transform group-hover:translate-x-1">→</span>
+        </div>
+      </a>
+    </div>
+
+    <p class="mt-10 max-w-3xl text-base leading-relaxed text-ink-2">
+      Et ailleurs : un devis conforme produit en 30 secondes au lieu de 30 minutes. Une enseigne à
+      600 points de vente. 49 dirigeants de TPE formés en une journée.
+    </p>
+
+    <div class="mt-8">
+      <a
+        href="/realisations"
+        class="inline-flex items-center gap-2 border-b border-lime pb-1 text-lg text-lime transition hover:gap-3"
+      >
+        → Voir tous les cas
+      </a>
+    </div>
+  </div>
+</section>

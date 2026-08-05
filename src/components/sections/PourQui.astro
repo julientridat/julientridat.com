@@ -1,0 +1,53 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const pour = [
+  "Votre entreprise compte 10 à 40 salariés — jusqu'à 80 avec PME Augmentée +",
+  "5 à 15 personnes y passent leurs journées à produire : devis, rapports, propositions, comptes rendus, dossiers",
+  "Vous décidez seul, sous 30 jours",
+  "Vous avez cherché à recruter — sans trouver, ou sans pouvoir payer",
+  "Le budget est un investissement sur trésorerie",
+];
+
+const pasPour = [
+  "Vous cherchez une formation CPF ou une sensibilisation à l'IA",
+  "La décision passe par un comité d'achat",
+  "Votre production est physique, sans couche documentaire",
+  "Vous voulez un POC gratuit, ou un audit sans intention d'installer",
+];
+---
+
+<section id="pour-qui" class="border-t border-line bg-card px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Pour qui</Eyebrow>
+    <h2 class="max-w-3xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+      Avant de réserver, <em class="text-lime">vérifiez.</em>
+    </h2>
+
+    <div class="mt-16 grid gap-6 md:grid-cols-2">
+      <div class="rounded-2xl border border-lime/30 bg-background p-8">
+        <h3 class="text-lg font-medium text-foreground">C'est pour vous si</h3>
+        <ul class="mt-6 space-y-4 text-base leading-relaxed text-ink-2">
+          {pour.map((p) => (
+            <li class="flex gap-3">
+              <span class="mt-1 text-lime">+</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="rounded-2xl border border-line bg-background p-8">
+        <h3 class="text-lg font-medium text-foreground">Ce n'est pas pour vous si</h3>
+        <ul class="mt-6 space-y-4 text-base leading-relaxed text-ink-2">
+          {pasPour.map((p) => (
+            <li class="flex gap-3">
+              <span class="mt-1 text-ink-3">−</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
