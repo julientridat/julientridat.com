@@ -6,13 +6,12 @@
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import HeroCinema from "@/components/sections/HeroCinema.astro";
+import Declencheur from "@/components/sections/Declencheur.astro";
 import Pains from "@/components/sections/Pains.astro";
 import Method from "@/components/sections/Method.astro";
-import Assistants from "@/components/sections/Assistants.astro";
-import Gains from "@/components/sections/Gains.astro";
+import Preuve from "@/components/sections/Preuve.astro";
 import Offres from "@/components/sections/Offres.astro";
-import Registre from "@/components/sections/Registre.astro";
-import References from "@/components/sections/References.astro";
+import PourQui from "@/components/sections/PourQui.astro";
 import About from "@/components/sections/About.astro";
 import FinalCTA from "@/components/sections/FinalCTA.astro";
 import Footer from "@/components/Footer.astro";
@@ -24,13 +23,12 @@ const description = "Version de travail de la page d'accueil : hero en vidéo bo
 <BaseLayout title={title} description={description}>
   <main class="bg-background text-foreground">
     <HeroCinema videoSrc="/hero.mp4" mode="video" comparateur />
+    <Declencheur />
     <Pains />
     <Method />
-    <Assistants />
-    <Gains />
+    <Preuve />
     <Offres />
-    <Registre />
-    <References />
+    <PourQui />
     <About />
     <FinalCTA />
     <Footer home />
