@@ -1,6 +1,6 @@
 ---
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import Hero from "@/components/sections/Hero.astro";
+import HeroCinema from "@/components/sections/HeroCinema.astro";
 import Declencheur from "@/components/sections/Declencheur.astro";
 import Pains from "@/components/sections/Pains.astro";
 import Method from "@/components/sections/Method.astro";
@@ -58,7 +58,7 @@ const jsonLd = [
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    <Hero />
+    <HeroCinema videoSrc="/hero.mp4" mode="video" comparateur />
     <!-- <VideoMethode /> — en attente de l'asset vidéo, voir VideoMethode.astro -->
     <Declencheur />
     <Pains />
