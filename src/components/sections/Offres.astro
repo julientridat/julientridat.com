@@ -38,15 +38,90 @@ const offres = [
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Les offres</Eyebrow>
     <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
-      Trois offres.
+      Un audit pour décider.
       <br />
-      <em class="text-lime">Un critère : votre effectif.</em>
+      <em class="text-lime">Trois missions pour installer.</em>
     </h2>
     <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
-      Un prix ferme. Un délai contractualisé. Le déploiement commence en semaine 3.
+      L'audit vaut pour lui-même : vous repartez avec de quoi arbitrer, même si vous n'installez
+      rien avec moi.
     </p>
 
-    <div class="mt-16 grid gap-6 md:grid-cols-3">
+    <!--
+      L'audit n'est pas une remise sur la mission : c'est l'offre d'entrée, et elle doit tenir
+      debout seule. D'où le bloc développé (promesse, livrables, preuve) plutôt qu'un encart —
+      la déduction n'arrive qu'en dernier, en note.
+    -->
+    <div class="mt-14 rounded-2xl border border-lime/40 bg-card p-7 md:p-10">
+      <div class="grid gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] md:gap-14">
+        <div>
+          <div class="text-[11px] uppercase tracking-[0.22em] text-lime">L'offre d'entrée</div>
+          <h3 class="mt-4 text-2xl font-medium text-foreground">L'audit</h3>
+          <div class="mt-5 font-serif text-5xl italic tracking-tight text-lime">1 500 €</div>
+
+          <p class="mt-7 text-lg leading-relaxed text-foreground">
+            Savoir où l'IA vous fera gagner du temps. Avant d'en dépenser.
+          </p>
+          <p class="mt-4 text-base leading-relaxed text-ink-2">
+            Le risque n'est pas de rater l'IA. C'est d'acheter des licences et de constater six mois
+            plus tard que rien n'a bougé dans la production.
+          </p>
+          <p class="mt-4 text-base leading-relaxed text-ink-2">
+            J'interroge individuellement ceux qui produisent — pas la direction seule. Chaque
+            friction relevée est tranchée : ce que l'IA peut exécuter, ce qui doit rester au
+            jugement humain.
+          </p>
+        </div>
+
+        <div>
+          <div class="text-xs uppercase tracking-wider text-ink-3">Ce qui vous reste</div>
+          <div class="mt-5 space-y-4">
+            <div class="rounded-xl border border-line bg-background p-5">
+              <h4 class="text-base font-medium text-foreground">Le diagnostic</h4>
+              <p class="mt-2 text-sm leading-relaxed text-ink-2">
+                Vos frictions cartographiées poste par poste, et vos cas d'usage classés par effort
+                et par impact. Une feuille de route séquencée — pas une liste de courses.
+              </p>
+            </div>
+            <div class="rounded-xl border border-line bg-background p-5">
+              <h4 class="text-base font-medium text-foreground">L'outil de pilotage</h4>
+              <p class="mt-2 text-sm leading-relaxed text-ink-2">
+                Dix onglets pour suivre l'exécution dans la durée. Il sert encore longtemps après la
+                fin de la mission.
+              </p>
+            </div>
+          </div>
+
+          <p class="mt-5 text-sm leading-relaxed text-ink-2">
+            <em class="not-italic font-medium text-foreground">Ces deux outils sont à vous.</em> Ils
+            servent que vous installiez avec moi, avec un autre, ou avec personne.
+          </p>
+
+          <div class="mt-6 flex flex-wrap items-center gap-x-6 gap-y-3 border-t border-line pt-5">
+            <a
+              href="/realisations/cartographie-ia-agence"
+              class="group inline-flex items-center gap-2 text-sm text-lime"
+            >
+              Voir un audit réel
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+            <span class="text-sm text-ink-3">
+              Déduit de la mission si elle démarre sous 30 jours.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="mt-20 border-t border-line pt-14">
+      <h3 class="text-2xl font-medium text-foreground">Une fois que vous savez où agir</h3>
+      <p class="mt-3 max-w-2xl text-base leading-relaxed text-ink-2">
+        Trois missions, un seul critère : votre effectif. Un prix ferme, un délai contractualisé, le
+        déploiement commence en semaine 3.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-6 md:grid-cols-3">
       {offres.map((o) => (
         <div class={`${cardBase} ${o.featured ? cardFeatured : cardDefault}`}>
           {o.featured && (
@@ -67,15 +142,7 @@ const offres = [
       ))}
     </div>
 
-    <div class="mt-10 rounded-2xl border border-line bg-card p-7">
-      <p class="text-base leading-relaxed text-ink-2">
-        <strong class="font-medium text-foreground">La porte d'entrée : l'audit — 1 500 €.</strong>{" "}
-        Déduits de la mission si elle démarre sous 30 jours. Vous ne payez pas deux fois pour savoir
-        où vous allez.
-      </p>
-    </div>
-
-    <div class="mt-10">
+    <div class="mt-12">
       <CtaButton>Vérifier que c'est fait pour vous — 30 minutes</CtaButton>
     </div>
   </div>
