@@ -51,6 +51,7 @@ export const GET: APIRoute = async () => {
     "",
     `- [Accueil](${SITE.url}/) : offres, méthode en 4 étapes, références`,
     `- [Cas clients](${SITE.url}/realisations) : le registre des transformations`,
+    `- [Fiche formateur](${SITE.url}/formation-ia) : intervention en sous-traitance pour les organismes de formation (Qualiopi porté par le centre)`,
     `- [Notes](${SITE.url}/notes) : les analyses`,
     "",
   ];

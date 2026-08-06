@@ -1,0 +1,40 @@
+---
+/**
+ * Bande « organismes de formation » — audience distincte du reste de la page.
+ *
+ * Placée juste après « Pour qui », qui vient d'exclure le visiteur cherchant une
+ * formation plutôt qu'une installation : au lieu de le perdre, on l'aiguille.
+ *
+ * Volontairement sobre et courte : le tunnel principal s'adresse au dirigeant de
+ * PME, cette bande ne doit pas le concurrencer. Elle nomme son destinataire dès
+ * le premier mot pour que tous les autres puissent la sauter.
+ */
+---
+
+<section id="formation" class="border-t border-line px-6 py-16 md:px-12 md:py-20">
+  <div
+    class="mx-auto flex max-w-7xl flex-col gap-7 md:flex-row md:items-center md:justify-between md:gap-12"
+  >
+    <div class="max-w-2xl">
+      <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">
+        Organismes de formation
+      </div>
+      <h2 class="mt-3 text-xl font-medium text-foreground md:text-2xl">
+        Vous formez. <em class="text-lime">J'interviens.</em>
+      </h2>
+      <p class="mt-3 text-base leading-relaxed text-ink-2">
+        Formateur IA générative depuis trois ans, des comités de direction aux équipes de terrain,
+        sur une dizaine de secteurs. Je travaille en sous-traitance, sous la certification Qualiopi
+        de votre centre.
+      </p>
+    </div>
+
+    <a
+      href="/formation-ia"
+      class="group inline-flex w-fit shrink-0 items-center gap-2 rounded-full border border-line px-6 py-3 text-sm text-foreground transition-colors hover:border-lime hover:text-lime"
+    >
+      Voir la fiche formateur
+      <span class="transition-transform group-hover:translate-x-1">→</span>
+    </a>
+  </div>
+</section>

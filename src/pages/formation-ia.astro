@@ -1,15 +1,10 @@
 ---
 /**
- * Fiche formateur — page volontairement NON INDEXÉE et NON LIÉE.
+ * Fiche formateur — page PUBLIQUE (indexée, liée depuis le footer et la home).
  *
  * Destinataire : responsable pédagogique / dirigeant d'un organisme ou centre de
- * formation professionnelle, à qui Julien envoie l'URL directement.
- *
- * « Cachée » = trois choses, réunies ici :
- *   1. aucun `canonical` transmis à BaseLayout → <meta name="robots" content="noindex">
- *   2. absente de `src/pages/sitemap.xml.ts` et de `src/pages/llms.txt.ts`
- *   3. aucun lien depuis Nav.astro / Footer.astro
- * Pour la rendre publique : passer `canonical` et ajouter l'entrée au sitemap.
+ * formation professionnelle. La page reste écrite pour lui seul : le visiteur
+ * dirigeant de PME, lui, est aiguillé ici depuis une bande dédiée de la home.
  *
  * Parti pris éditorial : page courte, ton sobre, première personne. L'argument
  * est l'ÉTENDUE de l'expérience (du comité de direction à l'équipe de TPE, tous
@@ -18,22 +13,27 @@
  *
  * Règle éditoriale du dépôt : aucun chiffre invérifiable. Tout est adossé aux
  * études de cas publiées, aux références déjà nommées sur la page d'accueil, ou
- * aux déroulés réellement livrés. Les données administratives inconnues sont
- * nulles ci-dessous et s'affichent « [À VALIDER] ».
+ * aux déroulés réellement livrés.
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
 
 const title = "Fiche formateur IA — Julien Tridat | Intervenant pour organismes de formation";
 const description =
   "Formateur IA générative depuis trois ans, des comités de direction aux équipes de terrain. Intervention en sous-traitance pour organismes de formation. Bordeaux et national.";
 
 /* ------------------------------------------------------------------ *
- * Données administratives — À COMPLÉTER PAR JULIEN AVANT DIFFUSION.
- * Tant qu'une valeur vaut null, la fiche affiche « [À VALIDER] ».
+ * Données administratives — à compléter par Julien.
+ *
+ * La page étant désormais publique, une valeur manquante n'affiche plus
+ * « [À VALIDER] » : la ligne est simplement omise, et un renvoi « sur demande »
+ * la remplace. Un OF en phase de référencement redemande ces pièces de toute
+ * façon ; mieux vaut une fiche sobre qu'une fiche qui a l'air inachevée.
+ * Renseigner une valeur ici la fait apparaître automatiquement.
  * ------------------------------------------------------------------ */
 const ADMIN = {
   formeJuridique: null as string | null,
@@ -46,7 +46,33 @@ const ADMIN = {
   /** Délai entre l'accord et la première session. */
   delaiAcces: null as string | null,
 };
-const v = (x: string | null) => x ?? "[À VALIDER]";
+
+/** Lignes administratives réellement renseignées, prêtes à l'affichage. */
+const lignesAdmin: [string, string][] = [
+  ADMIN.formeJuridique ? (["Forme juridique", ADMIN.formeJuridique] as [string, string]) : null,
+  ADMIN.siret ? (["SIRET", ADMIN.siret] as [string, string]) : null,
+  ADMIN.nda
+    ? (["Déclaration d'activité", `${ADMIN.nda} — préfecture de région ${ADMIN.ndaRegion}`] as [
+        string,
+        string,
+      ])
+    : null,
+  [
+    "Qualiopi",
+    "Non détenue en propre. J'interviens sous la certification du centre, en sous-traitance.",
+  ] as [string, string],
+  ADMIN.rcPro ? (["RC professionnelle", ADMIN.rcPro] as [string, string]) : null,
+  ADMIN.delaiAcces ? (["Délai d'accès", ADMIN.delaiAcces] as [string, string]) : null,
+].filter((l): l is [string, string] => l !== null);
+
+/** Intitulés des pièces encore absentes, listés en une phrase plutôt qu'en trous. */
+const piecesSurDemande = [
+  ADMIN.formeJuridique ? null : "forme juridique",
+  ADMIN.siret ? null : "SIRET",
+  ADMIN.nda ? null : "n° de déclaration d'activité",
+  ADMIN.rcPro ? null : "attestation de RC professionnelle",
+  ADMIN.delaiAcces ? null : "délai d'accès",
+].filter((x): x is string => x !== null);
 
 /* ------------------------------------------------------------------ *
  * Le spectre — la seule mécanique de la page.
@@ -202,7 +228,7 @@ const VERBATIMS = [
 ];
 ---
 
-<BaseLayout title={title} description={description}>
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`}>
   <main class="bg-background text-foreground">
     {/* ---------------------------------------------------------------- Hero */}
     <header class="relative overflow-hidden border-b border-line px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
@@ -343,32 +369,18 @@ const VERBATIMS = [
         <div class="mt-12 grid gap-px overflow-hidden rounded-2xl bg-line md:grid-cols-2">
           <dl class="space-y-5 bg-background p-8 md:p-9">
             <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Administratif</div>
-            {[
-              ["Forme juridique", v(ADMIN.formeJuridique)],
-              ["SIRET", v(ADMIN.siret)],
-              [
-                "Déclaration d'activité",
-                `${v(ADMIN.nda)} — préfecture de région ${ADMIN.ndaRegion}`,
-              ],
-              [
-                "Qualiopi",
-                "Non détenue en propre. J'interviens sous la certification du centre, en sous-traitance.",
-              ],
-              ["RC professionnelle", v(ADMIN.rcPro)],
-              ["Délai d'accès", v(ADMIN.delaiAcces)],
-            ].map(([k, val]) => (
+            {lignesAdmin.map(([k, val]) => (
               <div class="grid gap-1 border-b border-line pb-4 last:border-0 last:pb-0 sm:grid-cols-[11rem_1fr] sm:gap-4">
                 <dt class="text-[13px] text-ink-3">{k}</dt>
-                <dd
-                  class:list={[
-                    "text-[14px]",
-                    String(val).includes("[À VALIDER]") ? "text-lime/80" : "text-foreground",
-                  ]}
-                >
-                  {val}
-                </dd>
+                <dd class="text-[14px] text-foreground">{val}</dd>
               </div>
             ))}
+            {piecesSurDemande.length > 0 && (
+              <p class="border-t border-line pt-4 text-[13px] leading-relaxed text-ink-3">
+                Pièces de référencement ({piecesSurDemande.join(", ")}) transmises sur demande, sous
+                24 h.
+              </p>
+            )}
           </dl>
 
           <dl class="space-y-5 bg-background p-8 md:p-9">
