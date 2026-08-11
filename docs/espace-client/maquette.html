@@ -206,6 +206,37 @@ textarea:focus, input:focus { outline: 2px solid var(--violet); outline-offset: 
 .confirm { color: var(--violet); font-size: 0.85rem; display: none; margin-top: 12px; }
 .confirm.on { display: block; }
 
+/* ---- Assistant de commande ---- */
+.thread { display: grid; gap: 10px; margin-top: 16px; }
+.msg { border-radius: 14px; padding: 13px 16px; font-size: 0.9rem; line-height: 1.5; }
+.msg-user { background: var(--paper); border: 1px solid var(--line); color: var(--ink-soft); justify-self: end; max-width: 85%; }
+.msg-bot { background: var(--violet-tint); color: var(--ink); max-width: 92%; }
+.msg-bot .who {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em;
+  color: var(--violet); margin-bottom: 8px;
+}
+.msg-bot .who i { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); }
+.jalons { list-style: none; display: grid; gap: 6px; margin-top: 10px; }
+.jalons li { display: flex; gap: 10px; align-items: baseline; color: var(--ink-soft); }
+.jalons li:first-child { color: var(--ink); font-weight: 500; }
+.jalons .jn { font-family: var(--font-serif); font-style: italic; color: var(--violet); min-width: 14px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.chip-btn {
+  border: 1px solid var(--line); background: var(--white); color: var(--ink-soft);
+  border-radius: 999px; padding: 7px 15px; font-size: 0.83rem; font-weight: 500;
+  transition: color 0.2s, border-color 0.2s, transform 0.2s;
+}
+.chip-btn:hover:not(:disabled) { color: var(--violet); border-color: var(--violet); transform: translateY(-1px); }
+.chip-btn:disabled { opacity: 0.45; cursor: default; }
+.recap {
+  background: var(--white); border: 1px solid var(--line); border-radius: 12px;
+  padding: 12px 14px; margin-top: 10px;
+}
+.recap strong { font-weight: 500; }
+.recap .meta { color: var(--muted); font-size: 0.8rem; margin-top: 4px; }
+.recap-acts { display: flex; gap: 10px; margin-top: 12px; flex-wrap: wrap; align-items: center; }
+
 /* ---- Livré ---- */
 .done-list { display: grid; gap: 12px; }
 .done-item { border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; background: var(--white); }
@@ -329,7 +360,7 @@ footer { background: var(--white); border-top: 1px solid var(--line); }
         <div class="card now">
           <span class="pill pill-active"><span class="dot"></span>En fabrication</span>
           <h3>Refonte de la page Offres</h3>
-          <p class="meta">Demandée lundi 10 août · Livraison attendue <strong>jeudi avant 18&nbsp;h</strong></p>
+          <p class="meta">Demandée lundi 10 août · Jalon 1 sur 3&nbsp;: la maquette, attendue <strong>jeudi avant 18&nbsp;h</strong></p>
           <div class="steps">
             <div class="step done"><i></i><small>Reçue</small></div>
             <div class="step current"><i></i><small>En fabrication</small></div>
@@ -376,10 +407,10 @@ footer { background: var(--white); border-top: 1px solid var(--line); }
         <div class="card ask">
           <textarea id="ask-input" placeholder="Décrivez ce qu’il vous faut, comme dans un e-mail. Trois lignes suffisent."></textarea>
           <div class="ask-row">
-            <button class="btn" id="ask-send">Ajouter à la file</button>
-            <span class="hint">Pas de brief à rédiger — si un détail manque, je pose la question.</span>
+            <button class="btn" id="ask-send">Envoyer</button>
+            <span class="hint">L’assistant connaît mes process&nbsp;: il vous dit ce qui arrive, et quand — avant d’ajouter à la file.</span>
           </div>
-          <p class="confirm" id="ask-confirm"></p>
+          <div class="thread" id="thread"></div>
         </div>
       </section>
 
@@ -544,24 +575,163 @@ footer { background: var(--white); border-top: 1px solid var(--line); }
     btn.focus();
   });
 
-  /* Nouvelle demande → rejoint la file */
+  /* Nouvelle demande — commande assistée.
+     Maquette : logique scriptée. En production, mêmes cartes de process
+     versionnées dans le repo, servies au bot (cf. cadrage.md). */
+  var PROCESS = [
+    { tag: "Formation", test: /formation|former|atelier|session/i,
+      intro: "C’est une formation. Pour qu’elle serve vraiment, voici les étapes :",
+      jalons: ["Programme proposé — sous 48 h", "Votre validation, et le choix de la date", "Session animée + support remis à l’équipe"],
+      first: "le programme", jshort: "programme",
+      question: "Combien de personnes à former ?", chips: ["1 à 3", "4 à 10", "Plus de 10"] },
+    { tag: "Site", test: /site|page|landing|refonte|vitrine|e-?commerce/i,
+      intro: "Un site ne se livre pas fini en 72 h — et c’est ce qui vous protège des mauvaises surprises. Voici comment ça se passe :",
+      jalons: ["Maquette — sous 48 h", "Votre validation — un aller-retour", "V1 en ligne — sous 72 h après validation", "Ajustements dans la foulée"],
+      first: "la maquette", jshort: "maquette",
+      question: "Les contenus (textes, photos) existent-ils déjà ?", chips: ["Oui", "En partie", "Non — à créer"] },
+    { tag: "Contenu", test: /mail|e-?mail|s[ée]quence|article|blog|post|linkedin|newsletter|contenu|campagne/i,
+      intro: "C’est du contenu. On valide l’angle avant d’écrire — jamais l’inverse :",
+      jalons: ["Angle et plan — sous 24 h", "Votre validation", "Version complète — sous 48 h"],
+      first: "l’angle et le plan", jshort: "plan",
+      question: "Pour quel canal ?", chips: ["E-mail", "LinkedIn", "Site / blog", "Autre"] },
+    { tag: "Outil", test: /outil|crm|automatis|install|\bia\b|assistant|logiciel|tableau de bord/i,
+      intro: "C’est une installation d’outil. Personne ne reçoit un outil sans savoir s’en servir :",
+      jalons: ["Cadrage — trois questions au bon interlocuteur", "Installation sur vos comptes, à vous", "Démonstration à l’équipe — 30 min"],
+      first: "le cadrage", jshort: "cadrage",
+      question: "Qui l’utilisera au quotidien ?", chips: ["Commerce", "Gestion / compta", "Toute l’équipe"] }
+  ];
+  var FALLBACK = { tag: "À cadrer",
+    intro: "Reçu. Pour éviter tout malentendu sur les délais, je découpe chaque demande en jalons — le premier arrive toujours sous 48 à 72 h. Voici le déroulé :",
+    jalons: ["Je reviens vers vous avec le découpage — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"],
+    first: "le découpage en jalons", jshort: "cadrage",
+    question: null, chips: null };
+
   var askInput = document.getElementById("ask-input");
-  var askConfirm = document.getElementById("ask-confirm");
-  document.getElementById("ask-send").addEventListener("click", function () {
-    var text = askInput.value.trim();
-    if (!text) { askInput.focus(); return; }
+  var thread = document.getElementById("thread");
+  var askState = { text: "", proc: null };
+
+  function userMsg(text) {
+    var d = document.createElement("div");
+    d.className = "msg msg-user";
+    d.textContent = text;
+    thread.appendChild(d);
+  }
+  function botMsg() {
+    var d = document.createElement("div");
+    d.className = "msg msg-bot";
+    d.innerHTML = '<p class="who"><i></i>L’assistant</p>';
+    thread.appendChild(d);
+    return d;
+  }
+  function jalonsList(proc) {
+    var ol = document.createElement("ul");
+    ol.className = "jalons";
+    proc.jalons.forEach(function (j, i) {
+      var li = document.createElement("li");
+      var n = document.createElement("span");
+      n.className = "jn";
+      n.textContent = i + 1;
+      li.appendChild(n);
+      li.appendChild(document.createTextNode(j + (i === 0 ? " — c’est ce qui arrive en premier" : "")));
+      ol.appendChild(li);
+    });
+    return ol;
+  }
+  function showRecap() {
+    var proc = askState.proc;
+    var m = botMsg();
+    var p = document.createElement("p");
+    p.textContent = "Voici ce que j’ajoute à la file :";
+    m.appendChild(p);
+    var recap = document.createElement("div");
+    recap.className = "recap";
+    var title = document.createElement("strong");
+    title.textContent = askState.text.length > 80 ? askState.text.slice(0, 80) + "…" : askState.text;
+    recap.appendChild(title);
+    var meta = document.createElement("p");
+    meta.className = "meta";
+    meta.textContent = proc.tag + " · première livraison : " + proc.first;
+    recap.appendChild(meta);
+    m.appendChild(recap);
+    var acts = document.createElement("div");
+    acts.className = "recap-acts";
+    var ok = document.createElement("button");
+    ok.className = "btn btn-sm";
+    ok.textContent = "Confirmer — ajouter à la file";
+    var edit = document.createElement("button");
+    edit.className = "link-quiet";
+    edit.textContent = "Modifier ma demande";
+    acts.appendChild(ok);
+    acts.appendChild(edit);
+    m.appendChild(acts);
+    ok.addEventListener("click", function () {
+      acts.remove();
+      addToQueue();
+    });
+    edit.addEventListener("click", function () {
+      thread.innerHTML = "";
+      askInput.value = askState.text;
+      askInput.focus();
+    });
+  }
+  function addToQueue() {
+    var proc = askState.proc;
     var li = document.createElement("li");
     li.innerHTML =
       '<span class="num"></span><span class="q-txt"></span>' +
       '<span class="q-arrows">' +
       '<button type="button" data-move="up" aria-label="Monter dans la file">↑</button>' +
       '<button type="button" data-move="down" aria-label="Descendre dans la file">↓</button></span>';
-    li.querySelector(".q-txt").textContent = text.length > 90 ? text.slice(0, 90) + "…" : text;
+    var txt = li.querySelector(".q-txt");
+    txt.textContent = askState.text.length > 70 ? askState.text.slice(0, 70) + "…" : askState.text;
+    var tag = document.createElement("span");
+    tag.className = "pill pill-tag";
+    tag.textContent = "1ᵉʳ jalon : " + proc.jshort;
+    txt.appendChild(tag);
     queue.appendChild(li);
     renumber();
+    var m = botMsg();
+    var p = document.createElement("p");
+    p.textContent = "Ajoutée à la file, en position " + queue.children.length + ". Vous pouvez la faire monter — je prends toujours la première de la liste.";
+    m.appendChild(p);
     askInput.value = "";
-    askConfirm.textContent = "Ajoutée à la file, en position " + queue.children.length + ". Vous pouvez la faire monter.";
-    askConfirm.classList.add("on");
+  }
+  document.getElementById("ask-send").addEventListener("click", function () {
+    var text = askInput.value.trim();
+    if (!text) { askInput.focus(); return; }
+    thread.innerHTML = "";
+    askState.text = text;
+    askState.proc = PROCESS.find(function (p) { return p.test.test(text); }) || FALLBACK;
+    userMsg(text);
+    var proc = askState.proc;
+    var m = botMsg();
+    var p = document.createElement("p");
+    p.textContent = proc.intro;
+    m.appendChild(p);
+    m.appendChild(jalonsList(proc));
+    if (proc.question) {
+      var q = document.createElement("p");
+      q.style.marginTop = "12px";
+      q.textContent = "Une seule question : " + proc.question;
+      m.appendChild(q);
+      var chips = document.createElement("div");
+      chips.className = "chips";
+      proc.chips.forEach(function (label) {
+        var b = document.createElement("button");
+        b.className = "chip-btn";
+        b.textContent = label;
+        b.addEventListener("click", function () {
+          chips.querySelectorAll("button").forEach(function (x) { x.disabled = true; });
+          userMsg(label);
+          showRecap();
+        });
+        chips.appendChild(b);
+      });
+      m.appendChild(chips);
+    } else {
+      showRecap();
+    }
+    askInput.value = "";
   });
 
   /* Ordre du jour du point hebdo */
@@ -593,7 +763,7 @@ footer { background: var(--white); border-top: 1px solid var(--line); }
   });
   document.getElementById("adjust-send").addEventListener("click", function () {
     if (!document.getElementById("adjust-input").value.trim()) return;
-    valPill.textContent = "Ajustement demandé — retour sous 48 h";
+    valPill.textContent = "Ajustement demandé — retour sous 48 h";
     valPill.className = "pill pill-active";
     adjustZone.classList.remove("on");
   });
