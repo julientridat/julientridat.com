@@ -127,8 +127,11 @@ récurrent, souveraineté totale.
 
 ## Ce que la maquette montre
 
-`docs/espace-client/maquette.html` — un fichier autonome (fontes embarquées), charte
-« pages de vente » (papier `#F1F2F4`, violet `#6C4CF1`, Geist + Instrument Serif).
+`docs/espace-client/maquette.html` — un fichier autonome (fontes embarquées), design
+system « Navy ink on cool marble » (référence Calendly, choix de Julien) : canvas
+`#F8F9FB`, encre marine `#0B3558`, bleu signal `#006BFF` pour les actions, cartes
+blanches à ombres bleutées (rayon 24 px, contrôles 8 px), Manrope en substitut de
+Gilroy, blobs magenta/cyan en atmosphère discrète.
 Interactions fonctionnelles : réordonner la file, poster une demande via l'assistant
 (reconnaissance du type, jalons annoncés, une question à choix, récapitulatif, ajout à la
 file avec son premier jalon), ajouter un sujet à l'ordre du jour, valider un livrable ou
