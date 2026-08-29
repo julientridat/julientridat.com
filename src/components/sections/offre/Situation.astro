@@ -1,0 +1,52 @@
+---
+/**
+ * Section « miroir » : six constats courts que le visiteur doit reconnaître un
+ * par un. Volontairement en texte seul, sans carte ni grille — la mise en
+ * forme ne doit rien ajouter, c'est l'accumulation qui fait le travail.
+ *
+ * La dernière ligne est un critère d'exclusion, pas un argument : elle est
+ * détachée du bloc et posée en serif pour qu'on la lise comme une adresse
+ * directe, et non comme un septième constat.
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+---
+
+<section id="situation" class="border-t border-line bg-card px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-3xl">
+    <Eyebrow>Votre situation</Eyebrow>
+    <h2
+      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground"
+    >
+      Vous vous <em class="text-lime">reconnaissez&nbsp;?</em>
+    </h2>
+
+    <div class="mt-10 space-y-5 text-lg leading-relaxed text-ink-2">
+      <p>
+        Votre entreprise tourne. Vous produisez, vous vendez, vous livrez.{" "}
+        <strong class="font-medium text-foreground">Le marketing, lui, attend.</strong>
+      </p>
+      <p>Le site date de la dernière refonte — celle que personne n'a vraiment terminée.</p>
+      <p>
+        <strong class="font-medium text-foreground">
+          Vos commerciaux fabriquent leurs supports eux-mêmes.
+        </strong>{" "}
+        Chacun les siens, chacun sa mise en page.
+      </p>
+      <p>Les contenus sortent quand quelqu'un a le temps. C'est-à-dire jamais.</p>
+      <p>
+        Vous avez essayé&nbsp;: un stagiaire, une agence, un freelance.{" "}
+        <strong class="font-medium text-foreground">Mort en trois mois, à chaque fois.</strong>
+      </p>
+      <p>
+        Ce n'est pas un problème de compétence. C'est un problème de structure&nbsp;: personne
+        n'est responsable, chaque semaine, de faire avancer votre marketing.
+      </p>
+    </div>
+
+    <p class="mt-12 text-2xl leading-snug">
+      <em class="text-lime">
+        Si vous avez déjà une équipe marketing, cette page n'est pas pour vous.
+      </em>
+    </p>
+  </div>
+</section>

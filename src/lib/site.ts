@@ -1,9 +1,9 @@
 export const SITE = {
   url: "https://julientridat.com",
   name: "Julien Tridat",
-  title: "Julien Tridat — Consultant & Formateur IA pour Entreprises",
+  title: "Julien Tridat — Direction marketing externalisée pour PME",
   description:
-    "Consultant & formateur IA à Bordeaux. J'installe l'IA dans vos outils et je forme vos équipes en 2 mois.",
+    "Je rejoins votre équipe : un mois pour installer votre marketing, puis chaque semaine à vos côtés pour le faire tourner. 2 500 € par mois, sans engagement.",
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 
@@ -35,9 +35,9 @@ export const PERSON_JSONLD = {
   "@type": "Person",
   "@id": `${SITE.url}/#julien-tridat`,
   name: "Julien Tridat",
-  jobTitle: "Consultant & formateur IA",
+  jobTitle: "Consultant marketing et IA indépendant",
   description:
-    "Consultant et formateur IA à Bordeaux. 20 ans d'expérience en marketing et accompagnement des entreprises. J'intègre l'IA dans les outils des PME et je forme leurs équipes.",
+    "Vingt ans de marketing. Publicis. Production audiovisuelle et agence, notamment pour France 24, Canal+ et France 2. Formateur en intelligence artificielle. Une cinquantaine d'organisations accompagnées, de Dassault Systèmes à SNCF Fret.",
   url: SITE.url,
   address: {
     "@type": "PostalAddress",
@@ -47,14 +47,12 @@ export const PERSON_JSONLD = {
     addressCountry: "FR",
   },
   knowsAbout: [
-    "Intégration IA en entreprise",
-    "Assistants IA sur mesure",
-    "Formation IA métier",
     "Marketing B2B",
-    "Claude",
-    "ChatGPT",
-    "Copilot",
-    "Gemini",
+    "Stratégie de croissance",
+    "Intelligence artificielle générative",
+    "Automatisation d'entreprise",
+    "Organisation et process d'entreprise",
+    "Production de contenus",
   ],
   sameAs: [
     "https://marketingjoy.fr",

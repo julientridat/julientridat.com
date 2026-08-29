@@ -1,0 +1,41 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const preuves = [
+  {
+    secteur: "Édition et formation, secteur santé",
+    recit:
+      "Reconduit chaque mois depuis quatre ans. Sans engagement, sans contrat annuel, sans renégociation : chaque mois recommence à zéro et chaque mois est reconduit. C'est le seul juge que j'accepte.",
+  },
+  {
+    secteur: "Groupe immobilier",
+    recit:
+      "Deux marques créées de zéro en deux ans. Positionnement, identités, sites, contenus, outils — construits dans le même rythme hebdomadaire que celui décrit plus haut.",
+  },
+];
+---
+
+<section id="travail" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Le travail</Eyebrow>
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+      Ce qui tient
+      <br />
+      <em class="text-lime">dans la durée.</em>
+    </h2>
+
+    <!--
+      Deux récits, pas de cartes ni de KPI : la durée est l'argument, et elle se lit
+      dans la phrase. Julien pourra ajouter ici une métrique vérifiable (et seulement
+      vérifiable) le jour où il en a une — pas de placeholder en attendant.
+    -->
+    <div class="mt-16 max-w-3xl">
+      {preuves.map((p) => (
+        <article class="border-t border-line py-8 last:border-b">
+          <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{p.secteur}</div>
+          <p class="mt-4 text-lg leading-relaxed text-ink-2">{p.recit}</p>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

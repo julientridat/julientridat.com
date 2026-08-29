@@ -255,7 +255,7 @@ const AGENTS = [
           <div class="mt-6 flex flex-wrap items-center gap-3">
             <button type="button" data-open-booking class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-white transition-all hover:bg-lime/90">
               <span class="grid h-7 w-7 place-items-center rounded-full bg-black/25 transition-transform group-hover:translate-x-0.5">→</span>
-              Installer ces agents chez vous — audit 30 min
+              Installer ces agents chez vous — 20 minutes
             </button>
           </div>
         </div>
@@ -303,7 +303,7 @@ const AGENTS = [
               <div id="xp-essai-rebonds" class="mt-5 hidden flex-wrap gap-2 border-t border-white/10 pt-4"></div>
               <div id="xp-essai-suite" class="mt-6 hidden flex-wrap gap-3">
                 <button type="button" data-open-booking class="inline-flex cursor-pointer items-center gap-2 rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-lime/90">
-                  Installer cet agent chez vous — audit 30 min →
+                  Installer cet agent chez vous — 20 minutes →
                 </button>
                 <button type="button" id="xp-essai-retour" class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime">
                   ← Autres agents
@@ -1172,7 +1172,7 @@ const AGENTS = [
           porte.remove();
           lancerEtapeProjet(true, r.consigne);
         }, [
-          { libelle: "Installer cette chaîne chez vous — audit 30 min →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-lime/90", action: () => (document.querySelector("[data-open-booking]") as HTMLElement)?.click() },
+          { libelle: "Installer cette chaîne chez vous — 20 minutes →", classe: "cursor-pointer rounded-full bg-lime px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-lime/90", action: () => (document.querySelector("[data-open-booking]") as HTMLElement)?.click() },
           { libelle: "Nouveau projet", classe: "cursor-pointer rounded-full border border-white/20 px-5 py-2.5 text-sm text-white/80 transition-colors hover:border-lime hover:text-lime", action: () => {
             projIndex = 0; projSorties.length = 0; projAxes = [];
             $("xp-projet-sorties").innerHTML = "";

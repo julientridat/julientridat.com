@@ -1,0 +1,46 @@
+---
+/**
+ * Seule section sombre de la page — la bascule d'encre marque la fin du
+ * parcours et isole la dernière décision du reste du défilement.
+ *
+ * `isolate` est indispensable : sans stacking context sur la <section>, le glow
+ * en -z-10 passerait derrière le fond bg-foreground et deviendrait invisible.
+ *
+ * Un seul bouton, aucun lien secondaire : plus rien à explorer à ce stade.
+ */
+import CtaButton from "@/components/CtaButton.astro";
+---
+
+<section
+  id="contact"
+  class="relative isolate overflow-hidden bg-foreground px-6 py-32 text-white md:px-12 md:py-40"
+>
+  <!-- Glow radial violet ancré sous le pli, très dilué (design system §5.13). -->
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background: radial-gradient(58% 90% at 50% 115%, rgba(108,76,241,0.22), transparent 70%);"
+  >
+  </div>
+
+  <div class="mx-auto max-w-4xl text-center">
+    <!-- Eyebrow sur fond sombre : le composant est violet plein, illisible ici. -->
+    <p
+      class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-violet-soft"
+    >
+      <span class="h-px w-6 bg-violet-soft"></span>Prochaine étape
+    </p>
+
+    <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em]">
+      Vingt minutes. <em class="text-violet-soft">Pas une de plus.</em>
+    </h2>
+
+    <p class="mx-auto mt-8 max-w-xl text-lg leading-relaxed text-white/75">
+      Le seul rendez-vous à froid du dispositif. Vous repartez avec un avis — que vous signiez ou
+      non.
+    </p>
+
+    <div class="mt-12 flex justify-center">
+      <CtaButton onDark>Réserver 20 minutes</CtaButton>
+    </div>
+  </div>
+</section>

@@ -1,75 +1,145 @@
 ---
+/**
+ * Page d'accueil — offre de direction marketing externalisée.
+ *
+ * Remplace, depuis le 2026-08-29, l'ancienne home « J'installe l'IA dans vos
+ * outils. En 2 mois. » (archivée, hors index, dans /installation-ia).
+ */
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import HeroCinema from "@/components/sections/HeroCinema.astro";
-import Declencheur from "@/components/sections/Declencheur.astro";
-import Pains from "@/components/sections/Pains.astro";
-import Method from "@/components/sections/Method.astro";
-import Preuve from "@/components/sections/Preuve.astro";
-import Offres from "@/components/sections/Offres.astro";
-import PourQui from "@/components/sections/PourQui.astro";
-import Formation from "@/components/sections/Formation.astro";
-import About from "@/components/sections/About.astro";
-import FinalCTA from "@/components/sections/FinalCTA.astro";
+import Hero from "@/components/sections/offre/Hero.astro";
+import Situation from "@/components/sections/offre/Situation.astro";
+import Fonctionnement from "@/components/sections/offre/Fonctionnement.astro";
+import Remplace from "@/components/sections/offre/Remplace.astro";
+import Travail from "@/components/sections/offre/Travail.astro";
+import Bio from "@/components/sections/offre/Bio.astro";
+import Prix from "@/components/sections/offre/Prix.astro";
+import Formation from "@/components/sections/offre/Formation.astro";
+import Diagnostic from "@/components/sections/offre/Diagnostic.astro";
+import Faq from "@/components/sections/offre/Faq.astro";
+import FinalCta from "@/components/sections/offre/FinalCta.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
-// Balises et microdonnées identiques au site d'origine (continuité SEO).
-const title = "Consultant IA Bordeaux — Julien Tridat | Formation & Intégration IA Entreprise";
+const title =
+  "Direction marketing externalisée pour PME — 4 000 € le premier mois, puis 2 500 € par mois | Julien Tridat";
 const description =
-  "Consultant et formateur IA à Bordeaux & Bordeaux Métropole. J'installe l'IA dans vos outils et je forme vos équipes en 2 mois. Audit, assistants, formation.";
+  "Un mois pour installer votre marketing : positionnement, identité, assistants IA dans vos outils, équipes formées. Puis 2 500 € par mois, sans engagement, pour le faire tourner semaine après semaine.";
 
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Julien Tridat — Consultant IA Bordeaux",
+    "@id": `${SITE.url}/#service`,
+    name: "Direction marketing externalisée — installation puis abonnement",
     description:
-      "Consultant et formateur IA à Bordeaux et Bordeaux Métropole. Audit IA, assistants sur mesure et formation métier en 2 mois.",
+      "Un mois d'installation du système marketing (positionnement, structure d'offre, identité et gabarits, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, une demande active à la fois livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
+    provider: { "@id": `${SITE.url}/#julien-tridat` },
+    areaServed: "FR",
     url: `${SITE.url}/`,
-    areaServed: [
-      { "@type": "City", name: "Bordeaux" },
-      { "@type": "AdministrativeArea", name: "Bordeaux Métropole" },
-      { "@type": "AdministrativeArea", name: "Nouvelle-Aquitaine" },
-      { "@type": "Country", name: "France" },
-    ],
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Bordeaux",
-      postalCode: "33000",
-      addressRegion: "Nouvelle-Aquitaine",
-      addressCountry: "FR",
-    },
-    geo: { "@type": "GeoCoordinates", latitude: 44.8378, longitude: -0.5792 },
-    serviceType: [
-      "Audit IA",
-      "Assistants IA sur mesure",
-      "Formation IA métier",
-      "Consultant IA Bordeaux",
-      "Formateur IA Bordeaux Métropole",
+    makesOffer: [
+      {
+        "@type": "Offer",
+        name: "Mois 1 — Installation",
+        price: "4000",
+        priceCurrency: "EUR",
+        description:
+          "Positionnement et structure d'offre, identité, charte et gabarits fondateurs, 2 à 3 assistants IA installés dans les outils de l'entreprise, équipes formées. Le client conserve l'intégralité des livrables, y compris s'il s'arrête à l'issue du premier mois.",
+      },
+      {
+        "@type": "Offer",
+        name: "Abonnement mensuel — quatre places",
+        price: "2500",
+        priceCurrency: "EUR",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "2500",
+          priceCurrency: "EUR",
+          unitText: "mois",
+          valueAddedTaxIncluded: false,
+        },
+        description:
+          "Point stratégique hebdomadaire de 45 minutes, accès direct des équipes, une demande active à la fois livrée en 48 à 72 heures, sans engagement, résiliable à tout moment. Suspension possible sans perte de place. Le client conserve tous les livrables et l'accès aux outils installés, y compris après résiliation.",
+      },
     ],
   },
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Julien Tridat — Consultant IA Bordeaux",
-    url: `${SITE.url}/`,
+    "@type": "FAQPage",
+    mainEntity: [
+      {
+        "@type": "Question",
+        name: "Pourquoi 4 000 € le premier mois ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Parce qu'un mois entier y passe. Positionnement, identité, gabarits, assistants installés dans vos outils, équipes formées : c'est le socle sans lequel la suite ne tient pas. Vous en gardez l'intégralité, même si vous vous arrêtez là.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Pourquoi une seule demande à la fois ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "C'est ce qui rend le 48-72 h possible. Les offres à demandes illimitées livrent en trois semaines. Ici, vous fixez l'ordre, une demande avance, elle est livrée, la suivante démarre.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Ça reste artisanal, une seule personne pour tout ça ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "C'est l'inverse. Une agence répartit le sujet entre plusieurs personnes qui ne se parlent pas toujours. Ici, la même personne qui pense la stratégie avec vous fabrique aussi l'outil et forme vos équipes à s'en servir — rien ne se perd dans la coordination.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "L'intelligence artificielle va remplacer mes équipes ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Non. Elle est installée chez eux, sur vos comptes, et ils sont formés à s'en servir. Elle enlève ce qui les ralentit, pas les gens.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Et si j'arrête ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Vous partez avec tout : fichiers sources, accès, documentation, et les outils restent installés chez vous, sur vos comptes. Rien n'est retenu. Vous perdez une seule chose : votre place.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Nous sommes 45 salariés. On fait comment ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "Sur devis. Le format est calibré jusqu'à 30 salariés. Au-delà, le nombre de services change le périmètre, et le forfait ne tient plus.",
+        },
+      },
+      {
+        "@type": "Question",
+        name: "Nous ne sommes pas une entreprise digitale. C'est un problème ?",
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: "C'est le cœur de cible. Je ne travaille pas pour des startups. Je travaille pour des entreprises qui produisent, vendent, livrent — et qui n'ont jamais eu personne en interne pour structurer leur croissance.",
+        },
+      },
+    ],
   },
 ];
 ---
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    <HeroCinema videoSrc="/hero.mp4" mode="video" comparateur />
-    <!-- <VideoMethode /> — en attente de l'asset vidéo, voir VideoMethode.astro -->
-    <Declencheur />
-    <Pains />
-    <Method />
-    <Preuve />
-    <Offres />
-    <PourQui />
+    <Hero />
+    <Situation />
+    <Fonctionnement />
+    <Remplace />
+    <Travail />
+    <Bio />
+    <Prix />
     <Formation />
-    <About />
-    <FinalCTA />
+    <Diagnostic />
+    <Faq />
+    <FinalCta />
     <Footer home />
   </main>
 </BaseLayout>
