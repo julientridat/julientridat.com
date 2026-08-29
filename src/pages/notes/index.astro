@@ -39,10 +39,10 @@ const jsonLd = [
       <Nav />
       <div class="mx-auto max-w-7xl">
         <Eyebrow>Notes</Eyebrow>
-        <h1 class="max-w-4xl text-[clamp(2.5rem,6vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-foreground">
+        <h1 class="max-w-4xl text-[clamp(2.5rem,6vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em] text-foreground">
           Le raisonnement, <em class="text-lime">documenté.</em>
         </h1>
-        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-ink-2">
+        <p class="mt-8 max-w-2xl text-xl leading-relaxed text-ink-2">
           Essais, méthodes, analyses. Ce que j'apprends sur le terrain — IA en entreprise,
           marketing B2B, preuve par le faire — écrit pour être utile, pas pour flatter un
           algorithme.
@@ -50,14 +50,14 @@ const jsonLd = [
       </div>
     </header>
 
-    <section class="px-6 py-16 md:px-12 md:py-24">
+    <section class="px-6 py-10 md:px-12 md:py-14">
       <div class="mx-auto max-w-4xl">
         {notes.map((n) => (
           <a
             href={`/notes/${n.id}`}
             class="group flex flex-col gap-3 border-t border-line py-10 transition-colors first:border-t-0 hover:bg-card md:flex-row md:items-baseline md:gap-10"
           >
-            <time datetime={n.data.date.toISOString().slice(0, 10)} class="shrink-0 text-sm text-ink-3 md:w-40">
+            <time datetime={n.data.date.toISOString().slice(0, 10)} class="shrink-0 text-base text-ink-3 md:w-40">
               {fmt.format(n.data.date)}
             </time>
             <div>

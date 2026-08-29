@@ -10,16 +10,16 @@ const installation = [
       "Une phrase que vos commerciaux répètent sans se tromper, et que vos clients comprennent du premier coup.",
   },
   {
-    titre: "Vos documents sortent à la même image.",
+    titre: "Tous vos documents se ressemblent enfin.",
     texte:
-      "Identité, charte, gabarits : devis, présentations, supports commerciaux ne se refabriquent plus à chaque fois.",
+      "Logo, couleurs, modèles prêts à l'emploi : vos devis, vos présentations et vos supports commerciaux ne sont plus refaits de zéro à chaque fois.",
   },
   {
-    titre: "Deux ou trois assistants IA tournent dans vos outils.",
+    titre: "Deux ou trois assistants IA travaillent dans les outils que vous utilisez déjà.",
     texte: "Pas une démonstration : installés, sur vos comptes, sur vos vrais dossiers.",
   },
   {
-    titre: "Vos équipes savent s'en servir.",
+    titre: "Vos équipes savent se servir de tout ça.",
     texte: "Formées, pas informées.",
   },
 ];
@@ -27,7 +27,7 @@ const installation = [
 const recurrence = [
   {
     titre: "45 minutes chaque semaine, dans votre agenda.",
-    texte: "On regarde, on tranche, je produis. C'est là que les décisions se prennent.",
+    texte: "On fait le point, vous décidez ce qui passe en premier, je m'en occupe.",
   },
   {
     titre: "Vos équipes m'écrivent en direct.",
@@ -36,43 +36,44 @@ const recurrence = [
   {
     titre: "Au fil des mois :",
     texte:
-      "refonte du site, campagnes, contenus, parcours de vente, et vos assistants étendus service par service — commerce, gestion, administratif.",
+      "refonte du site, campagnes, contenus, la façon dont un prospect devient client. Et vos assistants IA arrivent dans un service de plus à chaque fois : commerce, gestion, administratif.",
   },
   {
     titre: "Pause possible, place gardée.",
-    texte: "Période creuse, saison basse, coup dur : vous suspendez, vous ne perdez rien.",
+    texte: "Saison basse, coup dur, trésorerie tendue : vous suspendez, et vous reprenez plus tard sans repartir de zéro.",
   },
 ];
 
-const phaseBlock = "border-t border-line py-12 md:py-16";
-const tagLabel = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
-const tagPrix = "font-serif text-2xl italic tracking-tight text-lime";
+const phaseBlock = "border-t border-line py-10 md:py-14";
+// Aucun montant ici : le prix est donné dans le hero et détaillé dans la
+// section « Le prix ». Cette section-ci explique le fonctionnement.
+const tagLabel =
+  "inline-flex rounded-full border border-line bg-card px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-ink-3";
 const phaseTitre = "mt-5 max-w-3xl text-2xl font-medium leading-snug text-foreground md:text-3xl";
 const itemRow = "border-t border-line py-4";
 ---
 
-<section id="comment" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
+<section id="comment" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Comment ça marche</Eyebrow>
-    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
       Un mois pour installer.
       <br />
       <em class="text-lime">Puis chaque semaine pour faire tourner.</em>
     </h2>
 
     <!-- Phase 1 — le mois d'installation. -->
-    <div class={`mt-16 ${phaseBlock}`}>
+    <div class={`mt-12 ${phaseBlock}`}>
       <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2">
         <span class={tagLabel}>Mois&nbsp;1 · Installation</span>
-        <span class={tagPrix}>4&nbsp;000&nbsp;€</span>
       </div>
 
-      <h3 class={phaseTitre}>Au 30 du premier mois, votre marketing existe.</h3>
+      <h3 class={phaseTitre}>Au bout d'un mois, votre marketing existe.</h3>
 
       <ul class="mt-8 max-w-3xl">
         {installation.map((i) => (
           <li class={itemRow}>
-            <p class="text-base leading-relaxed text-ink-2">
+            <p class="text-lg leading-relaxed text-ink-2">
               <strong class="font-medium text-foreground">{i.titre}</strong>{" "}
               {i.texte}
             </p>
@@ -88,12 +89,12 @@ const itemRow = "border-t border-line py-4";
     <!-- Phase 2 — l'abonnement mensuel. -->
     <div class={`${phaseBlock} border-b`}>
       <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2">
-        <span class={tagLabel}>Ensuite · Chaque mois</span>
-        <span class={tagPrix}>2&nbsp;500&nbsp;€</span>
-        <span class="text-sm text-ink-3">Sans engagement</span>
+        <span class={tagLabel}>Ensuite · Chaque mois, sans engagement</span>
       </div>
 
-      <h3 class={phaseTitre}>Le marketing se fait. Semaine après semaine.</h3>
+      <h3 class={phaseTitre}>
+        Chaque semaine, vos livrables sortent, votre marketing s'expose, vos équipes se renforcent.
+      </h3>
 
       <!--
         La tuile agenda n'illustre pas le service : elle matérialise la place prise
@@ -115,7 +116,7 @@ const itemRow = "border-t border-line py-4";
       <ul class="mt-10 max-w-3xl">
         {recurrence.map((i) => (
           <li class={itemRow}>
-            <p class="text-base leading-relaxed text-ink-2">
+            <p class="text-lg leading-relaxed text-ink-2">
               <strong class="font-medium text-foreground">{i.titre}</strong>{" "}
               {i.texte}
             </p>
@@ -125,18 +126,18 @@ const itemRow = "border-t border-line py-4";
 
       <div class="mt-12 max-w-3xl rounded-2xl border border-line border-l-4 border-l-lime bg-card p-7">
         <h3 class="text-xl font-medium text-foreground">Une demande active à la fois.</h3>
-        <p class="mt-3 text-base leading-relaxed text-ink-2">
-          Vous fixez l'ordre. Une demande avance, elle est livrée en 48 à 72&nbsp;heures, la
-          suivante démarre. C'est cette règle qui rend le délai possible — et c'est exactement celle
+        <p class="mt-3 text-lg leading-relaxed text-ink-2">
+          Vous décidez de l'ordre des demandes. J'en traite une seule à la fois&nbsp;: je la livre
+          en 48 à 72&nbsp;heures, puis j'attaque la suivante. C'est ce qui me permet de tenir ce délai — et c'est exactement celle
           qui manque aux offres &laquo;&nbsp;demandes illimitées&nbsp;&raquo; qui livrent en trois
           semaines.
         </p>
       </div>
     </div>
 
-    <p class="mt-14 max-w-2xl font-serif text-xl italic text-ink-2">
-      Jusqu'à trente salariés. Au-delà, le nombre de services change le périmètre&nbsp;: c'est sur
-      devis.
+    <p class="mt-10 max-w-2xl font-serif text-xl italic text-ink-2">
+      Ces prix valent jusqu'à trente salariés. Au-delà, il y a plus de services à équiper&nbsp;:
+      je fais un devis.
     </p>
   </div>
 </section>

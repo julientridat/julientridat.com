@@ -123,13 +123,13 @@ const AGENTS = [
               <span id="xp-console" aria-live="polite">pour les agences de com, marketing & retail</span>
             </div>
 
-            <h1 class="max-w-[960px] text-[clamp(2.3rem,6.5vw,5.2rem)] font-light leading-[0.98] tracking-[-0.04em]">
+            <h1 class="max-w-[960px] text-[clamp(2.3rem,6.5vw,5.2rem)] font-normal leading-[0.98] tracking-[-0.04em]">
               <span class="xp-line block overflow-hidden"><span class="xp-word">Votre agence,</span></span>
               <span class="xp-line block overflow-hidden"><span class="xp-word"><em class="font-normal text-lime">augmentée</em> — vue</span></span>
               <span class="xp-line block overflow-hidden"><span class="xp-word">par l'IA, en direct.</span></span>
             </h1>
 
-            <p class="xp-fade mt-7 max-w-xl text-lg leading-relaxed text-white/70">
+            <p class="xp-fade mt-7 max-w-xl text-xl leading-relaxed text-white/70">
               Donnez l'adresse de votre site : je lis vos pages clés, je cherche votre marché,
               et je vous montre <strong class="font-medium text-white">pourquoi chaque agent du pack compte chez vous</strong>.
               Puis testez-en un sur un de vos vrais clients.
@@ -186,7 +186,7 @@ const AGENTS = [
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
             <span class="h-px w-6 bg-lime"></span> Cartographie — votre pipeline, augmenté
           </div>
-          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-normal leading-[1.05] tracking-[-0.03em]">
             Là où un agent <em class="text-lime">travaille pour vous.</em>
           </h2>
           <p id="xp-carto-contexte" class="mt-3 max-w-2xl text-sm text-white/55"></p>
@@ -236,7 +236,7 @@ const AGENTS = [
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
             <span class="h-px w-6 bg-lime"></span> Vos agents — à l'essai sur un vrai client
           </div>
-          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-normal leading-[1.05] tracking-[-0.03em]">
             Choisissez un agent. <em class="text-lime">Donnez l'URL d'un client.</em>
           </h2>
           <p class="mt-3 max-w-2xl text-sm text-white/55">Il produit un livrable réel sur votre client — la démo est votre premier livrable.</p>
@@ -246,7 +246,7 @@ const AGENTS = [
               <button type="button" class="xp-carte-agent group cursor-pointer rounded-2xl border border-white/15 bg-white/[0.02] p-6 text-left transition-all hover:border-lime/60" data-agent={a.cle} role="listitem">
                 <div class="text-[11px] uppercase tracking-[0.18em] text-lime">{a.nom}</div>
                 <div class="mt-3 text-lg font-medium leading-snug text-white">{a.tagline}</div>
-                <p class="mt-2 text-sm leading-relaxed text-white/60">{a.desc}</p>
+                <p class="mt-2 text-base leading-relaxed text-white/60">{a.desc}</p>
                 <div class="mt-4 inline-flex items-center gap-2 text-sm font-medium text-lime transition-transform group-hover:translate-x-0.5">Tester cet agent →</div>
               </button>
             ))}
@@ -267,7 +267,7 @@ const AGENTS = [
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
             <span class="h-px w-6 bg-lime"></span> <span id="xp-essai-nom">Agent</span>
           </div>
-          <h2 id="xp-essai-titre" class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]"></h2>
+          <h2 id="xp-essai-titre" class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-normal leading-[1.05] tracking-[-0.03em]"></h2>
 
           <form id="xp-essai-form" class="mt-7 flex w-full max-w-xl flex-col gap-2 sm:flex-row">
             <input
@@ -320,10 +320,10 @@ const AGENTS = [
           <div class="mb-5 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
             <span class="h-px w-6 bg-lime"></span> Projet de A à Z — orchestré par l'IA
           </div>
-          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-light leading-[1.05] tracking-[-0.03em]">
+          <h2 class="max-w-3xl text-[clamp(1.8rem,4vw,3rem)] font-normal leading-[1.05] tracking-[-0.03em]">
             De la demande client <em class="text-lime">à la reco stratégique.</em>
           </h2>
-          <p class="mt-3 max-w-2xl text-sm leading-relaxed text-white/60">
+          <p class="mt-3 max-w-2xl text-base leading-relaxed text-white/60">
             Collez le brief et les objectifs de votre client. Les agents s'enchaînent —
             étude de marché, cible, problématiques (matrice ICP × IBM), axes de campagne —
             et <strong class="text-white/85">vous validez à chaque étape.</strong>
