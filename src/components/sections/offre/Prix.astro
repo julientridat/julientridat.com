@@ -14,12 +14,12 @@ import CtaButton from "@/components/CtaButton.astro";
 // Insécables en vrais U+00A0 : dans une chaîne du frontmatter, une entité HTML
 // ressortirait telle quelle à l'écran.
 const inclus = [
-  { texte: "45 minutes de point stratégique chaque semaine", fort: false },
-  { texte: "Accès direct de vos équipes, sans intermédiaire", fort: false },
-  { texte: "Une demande active à la fois, livrée en 48 à 72 heures", fort: true },
+  { texte: "45 minutes avec moi chaque semaine, dans votre agenda", fort: false },
+  { texte: "Vos équipes m'écrivent en direct, sans passer par un intermédiaire", fort: false },
+  { texte: "Une demande en cours à la fois, livrée en 48 à 72 heures — la suivante démarre aussitôt", fort: true },
   { texte: "Sans engagement, résiliable à tout moment", fort: false },
-  { texte: "Pause possible, place gardée — pas de salaire à vide en période creuse", fort: false },
-  { texte: "Vous gardez tous les livrables et les outils installés, y compris après résiliation", fort: true },
+  { texte: "Pause possible, votre place est gardée : en période creuse vous suspendez — un salarié, lui, resterait à payer", fort: false },
+  { texte: "Vous gardez tout ce qui a été produit — fichiers sources, accès, outils installés — même si vous arrêtez", fort: true },
   { texte: "Un seul interlocuteur : moi", fort: false },
 ];
 
@@ -45,8 +45,9 @@ const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
           <span class={unite}>HT, une seule fois</span>
         </div>
         <p class="mt-6 text-base leading-relaxed text-ink-2">
-          <strong class="font-medium text-foreground">Tout compris</strong>&nbsp;: positionnement,
-          identité, gabarits, deux à trois assistants IA dans vos outils, équipes formées.
+          <strong class="font-medium text-foreground">Tout compris</strong>&nbsp;: une phrase claire sur ce que
+          vous vendez, votre identité, vos modèles de devis et de présentations, deux à trois
+          assistants IA dans vos outils, vos équipes formées.
         </p>
         <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
           <strong class="font-medium text-foreground">Tout cela vous appartient.</strong> Même si
