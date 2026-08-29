@@ -45,8 +45,13 @@ const recurrence = [
 ];
 
 const phaseBlock = "border-t border-line py-10 md:py-14";
-const tagLabel = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
-const tagPrix = "font-serif text-2xl italic tracking-tight text-lime";
+// Le label devient une pastille et le montant passe en gros : dans la version
+// précédente le prix, en text-2xl posé à côté d'un label minuscule, se lisait
+// comme une annotation éditoriale et non comme un prix.
+const tagLabel =
+  "inline-flex rounded-full border border-line bg-card px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-ink-3";
+const tagPrix = "font-serif text-4xl italic leading-none tracking-tight text-lime md:text-5xl";
+const tagUnite = "text-sm text-ink-3";
 const phaseTitre = "mt-5 max-w-3xl text-2xl font-medium leading-snug text-foreground md:text-3xl";
 const itemRow = "border-t border-line py-4";
 ---
@@ -65,6 +70,7 @@ const itemRow = "border-t border-line py-4";
       <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2">
         <span class={tagLabel}>Mois&nbsp;1 · Installation</span>
         <span class={tagPrix}>4&nbsp;000&nbsp;€</span>
+        <span class={tagUnite}>HT, une seule fois</span>
       </div>
 
       <h3 class={phaseTitre}>Au 30 du premier mois, votre marketing existe.</h3>
@@ -90,7 +96,7 @@ const itemRow = "border-t border-line py-4";
       <div class="flex flex-wrap items-baseline gap-x-6 gap-y-2">
         <span class={tagLabel}>Ensuite · Chaque mois</span>
         <span class={tagPrix}>2&nbsp;500&nbsp;€</span>
-        <span class="text-base text-ink-3">Sans engagement</span>
+        <span class={tagUnite}>/ mois HT, sans engagement</span>
       </div>
 
       <h3 class={phaseTitre}>Le marketing se fait. Semaine après semaine.</h3>

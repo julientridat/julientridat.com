@@ -1,20 +1,31 @@
 ---
+/**
+ * Section tarifaire — doit se lire comme un bloc de prix, pas comme un
+ * paragraphe. D'où : deux cartes distinctes, des montants très grands, et le
+ * connecteur « puis » qui garde lisible le fait que ce n'est PAS un choix
+ * entre deux formules mais une séquence.
+ *
+ * L'abonnement est la carte mise en avant (bordure et fond accentués, badge) :
+ * c'est l'engagement qui dure, et le seul chiffre qui pèse dans la décision.
+ */
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 
-// Les insécables de ces libellés sont de vrais caractères U+00A0 : dans une
-// chaîne du frontmatter, une entité HTML ressortirait telle quelle à l'écran.
-// `fort` = ligne appuyée : les deux engagements qui tiennent l'offre debout —
-// le rythme de livraison, et ce qui vous reste après.
+// Insécables en vrais U+00A0 : dans une chaîne du frontmatter, une entité HTML
+// ressortirait telle quelle à l'écran.
 const inclus = [
-  { texte: "45 minutes de point stratégique chaque semaine", fort: false },
+  { texte: "45 minutes de point stratégique chaque semaine", fort: false },
   { texte: "Accès direct de vos équipes, sans intermédiaire", fort: false },
-  { texte: "Une demande active à la fois, livrée en 48 à 72 heures", fort: true },
+  { texte: "Une demande active à la fois, livrée en 48 à 72 heures", fort: true },
   { texte: "Sans engagement, résiliable à tout moment", fort: false },
   { texte: "Pause possible, place gardée — pas de salaire à vide en période creuse", fort: false },
   { texte: "Vous gardez tous les livrables et les outils installés, y compris après résiliation", fort: true },
-  { texte: "Un seul interlocuteur : moi", fort: false },
+  { texte: "Un seul interlocuteur : moi", fort: false },
 ];
+
+const montant = "font-serif text-[clamp(3rem,7vw,4.75rem)] italic leading-[0.9] tracking-tight";
+const unite = "font-sans text-base not-italic text-ink-3";
+const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
 ---
 
 <section id="offres" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
@@ -22,48 +33,55 @@ const inclus = [
     <Eyebrow>Le prix</Eyebrow>
     <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
       Deux lignes.
-      <br />
       <em class="text-lime">Rien d'autre.</em>
     </h2>
 
-    <div class="mt-12 max-w-4xl rounded-2xl border border-line bg-card p-8 md:p-12">
-      <div class="grid gap-8 sm:grid-cols-2">
-        <div>
-          <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Le premier mois</div>
-          <div class="mt-4 flex flex-wrap items-baseline gap-x-3">
-            <span class="font-serif text-[clamp(2.5rem,5vw,3.5rem)] italic leading-none tracking-tight text-foreground">
-              4&nbsp;000&nbsp;€
-            </span>
-            <span class="font-sans text-base not-italic text-ink-3">HT</span>
-          </div>
+    <div class="mt-10 grid items-start gap-5 md:grid-cols-[1fr_auto_1.15fr] md:gap-6">
+      <!-- Installation — une seule fois -->
+      <div class="flex flex-col rounded-2xl border border-line bg-card p-8 md:p-9">
+        <div class={surTitre}>Le premier mois</div>
+        <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
+          <span class={`${montant} text-foreground`}>4&nbsp;000&nbsp;€</span>
+          <span class={unite}>HT, une seule fois</span>
         </div>
-
-        <div>
-          <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Puis, chaque mois</div>
-          <div class="mt-4 flex flex-wrap items-baseline gap-x-3">
-            <span class="font-serif text-[clamp(2.5rem,5vw,3.5rem)] italic leading-none tracking-tight text-lime">
-              2&nbsp;500&nbsp;€
-            </span>
-            <span class="font-sans text-base not-italic text-ink-3">/ mois HT</span>
-          </div>
-        </div>
+        <p class="mt-6 text-base leading-relaxed text-ink-2">
+          L'installation complète&nbsp;: positionnement, identité, gabarits, deux à trois assistants
+          IA dans vos outils, équipes formées.
+        </p>
+        <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
+          <strong class="font-medium text-foreground">Tout cela vous appartient.</strong> Même si
+          vous vous arrêtez là.
+        </p>
       </div>
 
-      <p class="mt-8 font-serif text-lg italic text-lime">
-        Quatre clients en abonnement. Pas plus.
-      </p>
-
-      <ul class="mt-8">
-        {inclus.map((i) => (
-          <li class="border-t border-line py-3.5 text-base leading-relaxed text-ink-2">
-            {i.fort ? <strong class="font-medium text-foreground">{i.texte}</strong> : i.texte}
-          </li>
-        ))}
-      </ul>
-
-      <div class="mt-10">
-        <CtaButton>Réserver 20&nbsp;minutes</CtaButton>
+      <!-- Connecteur : ce n'est pas un choix, c'est une suite. -->
+      <div class="flex items-center justify-center md:self-center md:px-1">
+        <span class="font-serif text-2xl italic text-ink-3">puis</span>
       </div>
+
+      <!-- Abonnement — la carte qui porte la décision -->
+      <div class="relative flex flex-col rounded-2xl border border-lime bg-lime/[0.05] p-8 md:p-9">
+        <div class="absolute -top-3 left-8 rounded-full bg-lime px-3 py-1 text-[11px] font-medium uppercase tracking-wider text-white">
+          Sans engagement
+        </div>
+        <div class={surTitre}>Chaque mois</div>
+        <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
+          <span class={`${montant} text-lime`}>2&nbsp;500&nbsp;€</span>
+          <span class={unite}>/ mois HT</span>
+        </div>
+        <ul class="mt-7">
+          {inclus.map((i) => (
+            <li class="border-t border-line py-3 text-base leading-relaxed text-ink-2">
+              {i.fort ? <strong class="font-medium text-foreground">{i.texte}</strong> : i.texte}
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+      <CtaButton>Réserver 20&nbsp;minutes</CtaButton>
+      <p class="font-serif text-xl italic text-lime">Quatre clients en abonnement. Pas plus.</p>
     </div>
   </div>
 </section>
