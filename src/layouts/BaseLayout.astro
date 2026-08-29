@@ -3,6 +3,7 @@ import "@/styles/global.css";
 import { SITE, PERSON_JSONLD } from "@/lib/site";
 import BookingDialog from "@/components/react/BookingDialog";
 import ContactDialog from "@/components/react/ContactDialog";
+import DiagnosticDialog from "@/components/react/DiagnosticDialog";
 
 interface Props {
   title: string;
@@ -60,5 +61,6 @@ const { title, description, canonical, ogType = "website", jsonLd = [] } = Astro
     <slot />
     <BookingDialog client:load />
     <ContactDialog client:load />
+    <DiagnosticDialog client:load />
   </body>
 </html>

@@ -1,0 +1,46 @@
+---
+/**
+ * Porte d'entrée basse pression, juste avant la FAQ.
+ *
+ * Le visiteur qui n'est pas prêt à réserver vingt minutes doit trouver ici un
+ * geste plus petit que le rendez-vous — d'où un CTA unique, sans lien
+ * secondaire qui viendrait le diluer.
+ *
+ * Le questionnaire lui-même est un îlot React monté ailleurs : cette section ne
+ * contient volontairement aucun formulaire, seulement le déclencheur
+ * [data-open-diagnostic].
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+---
+
+<section id="diagnostic" class="border-t border-line bg-card px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Faire le point</Eyebrow>
+    <h2
+      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground"
+    >
+      Pas encore sûr&nbsp;?
+      <br />
+      <em class="text-lime">Huit questions, et je vous réponds.</em>
+    </h2>
+    <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
+      Deux minutes, sans inscription. Vous me décrivez votre situation, je vous réponds
+      personnellement — même si la réponse est que vous n'avez pas besoin de moi.
+    </p>
+
+    <div class="mt-12">
+      <button
+        type="button"
+        data-open-diagnostic
+        class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-foreground px-7 py-4 text-base font-medium text-card transition-colors hover:bg-lime"
+      >
+        <span
+          class="grid h-7 w-7 place-items-center rounded-full bg-card/15 text-base transition-transform group-hover:translate-x-0.5"
+        >
+          →
+        </span>
+        <span>Commencer le questionnaire</span>
+      </button>
+    </div>
+  </div>
+</section>

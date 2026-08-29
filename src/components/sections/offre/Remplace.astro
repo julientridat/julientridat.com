@@ -1,0 +1,59 @@
+---
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const alternatives = [
+  {
+    nom: "Un responsable marketing",
+    cout: "55 à 65 000 € chargés par an",
+    friction:
+      "À recruter, à manager, à outiller. Six mois avant d'être utile — et vous ne saurez qu'après si le poste était le bon.",
+  },
+  {
+    nom: "Une agence",
+    cout: "4 à 8 000 € par mois",
+    friction:
+      "Un chef de projet entre vous et ceux qui produisent. Vous payez la coordination avant de payer le travail.",
+  },
+  {
+    nom: "Un freelance",
+    cout: "au projet",
+    friction:
+      "À briefer, à piloter, à relancer. Il repart quand le projet s'arrête, et la stratégie repart avec lui.",
+  },
+];
+---
+
+<section id="remplace" class="border-t border-line bg-card px-6 py-24 md:px-12 md:py-32">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Ce que ça remplace</Eyebrow>
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+      Comparez à ce que vous auriez
+      <br />
+      <em class="text-lime">fait autrement.</em>
+    </h2>
+
+    <!--
+      Pas de cartes ici : la comparaison doit se lire comme un relevé, pas comme un
+      comparateur d'offres. Filets 1px, colonne coût à gauche, friction à droite —
+      c'est la friction qui porte l'argument, le prix n'est que l'amorce.
+    -->
+    <div class="mt-16">
+      {alternatives.map((a) => (
+        <div class="grid gap-x-8 gap-y-2 border-t border-line py-6 last:border-b md:grid-cols-[1fr_1.4fr] md:items-baseline">
+          <div>
+            <div class="text-lg font-medium text-foreground">{a.nom}</div>
+            <div class="mt-1 text-sm font-medium text-lime">{a.cout}</div>
+          </div>
+          <p class="text-base leading-relaxed text-ink-2">{a.friction}</p>
+        </div>
+      ))}
+    </div>
+
+    <p class="mt-12 max-w-2xl border-l-2 border-lime pl-6 text-2xl leading-snug">
+      <em class="text-lime">
+        Ici&nbsp;: un senior en direct, l'intelligence artificielle pour la vitesse, zéro
+        management.
+      </em>
+    </p>
+  </div>
+</section>
