@@ -1,132 +1,58 @@
 ---
 /**
- * Hero de la page d'offre — fond papier, pas de vidéo, pas de voile sombre.
+ * Hero de la page d'offre — fond papier, contenu centré.
  *
- * LA MÉCANIQUE : « liste de prestataires » est souligné d'un trait tracé à la
- * main qui SE DESSINE au chargement. Ce n'est pas un ornement typographique —
- * le trait désigne exactement ce que Julien refuse d'être, et c'est la thèse de
- * toute la page. D'où l'animation : le geste doit se faire sous les yeux du
- * visiteur, un trait posé d'avance ne raconterait rien.
- *
- * Le path porte pathLength="1" : dasharray et dashoffset valent 1 quelle que
- * soit la longueur réelle de la courbe. Aucune mesure JS, aucun script — le
- * tracé est piloté par une seule règle CSS, donc il ne peut pas rater.
- *
- * Le SVG est ancré sur le BAS du span (et non sur un offset depuis le haut) :
- * si la phrase venait à passer sur deux lignes en très petite largeur, le trait
- * reste sous la dernière ligne au lieu de flotter entre les deux.
+ * Le soulignement tracé à la main a été retiré (jugé « cheap » par Julien) :
+ * l'accent passe par la convention maison — une chute en Instrument Serif
+ * italique violet, exactement comme les H2 de toutes les autres sections.
+ * Rien à inventer, c'est déjà la signature du site.
  */
 import Nav from "@/components/Nav.astro";
 import CtaButton from "@/components/CtaButton.astro";
 
-// Les deux montants de la ligne de prix. font-normal neutralise le 700 de
-// <strong> : le poids ne porte jamais l'accent, la serif italique s'en charge.
+// Les montants en serif italique : c'est la forme des prix partout sur le site
+// (voir Prix.astro). font-normal neutralise le 700 de <strong>.
 const montant = "font-serif text-[1.15em] font-normal italic text-foreground";
 ---
 
-<section id="hero" class="relative overflow-hidden px-6 pb-24 pt-36 md:px-12 md:pb-32 md:pt-44">
-  <!-- Halo violet très basse intensité, repris du hero de /formation-ia : il
-       donne un point de départ au regard sans concurrencer le trait. -->
+<section id="hero" class="relative overflow-hidden px-6 pb-14 pt-28 md:px-12 md:pb-16 md:pt-32">
+  <!-- Halo violet très basse intensité, recentré sous le titre. -->
   <div
     class="pointer-events-none absolute inset-0 -z-10"
-    style="background: radial-gradient(720px 400px at 18% 0%, rgba(108,76,241,0.07), transparent 70%);"
+    style="background: radial-gradient(760px 420px at 50% 0%, rgba(108,76,241,0.09), transparent 70%);"
   >
   </div>
 
   <Nav home />
 
-  <div class="mx-auto max-w-7xl">
-    <!--
-      Échelle du titre : 2,5rem → 6vw → 4,5rem, comme les autres heros.
-      La borne BASSE est plafonnée par `min(2.5rem, 12.1vw - 0.4rem)` pour une
-      seule raison : « liste de prestataires » est un inline-block (il porte le
-      trait), donc il ne peut pas se couper. À 2,5rem il mesure 328 px alors
-      qu'un écran de 375 px n'en offre que 327 — il partait à la ligne et le
-      point final se retrouvait seul sur une ligne à lui. La borne ne mord donc
-      qu'en dessous de ~400 px de large, et l'échelle demandée est intacte
-      partout ailleurs.
-    -->
+  <div class="mx-auto max-w-4xl text-center">
     <h1
-      class="max-w-[20ch] text-[clamp(min(2.5rem,12.1vw-0.4rem),6vw,4.5rem)] font-light leading-[1.02] tracking-[-0.03em] text-foreground"
+      class="mx-auto max-w-[20ch] text-[clamp(2.5rem,6vw,4.5rem)] font-medium leading-[1.05] tracking-[-0.03em] text-foreground"
     >
       Je rejoins votre équipe.
       <br />
-      Pas votre{" "}
-      <span class="relative inline-block text-lime">
-        liste de prestataires
-        <!-- preserveAspectRatio="none" : le tracé s'étire sur la largeur exacte
-             du groupe de mots, quelle que soit la taille de police. Les cotes du
-             SVG sont en em, donc le trait grossit avec le titre.
-             Le path déborde à gauche (x=-4) et remonte à droite en s'arrêtant
-             juste avant le bord (x=295) : attaque et levée de stylo.
-             Les segments sont quadratiques (Q) et non cubiques : le point de
-             contrôle unique impose sans ambiguïté le sens de chaque courbure —
-             avec des cubiques, deux contrôles opposés s'annulent et le trait
-             redevient une règle droite. -->
-        <svg
-          class="pointer-events-none absolute -bottom-[0.08em] left-0 h-[0.26em] w-full overflow-visible"
-          viewBox="0 0 300 14"
-          preserveAspectRatio="none"
-          fill="none"
-          aria-hidden="true"
-          focusable="false"
-        >
-          <path
-            class="hero-trait"
-            d="M-4 7.4Q38 11.2 82 8.6Q122 6.2 166 8.2Q214 10.4 254 7.4Q277 5.6 295 5"
-            stroke="currentColor"
-            stroke-width="3.8"
-            stroke-linecap="round"
-            pathLength="1"></path>
-        </svg>
-      </span>.
+      Pas votre <em class="text-lime">liste de prestataires.</em>
     </h1>
 
-    <p class="mt-8 max-w-2xl text-lg leading-relaxed text-ink-2">
+    <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-ink-2">
       Un mois pour installer votre marketing. Puis chaque semaine à vos côtés pour le faire
       tourner&nbsp;: site, campagnes, contenus, outils, équipes formées.
     </p>
 
-    <!-- Les montants en Instrument Serif italique : c'est la forme des prix
-         partout sur le site (voir Prix.astro), jamais du sans-serif appuyé. -->
-    <p class="mt-6 max-w-2xl text-base leading-relaxed text-ink-2">
+    <p class="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
       <strong class={montant}>4&nbsp;000&nbsp;€</strong> le premier mois. Puis{" "}
       <strong class={montant}>2&nbsp;500&nbsp;€</strong> par mois, sans engagement.
     </p>
 
-    <div class="mt-12 flex flex-wrap items-center gap-4">
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
       <CtaButton>Réserver 20&nbsp;minutes</CtaButton>
       <button
         type="button"
         data-open-diagnostic
-        class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-6 py-3.5 text-sm text-ink-2 transition-colors hover:border-lime hover:text-lime"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-line px-6 py-3.5 text-base text-ink-2 transition-colors hover:border-lime hover:text-lime"
       >
         Faire le point en 2&nbsp;minutes
       </button>
     </div>
   </div>
 </section>
-
-<style>
-  /* pathLength="1" ramène la longueur du tracé à 1 : le trait est entièrement
-     masqué à 1, entièrement visible à 0. */
-  .hero-trait {
-    stroke-dasharray: 1;
-    stroke-dashoffset: 1;
-    animation: hero-tracer 700ms cubic-bezier(0.22, 0.61, 0.36, 1) 320ms forwards;
-  }
-
-  @keyframes hero-tracer {
-    to {
-      stroke-dashoffset: 0;
-    }
-  }
-
-  /* Mouvement coupé : le trait est là dès la première image, le sens est gardé. */
-  @media (prefers-reduced-motion: reduce) {
-    .hero-trait {
-      animation: none;
-      stroke-dashoffset: 0;
-    }
-  }
-</style>

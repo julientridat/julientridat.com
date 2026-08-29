@@ -45,16 +45,16 @@ const questions = [
 ];
 ---
 
-<section id="faq" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
+<section id="faq" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Questions directes</Eyebrow>
     <h2
-      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground"
+      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground"
     >
       Ce que vous alliez <em class="text-lime">me demander.</em>
     </h2>
 
-    <div class="mt-14 max-w-4xl">
+    <div class="mt-10 max-w-4xl">
       {questions.map((item, i) => (
         <details class={`border-t border-line ${i === questions.length - 1 ? "border-b" : ""}`}>
           <summary
@@ -63,7 +63,7 @@ const questions = [
             <span>{item.q}</span>
             <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
           </summary>
-          <p class="max-w-3xl pb-6 text-base leading-relaxed text-ink-2">{item.r}</p>
+          <p class="max-w-3xl pb-6 text-lg leading-relaxed text-ink-2">{item.r}</p>
         </details>
       ))}
     </div>

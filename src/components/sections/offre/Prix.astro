@@ -17,16 +17,16 @@ const inclus = [
 ];
 ---
 
-<section id="offres" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
+<section id="offres" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Le prix</Eyebrow>
-    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
       Deux lignes.
       <br />
       <em class="text-lime">Rien d'autre.</em>
     </h2>
 
-    <div class="mt-16 max-w-4xl rounded-2xl border border-line bg-card p-8 md:p-12">
+    <div class="mt-12 max-w-4xl rounded-2xl border border-line bg-card p-8 md:p-12">
       <div class="grid gap-8 sm:grid-cols-2">
         <div>
           <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Le premier mois</div>
@@ -55,7 +55,7 @@ const inclus = [
 
       <ul class="mt-8">
         {inclus.map((i) => (
-          <li class="border-t border-line py-3.5 text-sm leading-relaxed text-ink-2">
+          <li class="border-t border-line py-3.5 text-base leading-relaxed text-ink-2">
             {i.fort ? <strong class="font-medium text-foreground">{i.texte}</strong> : i.texte}
           </li>
         ))}

@@ -15,10 +15,10 @@ const preuves = [
 ];
 ---
 
-<section id="travail" class="border-t border-line px-6 py-24 md:px-12 md:py-32">
+<section id="travail" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Le travail</Eyebrow>
-    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
       Ce qui tient
       <br />
       <em class="text-lime">dans la durée.</em>
@@ -29,11 +29,11 @@ const preuves = [
       dans la phrase. Julien pourra ajouter ici une métrique vérifiable (et seulement
       vérifiable) le jour où il en a une — pas de placeholder en attendant.
     -->
-    <div class="mt-16 max-w-3xl">
+    <div class="mt-12 max-w-3xl">
       {preuves.map((p) => (
         <article class="border-t border-line py-8 last:border-b">
           <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{p.secteur}</div>
-          <p class="mt-4 text-lg leading-relaxed text-ink-2">{p.recit}</p>
+          <p class="mt-4 text-xl leading-relaxed text-ink-2">{p.recit}</p>
         </article>
       ))}
     </div>
