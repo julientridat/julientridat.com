@@ -146,18 +146,18 @@ export default function BookingDialog() {
 
         {step === "intro" && (
           <div className="px-6 py-10 sm:px-12 sm:py-14">
-            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Diagnostic IA</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Premier échange</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              Réservez un échange de 30 minutes
+              Réservez un échange de 20 minutes
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-2 sm:text-base">
-              On fait le point sur vos enjeux, je vous partage des pistes concrètes pour
-              intégrer l'IA dans vos process. Gratuit, sans engagement.
+              On fait le point sur votre situation, et je vous dis franchement si je peux vous
+              être utile. Gratuit, sans engagement.
             </p>
 
             <ul className="mt-7 space-y-3">
               {[
-                "30 minutes",
+                "20 minutes",
                 "En visio — lien envoyé après réservation",
                 "Créneaux disponibles cette semaine",
                 "Une rapide qualification, puis le créneau",

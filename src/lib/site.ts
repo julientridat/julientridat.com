@@ -37,7 +37,7 @@ export const PERSON_JSONLD = {
   name: "Julien Tridat",
   jobTitle: "Consultant marketing et IA indépendant",
   description:
-    "Vingt ans de marketing. Publicis. Production audiovisuelle et agence, notamment pour France 24, Canal+ et France 2. Formateur en intelligence artificielle. Une cinquantaine d'organisations accompagnées, de Dassault Systèmes à SNCF Fret.",
+    "Vingt ans de marketing. Depuis 2018, j'accompagne des dirigeants de PME dans le développement de leur entreprise — une cinquantaine d'organisations à ce jour, de Dassault Systèmes à SNCF Fret. Formateur en intelligence artificielle. Je couvre le marketing et la technique : Brevo, ClickUp, Microsoft 365, Google Workspace, sites et applications.",
   url: SITE.url,
   address: {
     "@type": "PostalAddress",
