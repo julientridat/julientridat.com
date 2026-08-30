@@ -699,11 +699,14 @@ async function* streamWorkersAI(
   maxTokens = MAX_TOKENS,
   modele = WORKERS_AI_MODEL,
 ): AsyncGenerator<string> {
+  // `run()` est typé comme rendant un objet ; avec stream:true il rend en
+  // réalité un ReadableStream. La signature ne distingue pas les deux cas, d'où
+  // le passage par `unknown` — un cast direct est refusé, à juste titre.
   const result = (await env.AI!.run(modele as Parameters<Ai["run"]>[0], {
     messages: [{ role: "system", content: system }, ...messages],
     max_tokens: maxTokens,
     stream: true,
-  })) as ReadableStream;
+  })) as unknown as ReadableStream<Uint8Array>;
   const reader = result.getReader();
   const decoder = new TextDecoder();
   let buffer = "";

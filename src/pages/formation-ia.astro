@@ -551,13 +551,27 @@ const VERBATIMS = [
   <script type="application/json" id="fi-spectre" set:html={JSON.stringify(SPECTRE)} />
 
   <script>
-    const source = document.getElementById("fi-spectre");
-    if (source) {
-      const SPECTRE = JSON.parse(source.textContent || "[]");
-      const question = document.getElementById("sp-question");
-      const corps = document.getElementById("sp-corps");
+    /* Le contenu du spectre voyage en JSON dans le DOM : il faut donc le
+       retyper à l'arrivée, JSON.parse ne rendant que du `any`. */
+    type ItemSpectre = { t: string; d?: string };
+    type AxeSpectre = {
+      id: string;
+      onglet: string;
+      question: string;
+      type: string;
+      items: ItemSpectre[];
+    };
 
-      function rendre(id) {
+    const source = document.getElementById("fi-spectre");
+    const question = document.getElementById("sp-question");
+    const corps = document.getElementById("sp-corps");
+
+    // Les trois éléments sont vérifiés ici plutôt qu'à chaque usage : ce sont
+    // des `const`, la restriction de type tient donc jusque dans les closures.
+    if (source && question && corps) {
+      const SPECTRE: AxeSpectre[] = JSON.parse(source.textContent || "[]");
+
+      const rendre = (id: string) => {
         const axe = SPECTRE.find((a) => a.id === id);
         if (!axe) return;
         question.textContent = axe.question;
@@ -575,22 +589,23 @@ const VERBATIMS = [
           corps.innerHTML = axe.items
             .map(
               (i) =>
-                `<div><div class="text-[16px] font-medium text-foreground">${i.t}</div><p class="mt-2 text-[14px] leading-relaxed text-ink-2">${i.d}</p></div>`,
+                `<div><div class="text-[16px] font-medium text-foreground">${i.t}</div><p class="mt-2 text-[14px] leading-relaxed text-ink-2">${i.d ?? ""}</p></div>`,
             )
             .join("");
         }
-      }
+      };
 
-      document.querySelectorAll("[data-spectre-onglet]").forEach((btn) => {
+      // querySelectorAll<HTMLElement> : sur un Element nu, `dataset` n'existe pas.
+      const onglets = document.querySelectorAll<HTMLElement>("[data-spectre-onglet]");
+      onglets.forEach((btn) => {
         btn.addEventListener("click", () => {
-          document
-            .querySelectorAll("[data-spectre-onglet]")
-            .forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-          rendre(btn.dataset.val);
+          onglets.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+          const val = btn.dataset.val;
+          if (val) rendre(val);
         });
       });
 
-      rendre(SPECTRE[0].id);
+      if (SPECTRE.length > 0) rendre(SPECTRE[0].id);
     }
   </script>
 </BaseLayout>

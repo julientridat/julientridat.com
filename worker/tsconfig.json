@@ -1,0 +1,10 @@
+{
+  "//": "Le worker s'exécute sur Cloudflare, pas dans un navigateur : ses globales sont celles des Workers (Ai, Fetcher, ExportedHandler), et surtout PAS celles du DOM — Request et Response n'y ont pas la même définition. D'où un tsconfig à part, et l'exclusion de worker/ dans celui de la racine.",
+  "extends": "astro/tsconfigs/strict",
+  "include": ["**/*.ts"],
+  "compilerOptions": {
+    "lib": ["ES2022"],
+    "types": ["@cloudflare/workers-types"],
+    "noEmit": true
+  }
+}
