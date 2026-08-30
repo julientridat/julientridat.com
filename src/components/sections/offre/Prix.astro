@@ -30,11 +30,19 @@ const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
 
 <section id="offres" class="border-t border-line px-6 py-10 md:px-12 md:py-14">
   <div class="mx-auto max-w-7xl">
-    <Eyebrow>Le prix</Eyebrow>
-    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-      Deux lignes.
-      <em class="text-lime">Rien d'autre.</em>
-    </h2>
+    <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+      <div>
+        <Eyebrow>Le prix</Eyebrow>
+        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+          Deux lignes.
+          <em class="text-lime">Rien d'autre.</em>
+        </h2>
+      </div>
+      <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+        Un montant pour installer, un montant pour faire tourner. Pas de forfait à options, pas de
+        frais de dossier, et rien qui s'ajoute à la fin du mois.
+      </p>
+    </div>
 
     <div class="mt-10 grid items-start gap-5 md:grid-cols-[1fr_auto_1.15fr] md:gap-6">
       <!-- Installation — une seule fois -->
