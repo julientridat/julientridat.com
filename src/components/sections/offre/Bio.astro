@@ -4,28 +4,34 @@ import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
 ---
 
-<section id="about" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
-  <div class="mx-auto grid max-w-7xl gap-16 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)]">
-    <div>
-      <div class="overflow-hidden rounded-2xl border border-line">
-        <Image
-          src={julien}
-          alt="Julien Tridat"
-          widths={[400, 600]}
-          sizes="(min-width: 768px) 40vw, 100vw"
-          class="h-full w-full object-cover"
-        />
-      </div>
+<section id="about" class="border-t border-line px-6 py-10 md:px-12 md:py-14">
+  <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-16">
+    <!--
+      Le cadre arrondi est l'élément de grille lui-même, et non un enfant d'un
+      div nu : il prend ainsi la hauteur de la rangée, et le h-full de l'image y
+      mord enfin. Auparavant la photo s'arrêtait à sa hauteur naturelle et
+      laissait 131 px de colonne vide en dessous.
+
+      810 px est la largeur native du recadrage — ne pas demander plus, Astro
+      agrandirait une source qui n'a pas les pixels.
+    -->
+    <div class="overflow-hidden rounded-2xl border border-line">
+      <Image
+        src={julien}
+        alt="Julien Tridat"
+        widths={[400, 600, 810]}
+        sizes="(min-width: 768px) 40vw, 100vw"
+        class="h-full w-full object-cover"
+      />
     </div>
 
     <div>
       <Eyebrow>Qui je suis</Eyebrow>
       <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-        Julien Tridat
+        Julien Tridat.
+        <br />
+        <em class="text-lime">Le marketing et la technique, dans la même personne.</em>
       </h2>
-      <p class="mt-3 text-base font-medium text-lime">
-        Le marketing et la technique, dans la même personne
-      </p>
 
       <div class="mt-8 space-y-5 text-lg leading-relaxed text-ink-2">
         <p>

@@ -1,5 +1,5 @@
 ---
-title: "Une enseigne de 600 magasins dont le marketing produit ses supports en interne, avec l'IA"
+title: "Une enseigne de 600 magasins dont le marketing décline ses supports sans prestataire"
 client: "Enseigne nationale, 600+ points de vente (groupe international)"
 secteur: "Retail spécialisé"
 typeEntreprise: "Enseigne nationale (groupe international)"
@@ -10,7 +10,7 @@ stack: ["Copilot", "Agents", "Feuille de route par pôle"]
 besoin: "former"
 enjeu: "Le groupe international a rationalisé ses licences IA et remis un Copilot sur chaque poste — mais l'équipe marketing du siège le sous-exploite en simple chatbot, sans savoir en faire un outil qui produit vraiment."
 transformation: "L'équipe construit ses propres assistants dans ses outils, décline un support sur 600+ points de vente sans repasser par un prestataire, et tient une feuille de route pour étendre l'usage pôle par pôle."
-pitch: "Le fil des « 5 verbes » pour cadrer, un premier assistant monté en séance sur un vrai cas réseau, une feuille de route par pôle : l'équipe produit avec l'IA au lieu de la consommer."
+pitch: "Un cadre pour décider quoi outiller, un premier cas réseau traité en séance, une feuille de route par pôle : l'équipe marketing décline ses supports elle-même au lieu de les commander."
 resultats:
   - chiffre: "5"
     label: "pôles marketing dotés d'une trajectoire d'assistants propre"

@@ -60,7 +60,7 @@ export const GET: APIRoute = async () => {
     "",
     `- [Accueil](${SITE.url}/) : l'offre, son fonctionnement en deux temps, les prix`,
     `- [Cas clients](${SITE.url}/realisations) : le registre des transformations`,
-    `- [Fiche formateur](${SITE.url}/formation-ia) : intervention en sous-traitance pour les organismes de formation (Qualiopi porté par le centre)`,
+    `- [Formation à l'IA générative](${SITE.url}/formation-ia) : deux entrées — formation intra-entreprise (financement OPCO, convention portée par un organisme partenaire certifié) et intervention en sous-traitance pour organismes de formation (Qualiopi portée par le centre)`,
     `- [Notes](${SITE.url}/notes) : les analyses`,
     "",
   ];

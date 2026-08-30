@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "check": "astro check && tsc -p worker"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.111.0",
@@ -20,10 +21,11 @@
     "tailwindcss": "^4.1.0"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.10",
     "@cloudflare/workers-types": "^5.20260710.1",
     "@types/react": "^19.1.0",
     "@types/react-dom": "^19.1.0",
-    "typescript": "^5.8.0",
+    "typescript": "^5.9.3",
     "wrangler": "^4.110.0"
   }
 }

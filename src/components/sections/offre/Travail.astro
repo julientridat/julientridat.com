@@ -1,59 +1,77 @@
 ---
 /**
- * Deux cas clients réels.
+ * Deux cas clients réels — la seule preuve de la page.
  *
- * Version précédente : eyebrow « Le travail », titre « Ce qui tient dans la
- * durée », et deux récits introduits par un simple label sectoriel. Julien :
- * « on ne comprend pas qu'il s'agit de cas clients réels ». Corrigé en le
- * disant — le mot « client », la durée en clair, et une phrase qui explique
- * pourquoi il n'y a pas de nom (sans quoi l'anonymat se lit comme du flou).
+ * Elle était rendue en lignes plates entre des filets 1px, c'est-à-dire le
+ * traitement le plus faible du site, sur la section qui doit convaincre un
+ * lecteur qui s'est déjà fait avoir trois fois. Elle passe en deux cartes
+ * côte à côte : la durée devient le chiffre vedette (traitement des prix,
+ * serif italique), et les deux clients se comparent d'un coup d'œil.
  *
- * La phrase « C'est le seul juge que j'accepte » est retirée : Julien l'a
- * citée lui-même comme exemple de formule sibylline.
+ * En-tête sur deux colonnes (titre à gauche, chapô à droite) : c'est la
+ * composition de /formation-ia, qui occupe la largeur au lieu de laisser
+ * 500 px vides à droite comme le reste de la page.
  *
- * Toujours aucune métrique inventée. Le jour où Julien en a une de vérifiable,
- * elle vient ici — pas de placeholder en attendant.
+ * Toujours aucune métrique inventée : quand Julien en aura une de vérifiable,
+ * elle vient ici.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 
 const clients = [
   {
     secteur: "Un éditeur et organisme de formation, secteur santé",
-    duree: "Client depuis quatre ans",
+    duree: "4 ans",
+    dureeLabel: "de reconduction mensuelle",
     recit:
       "Sans contrat annuel ni engagement : chaque mois, il décide de continuer, et chaque mois il continue. S'il n'y trouvait plus son compte, il arrêterait le mois suivant.",
   },
   {
     secteur: "Un groupe immobilier",
-    duree: "Client depuis deux ans",
+    duree: "2 ans",
+    dureeLabel: "et deux marques lancées",
     recit:
       "J'y ai lancé deux marques à partir de rien : ce qu'elles vendent et à qui, leur logo et leurs supports, leur site, leurs contenus, et les outils dont elles se servent pour vendre. Au même rythme que celui décrit plus haut : un point chaque semaine, et quelque chose qui sort chaque semaine.",
   },
 ];
 ---
 
-<section id="travail" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
+<section id="travail" class="border-t border-line bg-card px-6 py-10 md:px-12 md:py-14">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Mes clients</Eyebrow>
-    <h2 class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-      Deux clients.
-      <br />
-      <em class="text-lime">Quatre ans pour l'un, deux pour l'autre.</em>
-    </h2>
 
-    <p class="mt-6 max-w-2xl text-xl leading-relaxed text-ink-2">
-      Deux entreprises qui travaillent avec moi aujourd'hui. Je les désigne par leur secteur&nbsp;;
-      voici ce que j'y fais, et depuis quand.
-    </p>
+    <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+      <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+        Deux clients.
+        <br />
+        <em class="text-lime">Quatre ans pour l'un, deux pour l'autre.</em>
+      </h2>
+      <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+        Deux entreprises qui travaillent avec moi aujourd'hui. Je les désigne par leur
+        secteur&nbsp;: une mission en cours ne se raconte pas sous le nom du client. Voici ce que
+        j'y fais, et depuis quand.
+      </p>
+    </div>
 
-    <div class="mt-12 max-w-3xl">
+    <div class="mt-12 grid items-start gap-6 md:grid-cols-2">
       {clients.map((c) => (
-        <article class="border-t border-line py-8 last:border-b">
+        <article class="flex flex-col rounded-2xl border border-line bg-background p-8 md:p-9">
           <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.secteur}</div>
-          <div class="mt-3 text-xl font-medium text-foreground">{c.duree}</div>
-          <p class="mt-3 text-xl leading-relaxed text-ink-2">{c.recit}</p>
+          <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
+            <span class="font-serif text-[clamp(2.5rem,5vw,3.5rem)] italic leading-none tracking-tight text-lime">
+              {c.duree}
+            </span>
+            <span class="text-base text-ink-3">{c.dureeLabel}</span>
+          </div>
+          <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">{c.recit}</p>
         </article>
       ))}
     </div>
+
+    <!-- Deux clients, c'est peu : la section l'assume au lieu de s'arrêter à sec. -->
+    <p class="mt-12 border-l-2 border-lime pl-6 text-2xl leading-snug">
+      <em class="text-lime">
+        Deux aujourd'hui, quatre au maximum&nbsp;: c'est la condition pour être là chaque semaine.
+      </em>
+    </p>
   </div>
 </section>

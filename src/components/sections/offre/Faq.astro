@@ -16,7 +16,7 @@ import Eyebrow from "@/components/Eyebrow.astro";
 const questions = [
   {
     q: "Pourquoi 4 000 € le premier mois ?",
-    r: "Parce qu'un mois entier y passe. Positionnement, identité, gabarits, assistants installés dans vos outils, équipes formées : c'est le socle sans lequel la suite ne tient pas — on produirait vite des choses qui ne se ressemblent pas. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
+    r: "Parce qu'un mois entier y passe. Une phrase claire sur ce que vous vendez, votre identité, vos modèles de documents, des assistants installés dans vos outils, vos équipes formées : c'est le socle sans lequel la suite ne tient pas — on produirait vite des choses qui ne se ressemblent pas. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
   },
   {
     q: "Pourquoi une seule demande à la fois ?",
@@ -45,27 +45,30 @@ const questions = [
 ];
 ---
 
-<section id="faq" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
+<section id="faq" class="border-t border-line bg-card px-6 py-10 md:px-12 md:py-14">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Questions directes</Eyebrow>
-    <h2
-      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground"
-    >
-      Ce que vous alliez <em class="text-lime">me demander.</em>
-    </h2>
 
-    <div class="mt-10 max-w-4xl">
+    <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
+      <h2
+        class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground md:sticky md:top-24 md:self-start"
+      >
+        Ce que vous alliez <em class="text-lime">me demander.</em>
+      </h2>
+
+      <div>
       {questions.map((item, i) => (
-        <details class={`border-t border-line ${i === questions.length - 1 ? "border-b" : ""}`}>
+        <details open={i === 0} class={`border-t border-line ${i === questions.length - 1 ? "border-b" : ""}`}>
           <summary
-            class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-6 text-lg font-medium text-foreground transition-colors hover:text-lime"
+            class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 text-xl font-medium text-foreground transition-colors hover:text-lime"
           >
             <span>{item.q}</span>
             <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
           </summary>
-          <p class="max-w-3xl pb-6 text-lg leading-relaxed text-ink-2">{item.r}</p>
+          <p class="pb-5 text-lg leading-relaxed text-ink-2">{item.r}</p>
         </details>
       ))}
+      </div>
     </div>
   </div>
 </section>
