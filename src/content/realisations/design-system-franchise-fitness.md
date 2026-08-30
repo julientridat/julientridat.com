@@ -1,5 +1,5 @@
 ---
-title: "Un réseau de clubs de fitness qui produit ses visuels de marque en autonomie avec l'IA"
+title: "Un réseau de clubs de fitness dont la charte tient sur chaque visuel, sans graphiste"
 client: "Franchisé multi-clubs, réseau national de fitness"
 secteur: "Sport & loisirs"
 typeEntreprise: "Franchisé multi-clubs (réseau national)"
@@ -10,7 +10,7 @@ stack: ["Assistant IA de production", "Gabarits chartés", "Charte de marque enc
 besoin: "produire"
 enjeu: "Un flux constant de visuels à produire pour plusieurs clubs, une charte nationale stricte à respecter au pixel près, et un budget graphiste qui ne suit jamais le rythme."
 transformation: "L'équipe produit elle-même un visuel conforme en quelques minutes, en langage naturel — sans prestataire, sans risque pour l'image de l'enseigne."
-pitch: "La charte de l'enseigne encodée dans un assistant : l'équipe génère ses posts et stories en autonomie, conformes à chaque fois, sans graphiste."
+pitch: "La charte de l'enseigne devient un gabarit vivant : l'équipe sort ses posts et ses stories elle-même, conformes à chaque fois, sans repasser par un prestataire."
 resultats:
   - chiffre: "5"
     label: "marques couvertes (4 clubs + ombrelle) par un seul assistant"

@@ -45,6 +45,35 @@ const recurrence = [
   },
 ];
 
+/**
+ * Trois missions déjà publiées, choisies parce qu'elles ont une colonne
+ * vertébrale marketing — les neuf autres études de cas du site sont des
+ * missions d'installation d'IA ou de formation, hors sujet ici.
+ */
+const preuves = [
+  {
+    client: "Franchisé multi-clubs",
+    livrable: "Charte et gabarits",
+    texte:
+      "La charte d'une enseigne nationale transformée en gabarits que l'équipe utilise seule : posts, stories, affichage en club. Plus de graphiste dans la boucle.",
+    url: "/realisations/design-system-franchise-fitness",
+  },
+  {
+    client: "Association de prévention",
+    livrable: "Démarchage et relances",
+    texte:
+      "Un démarchage et des relances outillés de bout en bout, puis un emailing sur son propre domaine — 537 contacts, et des moyens qui ne dépendent plus d'un outil gratuit.",
+    url: "/realisations/association-benevoles-autonome",
+  },
+  {
+    client: "Enseigne, 600+ magasins",
+    livrable: "Supports commerciaux",
+    texte:
+      "L'équipe marketing décline ses supports sur tout le réseau sans repasser par un prestataire, et sait lesquels outiller ensuite.",
+    url: "/realisations/acculturation-enseigne-nationale",
+  },
+];
+
 const phaseBlock = "border-t border-line py-10 md:py-14";
 // Aucun montant ici : le prix est donné dans le hero et détaillé dans la
 // section « Le prix ». Cette section-ci explique le fonctionnement.
@@ -94,6 +123,32 @@ const itemListe =
       <p class="mt-8 max-w-2xl font-serif text-xl italic text-ink-2">
         Tout cela vous appartient. Même si vous vous arrêtez là.
       </p>
+
+      <!--
+        « Déjà livré ailleurs », et pas « mêmes livrables » : ces trois missions
+        ne sont pas des abonnements de direction marketing — l'offre est neuve.
+        Ce sont des livrables du même type, produits ailleurs. L'alias du client
+        est affiché sur chaque carte pour que personne ne confonde le profil
+        (une enseigne de 600 magasins n'est pas une PME de 30 salariés).
+      -->
+      <p class="mt-12 text-[11px] uppercase tracking-[0.22em] text-ink-3">Déjà livré ailleurs</p>
+      <div class="mt-5 grid gap-5 md:grid-cols-3">
+        {preuves.map((c) => (
+          <a
+            href={c.url}
+            class="group flex flex-col rounded-2xl border border-line bg-card p-6 transition-colors hover:border-lime/60"
+          >
+            <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.client}</span>
+            <h4 class="mt-3 text-base font-medium text-foreground transition-colors group-hover:text-lime">
+              {c.livrable}
+            </h4>
+            <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{c.texte}</p>
+            <span class="mt-5 text-sm text-ink-3 transition-colors group-hover:text-lime">
+              Voir le cas ↗
+            </span>
+          </a>
+        ))}
+      </div>
     </div>
 
     <!-- Phase 2 — l'abonnement mensuel. -->
