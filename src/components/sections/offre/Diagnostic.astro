@@ -1,46 +1,66 @@
 ---
 /**
- * Porte d'entrée basse pression, juste avant la FAQ.
+ * Porte d'entrée basse pression, juste après la FAQ.
  *
  * Le visiteur qui n'est pas prêt à réserver vingt minutes doit trouver ici un
  * geste plus petit que le rendez-vous — d'où un CTA unique, sans lien
- * secondaire qui viendrait le diluer.
+ * secondaire qui viendrait le diluer. C'est aussi pourquoi le bouton est
+ * secondaire (bordé) et non plein : le bouton plein de la page reste
+ * « Réserver 20 minutes », qui engage davantage.
  *
  * Le questionnaire lui-même est un îlot React monté ailleurs : cette section ne
  * contient volontairement aucun formulaire, seulement le déclencheur
- * [data-open-diagnostic].
+ * [data-open-diagnostic], attrapé par délégation quelle que soit sa position
+ * dans le DOM.
+ *
+ * Les trois questions affichées sont reprises MOT POUR MOT de
+ * DiagnosticDialog.tsx : montrer le vrai contenu vaut mieux que le promettre,
+ * et ça remplit une largeur qui ne portait qu'un bouton.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
+
+const questions = [
+  "Qui s'occupe du marketing et de la communication chez vous&nbsp;?",
+  "Si vous deviez régler une seule chose dans les six prochains mois&nbsp;?",
+  "Qu'est-ce qui vous a retenu jusqu'ici&nbsp;?",
+];
 ---
 
-<section id="diagnostic" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
+<section id="diagnostic" class="border-t border-line px-6 py-10 md:px-12 md:py-14">
   <div class="mx-auto max-w-7xl">
-    <Eyebrow>Faire le point</Eyebrow>
-    <h2
-      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground"
-    >
-      Pas encore sûr&nbsp;?
-      <br />
-      <em class="text-lime">Huit questions, et je vous réponds.</em>
-    </h2>
-    <p class="mt-6 max-w-2xl text-xl leading-relaxed text-ink-2">
-      Deux minutes, huit questions, aucun compte à créer. Vous me décrivez votre situation, vous
-      laissez votre email à la fin, et je vous réponds personnellement — même si la réponse est que vous n'avez pas besoin de moi.
-    </p>
-
-    <div class="mt-12">
-      <button
-        type="button"
-        data-open-diagnostic
-        class="group inline-flex cursor-pointer items-center gap-3 rounded-full bg-foreground px-7 py-4 text-base font-medium text-card transition-colors hover:bg-lime"
-      >
-        <span
-          class="grid h-7 w-7 place-items-center rounded-full bg-card/15 text-base transition-transform group-hover:translate-x-0.5"
+    <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+      <div>
+        <Eyebrow>Faire le point</Eyebrow>
+        <h2
+          class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground"
         >
-          →
-        </span>
-        <span>Commencer le questionnaire</span>
-      </button>
+          Pas encore sûr&nbsp;?
+          <br />
+          <em class="text-lime">Huit questions, et je vous réponds.</em>
+        </h2>
+      </div>
+
+      <div class="md:max-w-lg">
+        <p class="text-lg leading-relaxed text-ink-2">
+          Deux minutes, huit questions, aucun compte à créer. Vous me décrivez votre situation,
+          vous laissez votre email à la fin, et je vous réponds personnellement — même si la
+          réponse est que vous n'avez pas besoin de moi.
+        </p>
+        <button
+          type="button"
+          data-open-diagnostic
+          class="group mt-6 inline-flex cursor-pointer items-center gap-3 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium leading-7 text-ink-2 transition-colors hover:border-lime hover:text-lime"
+        >
+          Commencer le questionnaire
+          <span class="transition-transform group-hover:translate-x-1">→</span>
+        </button>
+      </div>
     </div>
+
+    <ul class="mt-10 grid gap-x-12 md:grid-cols-3">
+      {questions.map((q) => (
+        <li class="border-t border-line py-4 text-lg leading-relaxed text-ink-2" set:html={q} />
+      ))}
+    </ul>
   </div>
 </section>

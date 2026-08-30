@@ -1,19 +1,21 @@
 ---
 /**
- * Seule section sombre de la page — la bascule d'encre marque la fin du
- * parcours et isole la dernière décision du reste du défilement.
+ * Bascule d'encre de fermeture : elle répond au hero, lui aussi sombre, et les
+ * deux enserrent le parcours clair. C'est la seule autre section sombre de la
+ * page — toute troisième ferait perdre à celle-ci sa force de rupture.
  *
  * `isolate` est indispensable : sans stacking context sur la <section>, le glow
  * en -z-10 passerait derrière le fond bg-foreground et deviendrait invisible.
  *
  * Un seul bouton, aucun lien secondaire : plus rien à explorer à ce stade.
  */
+import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 ---
 
 <section
   id="contact"
-  class="relative isolate overflow-hidden bg-foreground px-6 py-20 text-white md:px-12 md:py-24"
+  class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20"
 >
   <!-- Glow radial violet ancré sous le pli, très dilué (design system §5.13). -->
   <div
@@ -23,18 +25,13 @@ import CtaButton from "@/components/CtaButton.astro";
   </div>
 
   <div class="mx-auto max-w-4xl text-center">
-    <!-- Eyebrow sur fond sombre : le composant est violet plein, illisible ici. -->
-    <p
-      class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-violet-soft"
-    >
-      <span class="h-px w-6 bg-violet-soft"></span>Prochaine étape
-    </p>
+    <Eyebrow onDark>Prochaine étape</Eyebrow>
 
     <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
       Vingt minutes. <em class="text-violet-soft">Pas une de plus.</em>
     </h2>
 
-    <p class="mx-auto mt-8 max-w-xl text-xl leading-relaxed text-white/75">
+    <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/75">
       C'est le seul rendez-vous avant de commencer. Vous en repartez avec un avis sur votre situation —
       que vous signiez ou non.
     </p>

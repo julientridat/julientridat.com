@@ -4,49 +4,67 @@
  * par un. Volontairement en texte seul, sans carte ni grille — la mise en
  * forme ne doit rien ajouter, c'est l'accumulation qui fait le travail.
  *
- * La dernière ligne est un critère d'exclusion, pas un argument : elle est
- * détachée du bloc et posée en serif pour qu'on la lise comme une adresse
- * directe, et non comme un septième constat.
+ * Composition en deux colonnes, titre à gauche en position collante : les six
+ * constats gardent UNE seule colonne de lecture (les couper en deux tuerait
+ * l'accumulation), mais le titre vient se poser à côté au lieu de laisser
+ * 512 px de vide autour d'un ruban de 768. C'est le patron de Faq.astro.
+ *
+ * RÈGLE DES CHUTES DE SECTION, valable sur toute la page :
+ *   • filet violet 2 px + pl-6 = chute de fin de section (ici, Remplace, Travail) ;
+ *   • pas de filet, en text-ink-2 = simple note de bas de section (Fonctionnement).
+ * La dernière ligne ci-dessous est du premier type : c'est un critère
+ * d'exclusion, pas un septième constat.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 ---
 
-<section id="situation" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
-  <div class="mx-auto max-w-3xl">
+<section id="situation" class="border-t border-line bg-card px-6 py-10 md:px-12 md:py-14">
+  <div class="mx-auto max-w-7xl">
     <Eyebrow>Votre situation</Eyebrow>
-    <h2
-      class="max-w-4xl text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground"
-    >
-      Vous vous <em class="text-lime">reconnaissez&nbsp;?</em>
-    </h2>
 
-    <div class="mt-10 space-y-5 text-xl leading-relaxed text-ink-2">
-      <p>
-        Votre entreprise tourne. Vous produisez, vous vendez, vous livrez.{" "}
-        <strong class="font-medium text-foreground">Le marketing, lui, attend.</strong>
-      </p>
-      <p>Votre site n'a pas bougé depuis la dernière refonte — celle que personne n'a vraiment terminée.</p>
-      <p>
-        <strong class="font-medium text-foreground">
-          Vos commerciaux fabriquent leurs supports eux-mêmes.
-        </strong>{" "}
-        Chacun les siens, chacun sa mise en page.
-      </p>
-      <p>Vos publications sortent quand quelqu'un a le temps. C'est-à-dire jamais.</p>
-      <p>
-        Vous avez essayé&nbsp;: un stagiaire, une agence, un freelance.{" "}
-        <strong class="font-medium text-foreground">À chaque fois, ça s'est arrêté au bout de trois mois.</strong>
-      </p>
-      <p>
-        Ce n'est pas un problème de compétence. C'est un problème de structure&nbsp;: personne
-        n'est responsable, chaque semaine, de faire avancer votre marketing.
-      </p>
+    <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
+      <h2
+        class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground md:sticky md:top-24 md:self-start"
+      >
+        Vous vous <em class="text-lime">reconnaissez&nbsp;?</em>
+      </h2>
+
+      <div>
+        <div class="space-y-5 text-xl leading-relaxed text-ink-2">
+          <p>
+            Votre entreprise tourne. Vous produisez, vous vendez, vous livrez.{" "}
+            <strong class="font-medium text-foreground">Le marketing, lui, attend.</strong>
+          </p>
+          <p>
+            Votre site n'a pas bougé depuis la dernière refonte — celle que personne n'a vraiment
+            terminée.
+          </p>
+          <p>
+            <strong class="font-medium text-foreground">
+              Vos commerciaux fabriquent leurs supports eux-mêmes.
+            </strong>{" "}
+            Chacun les siens, chacun sa mise en page.
+          </p>
+          <p>Vos publications sortent quand quelqu'un a le temps. C'est-à-dire jamais.</p>
+          <p>
+            Vous avez essayé&nbsp;: un stagiaire, une agence, un freelance.{" "}
+            <strong class="font-medium text-foreground">
+              À chaque fois, ça s'est arrêté au bout de trois mois.
+            </strong>
+          </p>
+          <p>
+            Ce n'est pas un problème de compétence. C'est un problème de structure&nbsp;: personne
+            n'est responsable, chaque semaine, de faire avancer votre marketing.
+          </p>
+        </div>
+
+        <p class="mt-12 border-l-2 border-lime pl-6 text-2xl leading-snug">
+          <em class="text-lime">
+            Si le marketing est déjà le métier de quelqu'un chez vous, mon offre ne vous servira
+            pas.
+          </em>
+        </p>
+      </div>
     </div>
-
-    <p class="mt-12 text-2xl leading-snug">
-      <em class="text-lime">
-        Si le marketing est déjà le métier de quelqu'un chez vous, mon offre ne vous servira pas.
-      </em>
-    </p>
   </div>
 </section>

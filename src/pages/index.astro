@@ -71,7 +71,7 @@ const jsonLd = [
         name: "Pourquoi 4 000 € le premier mois ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "Parce qu'un mois entier y passe. Positionnement, identité, gabarits, assistants installés dans vos outils, équipes formées : c'est le socle sans lequel la suite ne tient pas. Vous en gardez l'intégralité, même si vous vous arrêtez là.",
+          text: "Parce qu'un mois entier y passe. Une phrase claire sur ce que vous vendez, votre identité, vos modèles de documents, des assistants installés dans vos outils, vos équipes formées : c'est le socle sans lequel la suite ne tient pas. Vous en gardez l'intégralité, même si vous vous arrêtez là.",
         },
       },
       {
@@ -132,14 +132,26 @@ const jsonLd = [
     <Hero />
     <Situation />
     <Fonctionnement />
-    <Bio />
-    <Remplace />
+    {/* La preuve remonte : la blessure est plantée en section 2 (« à chaque fois,
+        ça s'est arrêté au bout de trois mois »), l'antidote arrivait quatre
+        sections plus loin. */}
     <Travail />
+    {/* Travail expose une faiblesse — deux clients, c'est peu. Bio répond par le
+        volume juste après, et arme la chute de Remplace (« celui qui fait le
+        travail » : on sait enfin qui). */}
+    <Bio />
+    {/* Remplace n'existe que comme ancre tarifaire (55-65 k€/an, 4-8 k€/mois) :
+        il doit être la dernière chose lue avant 2 500 €. */}
+    <Remplace />
     <Prix />
-    <Formation />
-    <Diagnostic />
+    {/* Les objections se traitent avant d'ouvrir les portes, pas entre les deux. */}
     <Faq />
+    {/* Puis les deux portes, par engagement croissant : 2 minutes, puis 20. */}
+    <Diagnostic />
     <FinalCta />
+    {/* Deuxième offre, volontairement hors du chemin de conversion : elle sortait
+        le lecteur de la page juste après le prix. */}
+    <Formation />
     <Footer home />
   </main>
 </BaseLayout>
