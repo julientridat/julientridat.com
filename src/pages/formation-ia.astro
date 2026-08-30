@@ -1,10 +1,17 @@
 ---
 /**
- * Fiche formateur — page PUBLIQUE (indexée, liée depuis le footer et la home).
+ * Formation à l'IA générative — page PUBLIQUE (indexée, liée depuis le footer,
+ * la nav et la deuxième offre de la home).
  *
- * Destinataire : responsable pédagogique / dirigeant d'un organisme ou centre de
- * formation professionnelle. La page reste écrite pour lui seul : le visiteur
- * dirigeant de PME, lui, est aiguillé ici depuis une bande dédiée de la home.
+ * DEUX destinataires, et c'est assumé depuis l'aiguillage placé sous le hero :
+ *   • le dirigeant d'entreprise qui veut former ses équipes — il arrive par la
+ *     section « Deuxième offre » de la home, et son argument est le financement
+ *     OPCO via un organisme partenaire ;
+ *   • le responsable pédagogique d'un organisme de formation qui cherche un
+ *     intervenant à référencer — son argument est le dossier complet et la
+ *     Qualiopi portée par son centre.
+ * Le corps de la page (spectre, supports, modes) sert les deux ; seule la
+ * section « Le cadre » est explicitement réservée au second.
  *
  * Parti pris éditorial : page courte, ton sobre, première personne. L'argument
  * est l'ÉTENDUE de l'expérience (du comité de direction à l'équipe de TPE, tous
@@ -22,9 +29,9 @@ import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
-const title = "Fiche formateur IA — Julien Tridat | Intervenant pour organismes de formation";
+const title = "Formation à l'IA générative — Julien Tridat | Intra-entreprise et sous-traitance OF";
 const description =
-  "Formateur IA générative depuis trois ans, des comités de direction aux équipes de terrain. Intervention en sous-traitance pour organismes de formation. Bordeaux et national.";
+  "Formateur IA générative depuis trois ans, des comités de direction aux équipes de terrain. En intra-entreprise (financement OPCO via organisme partenaire) ou en sous-traitance pour organismes de formation. Bordeaux et national.";
 
 /* ------------------------------------------------------------------ *
  * Données administratives — à compléter par Julien.
@@ -239,7 +246,7 @@ const VERBATIMS = [
       </div>
       <Nav />
       <div class="mx-auto max-w-7xl">
-        <Eyebrow>Fiche formateur — organismes de formation</Eyebrow>
+        <Eyebrow>Formation à l'IA générative</Eyebrow>
         <h1 class="max-w-4xl text-[clamp(2.2rem,5.2vw,4rem)] font-normal leading-[1.04] tracking-[-0.03em]">
           Je forme à l'IA générative depuis trois ans.
           <br class="hidden sm:block" />
@@ -249,9 +256,10 @@ const VERBATIMS = [
           Grands groupes, ETI, PME, TPE. Marketing, commercial, administration, direction. Une
           cinquantaine d'organisations accompagnées, dans une dizaine de secteurs.
           <strong class="font-medium text-foreground">
-            Je travaille déjà en sous-traitance pour trois organismes de formation certifiés
+            J'interviens de deux façons&nbsp;: directement chez l'entreprise qui forme ses équipes,
+            ou en sous-traitance pour l'organisme qui porte la convention.
           </strong>{" "}
-          — vous portez la convention, je conçois, j'anime et je vous rends le dossier.
+          Dans les deux cas, je conçois, j'anime, et je rends le dossier complet.
         </p>
 
         <div class="mt-10 flex flex-wrap items-center gap-4">
@@ -266,6 +274,71 @@ const VERBATIMS = [
         </div>
       </div>
     </header>
+
+    {/* ------------------------------------------------------------ Aiguillage
+        Deux publics arrivent sur cette page et n'y cherchent pas la même chose.
+        Plutôt que d'en sacrifier un, on le nomme dès le deuxième écran : le
+        dirigeant sait en trois lignes que ça le concerne, et l'organisme sait
+        où sont ses pièces. La carte « entreprise » est la carte accentuée
+        parce que c'est le public qui, jusqu'ici, ne se reconnaissait nulle part. */}
+    <section class="border-b border-line px-6 py-10 md:px-12 md:py-14">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Deux façons d'arriver ici</Eyebrow>
+        <h2 class="max-w-3xl text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
+          Vous formez vos équipes, ou
+          <em class="text-lime"> vous cherchez qui les formera&nbsp;?</em>
+        </h2>
+
+        <div class="mt-10 grid gap-5 md:grid-cols-2">
+          <article class="flex flex-col rounded-2xl border border-lime/40 bg-lime/[0.04] p-7 md:p-8">
+            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">
+              Vous êtes une entreprise
+            </div>
+            <h3 class="mt-4 text-[17px] font-medium text-foreground">
+              Une formation en intra, sur vos vrais dossiers.
+            </h3>
+            <p class="mt-3 flex-1 text-[15px] leading-relaxed text-ink-2">
+              Je construis le programme à partir de vos métiers, j'anime, et vos équipes repartent
+              avec des méthodes qu'elles appliquent dès le lendemain.{" "}
+              <strong class="font-medium text-foreground">Financement OPCO possible</strong>&nbsp;:
+              la convention est portée par un organisme partenaire certifié Qualiopi — vous n'avez
+              pas à le chercher.
+            </p>
+            <button
+              type="button"
+              data-open-contact
+              class="group mt-6 inline-flex w-fit cursor-pointer items-center gap-3 rounded-full border border-lime/50 px-6 py-3.5 text-[15px] font-medium leading-7 text-lime transition-colors hover:bg-lime hover:text-white"
+            >
+              Décrire votre besoin
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </button>
+          </article>
+
+          <article class="flex flex-col rounded-2xl border border-line p-7 md:p-8">
+            <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">
+              Vous êtes un organisme de formation
+            </div>
+            <h3 class="mt-4 text-[17px] font-medium text-foreground">
+              Une intervention sous votre certification.
+            </h3>
+            <p class="mt-3 flex-1 text-[15px] leading-relaxed text-ink-2">
+              Vous portez la convention, le financement et la relation client. Je conçois, j'anime,
+              et je vous rends le dossier complet à chaque session.{" "}
+              <strong class="font-medium text-foreground">
+                C'est déjà mon mode de travail avec trois organismes certifiés.
+              </strong>
+            </p>
+            <a
+              href="#cadre"
+              class="group mt-6 inline-flex w-fit items-center gap-3 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium leading-7 text-ink-2 transition-colors hover:border-lime hover:text-lime"
+            >
+              Voir les pièces de référencement
+              <span class="transition-transform group-hover:translate-y-0.5">↓</span>
+            </a>
+          </article>
+        </div>
+      </div>
+    </section>
 
     {/* -------------------------------------------------------------- Spectre */}
     <section class="border-b border-line bg-card px-6 py-10 md:px-12 md:py-14">
@@ -358,8 +431,10 @@ const VERBATIMS = [
       </div>
     </section>
 
-    {/* ----------------------------------------------------------- Le cadre */}
-    <section class="border-b border-line bg-card px-6 py-10 md:px-12 md:py-14">
+    {/* ----------------------------------------------------------- Le cadre
+        Seule section réservée aux organismes de formation : c'est la cible du
+        lien de l'aiguillage, d'où l'id. */}
+    <section id="cadre" class="scroll-mt-24 border-b border-line bg-card px-6 py-10 md:px-12 md:py-14">
       <div class="mx-auto max-w-7xl">
         <Eyebrow>Le cadre</Eyebrow>
         <h2 class="max-w-3xl text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
