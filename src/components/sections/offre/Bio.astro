@@ -6,16 +6,23 @@ import julien from "@/assets/julien.jpg";
 
 <section id="about" class="border-t border-line px-6 py-10 md:px-12 md:py-14">
   <div class="mx-auto grid max-w-7xl gap-10 md:grid-cols-[minmax(0,1fr)_minmax(0,1.4fr)] md:gap-16">
-    <div>
-      <div class="overflow-hidden rounded-2xl border border-line">
-        <Image
-          src={julien}
-          alt="Julien Tridat"
-          widths={[400, 600]}
-          sizes="(min-width: 768px) 40vw, 100vw"
-          class="h-full w-full object-cover"
-        />
-      </div>
+    <!--
+      Le cadre arrondi est l'élément de grille lui-même, et non un enfant d'un
+      div nu : il prend ainsi la hauteur de la rangée, et le h-full de l'image y
+      mord enfin. Auparavant la photo s'arrêtait à sa hauteur naturelle et
+      laissait 131 px de colonne vide en dessous.
+
+      810 px est la largeur native du recadrage — ne pas demander plus, Astro
+      agrandirait une source qui n'a pas les pixels.
+    -->
+    <div class="overflow-hidden rounded-2xl border border-line">
+      <Image
+        src={julien}
+        alt="Julien Tridat"
+        widths={[400, 600, 810]}
+        sizes="(min-width: 768px) 40vw, 100vw"
+        class="h-full w-full object-cover"
+      />
     </div>
 
     <div>
