@@ -37,7 +37,7 @@ export const PERSON_JSONLD = {
   name: "Julien Tridat",
   jobTitle: "Consultant marketing et IA indépendant",
   description:
-    "Vingt ans de marketing. Depuis 2018, j'accompagne des dirigeants de PME dans la croissance de leur entreprise. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — une cinquantaine à ce jour, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
+    "Vingt ans de marketing. Depuis 2018, j'accompagne des dirigeants de PME dans la croissance de leur entreprise. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
   url: SITE.url,
   address: {
     "@type": "PostalAddress",
