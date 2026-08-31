@@ -54,13 +54,27 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
     />
   </div>
 
-  <!-- Voiles de lisibilité : un aplat pour le contraste global, un dégradé pour
-       lester le bas et raccorder à la section suivante. -->
-  <div class="absolute inset-0 -z-20 bg-black/32 md:bg-black/45"></div>
+  <!--
+    Voiles de lisibilité, en trois couches qui ne font pas le même travail.
+
+    L'aplat uniforme est volontairement faible : c'est lui qui écrasait la photo
+    partout, y compris là où il n'y a aucun texte à protéger.
+
+    Le dégradé vertical ne sert qu'aux deux extrémités — lisibilité de la nav en
+    haut, raccord avec la section suivante en bas. Son milieu est transparent.
+
+    Le troisième est l'écran de lisibilité proprement dit : une ellipse centrée
+    sur le bloc de texte, qui s'éteint avant les bords. Le contraste est donc
+    conservé sous les mots et rendu à l'image sur les côtés — c'est là que se
+    trouvent la fenêtre lumineuse et les chaises, donc ce qui fait lire la
+    photographie comme une photographie.
+  -->
+  <div class="absolute inset-0 -z-20 bg-black/20 md:bg-black/26"></div>
   <div
-    class="absolute inset-0 -z-20 bg-gradient-to-b from-black/45 via-black/5 to-black/70 md:from-black/60 md:via-black/15 md:to-black/80"
+    class="absolute inset-0 -z-20 bg-gradient-to-b from-black/45 via-transparent to-black/68 md:from-black/55 md:via-transparent md:to-black/78"
   >
   </div>
+  <div id="hero-ecran" class="absolute inset-0 -z-20"></div>
 
   <!-- Plan proche : le halo violet du design system, ici mobile.
        Rayon en POURCENTAGE, pas en pixels : à 720 px de large, le halo couvrait
@@ -119,6 +133,33 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
     </div>
   </div>
 </section>
+
+<style>
+  /* En portrait, il ne reste qu'un quart de la largeur de la photo et le texte
+     occupe presque toute la colonne : l'ellipse doit couvrir davantage.
+     En paysage elle se resserre, et les côtés de l'image se dégagent. */
+  /* Plateau, et non décroissance depuis le centre : l'écran garde sa pleine
+     force sur tout le bloc de texte, puis s'éteint. Un dégradé qui faiblit dès
+     le centre laisse le haut du titre moins protégé que son milieu. */
+  #hero-ecran {
+    background: radial-gradient(
+      115% 62% at 50% 50%,
+      rgba(0, 0, 0, 0.46) 0%,
+      rgba(0, 0, 0, 0.46) 50%,
+      rgba(0, 0, 0, 0) 80%
+    );
+  }
+  @media (min-width: 768px) {
+    #hero-ecran {
+      background: radial-gradient(
+        72% 58% at 50% 52%,
+        rgba(0, 0, 0, 0.44) 0%,
+        rgba(0, 0, 0, 0.44) 45%,
+        rgba(0, 0, 0, 0) 78%
+      );
+    }
+  }
+</style>
 
 <script>
   /* Parallaxe au pointeur. Deux plans, deux vitesses — le lissage à 8 % par
