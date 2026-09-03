@@ -1,9 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  SCHEDULER_URL,
-  SUPABASE_PUBLISHABLE_KEY,
-  SUPABASE_URL,
-} from "@/lib/site";
+import { SCHEDULER_URL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
 
 const COMPANY_SIZES = ["1 (solo)", "2-10", "11-50", "51-200", "200+"] as const;
 const AI_TOOLS = ["ChatGPT", "Claude", "Gemini", "Copilot", "Autre"] as const;
@@ -28,8 +24,6 @@ export default function BookingDialog() {
   const [aiTools, setAiTools] = useState<string[]>([]);
   const [aiToolsOther, setAiToolsOther] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState(false);
 
   const triggerRef = useRef<HTMLElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -52,7 +46,6 @@ export default function BookingDialog() {
     setStep("intro");
     setLoaded(false);
     setErrors({});
-    setSubmitError(false);
   }, []);
 
   useEffect(() => {
@@ -82,7 +75,6 @@ export default function BookingDialog() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitError(false);
 
     const errs: Record<string, string> = {};
     if (!company.trim() || company.trim().length > 200) errs.company = "Requis";
@@ -92,31 +84,34 @@ export default function BookingDialog() {
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
 
-    setSubmitting(true);
-    try {
-      const res = await fetch(`${SUPABASE_URL}/rest/v1/lead_qualifications`, {
-        method: "POST",
-        headers: {
-          apikey: SUPABASE_PUBLISHABLE_KEY,
-          Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
-          "Content-Type": "application/json",
-          Prefer: "return=minimal",
-        },
-        body: JSON.stringify({
-          company: company.trim(),
-          company_size: companySize,
-          company_url: companyUrl.trim(),
-          ai_tools: aiTools,
-          ai_tools_other: aiTools.includes("Autre") && aiToolsOther.trim() ? aiToolsOther.trim() : null,
-        }),
-      });
-      if (!res.ok) throw new Error(`Supabase ${res.status}`);
-      setStep("schedule");
-    } catch {
-      setSubmitError(true);
-    } finally {
-      setSubmitting(false);
-    }
+    // La qualification part par e-mail, mais elle ne conditionne PAS l'accès au
+    // calendrier — et c'est tout l'objet de ce bloc. Cette étape attendait
+    // auparavant l'écriture dans un projet Supabase supprimé depuis : le
+    // domaine ne résolvait plus, l'appel échouait, et « Erreur lors de l'envoi »
+    // bloquait TOUTE prise de rendez-vous.
+    //
+    // Un rendez-vous vaut infiniment plus que sa fiche de contexte. Si l'envoi
+    // échoue, on perd la fiche, jamais le créneau : l'appel n'est pas attendu,
+    // et le calendrier s'ouvre dans tous les cas.
+    void fetch("https://api.web3forms.com/submit", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      body: JSON.stringify({
+        access_key: WEB3FORMS_ACCESS_KEY,
+        subject: `Réservation en cours — ${company.trim()}`,
+        from_name: "Réservation julientridat.com",
+        Entreprise: company.trim(),
+        Taille: companySize,
+        "Site web": companyUrl.trim(),
+        "Outils IA": aiTools.join(", "),
+        "Autre outil":
+          aiTools.includes("Autre") && aiToolsOther.trim() ? aiToolsOther.trim() : "—",
+      }),
+    }).catch(() => {
+      /* Le contexte est perdu, la réservation continue. */
+    });
+
+    setStep("schedule");
   };
 
   if (!open) return null;
@@ -274,10 +269,6 @@ export default function BookingDialog() {
               </div>
             </div>
 
-            {submitError && (
-              <p className="mt-4 text-sm text-destructive">Erreur lors de l'envoi. Réessayez.</p>
-            )}
-
             <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
               <button
                 type="button"
@@ -288,10 +279,9 @@ export default function BookingDialog() {
               </button>
               <button
                 type="submit"
-                disabled={submitting}
                 className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90 disabled:opacity-60 sm:w-auto"
               >
-                {submitting ? "Envoi…" : "Voir les créneaux"}
+                Voir les créneaux
               </button>
             </div>
           </form>

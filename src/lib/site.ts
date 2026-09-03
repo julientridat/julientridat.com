@@ -20,14 +20,15 @@ export const WEB3FORMS_ACCESS_KEY = "12c7676a-7350-41af-a901-7e276d7ed8c9";
 export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
-/**
- * Supabase — clé « publishable » anonyme : publique par design (elle est déjà
- * exposée dans le bundle JS du site en production). La sécurité repose sur la
- * politique RLS côté Supabase (insert-only, champs bornés).
+/*
+ * Il n'y a plus de base de données. Le projet Supabase qui recevait les traces
+ * (`contact_messages`, `lead_qualifications`) a été supprimé — son domaine ne
+ * résout plus. Les deux constantes qui pointaient dessus sont retirées avec
+ * lui : les garder ferait échouer une requête à chaque envoi de formulaire.
+ *
+ * Web3Forms est désormais la seule voie, pour le contact comme pour la
+ * qualification avant réservation.
  */
-export const SUPABASE_URL = "https://vizjvyuojwetalctdxer.supabase.co";
-export const SUPABASE_PUBLISHABLE_KEY =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InZpemp2eXVvandldGFsY3RkeGVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODM2MDM5MjksImV4cCI6MjA5OTE3OTkyOX0.hN-1EexqzaC9sXl1_U9jF53ipQ1_MQeLK3mmUsDnAgY";
 
 /** JSON-LD Person — injecté sur toutes les pages (Knowledge Graph / AEO). */
 export const PERSON_JSONLD = {
