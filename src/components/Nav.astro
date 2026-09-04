@@ -10,11 +10,15 @@ interface Props {
 const { home = false, onDark = false } = Astro.props;
 const p = home ? "" : "/";
 
+// Trois offres, trois entrées. « Comment ça marche » sort : c'était la plus
+// longue étiquette de la barre, et une simple ancre de la page d'accueil —
+// alors que /integration-ia est une page à part entière qui doit être atteignable
+// de partout. La barre garde cinq liens, donc la largeur tenue à 768 px.
 const links = [
   { href: `${p}#offres`, label: "L'offre" },
-  { href: `${p}#comment`, label: "Comment ça marche" },
-  { href: "/realisations", label: "Cas clients" },
+  { href: "/integration-ia", label: "Intégration IA" },
   { href: "/formation-ia", label: "Formation" },
+  { href: "/realisations", label: "Cas clients" },
   { href: `${p}#about`, label: "À propos" },
 ];
 ---

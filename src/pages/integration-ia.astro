@@ -1,0 +1,660 @@
+---
+/**
+ * Intégration IA — page PUBLIQUE, seconde offre principale du site.
+ *
+ * ORCHESTRATION DES OFFRES. Les trois offres du site ne se distinguent ni par
+ * la taille du client ni par son secteur — elles se recouvriraient — mais par
+ * la NATURE DU BLOCAGE :
+ *   • « je ne sais pas par où commencer »        → l'audit, ici       (le savoir)
+ *   • « on bricole chacun dans son coin »        → l'intégration, ici (le savoir-faire)
+ *   • « personne ne s'en occupe, jamais »        → la direction marketing, sur /
+ * D'où une page qui ouvre sur un SYMPTÔME et non sur un périmètre, et une FAQ
+ * qui nomme explicitement la proximité avec la page d'accueil au lieu de
+ * l'esquiver — sans quoi un prospect qui a vu les deux hésite en silence.
+ *
+ * PRIX. Adossés à la grille de juillet 2026 (2 500 / 6 000 / 12 000 / 25 000),
+ * qui était calibrée sur le réel : 6 000 € pour une équipe sur 4 à 6 semaines
+ * est exactement ce qui a été vendu à un cabinet en juin. La révision d'août
+ * (8 000 / 15 000 / 32 000) avait décroché de 30 à 60 % du marché ; elle n'est
+ * pas reprise. Les deux paliers hauts partent — au-delà de trois pôles, devis.
+ * Le palier solo à 2 500 € part aussi : il contredisait la cible, qui exclut
+ * partout ailleurs les structures sans équipe.
+ *
+ * Le nombre d'agents ne fixe PAS le prix, il le raconte : un agent qui rédige
+ * des propositions ne vaut pas trois qui reformatent des e-mails. Le prix tient
+ * au pôle et à la durée.
+ *
+ * Bpifrance n'est pas mentionné : l'agrément Diag Data IA est déposé, pas
+ * obtenu. Règle éditoriale du dépôt — aucun chiffre ni statut invérifiable.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import CtaButton from "@/components/CtaButton.astro";
+import Footer from "@/components/Footer.astro";
+import { SITE } from "@/lib/site";
+
+const title =
+  "Intégration IA en entreprise — audit 1 500 €, intégration à partir de 6 000 € | Julien Tridat";
+const description =
+  "Vous avez essayé l'IA et ça n'a pas tenu. J'installe des agents dans vos outils, sur vos vrais dossiers, et je forme vos équipes. Audit 1 500 €, intégration d'un pôle 6 000 €. Volet formation éligible OPCO.";
+
+/* Espaces insécables en U+00A0 littéraux : dans le frontmatter, une entité
+   &nbsp; ressortirait telle quelle à l'écran. */
+const situation = [
+  {
+    titre: "Trois personnes ont ouvert un compte, chacune de son côté.",
+    texte: "Personne ne sait qui paie quoi, ni ce qui y est déposé.",
+  },
+  {
+    titre: "Le même document sort différent selon qui le demande.",
+    texte: "Il faut le relire entièrement à chaque fois, donc on ne gagne rien.",
+  },
+  {
+    titre: "Ce qui marchait il y a six mois n'a jamais été écrit.",
+    texte: "La personne qui s'en servait le mieux est partie avec la méthode.",
+  },
+  {
+    titre: "Vous avez payé des licences pour toute l'équipe.",
+    texte: "Deux personnes s'en servent.",
+  },
+  {
+    titre: "Vous ne savez pas ce qui circule dans ces outils.",
+    texte: "Des dossiers clients, probablement. Vous n'avez rien signé pour ça.",
+  },
+];
+
+const methode = [
+  {
+    titre: "J'écoute avant de construire.",
+    texte:
+      "Je passe du temps avec les gens qui font le travail. Où passe le temps, où ça coince, et où se joue vraiment le savoir-faire. Sans ça, on construit un outil que personne n'utilisera.",
+  },
+  {
+    titre: "On construit ensemble.",
+    texte:
+      "Pas moi dans mon coin, puis une présentation. Avec vos équipes, à partir de leur méthode à elles. Et on attaque par la tâche la plus difficile : si l'agent tient là, il tiendra partout ailleurs.",
+  },
+  {
+    titre: "On teste sur du vrai.",
+    texte:
+      "Un vrai dossier, un vrai client. On compare ce que l'agent produit avec ce que l'équipe aurait fait sans lui. Ce sont vos équipes qui jugent, pas moi. Si ce n'est pas au niveau, on le dit.",
+  },
+  {
+    titre: "On corrige, puis on installe.",
+    texte:
+      "On reprend autant de fois qu'il le faut. Ensuite seulement ça entre dans la production quotidienne.",
+  },
+  {
+    titre: "Je forme les équipes.",
+    texte:
+      "Pour qu'elles s'en servent seules, les modifient seules, et n'aient plus besoin de moi. C'est la fin de la mission, pas un supplément.",
+  },
+];
+
+const inclus = [
+  {
+    titre: "Les agents sont installés sur vos comptes.",
+    texte: "Pas une démonstration : vos outils, vos vrais dossiers, votre vocabulaire.",
+  },
+  {
+    titre: "Ce qui marche est écrit.",
+    texte: "Le mode d'emploi reste chez vous, il survit au départ de celui qui l'utilisait.",
+  },
+  {
+    titre: "Les équipes sont formées, pas informées.",
+    texte: "Sur leurs propres cas, jusqu'à ce qu'elles s'en servent seules.",
+  },
+  {
+    titre: "Une règle d'usage écrite.",
+    texte: "Ce qui peut entrer dans ces outils, ce qui ne peut pas. Vous cessez de ne pas savoir.",
+  },
+];
+
+/* Trois missions choisies parce qu'elles décrivent une installation d'agents
+   qui persiste, et parce qu'aucune n'est déjà exposée sur la page d'accueil. */
+const cas = [
+  {
+    client: "Agence créative, ~40 personnes",
+    livrable: "Quatre agents, pôle par pôle",
+    texte:
+      "Chaque pôle repart avec ses propres agents, calibrés sur le style de la maison — et les dossiers d'un annonceur ne croisent jamais ceux d'un autre.",
+    url: "/realisations/agents-agence-creative",
+  },
+  {
+    client: "Agence de communication santé, 16 personnes",
+    livrable: "Un premier jet déjà sourcé",
+    texte:
+      "L'équipe produit un premier jet appuyé sur ses propres autorités de santé, et concentre le temps humain sur la validation médicale.",
+    url: "/realisations/formation-ia-agence-sante",
+  },
+  {
+    client: "Organisme de conseil et formation",
+    livrable: "Les agents et les guides restent",
+    texte:
+      "Le dirigeant cadre, les équipes pratiquent au quotidien : l'organisme produit désormais avec l'IA sans dépendre du consultant.",
+    url: "/realisations/transformation-ia-organisme-formation",
+  },
+];
+
+const questions = [
+  {
+    q: "On a déjà des licences. Ça sert à quoi de plus ?",
+    r: "Une licence donne l'accès, pas l'usage. Ce que j'installe, c'est ce qui se passe entre l'outil et le travail réel : sur quoi il est branché, ce qu'il sait de votre métier, et qui sait s'en servir.",
+  },
+  {
+    q: "Nos données peuvent-elles sortir ?",
+    r: "C'est la question à poser, et peu la posent. On écrit ensemble ce qui peut entrer dans ces outils et ce qui ne peut pas, avant d'installer quoi que ce soit.",
+  },
+  {
+    q: "Combien d'agents pour 6 000 € ?",
+    r: "Autant que le pôle en demande, et pas un de plus. Ce qui fixe le prix, c'est le périmètre et la durée — pas le nombre. Un agent qui rédige vos propositions vaut trois qui reformatent des e-mails.",
+  },
+  {
+    q: "Et quand vous partez ?",
+    r: "Tout est sur vos comptes, le mode d'emploi est écrit, les équipes ont été formées sur leurs propres dossiers. C'est le seul critère qui compte : ce qui tourne encore six mois après.",
+  },
+  {
+    q: "Vous faites aussi du marketing. C'est la même chose ?",
+    r: "Non, et les deux ne s'achètent pas pour la même raison. Ici, vous produisez déjà et ça coince. Là-bas, personne ne s'occupe de votre marketing.",
+  },
+];
+
+const sectionPad = "border-t border-line px-6 py-10 md:px-12 md:py-14";
+const h2Cls =
+  "text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground";
+const itemRow = "bg-background px-6 py-4 md:px-7";
+const itemRowCard = "bg-card px-6 py-4 md:px-7";
+const treillis =
+  "mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2";
+const montant = "font-serif text-[clamp(2.5rem,6vw,3.75rem)] italic leading-[0.9] tracking-tight";
+const unite = "font-sans text-base not-italic text-ink-3";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE.url}/integration-ia#service`,
+    name: "Intégration de l'IA dans les outils de l'entreprise",
+    description:
+      "Audit des frictions puis installation d'agents IA dans les outils existants, pôle par pôle, équipes formées. Prix ferme et délai contractualisé. Volet formation éligible à une prise en charge OPCO.",
+    provider: { "@id": `${SITE.url}/#julien-tridat` },
+    areaServed: "FR",
+    url: `${SITE.url}/integration-ia`,
+    makesOffer: [
+      {
+        "@type": "Offer",
+        name: "L'audit",
+        price: "1500",
+        priceCurrency: "EUR",
+        description:
+          "Frictions cartographiées poste par poste, cas d'usage classés par effort et par impact, feuille de route séquencée, outil de pilotage. Livrables acquis au client. Déduit de l'intégration si elle démarre sous trente jours.",
+      },
+      {
+        "@type": "Offer",
+        name: "Intégration — une équipe",
+        price: "6000",
+        priceCurrency: "EUR",
+        description:
+          "4 à 6 semaines. Agents installés sur les comptes de l'entreprise pour le pôle qui produit le plus de documents, mode d'emploi écrit, équipes formées, règle d'usage rédigée.",
+      },
+      {
+        "@type": "Offer",
+        name: "Intégration — deux à trois pôles",
+        price: "12000",
+        priceCurrency: "EUR",
+        description:
+          "6 à 8 semaines. Même dispositif étendu à deux ou trois pôles : commerce, gestion, administratif, ou ceux qui ralentissent le plus l'entreprise.",
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.r },
+    })),
+  },
+];
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`${SITE.url}/integration-ia`}
+  jsonLd={jsonLd}
+>
+  <main class="bg-background text-foreground">
+    {/* ------------------------------------------------------------- Hero
+        Fond papier et non photographie sombre : le hero sombre est la
+        signature de la page d'accueil, et cette page lui est subordonnée.
+        C'est la composition de /formation-ia. */}
+    <header class="relative overflow-hidden border-b border-line px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(720px 400px at 18% 0%, rgba(108,76,241,0.07), transparent 70%);"
+      >
+      </div>
+      <Nav />
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Intégration IA · entreprises qui produisent des documents</Eyebrow>
+
+        {/* En-tête sur deux colonnes : plafonné à max-w-2xl dans un conteneur de
+            1280, le chapô laissait 608 px de vide à sa droite — le défaut de
+            largeur relevé sur la page d'accueil. */}
+        <div class="grid gap-8 md:grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)] md:items-end md:gap-14">
+          <h1 class="text-[clamp(2.2rem,5.2vw,4rem)] font-normal leading-[1.04] tracking-[-0.03em]">
+            Vous avez essayé l'IA.
+            <br class="hidden sm:block" />
+            <em class="text-lime">Ça n'a pas tenu.</em>
+          </h1>
+
+          <div>
+            <p class="text-xl leading-relaxed text-ink-2">
+              <strong class="font-medium text-foreground">
+                Des comptes ouverts chacun dans son coin, des résultats qui ne se ressemblent
+                pas, et rien d'écrit nulle part.
+              </strong>{" "}
+              J'installe l'IA dans vos outils, sur vos vrais dossiers, et je forme les gens qui
+              s'en serviront.
+            </p>
+            <p class="mt-4 text-lg leading-relaxed text-ink-2">
+              Un audit pour savoir où elle vous fera gagner du temps. Puis une intégration pôle
+              par pôle, à prix ferme et délai contractualisé.
+            </p>
+          </div>
+        </div>
+
+        <div class="mt-10 flex flex-wrap items-center gap-4">
+          <CtaButton>Réserver 20&nbsp;minutes</CtaButton>
+          <button
+            type="button"
+            data-open-contact
+            class="cursor-pointer rounded-full border border-line px-6 py-3.5 text-[15px] font-medium leading-7 text-ink-2 transition-colors hover:border-lime hover:text-lime"
+          >
+            Envoyer un message
+          </button>
+        </div>
+      </div>
+    </header>
+
+    {/* -------------------------------------------------------- Votre situation
+        Qualifie ET disqualifie : qui ne se reconnaît nulle part ici n'a pas un
+        problème de savoir-faire, et seul l'audit le concerne. */}
+    <section id="situation" class={`${sectionPad} bg-card`}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Votre situation</Eyebrow>
+        <h2 class={h2Cls}>
+          Ça vous <em class="text-lime">rappelle quelque chose&nbsp;?</em>
+        </h2>
+
+        <ul class={treillis}>
+          {situation.map((i) => (
+            <li class={itemRowCard}>
+              <p class="text-lg leading-relaxed text-ink-2">
+                <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        {/* Chute de section, niveau 1 : filet violet 2 px. La formule évite
+            « c'est un problème de structure », qui appartient à la home. */}
+        <p class="mt-12 max-w-3xl border-l-2 border-lime pl-6 text-2xl leading-snug">
+          <em class="text-lime">
+            Le problème n'est pas l'outil. C'est que personne ne l'a installé — au sens où l'on
+            installe une machine dans un atelier.
+          </em>
+        </p>
+      </div>
+    </section>
+
+    {/* -------------------------------------------------------------- La méthode */}
+    <section id="methode" class={sectionPad}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Comment je procède</Eyebrow>
+        <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+          <h2 class={h2Cls}>
+            On commence par le plus difficile.
+            <br />
+            <em class="text-lime">C'est exactement pour ça.</em>
+          </h2>
+          <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+            Un agent qui échoue sur la tâche la plus dure, personne ne s'en servira. S'il tient
+            là, il tiendra partout ailleurs — et l'équipe le sait avant même de l'essayer.
+          </p>
+        </div>
+
+        <ol class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line">
+          {methode.map((e, i) => (
+            <li class={`${itemRow} grid gap-x-5 md:grid-cols-[3rem_1fr]`}>
+              <span class="font-serif text-2xl italic leading-none text-lime">
+                {String(i + 1).padStart(2, "0")}
+              </span>
+              <p class="text-lg leading-relaxed text-ink-2">
+                <strong class="font-medium text-foreground">{e.titre}</strong> {e.texte}
+              </p>
+            </li>
+          ))}
+        </ol>
+
+        <p class="mt-10 max-w-2xl font-serif text-xl italic text-ink-2">
+          Et une chose qu'on écrit avant d'installer quoi que ce soit&nbsp;: ce qui peut entrer
+          dans ces outils, et ce qui ne peut pas.
+        </p>
+      </div>
+    </section>
+
+    {/* ---------------------------------------------------------------- L'audit */}
+    <section id="audit" class={`${sectionPad} bg-card`}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>L'offre d'entrée</Eyebrow>
+        <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+          <h2 class={h2Cls}>
+            Savoir où l'IA vous fera gagner du temps.
+            <br />
+            <em class="text-lime">Avant d'en dépenser.</em>
+          </h2>
+          <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+            Le risque n'est pas de rater l'IA. C'est d'acheter des licences et de constater six
+            mois plus tard que rien n'a bougé dans la production.
+          </p>
+        </div>
+
+        <div class="mt-10 grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
+          <div class="rounded-2xl border border-line bg-background p-8 md:p-9">
+            <div class="flex flex-wrap items-baseline gap-x-3">
+              <span class={`${montant} text-lime`}>1&nbsp;500&nbsp;€</span>
+              <span class={unite}>HT</span>
+            </div>
+            <p class="mt-6 text-base leading-relaxed text-ink-2">
+              J'interroge individuellement ceux qui produisent — pas la direction seule. Chaque
+              friction relevée est tranchée&nbsp;: ce que la machine peut exécuter, ce qui doit
+              rester au jugement humain.
+            </p>
+            <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
+              Déduit de l'intégration si elle démarre dans les trente jours.
+            </p>
+          </div>
+
+          <div class="grid gap-5">
+            <div class="rounded-2xl border border-line bg-background p-7">
+              <h3 class="text-base font-medium text-foreground">Le diagnostic</h3>
+              <p class="mt-2 text-base leading-relaxed text-ink-2">
+                Vos frictions cartographiées poste par poste, vos cas d'usage classés par effort
+                et par impact. Une feuille de route séquencée, pas une liste de courses.
+              </p>
+            </div>
+            <div class="rounded-2xl border border-line bg-background p-7">
+              <h3 class="text-base font-medium text-foreground">L'outil de pilotage</h3>
+              <p class="mt-2 text-base leading-relaxed text-ink-2">
+                De quoi suivre l'exécution dans la durée. Il sert encore longtemps après la fin
+                de la mission.
+              </p>
+            </div>
+            <p class="text-base leading-relaxed text-ink-2">
+              <strong class="font-medium text-foreground">Ces deux livrables sont à vous.</strong>{" "}
+              Ils servent que vous installiez avec moi, avec un autre, ou avec personne.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------------------------------------------------------- L'intégration */}
+    <section id="offres" class={sectionPad}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>L'intégration</Eyebrow>
+        <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+          <h2 class={h2Cls}>
+            Un pôle à la fois.
+            <br />
+            <em class="text-lime">Jusqu'à ce que ça tourne sans moi.</em>
+          </h2>
+          <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+            Le périmètre se compte en pôles et en semaines, pas en salariés&nbsp;: une entreprise
+            de quinze personnes avec trois métiers distincts demande plus de travail qu'une de
+            quarante qui n'en fait qu'un.
+          </p>
+        </div>
+
+        <div class="mt-10 grid items-start gap-6 md:grid-cols-2">
+          <div class="flex flex-col rounded-2xl border border-line bg-card p-8 md:p-9">
+            <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Une équipe</div>
+            <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
+              <span class={`${montant} text-foreground`}>6&nbsp;000&nbsp;€</span>
+              <span class={unite}>HT</span>
+            </div>
+            <div class="mt-2 text-base text-ink-2">4 à 6 semaines</div>
+            <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
+              Le pôle qui produit le plus de documents, avec ses agents en production et ses gens
+              formés. Le plus court chemin vers un résultat visible.
+            </p>
+          </div>
+
+          <div class="relative flex flex-col rounded-2xl border border-lime bg-lime/[0.05] p-8 md:p-9">
+            <div class="absolute -top-3 left-8 rounded-full bg-lime px-3.5 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white">
+              Le plus fréquent
+            </div>
+            <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">
+              Deux à trois pôles
+            </div>
+            <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
+              <span class={`${montant} text-lime`}>12&nbsp;000&nbsp;€</span>
+              <span class={unite}>HT</span>
+            </div>
+            <div class="mt-2 text-base text-ink-2">6 à 8 semaines</div>
+            <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
+              Commerce, gestion, administratif — ou les trois qui vous ralentissent le plus.
+            </p>
+          </div>
+        </div>
+
+        <ul class={treillis}>
+          {inclus.map((i) => (
+            <li class={itemRow}>
+              <p class="text-lg leading-relaxed text-ink-2">
+                <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
+          <CtaButton>Réserver 20&nbsp;minutes</CtaButton>
+          <p class="font-serif text-xl italic text-lime">
+            Au-delà de trois pôles&nbsp;: je fais un devis.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------------ Financement
+        Absent du site jusqu'ici, alors qu'il porte les propositions envoyées en
+        clientèle. Bpifrance n'y figure pas : l'agrément est déposé, pas obtenu. */}
+    <section id="financement" class={`${sectionPad} bg-card`}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Ce qui allège la facture</Eyebrow>
+        <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+          <h2 class={h2Cls}>
+            Une partie se finance.
+            <br />
+            <em class="text-lime">Autant le savoir avant.</em>
+          </h2>
+          <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+            Le volet formation de la mission est une action de formation à part entière. Je la
+            porte avec un organisme certifié partenaire, et elle est{" "}
+            <strong class="font-medium text-foreground">
+              éligible à une prise en charge par votre OPCO
+            </strong>.
+          </p>
+        </div>
+
+        <div class="mt-10 grid gap-6 md:grid-cols-2">
+          <div class="rounded-2xl border border-line bg-background p-7 md:p-8">
+            <h3 class="text-base font-medium text-foreground">Le dossier, c'est moi qui le monte</h3>
+            <p class="mt-2 text-base leading-relaxed text-ink-2">
+              Il se dépose avant le démarrage. C'est compris dans la mission, ce n'est pas une
+              prestation de plus.
+            </p>
+          </div>
+          <div class="rounded-2xl border border-line bg-background p-7 md:p-8">
+            <h3 class="text-base font-medium text-foreground">Ordre de grandeur pour 2026</h3>
+            <p class="mt-2 text-base leading-relaxed text-ink-2">
+              Jusqu'à 1&nbsp;800&nbsp;€ par société et par an, dans la limite de 40&nbsp;€ par
+              heure et par stagiaire. Ça allège la ligne, ça ne la supprime pas — et l'enveloppe
+              repart à zéro en janvier.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ----------------------------------------------------------------- Les cas
+        Six missions décrivent une installation d'agents qui persiste ; les
+        autres études publiées sont de la formation, des keynotes ou ce site.
+        Les trois montrées ici sont celles qui n'apparaissent nulle part ailleurs. */}
+    <section id="cas" class={sectionPad}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Déjà installé</Eyebrow>
+        <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+          <h2 class={h2Cls}>
+            Six missions,
+            <br />
+            <em class="text-lime">et ce qu'il en reste aujourd'hui.</em>
+          </h2>
+          <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
+            Le point commun n'est pas la taille&nbsp;: c'est que dans chacune, quelque chose
+            tourne encore sans moi. En voici trois.
+          </p>
+        </div>
+
+        <div class="mt-10 grid gap-5 md:grid-cols-3">
+          {cas.map((c) => (
+            <a
+              href={c.url}
+              class="group flex flex-col rounded-2xl border border-line bg-card p-6 transition-colors hover:border-lime/60"
+            >
+              <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.client}</span>
+              <h3 class="mt-3 text-base font-medium text-foreground transition-colors group-hover:text-lime">
+                {c.livrable}
+              </h3>
+              <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{c.texte}</p>
+              <span class="mt-5 text-sm text-ink-3 transition-colors group-hover:text-lime">
+                Voir le cas ↗
+              </span>
+            </a>
+          ))}
+        </div>
+
+        <a
+          href="/realisations"
+          class="group mt-8 inline-flex items-center gap-3 text-base text-lime"
+        >
+          Toutes les missions documentées
+          <span class="transition-transform group-hover:translate-x-1">→</span>
+        </a>
+      </div>
+    </section>
+
+    {/* --------------------------------------------------------------- Agences
+        Une agence qui a lu « Votre situation » ne s'y reconnaît qu'à moitié :
+        l'aiguillage doit arriver avant qu'elle décroche. */}
+    <section id="agences" class={`${sectionPad} bg-card`}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Vous êtes une agence&nbsp;?</Eyebrow>
+        <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
+          <div>
+            <h2
+              class="max-w-xl text-[clamp(1.8rem,3.6vw,2.8rem)] font-normal leading-[1.1] tracking-[-0.03em] text-foreground"
+            >
+              Le métier n'est pas le même.
+              <br />
+              <em class="text-lime">La page non plus.</em>
+            </h2>
+          </div>
+          <div class="md:max-w-lg">
+            <p class="text-lg leading-relaxed text-ink-2">
+              Com, marketing, brand content, media&nbsp;: vous ne produisez pas des devis et des
+              rapports, vous produisez des recommandations et des campagnes — pour des clients
+              qui ne doivent jamais se croiser.{" "}
+              <strong class="font-medium text-foreground">
+                J'ai une page qui parle ce métier-là.
+              </strong>
+            </p>
+            <a
+              href="/agences"
+              class="group mt-6 inline-flex items-center gap-3 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium leading-7 text-ink-2 transition-colors hover:border-lime hover:text-lime"
+            >
+              Voir l'offre agences
+              <span class="transition-transform group-hover:translate-x-1">→</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* -------------------------------------------------------------------- FAQ */}
+    <section id="faq" class={sectionPad}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Questions directes</Eyebrow>
+        <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
+          <h2 class={`${h2Cls} md:sticky md:top-24 md:self-start`}>
+            Ce que vous alliez <em class="text-lime">me demander.</em>
+          </h2>
+          <div>
+            {questions.map((item, i) => (
+              <details open={i === 0} class={`border-t border-line ${i === questions.length - 1 ? "border-b" : ""}`}>
+                <summary
+                  class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 text-xl font-medium text-foreground transition-colors hover:text-lime"
+                >
+                  <span>{item.q}</span>
+                  <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
+                </summary>
+                <p class="pb-5 text-lg leading-relaxed text-ink-2">{item.r}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ------------------------------------------------------------- CTA final */}
+    <section
+      id="contact"
+      class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20"
+    >
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(58% 90% at 50% 115%, rgba(108,76,241,0.22), transparent 70%);"
+      >
+      </div>
+      <div class="mx-auto max-w-4xl text-center">
+        <Eyebrow onDark>Prochaine étape</Eyebrow>
+        <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
+          Vingt minutes. <em class="text-violet-soft">Pas une de plus.</em>
+        </h2>
+        <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/85">
+          Vous me décrivez ce que vos équipes produisent et où ça coince. Je vous dis si l'IA y
+          change quelque chose — et si la réponse est non, je vous le dis aussi.
+        </p>
+        <div class="mt-12 flex justify-center">
+          <CtaButton onDark>Réserver 20 minutes</CtaButton>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</BaseLayout>
+
+<style>
+  /* Le triangle natif ne suit ni la grille ni la couleur d'accent : on l'efface
+     et on rend le signe soi-même, en serif violet. */
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ""; }
+  .faq-marqueur::after { content: "+"; }
+  details[open] .faq-marqueur::after { content: "–"; }
+</style>
