@@ -61,6 +61,8 @@ export const GET: APIRoute = async () => {
     "",
     `- [Accueil](${SITE.url}/) : l'offre, son fonctionnement en deux temps, les prix`,
     `- [Cas clients](${SITE.url}/realisations) : le registre des transformations`,
+    `- [Intégration IA](${SITE.url}/integration-ia) : audit des frictions (1 500 € HT) puis installation d'agents dans les outils existants, pôle par pôle — une équipe 6 000 € HT sur 4 à 6 semaines, deux à trois pôles 12 000 € HT sur 6 à 8 semaines, devis au-delà. Volet formation éligible à une prise en charge OPCO.`,
+    `- [IA opérationnelle en agence](${SITE.url}/agences) : verticale de l'offre d'intégration, pour les agences de communication, marketing, brand content et media de 5 à 150 personnes — outils connectés, process refondus, trois à dix agents sur mesure en production, en 60 jours.`,
     `- [Formation à l'IA générative](${SITE.url}/formation-ia) : deux entrées — formation intra-entreprise (financement OPCO, convention portée par un organisme partenaire certifié) et intervention en sous-traitance pour organismes de formation (Qualiopi portée par le centre)`,
     `- [Notes](${SITE.url}/notes) : les analyses`,
     "",

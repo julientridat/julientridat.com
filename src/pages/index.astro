@@ -13,7 +13,7 @@ import Remplace from "@/components/sections/offre/Remplace.astro";
 import Travail from "@/components/sections/offre/Travail.astro";
 import Bio from "@/components/sections/offre/Bio.astro";
 import Prix from "@/components/sections/offre/Prix.astro";
-import Formation from "@/components/sections/offre/Formation.astro";
+import AutresOffres from "@/components/sections/offre/AutresOffres.astro";
 import Diagnostic from "@/components/sections/offre/Diagnostic.astro";
 import Faq from "@/components/sections/offre/Faq.astro";
 import FinalCta from "@/components/sections/offre/FinalCta.astro";
@@ -149,9 +149,10 @@ const jsonLd = [
     {/* Puis les deux portes, par engagement croissant : 2 minutes, puis 20. */}
     <Diagnostic />
     <FinalCta />
-    {/* Deuxième offre, volontairement hors du chemin de conversion : elle sortait
-        le lecteur de la page juste après le prix. */}
-    <Formation />
+    {/* Les deux autres offres, volontairement hors du chemin de conversion : le
+        lecteur qui va réserver n'a rien à arbitrer. Celui que la direction
+        marketing n'a pas convaincu trouve ici pourquoi — son problème est ailleurs. */}
+    <AutresOffres />
     <Footer home />
   </main>
 </BaseLayout>

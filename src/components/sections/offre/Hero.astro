@@ -63,13 +63,17 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
     Le dégradé vertical ne sert qu'aux deux extrémités — lisibilité de la nav en
     haut, raccord avec la section suivante en bas. Son milieu est transparent.
 
-    Le troisième est l'écran de lisibilité proprement dit : une ellipse centrée
-    sur le bloc de texte, qui s'éteint avant les bords. Le contraste est donc
-    conservé sous les mots et rendu à l'image sur les côtés — c'est là que se
-    trouvent la fenêtre lumineuse et les chaises, donc ce qui fait lire la
-    photographie comme une photographie.
+    Le troisième est une ellipse centrée sur le bloc de texte, qui s'éteint
+    avant les bords — mais elle reste faible, parce que les personnages sont au
+    CENTRE du cadre, exactement sous le texte. Une première version l'avait
+    poussée à 0,44 : les bords se dégageaient, et le sujet de la photo
+    disparaissait. C'est l'inverse de ce qu'on veut.
+
+    D'où le report du contraste sur les lettres elles-mêmes (voir la feuille de
+    style plus bas) : l'ombre portée protège le mot sans assombrir les vingt
+    pixels qui l'entourent, ce qui laisse voir l'équipe au travail.
   -->
-  <div class="absolute inset-0 -z-20 bg-black/20 md:bg-black/26"></div>
+  <div class="absolute inset-0 -z-20 bg-black/16 md:bg-black/20"></div>
   <div
     class="absolute inset-0 -z-20 bg-gradient-to-b from-black/45 via-transparent to-black/68 md:from-black/55 md:via-transparent md:to-black/78"
   >
@@ -84,7 +88,7 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
   <div
     id="hero-halo"
     class="pointer-events-none absolute inset-0 -z-10 will-change-transform"
-    style="background: radial-gradient(50% 40% at 50% 38%, rgba(108,76,241,0.22), transparent 70%);"
+    style="background: radial-gradient(50% 40% at 50% 38%, rgba(108,76,241,0.16), transparent 70%);"
   >
   </div>
 
@@ -92,6 +96,7 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
 
   <!-- Rythme vertical indexé sur la hauteur d'écran : le bloc tient toujours. -->
   <div
+    id="hero-texte"
     class="relative mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-6 pb-[clamp(2.5rem,7vh,4.5rem)] pt-[clamp(5rem,11vh,9rem)] text-center md:px-12"
   >
     <p class="mb-6 text-[11px] uppercase tracking-[0.22em] text-violet-soft">
@@ -107,14 +112,14 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
     </h1>
 
     <p
-      class="mx-auto mt-[clamp(1.5rem,3.5vh,2rem)] max-w-2xl text-lg leading-relaxed text-white/85 md:text-xl"
+      class="mx-auto mt-[clamp(1.5rem,3.5vh,2rem)] max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl"
     >
       Un mois pour remettre à plat ce que vous vendez et comment vous le dites. Puis chaque
       semaine&nbsp;: le site, les supports de vos commerciaux, les relances, les publications —
       et vos équipes outillées pour aller plus vite.
     </p>
 
-    <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/85 md:text-lg">
+    <p class="mx-auto mt-6 max-w-2xl text-base leading-relaxed text-white/90 md:text-lg">
       <strong class={montant}>4&nbsp;000&nbsp;€</strong> le premier mois, tout compris. Puis{" "}
       <strong class={montant}>2&nbsp;500&nbsp;€</strong> par mois, sans engagement.
     </p>
@@ -135,17 +140,28 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
 </section>
 
 <style>
-  /* En portrait, il ne reste qu'un quart de la largeur de la photo et le texte
-     occupe presque toute la colonne : l'ellipse doit couvrir davantage.
-     En paysage elle se resserre, et les côtés de l'image se dégagent. */
-  /* Plateau, et non décroissance depuis le centre : l'écran garde sa pleine
-     force sur tout le bloc de texte, puis s'éteint. Un dégradé qui faiblit dès
-     le centre laisse le haut du titre moins protégé que son milieu. */
+  /* Le contraste est porté par les LETTRES, pas par la zone. Une ombre serrée
+     dessine le bord du glyphe, une large assombrit juste derrière la masse du
+     texte. C'est ce qui permet de diviser l'écran par deux : au-delà de vingt
+     pixels d'un mot, la photo est intacte.
+     Le bouton plein est exclu — une ombre portée sur un aplat violet salit. */
+  #hero-texte > p,
+  #hero-texte > h1 {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.55),
+      0 2px 28px rgba(0, 0, 0, 0.5);
+  }
+
+  /* L'écran ne fait plus que compléter l'ombre portée : 0,24 au lieu de 0,44.
+     Plateau et non décroissance depuis le centre — un dégradé qui faiblit dès
+     le centre laisserait le haut du titre moins protégé que son milieu.
+     En portrait il ne reste qu'un quart de la largeur de la photo et le texte
+     occupe presque toute la colonne : l'ellipse y couvre davantage. */
   #hero-ecran {
     background: radial-gradient(
       115% 62% at 50% 50%,
-      rgba(0, 0, 0, 0.46) 0%,
-      rgba(0, 0, 0, 0.46) 50%,
+      rgba(0, 0, 0, 0.28) 0%,
+      rgba(0, 0, 0, 0.28) 50%,
       rgba(0, 0, 0, 0) 80%
     );
   }
@@ -153,8 +169,8 @@ const montant = "font-serif text-[1.15em] font-normal italic text-white";
     #hero-ecran {
       background: radial-gradient(
         72% 58% at 50% 52%,
-        rgba(0, 0, 0, 0.44) 0%,
-        rgba(0, 0, 0, 0.44) 45%,
+        rgba(0, 0, 0, 0.24) 0%,
+        rgba(0, 0, 0, 0.24) 45%,
         rgba(0, 0, 0, 0) 78%
       );
     }

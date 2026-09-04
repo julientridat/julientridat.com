@@ -19,7 +19,12 @@
   --font-serif: "Instrument Serif", Georgia, serif;
 }
 
-* { margin: 0; padding: 0; box-sizing: border-box; }
+/* Reset LIMITÉ au contenu propre de la page. Un sélecteur universel non calqué
+   bat TOUS les calques, y compris @layer utilities : appliqué globalement, il
+   écrasait le padding des classes Tailwind de la nav et du pied du site, qui
+   vivent hors de <main>. box-sizing n'est plus repris ici — le preflight
+   Tailwind le pose déjà pour toute la page. */
+main * { margin: 0; padding: 0; }
 
 html { scroll-behavior: smooth; }
 
@@ -132,6 +137,11 @@ h3 {
 .nav-loc { color: var(--muted); font-size: 0.85rem; }
 
 /* ===== Buttons ===== */
+
+/* .btn s'applique aussi à un <button> — les déclencheurs de modales du site
+   (data-open-booking) sont des boutons, pas des liens. Sans ce reset, le style
+   natif du navigateur reprend la main. */
+button.btn { border: 0; font-family: inherit; cursor: pointer; }
 
 .btn {
   display: inline-block;
@@ -768,7 +778,10 @@ h3 {
 
 /* ===== Reveal on scroll ===== */
 
-.reveal {
+/* Masquage conditionnel : la classe est posée par main.js dès son exécution.
+   Si le script ne se charge pas, rien n'est caché — sur une page indexée, une
+   opacité 0 par défaut voulait dire page blanche en cas d'échec réseau. */
+.js-reveal .reveal {
   opacity: 0;
   transform: translateY(16px);
   transition: opacity 0.7s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.7s cubic-bezier(0.2, 0.6, 0.2, 1);
