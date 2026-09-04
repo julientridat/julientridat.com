@@ -1,80 +1,114 @@
 ---
 /**
- * LP agences — page volontairement NON INDEXÉE et NON LIÉE (pas de canonical,
- * absente de sitemap.xml et llms.txt, aucun lien depuis Nav/Footer).
+ * Agences — verticale de l'offre d'intégration IA.
  *
- * DA autonome (fond papier clair, accent violet, scrubber J1→J60 en canvas) —
- * volontairement en dehors de la charte noire/lime du reste du site : voir
- * `docs/design-system-pages-vente.md`. Ne PAS passer par BaseLayout (son
- * `global.css` casse cette DA) : page 100% autonome, assets dans
- * `public/agences/`.
+ * ELLE GARDE SA FEUILLE DE STYLE, et c'est volontaire : ses tokens sont DÉJÀ
+ * ceux du design system (--paper #F1F2F4, --ink #111216, --violet #6C4CF1,
+ * rayon 22 px, Geist + Instrument Serif). La réécrire en Tailwind ne changerait
+ * pas un pixel et ferait perdre le scrubber J1→J60, qui est le pattern
+ * signature de la page.
  *
- * Coexiste avec "/transformation" (même positionnement agences, mécanique et
- * ton différents) le temps que Julien tranche laquelle garder — voir échange
- * du 2026-07-31. Pour la republier : ajouter `<meta name="robots"
- * content="index,follow">` (ci-dessous, retirer le noindex), l'entrée dans
- * sitemap.xml.ts / llms.txt.ts, et un lien depuis Footer.astro si voulu.
+ * CE QUI CHANGE ICI, c'est la coquille. La page vivait hors du site : son
+ * propre <head>, sa propre nav, son propre pied, son propre favicon, et aucune
+ * modale. Elle entre dans BaseLayout et récupère la nav, le pied, les modales
+ * partagées, le balisage et l'icône du site.
+ *
+ * Un docblock précédent interdisait BaseLayout — « son global.css casse cette
+ * DA ». C'était vrai en juillet, quand le site était en charte noire/lime et
+ * cette page en papier/violet. Les deux chartes sont désormais la même, et le
+ * seul CSS non calqué de global.css est un bloc :root dont les variables
+ * portent d'AUTRES noms. Tout le reste, preflight Tailwind compris, est dans
+ * @layer base — que du CSS non calqué bat quel que soit l'ordre. styles.css
+ * est de surcroît chargée par le slot "head", donc après.
+ *
+ * DEUX DÉFAUTS DE CONVERSION réparés au passage :
+ *   • le CTA final était un mailto: — le prospect tombait dans son client mail
+ *     au lieu de l'agenda. Il ouvre désormais la modale de réservation.
+ *   • la page promettait « trente minutes » là où tout le site en promet vingt.
+ *
+ * Le fond du hero est un blanc pur assumé, et non le papier du site : les
+ * frames du scrubber sont détourées sur blanc, la fusion doit être totale.
  */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
-const title = "Julien Tridat — L'IA opérationnelle dans votre agence en 60 jours";
+const title = "IA opérationnelle en agence — installée en 60 jours | Julien Tridat";
 const description =
-  "Intégration opérationnelle de l'IA dans les agences de communication, marketing, brand content et media. Outils connectés, process refondus, agents IA sur mesure. En 60 jours, pas en deux ans.";
-const ogImage = `${SITE.url}/agences/hero-poster.jpg`;
+  "Intégration opérationnelle de l'IA dans les agences de communication, marketing, brand content et media, de 5 à 150 personnes. Outils connectés, process refondus, agents sur mesure en production. En 60 jours, pas en deux ans.";
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE.url}/agences#service`,
+    name: "Intégration de l'IA en agence",
+    description:
+      "Trois chantiers pour une agence de communication, marketing, brand content ou media : outils connectés sans ressaisie, process refondus de la prise de brief à la livraison, et trois à dix agents IA sur mesure déployés sur les fonctions productives. Cinq fonctions couvertes : veille et analyse, stratégie et recommandation, production de contenu, capitalisation du savoir, créativité assistée.",
+    provider: { "@id": `${SITE.url}/#julien-tridat` },
+    areaServed: "FR",
+    audience: {
+      "@type": "BusinessAudience",
+      name: "Agences de communication, marketing, brand content et media (5 à 150 personnes)",
+    },
+    url: `${SITE.url}/agences`,
+  },
+];
 ---
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="robots" content="noindex">
-  <title>{title}</title>
-  <meta name="description" content={description}>
-  <meta property="og:title" content="L'IA opérationnelle dans votre agence. En 60 jours, pas en deux ans.">
-  <meta property="og:description" content="Outils connectés, process refondus, agents IA sur mesure en production. Votre agence produit plus vite, à marge supérieure — sans recruter.">
-  <meta property="og:image" content={ogImage}>
-  <meta property="og:type" content="website">
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23111216'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%236C4CF1'/%3E%3C/svg%3E">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="/agences/styles.css">
-</head>
-<body>
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={`${SITE.url}/agences`}
+  jsonLd={jsonLd}
+>
+  <link slot="head" rel="stylesheet" href="/agences/styles.css" />
 
-  <!-- ===== NAV ===== -->
-  <header class="nav" id="nav">
-    <div class="container nav-inner">
-      <a class="wordmark" href="#top">Julien Tridat <span>Marketing &amp; IA</span></a>
-      <div class="nav-right">
-        <span class="nav-loc">Bordeaux · France entière</span>
-        <a class="btn btn-sm" href="#contact">Réserver un diagnostic</a>
-      </div>
-    </div>
-  </header>
+  <Nav />
 
   <main id="top">
-
-    <!-- ===== HERO ===== -->
+    {/* ============================================================ HERO
+        Le scrubber J1 → J60 est le pattern signature : la même agence,
+        parcourue au survol. Piloté par /agences/main.js. */}
     <section class="hero">
       <div class="container hero-grid">
         <div class="hero-text">
-          <p class="eyebrow reveal"><span class="dot"></span><span class="eyebrow-text">Agences de com, marketing, brand content &amp; media — 5 à 150 personnes</span></p>
-          <h1 class="reveal">L'IA opérationnelle<br class="br-desktop">
-dans votre agence.<br>En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.</h1>
-          <p class="hero-sub reveal">Outils connectés, process refondus, agents IA sur mesure en production.
-          Votre agence produit plus vite, à marge supérieure — <strong>sans recruter</strong>.</p>
+          <p class="eyebrow reveal">
+            <span class="dot"></span>
+            <span class="eyebrow-text">
+              Agences de com, marketing, brand content &amp; media — 5 à 150 personnes
+            </span>
+          </p>
+          <h1 class="reveal">
+            L'IA opérationnelle<br class="br-desktop" />
+            dans votre agence.<br />En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.
+          </h1>
+          <p class="hero-sub reveal">
+            Outils connectés, process refondus, agents IA sur mesure en production. Votre agence
+            produit plus vite, à marge supérieure — <strong>sans recruter</strong>.
+          </p>
           <div class="hero-cta reveal">
-            <a class="btn" href="#contact">Réserver un diagnostic</a>
-            <span class="cta-hint">20 minutes, en visio. Pas de démo, pas de slides.</span>
+            <button type="button" data-open-booking class="btn">Réserver 20&nbsp;minutes</button>
+            <span class="cta-hint">En visio. Pas de démo, pas de slides.</span>
           </div>
         </div>
 
-        <div class="hero-stage reveal" id="stage" role="img" aria-label="La même agence, du jour 1 au jour 60 : le bâtiment classique se transforme en agence augmentée par l'IA. Déplacez la souris pour parcourir la transformation.">
+        <div
+          class="hero-stage reveal"
+          id="stage"
+          role="img"
+          aria-label="La même agence, du jour 1 au jour 60 : le bâtiment classique se transforme en agence augmentée par l'IA. Déplacez la souris pour parcourir la transformation."
+        >
           <div class="stage-tilt" id="stageTilt">
             <canvas id="morphCanvas"></canvas>
-            <noscript><img src="/agences/hero-poster.jpg" alt="Agence créative" style="width:100%;border-radius:22px"></noscript>
+            <noscript>
+              <img
+                src="/agences/hero-poster.jpg"
+                alt="Agence créative"
+                style="width:100%;border-radius:22px"
+              />
+            </noscript>
             <span class="day-counter serif" id="dayLabel" aria-hidden="true">J1</span>
           </div>
           <div class="scrub" aria-hidden="true">
@@ -87,12 +121,15 @@ dans votre agence.<br>En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.<
       </div>
     </section>
 
-    <!-- ===== 01 CONSTAT ===== -->
+    {/* ==================================================== 01 LE CONSTAT */}
     <section class="section" id="constat">
       <div class="container narrow">
         <p class="kicker reveal">01 — Le constat</p>
         <h2 class="reveal">Vos marges se font manger par du travail que personne ne facture.</h2>
-        <p class="lead reveal">Ce ne sont pas les clients qui manquent. C'est la rentabilité de chaque mission qui s'effrite.</p>
+        <p class="lead reveal">
+          Ce ne sont pas les clients qui manquent. C'est la rentabilité de chaque mission qui
+          s'effrite.
+        </p>
 
         <ul class="pain-list">
           <li class="reveal">Les clients demandent l'IA dans le brief — et une remise dans la foulée.</li>
@@ -102,50 +139,67 @@ dans votre agence.<br>En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.<
           <li class="reveal">Les tests IA s'accumulent. Rien ne tient en production.</li>
         </ul>
 
-        <p class="closer reveal">Pendant ce temps, des agences de votre taille livrent deux fois plus vite. Pas parce qu'elles ont recruté. <em class="serif">Parce qu'elles ont installé.</em></p>
+        <p class="closer reveal">
+          Pendant ce temps, des agences de votre taille livrent deux fois plus vite. Pas parce
+          qu'elles ont recruté. <em class="serif">Parce qu'elles ont installé.</em>
+        </p>
       </div>
     </section>
 
-    <!-- ===== 02 CAS PROUVÉS ===== -->
+    {/* =================================================== 02 CAS PROUVÉS */}
     <section class="section section-alt" id="cas">
       <div class="container">
         <p class="kicker reveal">02 — Déjà installé</p>
-        <h2 class="reveal">Trois agences. <em class="serif">Trois installations qui tournent encore.</em></h2>
-        <p class="lead reveal">Pas des références citées de mémoire — des études de cas publiées, avec le détail de ce qui a été construit.</p>
+        <h2 class="reveal">
+          Trois agences. <em class="serif">Trois installations qui tournent encore.</em>
+        </h2>
+        <p class="lead reveal">
+          Pas des références citées de mémoire — des études de cas publiées, avec le détail de ce
+          qui a été construit.
+        </p>
 
         <div class="cards">
           <article class="card cas-card reveal">
             <p class="cas-tag">Agence créative · 40 personnes</p>
-            <p class="cas-pitch">Quatre assistants métier installés pôle par pôle, prêts à produire dès le lendemain — dossiers de chaque annonceur bien séparés.</p>
+            <p class="cas-pitch">
+              Quatre assistants métier installés pôle par pôle, prêts à produire dès le
+              lendemain — dossiers de chaque annonceur bien séparés.
+            </p>
             <dl class="cas-stats">
               <div><dt>4</dt><dd>assistants métier livrés</dd></div>
               <div><dt>2</dt><dd>pôles outillés</dd></div>
             </dl>
-            <a class="cas-link" href="https://julientridat.com/realisations/agents-agence-creative">Voir le cas →</a>
+            <a class="cas-link" href="/realisations/agents-agence-creative">Voir le cas →</a>
           </article>
           <article class="card cas-card reveal">
             <p class="cas-tag">Agence de communication</p>
-            <p class="cas-pitch">Une agence outillée pour décider où l'IA crée de la valeur — elle part des frictions de ses équipes et priorise ses investissements par l'impact.</p>
+            <p class="cas-pitch">
+              Une agence outillée pour décider où l'IA crée de la valeur — elle part des
+              frictions de ses équipes et priorise ses investissements par l'impact.
+            </p>
             <dl class="cas-stats">
               <div><dt>2</dt><dd>outils qui restent dans la maison</dd></div>
               <div><dt>10</dt><dd>onglets pour piloter l'exécution</dd></div>
             </dl>
-            <a class="cas-link" href="https://julientridat.com/realisations/cartographie-ia-agence">Voir le cas →</a>
+            <a class="cas-link" href="/realisations/cartographie-ia-agence">Voir le cas →</a>
           </article>
           <article class="card cas-card reveal">
             <p class="cas-tag">Agence de communication santé · 16 personnes</p>
-            <p class="cas-pitch">Trois assistants installés : contenu sourcé, brief créa, rétroplanning — premier jet automatisé, validation médicale préservée.</p>
+            <p class="cas-pitch">
+              Trois assistants installés&nbsp;: contenu sourcé, brief créa, rétroplanning —
+              premier jet automatisé, validation médicale préservée.
+            </p>
             <dl class="cas-stats">
               <div><dt>1h30</dt><dd>récupérée par jour et par personne</dd></div>
               <div><dt>3</dt><dd>assistants qui tournent après mon départ</dd></div>
             </dl>
-            <a class="cas-link" href="https://julientridat.com/realisations/formation-ia-agence-sante">Voir le cas →</a>
+            <a class="cas-link" href="/realisations/formation-ia-agence-sante">Voir le cas →</a>
           </article>
         </div>
       </div>
     </section>
 
-    <!-- ===== 03 CE QU'ON INSTALLE ===== -->
+    {/* =============================================== 03 CE QU'ON INSTALLE */}
     <section class="section" id="installation">
       <div class="container">
         <p class="kicker reveal">03 — Ce qu'on installe</p>
@@ -155,17 +209,27 @@ dans votre agence.<br>En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.<
           <article class="card reveal">
             <span class="card-num serif">1</span>
             <h3>Vos outils, enfin connectés</h3>
-            <p>CRM, drive, messagerie, gestion de production&nbsp;: l'information circule sans ressaisie. On part de votre stack existante — on ne vous vend pas la nôtre.</p>
+            <p>
+              CRM, drive, messagerie, gestion de production&nbsp;: l'information circule sans
+              ressaisie. On part de votre stack existante — on ne vous vend pas la nôtre.
+            </p>
           </article>
           <article class="card reveal">
             <span class="card-num serif">2</span>
             <h3>Vos process, refondus</h3>
-            <p>De la prise de brief à la livraison, chaque étape repensée avec l'IA à sa place. Des process que je connais de l'intérieur — et que vos équipes valident.</p>
+            <p>
+              De la prise de brief à la livraison, chaque étape repensée avec l'IA à sa place.
+              Des process que je connais de l'intérieur — et que vos équipes valident.
+            </p>
           </article>
           <article class="card reveal">
             <span class="card-num serif">3</span>
             <h3>Vos agents IA, sur mesure</h3>
-            <p>Pas des chatbots génériques&nbsp;: trois à dix agents par mission, conçus sur vos méthodes, vos formats, vos clients — et déployés sur les fonctions productives de l'agence.</p>
+            <p>
+              Pas des chatbots génériques&nbsp;: trois à dix agents par mission, conçus sur vos
+              méthodes, vos formats, vos clients — et déployés sur les fonctions productives de
+              l'agence.
+            </p>
           </article>
         </div>
 
@@ -182,28 +246,27 @@ dans votre agence.<br>En <em class="serif">60 jours</em>, pas en deux&nbsp;ans.<
       </div>
     </section>
 
-    <!-- ===== CTA FINAL ===== -->
+    {/* ======================================================= CTA FINAL */}
     <section class="section section-cta" id="contact">
       <div class="container narrow center">
         <h2 class="reveal">Deux mois. <em class="serif">Pas deux ans.</em></h2>
-        <p class="lead reveal">Trente minutes en visio. Vous repartez avec une lecture claire des endroits où l'IA rapporte dans votre agence — qu'on travaille ensemble ou pas.</p>
+        <p class="lead reveal">
+          Vingt minutes en visio. Vous repartez avec une lecture claire des endroits où l'IA
+          rapporte dans votre agence — qu'on travaille ensemble ou pas.
+        </p>
         <div class="hero-cta reveal">
-          <a class="btn btn-lg" href="mailto:julien.tridat@gmail.com?subject=Diagnostic%20IA%20%E2%80%94%20%5Bnom%20de%20votre%20agence%5D">Réserver un diagnostic</a>
-          <span class="cta-hint">Un opérateur, pas un cabinet&nbsp;: je mène peu de chantiers en parallèle.</span>
+          <button type="button" data-open-booking class="btn btn-lg">
+            Réserver 20&nbsp;minutes
+          </button>
+          <span class="cta-hint">
+            Un opérateur, pas un cabinet&nbsp;: je mène peu de chantiers en parallèle.
+          </span>
         </div>
       </div>
     </section>
-
   </main>
 
-  <footer class="footer">
-    <div class="container footer-inner">
-      <span>Julien Tridat — Consultant &amp; formateur IA</span>
-      <span>Basé à Bordeaux · Interventions partout en France</span>
-      <a href="mailto:julien.tridat@gmail.com">julien.tridat@gmail.com</a>
-    </div>
-  </footer>
+  <Footer />
 
   <script src="/agences/main.js" is:inline></script>
-</body>
-</html>
+</BaseLayout>

@@ -1,8 +1,18 @@
+// Première instruction : elle autorise le masquage des éléments à révéler.
+// Tant qu'elle n'a pas lieu, la page reste entièrement lisible.
+document.documentElement.classList.add('js-reveal');
+
 // ===== Nav : fond au scroll =====
+// Garde indispensable : la page utilise désormais la nav du site, qui n'a pas
+// cet identifiant. Sans le test, onScroll() lèverait une exception dès la
+// quatrième ligne et TOUT le reste du fichier — scrubber compris — ne
+// s'exécuterait jamais.
 const nav = document.getElementById('nav');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
-onScroll();
-window.addEventListener('scroll', onScroll, { passive: true });
+if (nav) {
+  const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
 
 // ===== Révélation au scroll =====
 // Arrivée via une ancre (#methode, #contact…) : tout est visible d'emblée,
