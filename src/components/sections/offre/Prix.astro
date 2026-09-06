@@ -23,6 +23,36 @@ const inclus = [
   { texte: "Un seul interlocuteur : moi", fort: false },
 ];
 
+/* Le détail du premier mois, en registre CONTRACTUEL — délibérément d'autres
+   mots que la section « Comment ça marche », qui développe les mêmes livrables
+   en registre narratif. Une première version recopiait ses phrases : 35
+   séquences de cinq mots se répétaient entre les deux sections.
+
+   Il tenait en une phrase, alors qu'il contient
+   quatre chantiers — dont le plan marketing sur douze mois, qui n'était écrit
+   nulle part sur le site. Le site, lui, N'EST PAS dans le premier mois : il
+   arrive pendant l'abonnement, voir Fonctionnement.astro. */
+const premierMois = [
+  {
+    titre: "Positionnement et structure d'offre.",
+    texte: "Ce que vous vendez, à qui, à quel prix — et la phrase qui le dit.",
+  },
+  {
+    titre: "Identité refaite, gabarits livrés.",
+    texte:
+      "Une charte, et les modèles qui l'appliquent : devis, présentations, supports de vente.",
+  },
+  {
+    titre: "Plan marketing sur douze mois.",
+    texte: "Le calendrier de ce qui sort, mois par mois, et pour quelle raison.",
+  },
+  {
+    titre: "Deux à trois assistants IA, équipes formées.",
+    texte:
+      "Sur vos outils et vos dossiers réels, avec les gens capables de s'en servir seuls.",
+  },
+];
+
 const montant = "font-serif text-[clamp(3rem,7vw,4.75rem)] italic leading-[0.9] tracking-tight";
 const unite = "font-sans text-base not-italic text-ink-3";
 const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
@@ -34,13 +64,15 @@ const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
       <div>
         <Eyebrow>Le prix</Eyebrow>
         <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-          Deux lignes.
-          <em class="text-lime">Rien d'autre.</em>
+          Le gros du travail se fait le premier mois.
+          <br />
+          <em class="text-lime">Ensuite, on ne le refait plus.</em>
         </h2>
       </div>
       <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
-        Un montant pour installer, un montant pour faire tourner. Pas de forfait à options, pas de
-        frais de dossier, et rien qui s'ajoute à la fin du mois.
+        C'est ce qui explique les deux montants&nbsp;: le premier construit, le second entretient
+        et fait sortir. Pas de forfait à options, pas de frais de dossier, et rien qui s'ajoute à
+        la fin du mois.
       </p>
     </div>
 
@@ -52,10 +84,19 @@ const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
           <span class={`${montant} text-foreground`}>4&nbsp;000&nbsp;€</span>
           <span class={unite}>HT, une seule fois</span>
         </div>
-        <p class="mt-6 text-base leading-relaxed text-ink-2">
-          <strong class="font-medium text-foreground">Tout compris</strong>&nbsp;: une phrase claire sur ce que
-          vous vendez, votre identité, vos modèles de devis et de présentations, deux à trois
-          assistants IA dans vos outils, vos équipes formées.
+        <ul class="mt-7">
+          {premierMois.map((i) => (
+            <li class="border-t border-line py-3.5 text-base leading-relaxed text-ink-2">
+              <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
+            </li>
+          ))}
+        </ul>
+
+        {/* Ancrage par le NOMBRE de prestataires remplacés, jamais par leur prix :
+            affirmer ce que coûte une identité chez un studio serait invérifiable. */}
+        <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
+          Commandé séparément, c'est un consultant, un studio graphique et un planneur&nbsp;:
+          trois briefs à écrire, trois devis à négocier, trois plannings à faire tenir ensemble.
         </p>
         <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
           <strong class="font-medium text-foreground">Tout cela vous appartient.</strong> Même si
