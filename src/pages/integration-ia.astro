@@ -24,6 +24,18 @@
  * des propositions ne vaut pas trois qui reformatent des e-mails. Le prix tient
  * au pôle et à la durée.
  *
+ * DEUX SECTIONS AJOUTÉES EN SEPTEMBRE 2026, copy de Julien :
+ *   • #selection, « Avant d'aller plus loin » — qui je ne prends pas. Juste
+ *     après le symptôme et avant la méthode : celui qui veut « tester » doit
+ *     le lire avant d'arriver aux prix.
+ *   • #mesure, « Ce que vous saurez à la fin » — trois tâches chronométrées
+ *     par ceux qui les font, le même relevé huit semaines plus tard, l'écart
+ *     signé sur une page. C'est la preuve que la page vend ; elle suit
+ *     l'intégration et précède le financement. La tuile qui l'illustre ne
+ *     porte aucun chiffre : elle montre la forme du relevé, pas un résultat.
+ * Les fonds alternent papier / carte d'une section à l'autre ; ces deux
+ * insertions ont inversé l'alternance de la méthode, de l'audit et des offres.
+ *
  * Bpifrance n'est pas mentionné : l'agrément Diag Data IA est déposé, pas
  * obtenu. Règle éditoriale du dépôt — aucun chiffre ni statut invérifiable.
  */
@@ -34,10 +46,9 @@ import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
-const title =
-  "Intégration IA en entreprise — audit 1 500 €, intégration à partir de 6 000 € | Julien Tridat";
+const title = "Intégration de l'IA en entreprise | Julien Tridat";
 const description =
-  "Vous avez essayé l'IA et ça n'a pas tenu. J'installe des agents dans vos outils, sur vos vrais dossiers, et je forme vos équipes. Audit 1 500 €, intégration d'un pôle 6 000 €. Volet formation éligible OPCO.";
+  "Vous avez essayé l'IA, ça n'a pas tenu. Agents installés dans vos outils, équipes formées, écart avant/après mesuré. Audit 1 500 €, un pôle 6 000 €.";
 
 /* Espaces insécables en U+00A0 littéraux : dans le frontmatter, une entité
    &nbsp; ressortirait telle quelle à l'écran. */
@@ -64,16 +75,40 @@ const situation = [
   },
 ];
 
+/* Qui je ne prends pas. Les trois premiers refus qualifient le lecteur ; le
+   quatrième dit la capacité, et la chute de la section les distingue. */
+const selection = [
+  {
+    titre: "Je ne prends pas les entreprises qui veulent tester.",
+    texte:
+      "Tester, ça se fait sans moi et ça ne coûte rien. Je viens quand vous avez décidé que ça devait entrer dans la production.",
+  },
+  {
+    titre: "Je ne prends pas les dossiers sans décideur.",
+    texte:
+      "Trois niveaux de validation et le projet meurt avant la fin du premier mois. Il me faut quelqu'un qui tranche seul.",
+  },
+  {
+    titre: "Je ne prends pas les demandes de sensibilisation.",
+    texte:
+      "La formation arrive à la fin, sur vos propres dossiers. Pas au début, sur des exemples qui ne sont pas les vôtres.",
+  },
+  {
+    titre: "Et je ne prends pas tout le monde en même temps.",
+    texte: "Une intégration mobilise vos équipes autant que moi. J'en mène deux à la fois, pas six.",
+  },
+];
+
 const methode = [
   {
     titre: "J'écoute avant de construire.",
     texte:
-      "Je passe du temps avec les gens qui font le travail. Où passe le temps, où ça coince, et où se joue vraiment le savoir-faire. Sans ça, on construit un outil que personne n'utilisera.",
+      "Je passe du temps avec les gens qui font le travail. Où passe le temps, où ça coince, et où se joue vraiment le savoir-faire. C'est aussi là qu'on relève les temps de départ : trois tâches nommées, chronométrées par ceux qui les font.",
   },
   {
     titre: "On construit ensemble.",
     texte:
-      "Pas moi dans mon coin, puis une présentation. Avec vos équipes, à partir de leur méthode à elles. Et on attaque par la tâche la plus difficile : si l'agent tient là, il tiendra partout ailleurs.",
+      "Pas moi dans mon coin, puis une présentation. Avec vos équipes, à partir de leur méthode à elles, en attaquant par la tâche la plus difficile.",
   },
   {
     titre: "On teste sur du vrai.",
@@ -95,7 +130,7 @@ const methode = [
 const inclus = [
   {
     titre: "Les agents sont installés sur vos comptes.",
-    texte: "Pas une démonstration : vos outils, vos vrais dossiers, votre vocabulaire.",
+    texte: "Pas une démonstration : vos outils, vos vrais dossiers, votre vocabulaire.",
   },
   {
     titre: "Ce qui marche est écrit.",
@@ -109,7 +144,33 @@ const inclus = [
     titre: "Une règle d'usage écrite.",
     texte: "Ce qui peut entrer dans ces outils, ce qui ne peut pas. Vous cessez de ne pas savoir.",
   },
+  {
+    titre: "Ce qui déborde ne se refacture pas.",
+    texte:
+      "Un pôle voisin qui récupère un agent construit pour un autre, une règle d'usage qui sert au-delà de l'équipe formée : c'est du rab, pas un avenant.",
+  },
 ];
+
+const mesure = [
+  {
+    titre: "Trois tâches nommées avant qu'on commence.",
+    texte:
+      "Le temps qu'elles prennent aujourd'hui, relevé par ceux qui les font — pas estimé par moi, pas déclaré en réunion.",
+  },
+  {
+    titre: "Le même relevé huit semaines plus tard.",
+    texte: "Mêmes tâches, mêmes personnes, même méthode de relevé.",
+  },
+  {
+    titre: "L'écart est ce qu'il est.",
+    texte: "Il tient sur une page, elle est signée par vos équipes, et elle vous reste.",
+  },
+];
+
+/* Les trois lignes de la tuile « relevé » : des tâches typiques d'une
+   entreprise où le travail passe par l'écrit, sans aucune durée en face —
+   la tuile montre la forme du document, pas un résultat. */
+const releve = ["Proposition commerciale", "Compte-rendu", "Relance client"];
 
 /* Trois missions choisies parce qu'elles décrivent une installation d'agents
    qui persiste, et parce qu'aucune n'est déjà exposée sur la page d'accueil. */
@@ -118,44 +179,52 @@ const cas = [
     client: "Agence créative, ~40 personnes",
     livrable: "Quatre agents, pôle par pôle",
     texte:
-      "Chaque pôle repart avec ses propres agents, calibrés sur le style de la maison — et les dossiers d'un annonceur ne croisent jamais ceux d'un autre.",
+      "Deux pôles outillés, commercial et création. Chaque pôle repart avec ses propres agents, calibrés sur le style de la maison — et les dossiers d'un annonceur ne croisent jamais ceux d'un autre.",
     url: "/realisations/agents-agence-creative",
   },
   {
     client: "Agence de communication santé, 16 personnes",
     livrable: "Un premier jet déjà sourcé",
     texte:
-      "L'équipe produit un premier jet appuyé sur ses propres autorités de santé, et concentre le temps humain sur la validation médicale.",
+      "Quatorze personnes de l'équipe texte montées en autonomie. Le premier jet s'appuie sur leurs propres autorités de santé ; le temps humain se concentre sur la validation médicale.",
     url: "/realisations/formation-ia-agence-sante",
   },
   {
     client: "Organisme de conseil et formation",
     livrable: "Les agents et les guides restent",
     texte:
-      "Le dirigeant cadre, les équipes pratiquent au quotidien : l'organisme produit désormais avec l'IA sans dépendre du consultant.",
+      "Le dirigeant cadre, les équipes pratiquent au quotidien : l'organisme produit avec l'IA sans dépendre du consultant.",
     url: "/realisations/transformation-ia-organisme-formation",
   },
 ];
 
 const questions = [
   {
-    q: "On a déjà des licences. Ça sert à quoi de plus ?",
-    r: "Une licence donne l'accès, pas l'usage. Ce que j'installe, c'est ce qui se passe entre l'outil et le travail réel : sur quoi il est branché, ce qu'il sait de votre métier, et qui sait s'en servir.",
+    q: "On a déjà des licences. Ça sert à quoi de plus ?",
+    r: "Une licence donne l'accès, pas l'usage. Ce que j'installe, c'est ce qui se passe entre l'outil et le travail réel : sur quoi il est branché, ce qu'il sait de votre métier, et qui sait s'en servir.",
   },
   {
-    q: "Nos données peuvent-elles sortir ?",
-    r: "C'est la question à poser, et peu la posent. On écrit ensemble ce qui peut entrer dans ces outils et ce qui ne peut pas, avant d'installer quoi que ce soit.",
+    q: "Nos données peuvent-elles sortir ?",
+    r: "C'est la question à poser, et peu la posent. Avant le premier agent, on écrit ensemble la règle : quels dossiers ont le droit d'y passer, lesquels n'y passeront jamais, et sur quels comptes.",
   },
   {
-    q: "Combien d'agents pour 6 000 € ?",
+    q: "Combien d'agents pour 6 000 € ?",
     r: "Autant que le pôle en demande, et pas un de plus. Ce qui fixe le prix, c'est le périmètre et la durée — pas le nombre. Un agent qui rédige vos propositions vaut trois qui reformatent des e-mails.",
   },
   {
-    q: "Et quand vous partez ?",
-    r: "Tout est sur vos comptes, le mode d'emploi est écrit, les équipes ont été formées sur leurs propres dossiers. C'est le seul critère qui compte : ce qui tourne encore six mois après.",
+    q: "Et si le relevé de fin ne montre rien ?",
+    r: "Il est écrit quand même, et je vous le dis en face. Je préfère un client qui sait où l'IA ne lui sert à rien qu'un client qui continue de payer des licences au cas où.",
   },
   {
-    q: "Vous faites aussi du marketing. C'est la même chose ?",
+    q: "On me parle d'agents autonomes qui font tout. Vous faites ça ?",
+    r: "Non. Un agent à qui on confie une chaîne entière dérive : il tient trois semaines en démonstration et lâche en production, au moment précis où plus personne ne le surveille. Ce que j'installe fait une chose, toujours la même, et de la même façon. Vos équipes gardent la main sur l'enchaînement. C'est moins spectaculaire en réunion. C'est ce qui tient.",
+  },
+  {
+    q: "Et quand vous partez ?",
+    r: "Tout est sur vos comptes, le mode d'emploi est écrit, les équipes ont été formées sur leurs propres dossiers. C'est le seul critère qui compte : ce qui tourne encore six mois après.",
+  },
+  {
+    q: "Vous faites aussi du marketing. C'est la même chose ?",
     r: "Non, et les deux ne s'achètent pas pour la même raison. Ici, vous produisez déjà et ça coince. Là-bas, personne ne s'occupe de votre marketing.",
   },
 ];
@@ -165,10 +234,15 @@ const h2Cls =
   "text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground";
 const itemRow = "bg-background px-6 py-4 md:px-7";
 const itemRowCard = "bg-card px-6 py-4 md:px-7";
-const treillis =
-  "mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line md:grid-cols-2";
+const treillisBase = "mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line";
+const treillis = `${treillisBase} md:grid-cols-2`;
+const treillis3 = `${treillisBase} md:grid-cols-3`;
 const montant = "font-serif text-[clamp(2.5rem,6vw,3.75rem)] italic leading-[0.9] tracking-tight";
 const unite = "font-sans text-base not-italic text-ink-3";
+// Sur un treillis à deux colonnes, un nombre impair d'items laisse une cellule
+// vide en bas à droite : le dernier prend alors toute la largeur.
+const pleineLargeur = (k: number, n: number) =>
+  k === n - 1 && n % 2 === 1 ? "md:col-span-2" : "";
 
 const jsonLd = [
   {
@@ -177,7 +251,7 @@ const jsonLd = [
     "@id": `${SITE.url}/integration-ia#service`,
     name: "Intégration de l'IA dans les outils de l'entreprise",
     description:
-      "Audit des frictions puis installation d'agents IA dans les outils existants, pôle par pôle, équipes formées. Prix ferme et délai contractualisé. Volet formation éligible à une prise en charge OPCO.",
+      "Audit des frictions puis installation d'agents IA dans les outils existants, pôle par pôle, équipes formées. Écart avant/après relevé sur trois tâches, huit semaines plus tard, par ceux qui les font. Prix ferme et délai contractualisé. Volet formation éligible à une prise en charge OPCO.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/integration-ia`,
@@ -204,7 +278,7 @@ const jsonLd = [
         price: "12000",
         priceCurrency: "EUR",
         description:
-          "6 à 8 semaines. Même dispositif étendu à deux ou trois pôles : commerce, gestion, administratif, ou ceux qui ralentissent le plus l'entreprise.",
+          "6 à 8 semaines. Même dispositif étendu à deux ou trois pôles : commerce, gestion, administratif, ou ceux qui ralentissent le plus l'entreprise.",
       },
     ],
   },
@@ -239,7 +313,7 @@ const jsonLd = [
       </div>
       <Nav />
       <div class="mx-auto max-w-7xl">
-        <Eyebrow>Intégration IA · entreprises qui produisent des documents</Eyebrow>
+        <Eyebrow>Intégration IA · entreprises où le travail passe par l'écrit</Eyebrow>
 
         {/* En-tête sur deux colonnes : plafonné à max-w-2xl dans un conteneur de
             1280, le chapô laissait 608 px de vide à sa droite — le défaut de
@@ -264,6 +338,10 @@ const jsonLd = [
               Un audit pour savoir où elle vous fera gagner du temps. Puis une intégration pôle
               par pôle, à prix ferme et délai contractualisé.
             </p>
+            {/* La promesse de la page en une ligne, dans la forme des chutes du site. */}
+            <p class="mt-5 font-serif text-xl italic text-lime">
+              À la fin, vous aurez le chiffre. Pas mon avis.
+            </p>
           </div>
         </div>
 
@@ -281,8 +359,9 @@ const jsonLd = [
     </header>
 
     {/* -------------------------------------------------------- Votre situation
-        Qualifie ET disqualifie : qui ne se reconnaît nulle part ici n'a pas un
-        problème de savoir-faire, et seul l'audit le concerne. */}
+        Qualifie : qui ne se reconnaît nulle part ici n'a pas un problème de
+        savoir-faire, et seul l'audit le concerne. La disqualification, elle,
+        est explicite dans la section qui suit. */}
     <section id="situation" class={`${sectionPad} bg-card`}>
       <div class="mx-auto max-w-7xl">
         <Eyebrow>Votre situation</Eyebrow>
@@ -291,8 +370,8 @@ const jsonLd = [
         </h2>
 
         <ul class={treillis}>
-          {situation.map((i) => (
-            <li class={itemRowCard}>
+          {situation.map((i, k) => (
+            <li class={`${itemRowCard} ${pleineLargeur(k, situation.length)}`}>
               <p class="text-lg leading-relaxed text-ink-2">
                 <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
               </p>
@@ -311,8 +390,37 @@ const jsonLd = [
       </div>
     </section>
 
+    {/* ------------------------------------------------- Avant d'aller plus loin
+        Le quatrième refus occupe seul la dernière rangée : c'est ce qui rend
+        lisible le « trois premiers points » de la chute. */}
+    <section id="selection" class={sectionPad}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Avant d'aller plus loin</Eyebrow>
+        <h2 class={h2Cls}>
+          Ce n'est pas pour tout le monde.
+          <br />
+          <em class="text-lime">Autant le dire ici.</em>
+        </h2>
+
+        <ul class={treillis3}>
+          {selection.map((i, k) => (
+            <li class={`${itemRow} ${k === selection.length - 1 ? "md:col-span-3" : ""}`}>
+              <p class="text-lg leading-relaxed text-ink-2">
+                <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-10 max-w-3xl font-serif text-xl italic text-ink-2">
+          Si vous vous reconnaissez dans les trois premiers points, l'appel de vingt minutes nous
+          fera gagner du temps à tous les deux&nbsp;: je vous le dirai là.
+        </p>
+      </div>
+    </section>
+
     {/* -------------------------------------------------------------- La méthode */}
-    <section id="methode" class={sectionPad}>
+    <section id="methode" class={`${sectionPad} bg-card`}>
       <div class="mx-auto max-w-7xl">
         <Eyebrow>Comment je procède</Eyebrow>
         <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
@@ -327,9 +435,9 @@ const jsonLd = [
           </p>
         </div>
 
-        <ol class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line">
+        <ol class={treillisBase}>
           {methode.map((e, i) => (
-            <li class={`${itemRow} grid gap-x-5 md:grid-cols-[3rem_1fr]`}>
+            <li class={`${itemRowCard} grid gap-x-5 md:grid-cols-[3rem_1fr]`}>
               <span class="font-serif text-2xl italic leading-none text-lime">
                 {String(i + 1).padStart(2, "0")}
               </span>
@@ -348,7 +456,7 @@ const jsonLd = [
     </section>
 
     {/* ---------------------------------------------------------------- L'audit */}
-    <section id="audit" class={`${sectionPad} bg-card`}>
+    <section id="audit" class={sectionPad}>
       <div class="mx-auto max-w-7xl">
         <Eyebrow>L'offre d'entrée</Eyebrow>
         <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
@@ -364,7 +472,7 @@ const jsonLd = [
         </div>
 
         <div class="mt-10 grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_minmax(0,1.15fr)]">
-          <div class="rounded-2xl border border-line bg-background p-8 md:p-9">
+          <div class="rounded-2xl border border-line bg-card p-8 md:p-9">
             <div class="flex flex-wrap items-baseline gap-x-3">
               <span class={`${montant} text-lime`}>1&nbsp;500&nbsp;€</span>
               <span class={unite}>HT</span>
@@ -380,14 +488,14 @@ const jsonLd = [
           </div>
 
           <div class="grid gap-5">
-            <div class="rounded-2xl border border-line bg-background p-7">
+            <div class="rounded-2xl border border-line bg-card p-7">
               <h3 class="text-base font-medium text-foreground">Le diagnostic</h3>
               <p class="mt-2 text-base leading-relaxed text-ink-2">
                 Vos frictions cartographiées poste par poste, vos cas d'usage classés par effort
                 et par impact. Une feuille de route séquencée, pas une liste de courses.
               </p>
             </div>
-            <div class="rounded-2xl border border-line bg-background p-7">
+            <div class="rounded-2xl border border-line bg-card p-7">
               <h3 class="text-base font-medium text-foreground">L'outil de pilotage</h3>
               <p class="mt-2 text-base leading-relaxed text-ink-2">
                 De quoi suivre l'exécution dans la durée. Il sert encore longtemps après la fin
@@ -404,7 +512,7 @@ const jsonLd = [
     </section>
 
     {/* ---------------------------------------------------------- L'intégration */}
-    <section id="offres" class={sectionPad}>
+    <section id="offres" class={`${sectionPad} bg-card`}>
       <div class="mx-auto max-w-7xl">
         <Eyebrow>L'intégration</Eyebrow>
         <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
@@ -421,7 +529,7 @@ const jsonLd = [
         </div>
 
         <div class="mt-10 grid items-start gap-6 md:grid-cols-2">
-          <div class="flex flex-col rounded-2xl border border-line bg-card p-8 md:p-9">
+          <div class="flex flex-col rounded-2xl border border-line bg-background p-8 md:p-9">
             <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Une équipe</div>
             <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
               <span class={`${montant} text-foreground`}>6&nbsp;000&nbsp;€</span>
@@ -453,8 +561,8 @@ const jsonLd = [
         </div>
 
         <ul class={treillis}>
-          {inclus.map((i) => (
-            <li class={itemRow}>
+          {inclus.map((i, k) => (
+            <li class={`${itemRowCard} ${pleineLargeur(k, inclus.length)}`}>
               <p class="text-lg leading-relaxed text-ink-2">
                 <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
               </p>
@@ -468,6 +576,81 @@ const jsonLd = [
             Au-delà de trois pôles&nbsp;: je fais un devis.
           </p>
         </div>
+      </div>
+    </section>
+
+    {/* ------------------------------------------- Ce que vous saurez à la fin
+        La preuve que la page vend : un relevé avant/après signé par les équipes.
+        La tuile à droite du titre matérialise cette page-là. Elle ne porte
+        aucune durée — avec des chiffres, ce serait une promesse de résultat.
+        Décorative, donc masquée aux lecteurs d'écran : tout est repris en
+        toutes lettres dans les trois cellules qui suivent. */}
+    <section id="mesure" class={sectionPad}>
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Ce que vous saurez à la fin</Eyebrow>
+        <div class="grid gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-end lg:gap-12">
+          <h2 class={h2Cls}>
+            Vous n'aurez pas à me croire.
+            <br />
+            <em class="text-lime">Vous aurez le chiffre.</em>
+          </h2>
+
+          <div aria-hidden="true" class="w-full rounded-2xl border border-line bg-card p-5 md:max-w-md lg:w-[26rem]">
+            <div class="flex items-baseline justify-between gap-4">
+              <span class="text-[11px] uppercase tracking-[0.22em] text-lime">
+                Relevé · avant / après
+              </span>
+              <span class="text-xs text-ink-3">Page 1&nbsp;/&nbsp;1</span>
+            </div>
+            <table class="mt-4 w-full border-collapse text-sm">
+              <thead>
+                <tr class="text-[11px] uppercase tracking-[0.18em] text-ink-3">
+                  <th class="pb-2 text-left font-normal">Tâche</th>
+                  <th class="pb-2 pl-3 text-right font-normal">Départ</th>
+                  <th class="pb-2 pl-3 text-right font-normal">+&nbsp;8&nbsp;sem.</th>
+                  <th class="pb-2 pl-3 text-right font-normal">Écart</th>
+                </tr>
+              </thead>
+              <tbody>
+                {releve.map((t) => (
+                  <tr class="border-t border-line">
+                    <td class="py-2.5 pr-3 text-foreground">{t}</td>
+                    <td class="py-2.5 pl-3 text-right text-ink-3">—&nbsp;min</td>
+                    <td class="py-2.5 pl-3 text-right text-ink-3">—&nbsp;min</td>
+                    <td class="py-2.5 pl-3 text-right font-serif text-base italic text-lime">—</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+            <div class="mt-4 flex items-center justify-between gap-4 border-t border-line pt-3 text-xs text-ink-3">
+              <span>Relevé par ceux qui font le travail</span>
+              <span class="font-serif text-base italic text-foreground">Signé</span>
+            </div>
+          </div>
+        </div>
+
+        <ul class={treillis3}>
+          {mesure.map((i) => (
+            <li class={itemRow}>
+              <p class="text-lg leading-relaxed text-ink-2">
+                <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
+              </p>
+            </li>
+          ))}
+        </ul>
+
+        <p class="mt-8 max-w-3xl text-lg leading-relaxed text-ink-2">
+          Si l'écart n'est pas là, il est écrit aussi. Vous saurez au moins où ne pas remettre
+          d'argent — et ça vaut largement ce que vous aurez payé pour le savoir.
+        </p>
+
+        <p class="mt-10 max-w-3xl border-l-2 border-lime pl-6 text-2xl leading-snug">
+          <em class="text-lime">
+            C'est la seule chose qui sépare une intégration d'une démonstration réussie. Une
+            démonstration marche une fois, devant vous. Une intégration se relève huit semaines
+            plus tard, sans moi dans la pièce.
+          </em>
+        </p>
       </div>
     </section>
 

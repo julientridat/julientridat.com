@@ -11,6 +11,7 @@
  * `done` (latence), `error`. Le front affiche le flux brut dans « sous le capot ».
  */
 import Anthropic from "@anthropic-ai/sdk";
+import { redirectionCanonique } from "./canonique";
 
 interface Env {
   ASSETS: Fetcher;
@@ -1058,6 +1059,9 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const redirection = redirectionCanonique(request);
+    if (redirection) return redirection;
+
     const url = new URL(request.url);
     if (url.pathname === "/api/experience") return handleExperience(request, env);
     return env.ASSETS.fetch(request);

@@ -20,10 +20,12 @@ import FinalCta from "@/components/sections/offre/FinalCta.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
 
-const title =
-  "Direction marketing externalisée pour PME — 4 000 € le premier mois, puis 2 500 € par mois | Julien Tridat";
+// Moins de 60 caractères : au-delà, Google coupe le titre, ou le remplace
+// par un texte de son choix pris dans la page. Les montants sont dans la
+// description, où ils ont la place.
+const title = "Direction marketing externalisée pour PME | Julien Tridat";
 const description =
-  "Un mois pour installer votre marketing : positionnement, identité, assistants IA dans vos outils, équipes formées. Puis 2 500 € par mois, sans engagement, pour le faire tourner semaine après semaine.";
+  "4 000 € le premier mois : positionnement, identité refaite, plan marketing sur douze mois, assistants IA. Puis 2 500 € par mois, sans engagement.";
 
 const jsonLd = [
   {
@@ -32,7 +34,7 @@ const jsonLd = [
     "@id": `${SITE.url}/#service`,
     name: "Direction marketing externalisée — installation puis abonnement",
     description:
-      "Un mois d'installation du système marketing (positionnement, structure d'offre, identité et gabarits, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, une demande active à la fois livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
+      "Un mois d'installation du système marketing (positionnement et structure d'offre, identité refaite et gabarits, plan marketing sur douze mois, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, une demande active à la fois livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/`,
@@ -43,7 +45,7 @@ const jsonLd = [
         price: "4000",
         priceCurrency: "EUR",
         description:
-          "Positionnement et structure d'offre, identité, charte et gabarits fondateurs, 2 à 3 assistants IA installés dans les outils de l'entreprise, équipes formées. Le client conserve l'intégralité des livrables, y compris s'il s'arrête à l'issue du premier mois.",
+          "Positionnement et structure d'offre, identité refaite avec charte et gabarits, plan marketing sur douze mois, 2 à 3 assistants IA installés dans les outils de l'entreprise, équipes formées. Le client conserve l'intégralité des livrables, y compris s'il s'arrête à l'issue du premier mois.",
       },
       {
         "@type": "Offer",
@@ -58,7 +60,7 @@ const jsonLd = [
           valueAddedTaxIncluded: false,
         },
         description:
-          "Point stratégique hebdomadaire de 45 minutes, accès direct des équipes, une demande active à la fois livrée en 48 à 72 heures, sans engagement, résiliable à tout moment. Suspension possible sans perte de place. Le client conserve tous les livrables et l'accès aux outils installés, y compris après résiliation.",
+          "Point stratégique hebdomadaire de 45 minutes, accès direct des équipes, nombre de demandes non limité — elles sont traitées l'une après l'autre, chacune livrée en 48 à 72 heures une fois lancée, sans engagement, résiliable à tout moment. Suspension possible sans perte de place. Le client conserve tous les livrables et l'accès aux outils installés, y compris après résiliation.",
       },
     ],
   },
@@ -76,10 +78,10 @@ const jsonLd = [
       },
       {
         "@type": "Question",
-        name: "Pourquoi une seule demande à la fois ?",
+        name: "Combien de demandes puis-je faire ?",
         acceptedAnswer: {
           "@type": "Answer",
-          text: "C'est ce qui rend le délai tenable. Vous fixez l'ordre : une demande avance, elle est livrée, la suivante démarre. À tout moment vous savez où en est la vôtre — ce qu'une file d'attente ouverte ne permet jamais.",
+          text: "Autant que vous voulez. Aucun plafond : ce qui est fixé, c'est l'ordre de traitement, pas le nombre. Vous priorisez, j'avance dans votre file, et vous voyez à tout moment où en est chacune.",
         },
       },
       {

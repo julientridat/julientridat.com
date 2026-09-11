@@ -55,8 +55,13 @@ export const PERSON_JSONLD = {
     "Organisation et process d'entreprise",
     "Production de contenus",
   ],
+  // Ce qui permet à Google de relier ce site aux profils qu'il connaît déjà
+  // sous le même nom — il y a au moins deux homonymes. Seuls des profils
+  // vérifiés : le compte X n'y est pas, faute d'avoir pu confirmer qu'il est
+  // bien le sien.
   sameAs: [
+    "https://www.linkedin.com/in/julien-tridat",
+    "https://www.malt.fr/profile/julientridat",
     "https://marketingjoy.fr",
-    // LinkedIn : URL exacte à confirmer par Julien avant ajout.
   ],
 } as const;

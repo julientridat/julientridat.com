@@ -15,12 +15,16 @@ const installation = [
       "Logo, couleurs, modèles prêts à l'emploi : vos devis, vos présentations et vos supports commerciaux ne sont plus refaits de zéro à chaque fois.",
   },
   {
-    titre: "Deux ou trois assistants IA travaillent dans les outils que vous utilisez déjà.",
-    texte: "Pas une démonstration : installés, sur vos comptes, sur vos vrais dossiers.",
+    titre: "Votre plan marketing tient sur douze mois.",
+    texte:
+      "Ce qui sort, quand, et pourquoi. Vous savez ce que vous faites en mars avant que mars arrive.",
   },
   {
-    titre: "Vos équipes savent se servir de tout ça.",
-    texte: "Formées, pas informées.",
+    // Les assistants et la formation sont fusionnés : le treillis est à deux
+    // colonnes, un cinquième item y laisserait une cellule vide bien visible.
+    titre: "Deux ou trois assistants IA dans vos outils, et vos équipes formées.",
+    texte:
+      "Pas une démonstration : installés sur vos comptes, sur vos vrais dossiers. Formées, pas informées.",
   },
 ];
 
@@ -193,13 +197,21 @@ const itemListe =
         ))}
       </ul>
 
-      <!-- Emphase maximale de la page : c'est la clause qui rend le délai tenable. -->
+      <!--
+        Emphase maximale de la page : c'est la clause qui rend le délai tenable.
+        Le titre disait « Une demande active à la fois », ce qui se lisait comme
+        un QUOTA — une seule demande par semaine. C'est une règle de traitement,
+        pas une limite : la file est ouverte, seul son avancement est sérialisé.
+      -->
       <div class="mt-12 max-w-3xl rounded-2xl border border-lime bg-lime/[0.05] p-7">
-        <h3 class="text-xl font-medium text-foreground">Une demande active à la fois.</h3>
+        <h3 class="text-xl font-medium text-foreground">Autant de demandes que vous voulez.</h3>
         <p class="mt-3 text-lg leading-relaxed text-ink-2">
-          Vous décidez de l'ordre des demandes. J'en traite une seule à la fois&nbsp;: je la livre
-          en 48 à 72&nbsp;heures, puis j'attaque la suivante. C'est à cette condition que le délai tient — et c'est exactement la règle qui manque aux offres &laquo;&nbsp;demandes
-          illimitées&nbsp;&raquo; qui livrent en trois semaines.
+          Il n'y a pas de quota. Vous envoyez tout ce dont vous avez besoin et vous fixez
+          l'ordre&nbsp;; je les traite l'une après l'autre, chacune livrée en 48 à 72&nbsp;heures
+          une fois lancée. Beaucoup sont courtes, donc plusieurs sortent souvent dans la même
+          semaine. Ce qui tient le délai, c'est de n'en avancer qu'une à la fois — pas de vous
+          limiter, comme le font les offres &laquo;&nbsp;demandes illimitées&nbsp;&raquo; qui
+          livrent en trois semaines.
         </p>
       </div>
     </div>
