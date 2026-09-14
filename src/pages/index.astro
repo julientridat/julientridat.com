@@ -4,21 +4,22 @@
  *
  * Remplace, depuis le 2026-08-29, l'ancienne home « J'installe l'IA dans vos
  * outils. En 2 mois. » (archivée, hors index, dans /installation-ia).
+ *
+ * Septembre 2026 : ramenée de 11 à 7 blocs sur le modèle de designjoy.co —
+ * hero, comment ça marche, avantages, qui, prix, questions, clôture. Les autres
+ * offres restent dans la nav et le pied de page.
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Hero from "@/components/sections/offre/Hero.astro";
-import Situation from "@/components/sections/offre/Situation.astro";
 import Fonctionnement from "@/components/sections/offre/Fonctionnement.astro";
-import Remplace from "@/components/sections/offre/Remplace.astro";
-import Travail from "@/components/sections/offre/Travail.astro";
+import Avantages from "@/components/sections/offre/Avantages.astro";
 import Bio from "@/components/sections/offre/Bio.astro";
 import Prix from "@/components/sections/offre/Prix.astro";
-import AutresOffres from "@/components/sections/offre/AutresOffres.astro";
-import Diagnostic from "@/components/sections/offre/Diagnostic.astro";
 import Faq from "@/components/sections/offre/Faq.astro";
 import FinalCta from "@/components/sections/offre/FinalCta.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
+import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
 
 // Moins de 60 caractères : au-delà, Google coupe le titre, ou le remplace
 // par un texte de son choix pris dans la page. Les montants sont dans la
@@ -34,7 +35,7 @@ const jsonLd = [
     "@id": `${SITE.url}/#service`,
     name: "Direction marketing externalisée — installation puis abonnement",
     description:
-      "Un mois d'installation du système marketing (positionnement et structure d'offre, identité refaite et gabarits, plan marketing sur douze mois, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, une demande active à la fois livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
+      "Un mois d'installation du système marketing (positionnement et structure d'offre, identité refaite et gabarits, plan marketing sur douze mois, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, demandes non limitées, chacune livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/`,
@@ -67,64 +68,11 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: [
-      {
-        "@type": "Question",
-        name: "Pourquoi 4 000 € le premier mois ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Parce qu'un mois entier y passe, et qu'il produit le socle. Sans lui, on pourrait produire tout de suite — mais sur des bases que personne n'a arrêtées, et il faudrait tout reprendre ensuite. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Combien de demandes puis-je faire ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Autant que vous voulez. Aucun plafond : ce qui est fixé, c'est l'ordre de traitement, pas le nombre. Vous priorisez, j'avance dans votre file, et vous voyez à tout moment où en est chacune.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Ça reste artisanal, une seule personne pour tout ça ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "C'est l'inverse. Une agence répartit le sujet entre plusieurs personnes qui ne se parlent pas toujours. Ici, la même personne qui pense la stratégie avec vous fabrique aussi l'outil et forme vos équipes à s'en servir — rien ne se perd dans la coordination.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "L'intelligence artificielle va remplacer mes équipes ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Non. Elle est installée chez eux, sur vos comptes, et ils sont formés à s'en servir. Elle enlève ce qui les ralentit, pas les gens.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Et si j'arrête ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Vous partez avec tout. Rien n'est retenu, rien n'est désactivé, et il n'y a rien à me réclamer : ce qui a été produit et installé est déjà chez vous, sur vos comptes. Vous perdez une seule chose : votre place parmi les quatre.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Nous sommes 45 salariés. On fait comment ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "Sur devis. Le format est calibré jusqu'à 30 salariés. Au-delà, le nombre de services change le périmètre, et le forfait ne tient plus.",
-        },
-      },
-      {
-        "@type": "Question",
-        name: "Nous ne sommes pas une entreprise du numérique. C'est un problème ?",
-        acceptedAnswer: {
-          "@type": "Answer",
-          text: "C'est le cœur de cible. Je ne travaille pas pour des startups. Je travaille pour des entreprises qui produisent, vendent, livrent — et qui n'ont jamais eu personne en interne pour structurer leur croissance.",
-        },
-      },
-    ],
+    mainEntity: FAQ_ACCUEIL.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.r },
+    })),
   },
 ];
 ---
@@ -132,29 +80,12 @@ const jsonLd = [
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
     <Hero />
-    <Situation />
     <Fonctionnement />
-    {/* La preuve remonte : la blessure est plantée en section 2 (« à chaque fois,
-        ça s'est arrêté au bout de trois mois »), l'antidote arrivait quatre
-        sections plus loin. */}
-    <Travail />
-    {/* Travail expose une faiblesse — deux clients, c'est peu. Bio répond par le
-        volume juste après, et arme la chute de Remplace (« celui qui fait le
-        travail » : on sait enfin qui). */}
+    <Avantages />
     <Bio />
-    {/* Remplace n'existe que comme ancre tarifaire (55-65 k€/an, 4-8 k€/mois) :
-        il doit être la dernière chose lue avant 2 500 €. */}
-    <Remplace />
     <Prix />
-    {/* Les objections se traitent avant d'ouvrir les portes, pas entre les deux. */}
     <Faq />
-    {/* Puis les deux portes, par engagement croissant : 2 minutes, puis 20. */}
-    <Diagnostic />
     <FinalCta />
-    {/* Les deux autres offres, volontairement hors du chemin de conversion : le
-        lecteur qui va réserver n'a rien à arbitrer. Celui que la direction
-        marketing n'a pas convaincu trouve ici pourquoi — son problème est ailleurs. */}
-    <AutresOffres />
     <Footer home />
   </main>
 </BaseLayout>
