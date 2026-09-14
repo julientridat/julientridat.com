@@ -77,6 +77,39 @@ Côté fabrication, deux étages :
   aux questions libres (« c'est compris dans mon forfait ? », « pourquoi une maquette
   d'abord ? ») et sait dire « je transmets à Julien » quand il sort des cartes.
 
+## Le mode mission — client bêta (Groupe LEH)
+
+Le plan de mission trimestriel (type LEH 2026-2027) se transpose dans le tableau de bord :
+le document envoyé au client devient **l'état vivant de la mission**. Deux modes selon le
+contrat, même interface :
+
+- **Mode file** — l'offre de la page de vente : demandes illimitées, une à la fois,
+  48 à 72 h, ordre choisi par le client.
+- **Mode mission** — un plan de mission existe : les demandes s'arbitrent au point
+  mensuel (« on ajoute et on retire, on n'empile pas ») et l'interface s'organise
+  par chantier. C'est ce que montre la maquette, avec LEH en bêta.
+
+Ce que le mode mission ajoute :
+
+- **Un bloc par mission, avec son code couleur** (violet, magenta, teal, bleu — l'extension
+  fonctionnelle du design system, le « tout bleu et blanc » ne portait pas quatre chantiers) :
+  objectif de fin de période, avancement, tâches par mois (faite / en cours / à venir /
+  **à vous** en ambre), livrables à valider en ligne, fil de commentaires propre au chantier.
+- **Une mind map de navigation** en tête de page : le trimestre au centre, les missions
+  autour, chacune avec sa couleur, son avancement et un point ambre si une action attend
+  le client. Un clic mène au bloc. En mobile, elle devient une grille de vignettes.
+- **« En attente de votre côté »** — la carte ambre en tête de colonne : les points du
+  « ce dont j'ai besoin » du plan qui bloquent la production, avec leur échéance. C'est
+  l'anti-goulot d'étranglement : le plan LEH le dit, le risque n'est jamais la production,
+  c'est le délai de validation.
+- **Le point de lundi** — le point écrit hebdomadaire du plan, structuré tel quel :
+  parti / en validation / engagé, chaque ligne rattachée à sa mission par sa couleur.
+- **Les engagements de fin de période** — la liste « au 15 décembre » du plan, avec l'état
+  de chacun (fait / en cours / à venir). C'est là-dessus qu'on se juge au bilan.
+
+⚠️ La maquette contient des données réelles du client bêta (noms, chantiers). Tant que le
+repo n'est pas strictement privé, prévoir une variante anonymisée avant tout partage.
+
 ## L'onboarding — première connexion, dix minutes
 
 1. **Lien magique** reçu par e-mail : pas de compte à créer, pas de mot de passe.
@@ -132,9 +165,9 @@ system « Navy ink on cool marble » (référence Calendly, choix de Julien) : c
 `#F8F9FB`, encre marine `#0B3558`, bleu signal `#006BFF` pour les actions, cartes
 blanches à ombres bleutées (rayon 24 px, contrôles 8 px), Manrope en substitut de
 Gilroy, blobs magenta/cyan en atmosphère discrète.
-Interactions fonctionnelles : réordonner la file, poster une demande via l'assistant
-(reconnaissance du type, jalons annoncés, une question à choix, récapitulatif, ajout à la
-file avec son premier jalon), ajouter un sujet à l'ordre du jour, valider un livrable ou
-demander un ajustement, replier la carte « Premiers pas ». Données 100 % fictives.
-Pour tester l'assistant : écrire par exemple « il nous faut un nouveau site », « une
-séquence e-mail de relance » ou « former l'équipe commerciale ».
+Interactions fonctionnelles : naviguer par la mind map, commenter chaque mission, valider
+un livrable ou demander un ajustement, poster une demande via l'assistant (jalons annoncés,
+récapitulatif, transmission aux arbitrages du point mensuel). Données du client bêta,
+état simulé au 12 octobre 2026.
+Pour tester l'assistant : écrire par exemple « il nous faut une landing page », « une
+séquence e-mail de relance » ou « former l'équipe ».
