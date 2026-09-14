@@ -96,8 +96,12 @@ import heroImg from "@/assets/hero.jpg";
     id="hero-texte"
     class="relative mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-6 pb-[clamp(2.5rem,7vh,4.5rem)] pt-[clamp(5rem,11vh,9rem)] text-center md:px-12"
   >
-    <p class="mb-6 text-[11px] uppercase tracking-[0.22em] text-violet-soft">
-      Marketing externalisé · PME de 10 à 30 salariés
+    {/* Pastille sombre floutée : posé nu sur la photo en 11 px violet clair,
+        le surtitre se perdait dans les zones claires de l'image. */}
+    <p class="mx-auto mb-6 w-fit rounded-2xl border border-white/15 bg-black/35 px-4 py-1.5 text-[12px] font-medium uppercase leading-relaxed tracking-[0.18em] text-white backdrop-blur-sm sm:rounded-full md:text-[13px]">
+      Marketing externe augmenté<span class="hidden sm:inline">&nbsp;·</span>
+      <br class="sm:hidden" />
+      PME de 10 à 30&nbsp;salariés
     </p>
 
     <h1
