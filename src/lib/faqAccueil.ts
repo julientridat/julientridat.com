@@ -6,7 +6,7 @@
 export const FAQ_ACCUEIL = [
   {
     q: "Et l'installation du premier mois ?",
-    r: "Elle est comprise dans les 2 500 € : positionnement, identité, plan marketing sur douze mois, assistants IA. Un mois entier y passe, parce que c'est le socle — sans lui, il faudrait tout reprendre ensuite. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
+    r: "Elle est comprise dans les 2 500 € : positionnement, identité et gabarits, plan marketing sur douze mois. Un mois entier y passe, parce que c'est le socle — sans lui, il faudrait tout reprendre ensuite. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
   },
   {
     q: "Combien de demandes puis-je faire ?",
@@ -18,15 +18,15 @@ export const FAQ_ACCUEIL = [
   },
   {
     q: "Une seule personne pour tout ça, c'est tenable ?",
-    r: "C'est l'inverse. Une agence répartit le sujet entre plusieurs personnes qui ne se parlent pas toujours. Ici, la même personne qui pense la stratégie avec vous fabrique aussi l'outil et forme vos équipes à s'en servir — rien ne se perd dans la coordination.",
+    r: "C'est l'inverse. Une agence répartit le sujet entre plusieurs personnes qui ne se parlent pas toujours. Ici, la même personne qui pense la stratégie avec vous fabrique aussi les contenus et les supports — rien ne se perd dans la coordination.",
   },
   {
     q: "Et l'IA dans tout ça ?",
-    r: "Elle est installée dans les outils de vos équipes, sur vos comptes, et elles sont formées à s'en servir. Elle enlève ce qui les ralentit — la ressaisie, la mise en forme, la recherche d'un fichier — pas les gens.",
+    r: "C'est mon outil de production, pas le vôtre : c'est lui qui me permet de livrer de J+1 à J+3. Mes agents et mes méthodes restent chez moi ; vous gardez ce qu'ils produisent — contenus, supports, gabarits. Vous n'avez rien à installer ni à apprendre.",
   },
   {
     q: "Que se passe-t-il si j'arrête ?",
-    r: "Vous partez avec tout. Rien n'est retenu, rien n'est désactivé : ce qui a été produit et installé est déjà chez vous, sur vos comptes. Vous perdez une seule chose : votre place parmi les quatre.",
+    r: "Vous partez avec tout. Rien n'est retenu, rien n'est désactivé : ce qui a été produit — contenus, charte, gabarits, fichiers sources — est déjà chez vous. Vous perdez une seule chose : votre place parmi les quatre.",
   },
   {
     q: "Le marketing est déjà le métier de quelqu'un chez moi ?",
