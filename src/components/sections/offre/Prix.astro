@@ -1,137 +1,83 @@
 ---
 /**
- * Section tarifaire — doit se lire comme un bloc de prix, pas comme un
- * paragraphe. D'où : deux cartes distinctes, des montants très grands, et le
- * connecteur « puis » qui garde lisible le fait que ce n'est PAS un choix
- * entre deux formules mais une séquence.
+ * Le prix — une seule carte, sur le modèle de Designjoy : deux montants
+ * lisibles d'un coup d'œil, sept lignes incluses, et à côté ce qui rassure
+ * (l'équivalent de « Pause anytime / Try it for a week »).
  *
- * L'abonnement est la carte mise en avant (bordure et fond accentués, badge) :
- * c'est l'engagement qui dure, et le seul chiffre qui pèse dans la décision.
+ * Aucune garantie de remboursement n'est écrite : il n'en existe pas. Ce qui
+ * rassure ici est vrai — les livrables restent, la pause garde la place.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 
-// Insécables en vrais U+00A0 : dans une chaîne du frontmatter, une entité HTML
-// ressortirait telle quelle à l'écran.
 const inclus = [
-  { texte: "Un rendez-vous hebdomadaire de 45 minutes, à heure fixe", fort: false },
-  { texte: "Ligne directe pour vos équipes, sans intermédiaire", fort: false },
-  { texte: "Nombre de demandes non limité, traitées dans l'ordre que vous fixez — 48 à 72 heures chacune", fort: true },
-  { texte: "Sans engagement, résiliable à tout moment", fort: false },
-  { texte: "Suspension possible en période creuse, votre place reste réservée — un salarié, lui, resterait à payer", fort: false },
-  { texte: "Tout ce qui est produit ensuite vous reste aussi — fichiers sources, accès, outils installés", fort: true },
-  { texte: "Un seul interlocuteur : moi", fort: false },
+  "Positionnement et offre",
+  "Identité et gabarits",
+  "Plan marketing sur douze mois",
+  "Assistants IA installés, équipes formées",
+  "Demandes illimitées, 48 à 72 h chacune",
+  "Un point de 45 minutes chaque semaine",
+  "Pause ou arrêt à tout moment",
 ];
 
-/* Le détail du premier mois, en registre CONTRACTUEL — délibérément d'autres
-   mots que la section « Comment ça marche », qui développe les mêmes livrables
-   en registre narratif. Une première version recopiait ses phrases : 35
-   séquences de cinq mots se répétaient entre les deux sections.
-
-   Il tenait en une phrase, alors qu'il contient
-   quatre chantiers — dont le plan marketing sur douze mois, qui n'était écrit
-   nulle part sur le site. Le site, lui, N'EST PAS dans le premier mois : il
-   arrive pendant l'abonnement, voir Fonctionnement.astro. */
-const premierMois = [
-  {
-    titre: "Positionnement et structure d'offre.",
-    texte: "Ce que vous vendez, à qui, à quel prix — et la phrase qui le dit.",
-  },
-  {
-    titre: "Identité refaite, gabarits livrés.",
-    texte:
-      "Une charte, et les modèles qui l'appliquent : devis, présentations, supports de vente.",
-  },
-  {
-    titre: "Plan marketing sur douze mois.",
-    texte: "Le calendrier de ce qui sort, mois par mois, et pour quelle raison.",
-  },
-  {
-    titre: "Deux à trois assistants IA, équipes formées.",
-    texte:
-      "Sur vos outils et vos dossiers réels, avec les gens capables de s'en servir seuls.",
-  },
-];
-
-const montant = "font-serif text-[clamp(3rem,7vw,4.75rem)] italic leading-[0.9] tracking-tight";
-const unite = "font-sans text-base not-italic text-ink-3";
+const montant = "font-serif text-[clamp(2.75rem,6vw,4.25rem)] italic leading-[0.9] tracking-tight";
 const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
 ---
 
-<section id="offres" class="border-t border-line px-6 py-10 md:px-12 md:py-14">
+<section id="offres" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
   <div class="mx-auto max-w-7xl">
-    <div class="grid gap-6 md:grid-cols-2 md:items-end md:gap-12">
-      <div>
-        <Eyebrow>Le prix</Eyebrow>
-        <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-          Le gros du travail se fait le premier mois.
-          <br />
-          <em class="text-lime">Ensuite, on ne le refait plus.</em>
-        </h2>
-      </div>
-      <p class="text-lg leading-relaxed text-ink-2 md:max-w-lg">
-        C'est ce qui explique les deux montants&nbsp;: le premier construit, le second entretient
-        et fait sortir. Pas de forfait à options, pas de frais de dossier, et rien qui s'ajoute à
-        la fin du mois.
-      </p>
-    </div>
+    <Eyebrow>Le prix</Eyebrow>
+    <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+      Une formule. <em class="text-lime">Sans engagement.</em>
+    </h2>
 
-    <div class="mt-10 grid items-start gap-5 md:grid-cols-[1fr_auto_1.15fr] md:gap-6">
-      <!-- Installation — une seule fois -->
-      <div class="flex flex-col rounded-2xl border border-line bg-card p-8 md:p-9">
-        <div class={surTitre}>Le premier mois</div>
-        <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
-          <span class={`${montant} text-foreground`}>4&nbsp;000&nbsp;€</span>
-          <span class={unite}>HT, une seule fois</span>
+    <div class="mt-10 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
+      <div class="rounded-2xl border border-lime bg-lime/[0.05] p-8 md:p-10">
+        <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
+          <div>
+            <div class={surTitre}>Le premier mois</div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class={`${montant} text-foreground`}>4&nbsp;000&nbsp;€</span>
+              <span class="text-base text-ink-3">HT</span>
+            </div>
+          </div>
+          <span class="pb-2 font-serif text-2xl italic text-ink-3">puis</span>
+          <div>
+            <div class={surTitre}>Chaque mois</div>
+            <div class="mt-3 flex items-baseline gap-2">
+              <span class={`${montant} text-lime`}>2&nbsp;500&nbsp;€</span>
+              <span class="text-base text-ink-3">HT / mois</span>
+            </div>
+          </div>
         </div>
-        <ul class="mt-7">
-          {premierMois.map((i) => (
-            <li class="border-t border-line py-3.5 text-base leading-relaxed text-ink-2">
-              <strong class="font-medium text-foreground">{i.titre}</strong> {i.texte}
-            </li>
-          ))}
-        </ul>
 
-        {/* Ancrage par le NOMBRE de prestataires remplacés, jamais par leur prix :
-            affirmer ce que coûte une identité chez un studio serait invérifiable. */}
-        <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
-          Commandé séparément, c'est un consultant, un studio graphique et un planneur&nbsp;:
-          trois briefs à écrire, trois devis à négocier, trois plannings à faire tenir ensemble.
-        </p>
-        <p class="mt-6 border-t border-line pt-6 text-base leading-relaxed text-ink-2">
-          <strong class="font-medium text-foreground">Tout cela vous appartient.</strong> Même si
-          vous vous arrêtez là.
-        </p>
-      </div>
-
-      <!-- Connecteur : ce n'est pas un choix, c'est une suite. -->
-      <div class="flex items-center justify-center md:self-center md:px-1">
-        <span class="font-serif text-2xl italic text-ink-3">puis</span>
-      </div>
-
-      <!-- Abonnement — la carte qui porte la décision -->
-      <div class="relative flex flex-col rounded-2xl border border-lime bg-lime/[0.05] p-8 md:p-9">
-        <div class="absolute -top-3 left-8 rounded-full bg-lime px-3.5 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white">
-          Sans engagement
-        </div>
-        <div class={surTitre}>Chaque mois</div>
-        <div class="mt-6 flex flex-wrap items-baseline gap-x-3">
-          <span class={`${montant} text-lime`}>2&nbsp;500&nbsp;€</span>
-          <span class={unite}>/ mois HT</span>
-        </div>
-        <ul class="mt-7">
+        <ul class="mt-8 grid gap-x-8 border-t border-line pt-6 sm:grid-cols-2">
           {inclus.map((i) => (
-            <li class="border-t border-line py-3 text-base leading-relaxed text-ink-2">
-              {i.fort ? <strong class="font-medium text-foreground">{i.texte}</strong> : i.texte}
+            <li class="flex gap-3 py-2 text-base leading-relaxed text-ink-2">
+              <span class="text-lime" aria-hidden="true">✓</span>
+              {i}
             </li>
           ))}
         </ul>
       </div>
-    </div>
 
-    <div class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-5">
-      <CtaButton>Réserver 20&nbsp;minutes</CtaButton>
-      <p class="font-serif text-xl italic text-lime">Quatre clients en abonnement. Pas plus.</p>
+      <div class="flex flex-col gap-5">
+        <div class="rounded-2xl border border-line bg-background p-7">
+          <h3 class="text-lg font-medium text-foreground">Vous gardez tout.</h3>
+          <p class="mt-1.5 text-base leading-relaxed text-ink-2">
+            Si vous arrêtez après le premier mois, le positionnement, l'identité et le plan vous
+            restent.
+          </p>
+        </div>
+        <div class="rounded-2xl border border-line bg-background p-7">
+          <h3 class="text-lg font-medium text-foreground">Pause possible.</h3>
+          <p class="mt-1.5 text-base leading-relaxed text-ink-2">Votre place est gardée.</p>
+        </div>
+        <div class="mt-auto flex flex-col items-start gap-4 pt-2">
+          <CtaButton ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
+          <p class="text-sm text-ink-3">Au-delà de 30&nbsp;salariés&nbsp;: sur devis.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
