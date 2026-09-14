@@ -81,3 +81,23 @@ const jsonLd = [
     <Footer home />
   </main>
 </BaseLayout>
+
+<script>
+  /* Apparitions au défilement. Garde-fou : si IntersectionObserver manque,
+     la classe n'est jamais posée et tout reste visible. */
+  if ("IntersectionObserver" in window) {
+    document.documentElement.classList.add("js-reveal");
+    const io = new IntersectionObserver(
+      (entrees) => {
+        for (const e of entrees) {
+          if (e.isIntersecting) {
+            e.target.classList.add("est-visible");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+  }
+</script>

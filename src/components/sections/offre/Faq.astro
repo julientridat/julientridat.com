@@ -11,18 +11,19 @@ import Eyebrow from "@/components/Eyebrow.astro";
 import { FAQ_ACCUEIL as questions } from "@/lib/faqAccueil";
 ---
 
-<section id="faq" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
+<section id="faq" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto max-w-7xl">
     <Eyebrow>Questions</Eyebrow>
 
     <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
       <h2
-        class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground md:sticky md:top-24 md:self-start"
+        data-reveal
+        class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground md:sticky md:top-24 md:self-start"
       >
         Ce que vous alliez <em class="text-lime">me demander.</em>
       </h2>
 
-      <div>
+      <div data-reveal style="--reveal-delay: 100ms">
         {questions.map((item, i) => (
           <details class={`border-t border-line ${i === questions.length - 1 ? "border-b" : ""}`}>
             <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 text-lg font-medium text-foreground transition-colors hover:text-lime md:text-xl">

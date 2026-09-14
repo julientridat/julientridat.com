@@ -13,12 +13,14 @@
 import { Image } from "astro:assets";
 import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
+
+const references = ["Publicis", "Heineken", "L'Oréal", "Dassault Systèmes", "Lagardère Travel Retail"];
 ---
 
-<section id="about" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
+<section id="about" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
     <!-- 810 px : largeur native du recadrage, ne pas demander plus. -->
-    <div class="overflow-hidden rounded-2xl border border-line">
+    <div data-reveal class="overflow-hidden rounded-3xl border border-line">
       <Image
         src={julien}
         alt="Julien Tridat"
@@ -28,7 +30,7 @@ import julien from "@/assets/julien.jpg";
       />
     </div>
 
-    <div>
+    <div data-reveal style="--reveal-delay: 120ms">
       <Eyebrow>Qui je suis</Eyebrow>
       <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
         Julien Tridat.
@@ -54,5 +56,21 @@ import julien from "@/assets/julien.jpg";
         Il n'y a que quatre places.
       </p>
     </div>
+  </div>
+
+  <!-- Références en noms typographiés, pas en logos : aucun visuel de marque
+       à licencier, et le texte reste lisible par les moteurs. -->
+  <div data-reveal class="mx-auto mt-14 max-w-7xl border-t border-line pt-8 md:mt-16">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Parcours</p>
+    <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 lg:gap-x-8">
+      {references.map((r, i) => (
+        <li class="flex items-center gap-6 lg:gap-8">
+          <span class="text-[clamp(1.2rem,2vw,1.7rem)] font-medium tracking-[-0.03em] text-ink-3 transition-colors hover:text-foreground">
+            {r}
+          </span>
+          {i < references.length - 1 && <span class="hidden text-lime/50 sm:inline">✦</span>}
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
