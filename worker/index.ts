@@ -11,6 +11,7 @@
  * `done` (latence), `error`. Le front affiche le flux brut dans « sous le capot ».
  */
 import Anthropic from "@anthropic-ai/sdk";
+import { redirectionCanonique } from "./canonique";
 
 interface Env {
   ASSETS: Fetcher;
@@ -699,11 +700,14 @@ async function* streamWorkersAI(
   maxTokens = MAX_TOKENS,
   modele = WORKERS_AI_MODEL,
 ): AsyncGenerator<string> {
+  // `run()` est typé comme rendant un objet ; avec stream:true il rend en
+  // réalité un ReadableStream. La signature ne distingue pas les deux cas, d'où
+  // le passage par `unknown` — un cast direct est refusé, à juste titre.
   const result = (await env.AI!.run(modele as Parameters<Ai["run"]>[0], {
     messages: [{ role: "system", content: system }, ...messages],
     max_tokens: maxTokens,
     stream: true,
-  })) as ReadableStream;
+  })) as unknown as ReadableStream<Uint8Array>;
   const reader = result.getReader();
   const decoder = new TextDecoder();
   let buffer = "";
@@ -1055,6 +1059,9 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    const redirection = redirectionCanonique(request);
+    if (redirection) return redirection;
+
     const url = new URL(request.url);
     if (url.pathname === "/api/experience") return handleExperience(request, env);
     return env.ASSETS.fetch(request);

@@ -1,0 +1,43 @@
+---
+/**
+ * Clôture sombre, en réponse au hero. Même parcours que le hero : le
+ * questionnaire d'abord, l'appel ensuite — le questionnaire se termine
+ * lui-même sur la réservation.
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+import CtaButton from "@/components/CtaButton.astro";
+---
+
+<section
+  id="contact"
+  class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20"
+>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background: radial-gradient(58% 90% at 50% 115%, rgba(108,76,241,0.22), transparent 70%);"
+  >
+  </div>
+
+  <div class="mx-auto max-w-4xl text-center">
+    <Eyebrow onDark>Prochaine étape</Eyebrow>
+
+    <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
+      Vingt minutes. <em class="text-violet-soft">Pas une de plus.</em>
+    </h2>
+
+    <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/75">
+      Huit questions pour savoir si c'est pour vous, puis un appel.
+    </p>
+
+    <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+      <CtaButton onDark ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
+      <button
+        type="button"
+        data-open-booking
+        class="inline-flex cursor-pointer items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
+      >
+        Réserver un appel, 20&nbsp;minutes
+      </button>
+    </div>
+  </div>
+</section>

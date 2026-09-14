@@ -51,7 +51,7 @@ const jsonLd = [
       </div>
       <Nav />
       <div class="mx-auto max-w-4xl">
-        <nav class="mb-8 text-sm text-ink-3" aria-label="Fil d'Ariane">
+        <nav class="mb-8 text-base text-ink-3" aria-label="Fil d'Ariane">
           <a href="/" class="hover:text-foreground">Accueil</a>
           <span class="mx-2 text-ink-3/60">/</span>
           <a href="/notes" class="hover:text-foreground">Notes</a>
@@ -59,23 +59,23 @@ const jsonLd = [
         <Eyebrow>
           <time datetime={d.date.toISOString().slice(0, 10)}>{fmt.format(d.date)}</time>
         </Eyebrow>
-        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-light leading-[1.05] tracking-[-0.03em] text-foreground">
+        <h1 class="text-[clamp(2rem,5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
           {d.title}
         </h1>
-        <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">{d.pitch}</p>
+        <p class="mt-6 max-w-2xl text-xl leading-relaxed text-ink-2">{d.pitch}</p>
       </div>
     </header>
 
-    <article class="px-6 py-16 md:px-12 md:py-20">
+    <article class="px-6 py-10 md:px-12 md:py-12">
       <div class="prose-artefact mx-auto max-w-3xl">
         <Content />
       </div>
     </article>
 
-    <section class="border-t border-line px-6 py-16 md:px-12">
+    <section class="border-t border-line px-6 py-10 md:px-12">
       <div class="mx-auto flex max-w-3xl flex-col items-start gap-6 md:flex-row md:items-center md:justify-between">
-        <p class="max-w-md text-lg leading-relaxed text-ink-2">
-          Envie d'en discuter ? <em class="text-lime">30 minutes, sans engagement.</em>
+        <p class="max-w-md text-xl leading-relaxed text-ink-2">
+          Envie d'en discuter ? <em class="text-lime">20 minutes, sans engagement.</em>
         </p>
         <CtaButton>Réserver un échange</CtaButton>
       </div>

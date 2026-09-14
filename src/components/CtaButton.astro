@@ -3,8 +3,11 @@ interface Props {
   variant?: "lime" | "outline" | "ghost";
   /** Bouton posé sur un fond sombre (hero photo/vidéo, .section-dark) : plein violet, jamais l'encre. */
   onDark?: boolean;
+  /** Ce que le bouton ouvre : la réservation (défaut) ou le questionnaire d'éligibilité. */
+  ouvre?: "booking" | "diagnostic";
 }
-const { variant = "lime", onDark = false } = Astro.props;
+const { variant = "lime", onDark = false, ouvre = "booking" } = Astro.props;
+const declencheur = ouvre === "diagnostic" ? { "data-open-diagnostic": "" } : { "data-open-booking": "" };
 const base =
   "inline-flex cursor-pointer items-center gap-3 rounded-full px-6 py-3.5 text-[15px] font-medium transition-all duration-200 group";
 // Bouton primaire du design system : repose sur l'encre, ne bascule en violet
@@ -21,7 +24,7 @@ const styles =
 const cercle = onDark ? "bg-black/25 text-white" : "bg-card/15";
 ---
 
-<button type="button" data-open-booking class={`${base} ${styles}`}>
+<button type="button" {...declencheur} class={`${base} ${styles}`}>
   <span class={`grid h-7 w-7 place-items-center rounded-full text-base transition-transform group-hover:translate-x-0.5 ${cercle}`}>
     →
   </span>

@@ -1,0 +1,66 @@
+---
+/**
+ * Comment ça marche — trois étapes d'une ligne, sur le modèle de Designjoy
+ * (Subscribe / Request / Receive). La version précédente faisait 477 mots :
+ * deux phases, cartes de preuves, tuile agenda, encadré. Le détail des
+ * livrables vit désormais dans la carte de prix et dans la FAQ.
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const etapes = [
+  {
+    titre: "J'installe.",
+    texte:
+      "Le premier mois : positionnement, identité, plan marketing sur douze mois, assistants IA dans vos outils.",
+  },
+  {
+    titre: "Vous demandez.",
+    texte:
+      "Autant que vous voulez, dans l'ordre que vous fixez. Vos équipes m'écrivent en direct.",
+  },
+  {
+    titre: "C'est livré.",
+    texte: "En 48 à 72 heures par demande, avec un point de 45 minutes chaque semaine.",
+  },
+];
+
+// L'équivalent du bandeau de livrables de Designjoy, sans défilement : une
+// ligne qui se lit d'un coup d'œil vaut mieux qu'une animation à suivre.
+const livrables = [
+  "Site",
+  "Supports de vente",
+  "Devis et présentations",
+  "Relances",
+  "Publications",
+  "Identité",
+  "Plan marketing",
+  "Assistants IA",
+];
+---
+
+<section id="comment" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Comment ça marche</Eyebrow>
+    <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+      Un mois pour installer. <em class="text-lime">Puis ça tourne.</em>
+    </h2>
+
+    <ol class="mt-10 grid gap-5 md:grid-cols-3">
+      {etapes.map((e, i) => (
+        <li class="rounded-2xl border border-line bg-card p-7">
+          <span class="font-serif text-3xl italic leading-none text-lime">
+            {String(i + 1).padStart(2, "0")}
+          </span>
+          <h3 class="mt-5 text-xl font-medium text-foreground">{e.titre}</h3>
+          <p class="mt-2 text-base leading-relaxed text-ink-2">{e.texte}</p>
+        </li>
+      ))}
+    </ol>
+
+    <ul class="mt-8 flex flex-wrap gap-2.5" aria-label="Ce que vous pouvez demander">
+      {livrables.map((l) => (
+        <li class="rounded-full border border-line px-4 py-1.5 text-sm text-ink-2">{l}</li>
+      ))}
+    </ul>
+  </div>
+</section>

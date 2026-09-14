@@ -1,0 +1,230 @@
+---
+/**
+ * Hero — plan large sombre sur photographie, avec parallaxe au pointeur.
+ *
+ * L'image (src/assets/hero.jpg) et l'effet de profondeur viennent de la
+ * première version du site : ils y étaient purement décoratifs. Ils sont
+ * repris ici parce qu'ils illustrent désormais le H1 au pied de la lettre —
+ * « je rejoins votre équipe » posé sur une équipe au travail.
+ *
+ * Deux plans qui se décalent à des vitesses différentes, c'est tout l'effet :
+ *   • l'image recule peu (18/14 px) — c'est le plan lointain ;
+ *   • le halo violet, source de lumière, glisse trois fois plus (52/40 px).
+ * Le champ de halos en canvas de la version d'origine n'est pas repris : c'est
+ * la parallaxe qui donne la profondeur, les lucioles n'y ajoutaient que du bruit.
+ *
+ * La composition centrée et la copy sont celles validées sur fond papier :
+ * seules les couleurs basculent. Attention au piège <em> du CSS global — sur
+ * fond sombre il faut text-violet-soft, jamais text-lime (violet plein,
+ * illisible sur du noir).
+ */
+import { Image } from "astro:assets";
+import Nav from "@/components/Nav.astro";
+import CtaButton from "@/components/CtaButton.astro";
+import heroImg from "@/assets/hero.jpg";
+
+---
+
+<!--
+  min-h plutôt que h fixe : sur un écran très bas, le bloc s'allonge au lieu de
+  se faire couper. Le prix est que l'image zoome pour couvrir — acceptable là où
+  le cadrage compte le moins.
+-->
+<section
+  id="hero"
+  class="relative isolate flex min-h-[100svh] flex-col overflow-hidden bg-foreground"
+>
+  <!-- Plan lointain. scale-105 donne la réserve dans laquelle la parallaxe se
+       déplace — 36 px de chaque côté à 1440, pour 18 px de course : sans elle,
+       le décalage découvrirait le bord de l'image. -->
+  <div id="hero-plan" class="absolute inset-0 -z-30 will-change-transform">
+    <Image
+      src={heroImg}
+      alt=""
+      aria-hidden="true"
+      widths={[768, 1280, 1920, 2688]}
+      sizes="100vw"
+      loading="eager"
+      fetchpriority="high"
+      decoding="async"
+      class="h-full w-full scale-105 object-cover"
+    />
+  </div>
+
+  <!--
+    Voiles de lisibilité, en trois couches qui ne font pas le même travail.
+
+    L'aplat uniforme est volontairement faible : c'est lui qui écrasait la photo
+    partout, y compris là où il n'y a aucun texte à protéger.
+
+    Le dégradé vertical ne sert qu'aux deux extrémités — lisibilité de la nav en
+    haut, raccord avec la section suivante en bas. Son milieu est transparent.
+
+    Le troisième est une ellipse centrée sur le bloc de texte, qui s'éteint
+    avant les bords — mais elle reste faible, parce que les personnages sont au
+    CENTRE du cadre, exactement sous le texte. Une première version l'avait
+    poussée à 0,44 : les bords se dégageaient, et le sujet de la photo
+    disparaissait. C'est l'inverse de ce qu'on veut.
+
+    D'où le report du contraste sur les lettres elles-mêmes (voir la feuille de
+    style plus bas) : l'ombre portée protège le mot sans assombrir les vingt
+    pixels qui l'entourent, ce qui laisse voir l'équipe au travail.
+  -->
+  <div class="absolute inset-0 -z-20 bg-black/16 md:bg-black/20"></div>
+  <div
+    class="absolute inset-0 -z-20 bg-gradient-to-b from-black/45 via-transparent to-black/68 md:from-black/55 md:via-transparent md:to-black/78"
+  >
+  </div>
+  <div id="hero-ecran" class="absolute inset-0 -z-20"></div>
+
+  <!-- Plan proche : le halo violet du design system, ici mobile.
+       Rayon en POURCENTAGE, pas en pixels : à 720 px de large, le halo couvrait
+       la moitié d'un écran de bureau mais la totalité d'un écran de téléphone,
+       où il repeignait la photo en aplat violet. En pourcentage il reste un
+       halo à toutes les largeurs. -->
+  <div
+    id="hero-halo"
+    class="pointer-events-none absolute inset-0 -z-10 will-change-transform"
+    style="background: radial-gradient(50% 40% at 50% 38%, rgba(108,76,241,0.16), transparent 70%);"
+  >
+  </div>
+
+  <Nav home onDark />
+
+  <!-- Rythme vertical indexé sur la hauteur d'écran : le bloc tient toujours. -->
+  <div
+    id="hero-texte"
+    class="relative mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-6 pb-[clamp(2.5rem,7vh,4.5rem)] pt-[clamp(5rem,11vh,9rem)] text-center md:px-12"
+  >
+    {/* Pastille sombre floutée : posé nu sur la photo en 11 px violet clair,
+        le surtitre se perdait dans les zones claires de l'image. */}
+    <p class="mx-auto mb-6 w-fit rounded-2xl border border-white/15 bg-black/35 px-4 py-1.5 text-[12px] font-medium uppercase leading-relaxed tracking-[0.18em] text-white backdrop-blur-sm sm:rounded-full md:text-[13px]">
+      Marketing externe augmenté<span class="hidden sm:inline">&nbsp;·</span>
+      <br class="sm:hidden" />
+      PME de 10 à 30&nbsp;salariés
+    </p>
+
+    <h1
+      class="mx-auto max-w-[20ch] text-[clamp(2.5rem,min(6vw,8.5vh),4.5rem)] font-medium leading-[1.05] tracking-[-0.03em] text-white"
+    >
+      Je rejoins votre équipe.
+      <br />
+      Pas votre <em class="text-violet-soft">liste de prestataires.</em>
+    </h1>
+
+    <p
+      class="mx-auto mt-[clamp(1.5rem,3.5vh,2rem)] max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl"
+    >
+      Un mois pour remettre à plat ce que vous vendez et comment vous le dites. Puis chaque
+      semaine&nbsp;: le site, les supports de vos commerciaux, les relances, les publications.
+    </p>
+
+    <div
+      class="mt-[clamp(2rem,5vh,3rem)] flex flex-wrap items-center justify-center gap-4"
+    >
+      {/* Le prix n'est plus dans le hero : le bouton secondaire y mène. Le
+          primaire ouvre le questionnaire, qui se conclut sur la réservation. */}
+      <CtaButton onDark ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
+      <a
+        href="#offres"
+        class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
+      >
+        Combien ça coûte&nbsp;?
+      </a>
+    </div>
+
+    {/* Ce qui rassure, là où Designjoy écrit « Pause or cancel anytime ». */}
+    <p class="mt-6 text-sm text-white/80">
+      Sans engagement&nbsp;· Pause possible&nbsp;· Autant de demandes que vous voulez
+    </p>
+  </div>
+</section>
+
+<style>
+  /* Le contraste est porté par les LETTRES, pas par la zone. Une ombre serrée
+     dessine le bord du glyphe, une large assombrit juste derrière la masse du
+     texte. C'est ce qui permet de diviser l'écran par deux : au-delà de vingt
+     pixels d'un mot, la photo est intacte.
+     Le bouton plein est exclu — une ombre portée sur un aplat violet salit. */
+  #hero-texte > p,
+  #hero-texte > h1 {
+    text-shadow:
+      0 1px 2px rgba(0, 0, 0, 0.55),
+      0 2px 28px rgba(0, 0, 0, 0.5);
+  }
+
+  /* L'écran ne fait plus que compléter l'ombre portée : 0,24 au lieu de 0,44.
+     Plateau et non décroissance depuis le centre — un dégradé qui faiblit dès
+     le centre laisserait le haut du titre moins protégé que son milieu.
+     En portrait il ne reste qu'un quart de la largeur de la photo et le texte
+     occupe presque toute la colonne : l'ellipse y couvre davantage. */
+  #hero-ecran {
+    background: radial-gradient(
+      115% 62% at 50% 50%,
+      rgba(0, 0, 0, 0.28) 0%,
+      rgba(0, 0, 0, 0.28) 50%,
+      rgba(0, 0, 0, 0) 80%
+    );
+  }
+  @media (min-width: 768px) {
+    #hero-ecran {
+      background: radial-gradient(
+        72% 58% at 50% 52%,
+        rgba(0, 0, 0, 0.24) 0%,
+        rgba(0, 0, 0, 0.24) 45%,
+        rgba(0, 0, 0, 0) 78%
+      );
+    }
+  }
+</style>
+
+<script>
+  /* Parallaxe au pointeur. Deux plans, deux vitesses — le lissage à 8 % par
+     image évite que le décor colle au curseur, ce qui trahirait l'effet.
+     Souris fine uniquement : au doigt, il n'y a pas de survol à suivre.
+
+     La boucle est démarrée par le mouvement et s'arrête d'elle-même une fois la
+     caméra arrivée : souris immobile, zéro image calculée. */
+  const section = document.getElementById("hero");
+  const plan = document.getElementById("hero-plan");
+  const halo = document.getElementById("hero-halo");
+
+  const mouvementOk =
+    window.matchMedia("(pointer: fine)").matches &&
+    !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (section && plan && halo && mouvementOk) {
+    let cibleX = 0;
+    let cibleY = 0;
+    let camX = 0;
+    let camY = 0;
+    let anim = 0;
+
+    const suivre = () => {
+      camX += (cibleX - camX) * 0.08;
+      camY += (cibleY - camY) * 0.08;
+      plan.style.transform = `translate3d(${(-camX * 18).toFixed(2)}px, ${(-camY * 14).toFixed(2)}px, 0)`;
+      halo.style.transform = `translate3d(${(-camX * 52).toFixed(2)}px, ${(-camY * 40).toFixed(2)}px, 0)`;
+
+      // La caméra a rejoint sa cible, ou le hero est sorti de l'écran : on rend
+      // la main. Aucune image n'est calculée tant que la souris ne bouge pas —
+      // c'est ce qui remplace l'IntersectionObserver de la version d'origine.
+      const arrive = Math.abs(cibleX - camX) < 0.0005 && Math.abs(cibleY - camY) < 0.0005;
+      if (arrive || section.getBoundingClientRect().bottom <= 0) {
+        anim = 0;
+        return;
+      }
+      anim = requestAnimationFrame(suivre);
+    };
+
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        cibleX = (e.clientX / window.innerWidth) * 2 - 1;
+        cibleY = (e.clientY / window.innerHeight) * 2 - 1;
+        if (!anim) anim = requestAnimationFrame(suivre);
+      },
+      { passive: true },
+    );
+  }
+</script>

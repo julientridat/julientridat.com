@@ -10,23 +10,28 @@ interface Props {
 const { home = false, onDark = false } = Astro.props;
 const p = home ? "" : "/";
 
+// Trois offres, trois entrées. « Comment ça marche » sort : c'était la plus
+// longue étiquette de la barre, et une simple ancre de la page d'accueil —
+// alors que /integration-ia est une page à part entière qui doit être atteignable
+// de partout. La barre garde cinq liens, donc la largeur tenue à 768 px.
 const links = [
-  { href: `${p}#offres`, label: "Offres", caret: true },
-  { href: `${p}#methode`, label: "Méthode" },
+  { href: `${p}#offres`, label: "L'offre" },
+  { href: "/integration-ia", label: "Intégration IA" },
+  { href: "/formation-ia", label: "Formation" },
   { href: "/realisations", label: "Cas clients" },
-  { href: "/notes", label: "Notes" },
-  { href: `${p}#about`, label: "À propos", caret: true },
+  { href: `${p}#about`, label: "À propos" },
 ];
 ---
 
 <nav class="absolute inset-x-0 top-0 z-50 flex items-center justify-between px-6 py-6 md:px-12 md:py-8">
   <Logo href={home ? undefined : "/"} onDark={onDark} />
-  <ul class={`hidden items-center gap-10 text-[15px] md:flex ${onDark ? "text-white" : "text-foreground"}`}>
+  <ul
+    class={`hidden items-center gap-4 text-[13px] md:flex lg:gap-9 lg:text-[15px] ${onDark ? "text-white" : "text-foreground"}`}
+  >
     {links.map((l) => (
       <li>
         <a href={l.href} class="inline-flex items-center gap-1 transition-opacity hover:opacity-75">
           {l.label}
-          {l.caret && <span class="text-xs opacity-70">▾</span>}
         </a>
       </li>
     ))}

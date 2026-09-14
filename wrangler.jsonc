@@ -8,7 +8,12 @@
     "directory": "./dist",
     "binding": "ASSETS",
     "html_handling": "auto-trailing-slash",
-    "not_found_handling": "404-page"
+    "not_found_handling": "404-page",
+    // Les pages passent par le Worker avant d'être servies, pour qu'il puisse
+    // renvoyer http:// et www. vers l'adresse unique (worker/canonique.ts).
+    // Les dossiers d'images en sont exclus : Google ne les indexe pas comme
+    // pages, et chaque passage par le Worker compte dans le quota de requêtes.
+    "run_worker_first": ["/*", "!/_astro/*", "!/agences/*", "!/artefacts/*", "!/scene/*"]
   },
   "ai": {
     "binding": "AI"

@@ -1,0 +1,49 @@
+---
+/**
+ * Qui je suis — fusion des anciennes sections « Mes clients » et « Qui je
+ * suis » (plus de 300 mots à elles deux). Un paragraphe, et la rareté en
+ * chute : c'est l'équivalent du « limited roster » de Designjoy.
+ */
+import { Image } from "astro:assets";
+import Eyebrow from "@/components/Eyebrow.astro";
+import julien from "@/assets/julien.jpg";
+---
+
+<section id="about" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
+  <div class="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
+    <!-- 810 px : largeur native du recadrage, ne pas demander plus. -->
+    <div class="overflow-hidden rounded-2xl border border-line">
+      <Image
+        src={julien}
+        alt="Julien Tridat"
+        widths={[400, 600, 810]}
+        sizes="(min-width: 768px) 35vw, 100vw"
+        class="h-full w-full object-cover"
+      />
+    </div>
+
+    <div>
+      <Eyebrow>Qui je suis</Eyebrow>
+      <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+        Julien Tridat.
+        <br />
+        <em class="text-lime">Un marketeur qui construit ce qu'il conseille.</em>
+      </h2>
+
+      <p class="mt-8 text-lg leading-relaxed text-ink-2">
+        Vingt ans de marketing, dont huit aux côtés de dirigeants de PME. Plus de 300 dirigeants
+        et cadres formés à l'IA, dans une cinquantaine d'organisations, dont Dassault&nbsp;Systèmes
+        et SNCF&nbsp;Fret. Deux clients aujourd'hui&nbsp;: l'un depuis quatre ans, l'autre depuis deux.
+      </p>
+
+      <p class="mt-6 font-serif text-2xl italic leading-snug text-foreground">
+        Il n'y a que quatre places.
+      </p>
+
+      <a href="/realisations" class="group mt-8 inline-flex items-center gap-3 text-base text-lime">
+        Voir les réalisations
+        <span class="transition-transform group-hover:translate-x-1">→</span>
+      </a>
+    </div>
+  </div>
+</section>

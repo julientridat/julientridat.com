@@ -1,0 +1,51 @@
+---
+/**
+ * ARCHIVE — ancienne page d'accueil « J'installe l'IA dans vos outils. En 2 mois. »
+ *
+ * Masquée à la demande de Julien le 2026-08-29, lors du passage à l'offre de
+ * direction marketing externalisée (4 000 € puis 2 500 €/mois). Conservée telle
+ * quelle plutôt que supprimée : elle porte l'ancienne gamme (audit 1 500 €,
+ * TPE/PME/PME+ 8 000-32 000 €) et son hero vidéo, au cas où Julien voudrait
+ * en récupérer une partie.
+ *
+ * « Cachée » = les trois mêmes conditions que /transformation :
+ *   1. aucun `canonical` transmis à BaseLayout → <meta name="robots" content="noindex">
+ *   2. absente de sitemap.xml.ts et de llms.txt.ts
+ *   3. aucun lien depuis Nav.astro / Footer.astro
+ *
+ * ATTENTION — les prix affichés ici sont ceux de l'ANCIENNE offre : ne pas
+ * republier cette page sans les avoir arbitrés.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import HeroCinema from "@/components/sections/HeroCinema.astro";
+import Declencheur from "@/components/sections/Declencheur.astro";
+import Pains from "@/components/sections/Pains.astro";
+import Method from "@/components/sections/Method.astro";
+import Preuve from "@/components/sections/Preuve.astro";
+import Offres from "@/components/sections/Offres.astro";
+import PourQui from "@/components/sections/PourQui.astro";
+import Formation from "@/components/sections/Formation.astro";
+import About from "@/components/sections/About.astro";
+import FinalCTA from "@/components/sections/FinalCTA.astro";
+import Footer from "@/components/Footer.astro";
+
+const title = "Archive — Installation IA en 2 mois | Julien Tridat";
+const description =
+  "Version archivée de la page d'accueil : installation de l'IA dans les outils de l'entreprise en 2 mois. Ancienne offre, conservée hors index.";
+---
+
+<BaseLayout title={title} description={description}>
+  <main class="bg-background text-foreground">
+    <HeroCinema videoSrc="/hero.mp4" mode="video" comparateur />
+    <Declencheur />
+    <Pains />
+    <Method />
+    <Preuve />
+    <Offres />
+    <PourQui />
+    <Formation />
+    <About />
+    <FinalCTA />
+    <Footer home />
+  </main>
+</BaseLayout>

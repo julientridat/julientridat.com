@@ -1,5 +1,5 @@
 ---
-title: "Une association de prévention qui démarche et communique avec ses propres assistants IA"
+title: "Une association de prévention qui démarche et relance avec des moyens qui lui appartiennent"
 client: "Association de prévention (réseau service club, Gironde)"
 secteur: "Associatif"
 typeEntreprise: "Association de prévention"
@@ -10,7 +10,7 @@ stack: ["Projets ChatGPT", "Brevo", "Email sur domaine propre", "Plan d'ancrage"
 besoin: "former"
 enjeu: "Des bénévoles sans budget ni temps, dépendants d'outils gratuits qui peuvent les lâcher — et leur emailing s'est justement retrouvé bloqué du jour au lendemain."
 transformation: "L'association démarche, finance et communique avec des moyens qui lui appartiennent : trois assistants IA prêts à l'emploi et un emailing sur son propre domaine que personne ne peut plus couper."
-pitch: "Trois Projets ChatGPT livrés clés en main, un plan d'ancrage de 3 semaines, puis un emailing sur son propre domaine — configuré pour arriver à destination, 537 contacts prêts. Des moyens qui restent."
+pitch: "Un démarchage et des relances outillés de bout en bout, puis un emailing sur son propre domaine — configuré pour arriver à destination, 537 contacts prêts. Des moyens qui restent, même sans budget."
 resultats:
   - chiffre: "3"
     label: "assistants IA livrés prêts à produire dès la 1re minute"

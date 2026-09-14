@@ -1,4 +1,15 @@
-<div class="mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] text-lime">
-  <span class="h-px w-6 bg-lime"></span>
+---
+interface Props {
+  /** Surtitre posé sur un fond sombre : le violet plein y est illisible, on
+   *  bascule sur le violet clair réservé aux fonds d'encre. */
+  onDark?: boolean;
+}
+const { onDark = false } = Astro.props;
+const teinte = onDark ? "text-violet-soft" : "text-lime";
+const filet = onDark ? "bg-violet-soft" : "bg-lime";
+---
+
+<div class={`mb-6 inline-flex items-center gap-2 text-[11px] uppercase tracking-[0.22em] ${teinte}`}>
+  <span class={`h-px w-6 ${filet}`}></span>
   <slot />
 </div>

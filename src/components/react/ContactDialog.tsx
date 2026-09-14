@@ -1,18 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import {
-  CONTACT_EMAIL,
-  SUPABASE_PUBLISHABLE_KEY,
-  SUPABASE_URL,
-  WEB3FORMS_ACCESS_KEY,
-} from "@/lib/site";
+import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
 /**
  * Formulaire de contact classique (Nom, Email, Message) — îlot unique monté
  * par BaseLayout. S'ouvre au clic sur tout [data-open-contact].
- * Envoi : insert Supabase `contact_messages` (RLS insert-only) ; en cas d'échec,
- * repli sur un lien mailto pré-rempli pour ne jamais être un cul-de-sac.
+ * Envoi : Web3Forms vers CONTACT_EMAIL ; en cas d'échec, repli sur un lien
+ * mailto pré-rempli pour ne jamais être un cul-de-sac.
  */
 export default function ContactDialog() {
   const [open, setOpen] = useState(false);
@@ -99,28 +94,13 @@ export default function ContactDialog() {
       }),
     });
 
-    // Enregistrement (trace) dans Supabase.
-    const dbReq = fetch(`${SUPABASE_URL}/rest/v1/contact_messages`, {
-      method: "POST",
-      headers: {
-        apikey: SUPABASE_PUBLISHABLE_KEY,
-        Authorization: `Bearer ${SUPABASE_PUBLISHABLE_KEY}`,
-        "Content-Type": "application/json",
-        Prefer: "return=minimal",
-      },
-      body: JSON.stringify({
-        name: name.trim(),
-        email: email.trim(),
-        company: company.trim() || null,
-        message: message.trim(),
-      }),
-    });
-
-    const [emailRes, dbRes] = await Promise.allSettled([emailReq, dbReq]);
-    const ok = (r: PromiseSettledResult<Response>) =>
-      r.status === "fulfilled" && r.value.ok;
-    // Succès si l'email OU l'enregistrement passe ; échec seulement si les deux échouent.
-    setStatus(ok(emailRes) || ok(dbRes) ? "done" : "error");
+    // La double écriture Supabase a été retirée : le projet qui la recevait a
+    // été supprimé, son domaine ne résout plus. La garder revenait à lancer une
+    // requête vouée à l'échec à chaque envoi, et à faire croire à une
+    // redondance qui n'existait pas — le « ou » ci-dessous n'avait plus qu'une
+    // branche vivante.
+    const emailRes = await emailReq.catch(() => null);
+    setStatus(emailRes?.ok ? "done" : "error");
   };
 
   if (!open) return null;

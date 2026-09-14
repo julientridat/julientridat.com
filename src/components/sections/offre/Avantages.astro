@@ -1,0 +1,46 @@
+---
+/**
+ * Pourquoi c'est mieux — six tuiles d'une ligne, sur le modèle des
+ * « Membership benefits » de Designjoy. Remplace la section « Ce que ça
+ * remplace » (157 mots) : sa comparaison chiffrée tient ici en une phrase.
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const avantages = [
+  { titre: "Un seul interlocuteur", texte: "Celui qui pense la stratégie fabrique aussi." },
+  { titre: "Un prix fixe", texte: "Le même chaque mois. Rien ne s'ajoute." },
+  { titre: "Livré vite", texte: "48 à 72 heures par demande." },
+  { titre: "Pas de quota", texte: "Autant de demandes que vous voulez." },
+  {
+    titre: "Pause possible",
+    texte: "Saison basse, trésorerie tendue : votre place est gardée.",
+  },
+  { titre: "Tout est à vous", texte: "Charte, gabarits, assistants : sur vos comptes." },
+];
+---
+
+<section id="avantages" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
+  <div class="mx-auto max-w-7xl">
+    <Eyebrow>Pourquoi c'est mieux</Eyebrow>
+    <div>
+      <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+        Moins cher qu'un recrutement.
+        <br />
+        <em class="text-lime">Plus direct qu'une agence.</em>
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
+        Un responsable marketing coûte 55&nbsp;000&nbsp;€ par an, une agence 4&nbsp;000&nbsp;€ par
+        mois. Ici, vous parlez à celui qui fait le travail.
+      </p>
+    </div>
+
+    <ul class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
+      {avantages.map((a) => (
+        <li class="bg-background p-7">
+          <h3 class="text-lg font-medium text-foreground">{a.titre}</h3>
+          <p class="mt-1.5 text-base leading-relaxed text-ink-2">{a.texte}</p>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

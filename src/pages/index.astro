@@ -1,75 +1,91 @@
 ---
+/**
+ * Page d'accueil — offre de direction marketing externalisée.
+ *
+ * Remplace, depuis le 2026-08-29, l'ancienne home « J'installe l'IA dans vos
+ * outils. En 2 mois. » (archivée, hors index, dans /installation-ia).
+ *
+ * Septembre 2026 : ramenée de 11 à 7 blocs sur le modèle de designjoy.co —
+ * hero, comment ça marche, avantages, qui, prix, questions, clôture. Les autres
+ * offres restent dans la nav et le pied de page.
+ */
 import BaseLayout from "@/layouts/BaseLayout.astro";
-import HeroCinema from "@/components/sections/HeroCinema.astro";
-import Declencheur from "@/components/sections/Declencheur.astro";
-import Pains from "@/components/sections/Pains.astro";
-import Method from "@/components/sections/Method.astro";
-import Preuve from "@/components/sections/Preuve.astro";
-import Offres from "@/components/sections/Offres.astro";
-import PourQui from "@/components/sections/PourQui.astro";
-import Formation from "@/components/sections/Formation.astro";
-import About from "@/components/sections/About.astro";
-import FinalCTA from "@/components/sections/FinalCTA.astro";
+import Hero from "@/components/sections/offre/Hero.astro";
+import Fonctionnement from "@/components/sections/offre/Fonctionnement.astro";
+import Avantages from "@/components/sections/offre/Avantages.astro";
+import Bio from "@/components/sections/offre/Bio.astro";
+import Prix from "@/components/sections/offre/Prix.astro";
+import Faq from "@/components/sections/offre/Faq.astro";
+import FinalCta from "@/components/sections/offre/FinalCta.astro";
 import Footer from "@/components/Footer.astro";
 import { SITE } from "@/lib/site";
+import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
 
-// Balises et microdonnées identiques au site d'origine (continuité SEO).
-const title = "Consultant IA Bordeaux — Julien Tridat | Formation & Intégration IA Entreprise";
+// Moins de 60 caractères : au-delà, Google coupe le titre, ou le remplace
+// par un texte de son choix pris dans la page. Les montants sont dans la
+// description, où ils ont la place.
+const title = "Direction marketing externalisée pour PME | Julien Tridat";
 const description =
-  "Consultant et formateur IA à Bordeaux & Bordeaux Métropole. J'installe l'IA dans vos outils et je forme vos équipes en 2 mois. Audit, assistants, formation.";
+  "4 000 € le premier mois : positionnement, identité refaite, plan marketing sur douze mois, assistants IA. Puis 2 500 € par mois, sans engagement.";
 
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
-    name: "Julien Tridat — Consultant IA Bordeaux",
+    "@id": `${SITE.url}/#service`,
+    name: "Direction marketing externalisée — installation puis abonnement",
     description:
-      "Consultant et formateur IA à Bordeaux et Bordeaux Métropole. Audit IA, assistants sur mesure et formation métier en 2 mois.",
+      "Un mois d'installation du système marketing (positionnement et structure d'offre, identité refaite et gabarits, plan marketing sur douze mois, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, demandes non limitées, chacune livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
+    provider: { "@id": `${SITE.url}/#julien-tridat` },
+    areaServed: "FR",
     url: `${SITE.url}/`,
-    areaServed: [
-      { "@type": "City", name: "Bordeaux" },
-      { "@type": "AdministrativeArea", name: "Bordeaux Métropole" },
-      { "@type": "AdministrativeArea", name: "Nouvelle-Aquitaine" },
-      { "@type": "Country", name: "France" },
-    ],
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: "Bordeaux",
-      postalCode: "33000",
-      addressRegion: "Nouvelle-Aquitaine",
-      addressCountry: "FR",
-    },
-    geo: { "@type": "GeoCoordinates", latitude: 44.8378, longitude: -0.5792 },
-    serviceType: [
-      "Audit IA",
-      "Assistants IA sur mesure",
-      "Formation IA métier",
-      "Consultant IA Bordeaux",
-      "Formateur IA Bordeaux Métropole",
+    makesOffer: [
+      {
+        "@type": "Offer",
+        name: "Mois 1 — Installation",
+        price: "4000",
+        priceCurrency: "EUR",
+        description:
+          "Positionnement et structure d'offre, identité refaite avec charte et gabarits, plan marketing sur douze mois, 2 à 3 assistants IA installés dans les outils de l'entreprise, équipes formées. Le client conserve l'intégralité des livrables, y compris s'il s'arrête à l'issue du premier mois.",
+      },
+      {
+        "@type": "Offer",
+        name: "Abonnement mensuel — quatre places",
+        price: "2500",
+        priceCurrency: "EUR",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: "2500",
+          priceCurrency: "EUR",
+          unitText: "mois",
+          valueAddedTaxIncluded: false,
+        },
+        description:
+          "Point stratégique hebdomadaire de 45 minutes, accès direct des équipes, nombre de demandes non limité — elles sont traitées l'une après l'autre, chacune livrée en 48 à 72 heures une fois lancée, sans engagement, résiliable à tout moment. Suspension possible sans perte de place. Le client conserve tous les livrables et l'accès aux outils installés, y compris après résiliation.",
+      },
     ],
   },
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
-    name: "Julien Tridat — Consultant IA Bordeaux",
-    url: `${SITE.url}/`,
+    "@type": "FAQPage",
+    mainEntity: FAQ_ACCUEIL.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.r },
+    })),
   },
 ];
 ---
 
 <BaseLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    <HeroCinema videoSrc="/hero.mp4" mode="video" comparateur />
-    <!-- <VideoMethode /> — en attente de l'asset vidéo, voir VideoMethode.astro -->
-    <Declencheur />
-    <Pains />
-    <Method />
-    <Preuve />
-    <Offres />
-    <PourQui />
-    <Formation />
-    <About />
-    <FinalCTA />
+    <Hero />
+    <Fonctionnement />
+    <Avantages />
+    <Bio />
+    <Prix />
+    <Faq />
+    <FinalCta />
     <Footer home />
   </main>
 </BaseLayout>
