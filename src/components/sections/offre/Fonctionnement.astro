@@ -2,7 +2,7 @@
 /**
  * Comment ça marche — trois étapes, et une MÉCANIQUE qui les montre au lieu
  * de les raconter : une file de demandes qui avance toute seule. Une demande
- * passe « en cours », est livrée (48 à 72 h), sort de la file, et une autre
+ * passe « en cours », est livrée (de J+1 à J+3 selon sa complexité), sort de la file, et une autre
  * arrive derrière. C'est « autant de demandes que vous voulez, traitées
  * l'une après l'autre » rendu visible.
  *
@@ -28,16 +28,18 @@ const etapes = [
   },
   {
     titre: "C'est livré.",
-    texte: "En 48 à 72 heures par demande, avec un point de 45 minutes chaque semaine.",
+    texte: "De J+1 à J+3 selon la demande, avec un point de 45 minutes chaque semaine.",
   },
 ];
 
 // État initial de la file, identique à ce que le script affiche au démarrage.
+// Des demandes ambitieuses, pas des micro-tâches : afficher « 57 h » pour un
+// post LinkedIn faisait peur. Les délais sont en jours, J+1 à J+3.
 const fileInitiale = [
-  "Refonte de la page Offre",
-  "Relance des devis sans réponse",
-  "Post LinkedIn : nouveau client",
-  "Plaquette salon professionnel",
+  "Refonte complète de la page Offre",
+  "Campagne de relance : 3 e-mails",
+  "Présentation commerciale, 15 slides",
+  "Étude de 5 concurrents",
 ];
 
 const livrables = [
@@ -176,21 +178,24 @@ const badge = {
   const compteur = document.getElementById("file-compteur");
   const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  const reserve = [
-    "E-mail aux clients inactifs",
-    "Présentation commerciale",
-    "Assistant IA pour les devis",
-    "Page recrutement",
-    "Fiche produit",
-    "Newsletter du mois",
-    "Visuels pour le salon",
-    "Séquence de relance prospects",
-    "Refonte de la page Offre",
-    "Relance des devis sans réponse",
-    "Post LinkedIn : nouveau client",
-    "Plaquette salon professionnel",
+  // Chaque demande a son délai : J+1 pour les plus directes, J+3 pour les
+  // plus lourdes. Les quatre dernières sont celles affichées au chargement.
+  const reserve: [string, string][] = [
+    ["Landing page salon + formulaire", "J+2"],
+    ["Séquence de prospection LinkedIn", "J+1"],
+    ["Plaquette produit, 8 pages", "J+3"],
+    ["Assistant IA pour rédiger les devis", "J+3"],
+    ["Argumentaire de la nouvelle gamme", "J+1"],
+    ["Kit visuels réseaux sociaux du mois", "J+2"],
+    ["Page recrutement + offre d'emploi", "J+1"],
+    ["Newsletter clients + visuels", "J+2"],
+    ["Refonte complète de la page Offre", "J+3"],
+    ["Campagne de relance : 3 e-mails", "J+1"],
+    ["Présentation commerciale, 15 slides", "J+2"],
+    ["Étude de 5 concurrents", "J+2"],
   ];
-  const delais = ["48 h", "52 h", "57 h", "63 h", "49 h", "70 h"];
+  // Délais des quatre lignes présentes au chargement, dans l'ordre.
+  const delaisInitiaux = ["J+3", "J+1", "J+2", "J+2"];
 
   const CLS_ATTENTE = "border border-line text-ink-3";
   const CLS_COURS = "bg-lime/10 text-lime";
@@ -245,7 +250,8 @@ const badge = {
       // 1. Livrée.
       const b = badgeDe(premier);
       b.className = `${BASE_BADGE} ${CLS_LIVRE}`;
-      b.textContent = `✓ Livré en ${delais[prochain % delais.length]}`;
+      const delai = delaisParLigne.get(premier) ?? "J+2";
+      b.textContent = `✓ Livré à ${delai}`;
       b.animate([{ transform: "scale(.85)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }], {
         duration: 420,
         easing: "ease-out",
@@ -260,7 +266,9 @@ const badge = {
       await new Promise((r) => setTimeout(r, 850));
 
       // 2. Elle sort, une nouvelle arrive en bas.
-      const arrivee = nouvelleLigne(reserve[prochain % reserve.length]);
+      const [titre, delaiArrivee] = reserve[prochain % reserve.length];
+      const arrivee = nouvelleLigne(titre);
+      delaisParLigne.set(arrivee, delaiArrivee);
       prochain += 1;
       liste.appendChild(arrivee);
       arrivee.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], {
@@ -283,6 +291,10 @@ const badge = {
       lancer(liste.children[0]);
       occupe = false;
     };
+
+    // Le délai de chaque ligne, retrouvé au moment de sa livraison.
+    const delaisParLigne = new WeakMap<Element, string>();
+    [...liste.children].forEach((li, i) => delaisParLigne.set(li, delaisInitiaux[i] ?? "J+2"));
 
     // Démarrage : la barre de la première ligne se remplit.
     const premiere = liste.children[0];

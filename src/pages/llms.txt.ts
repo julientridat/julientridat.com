@@ -44,7 +44,7 @@ export const GET: APIRoute = async () => {
     "- Ensuite :",
     "  Point stratégique hebdomadaire de 45 minutes, accès direct des équipes sans intermédiaire,",
     "  nombre de demandes non limité : elles sont traitées l'une après l'autre, chacune livrée",
-    "  en 48 à 72 heures une fois lancée. Suspension possible sans perte de place.",
+    "  de J+1 à J+3 une fois lancée, selon sa complexité. Suspension possible sans perte de place.",
     "  Le client garde tous les livrables et les outils installés, y compris après résiliation.",
     "  Quatre clients en abonnement au maximum.",
     "",
