@@ -330,8 +330,10 @@ export default function DiagnosticDialog() {
               Merci {name.trim().split(" ")[0] ?? ""}. Je lis vos réponses moi-même et je reviens vers
               vous, en général sous 24-48 h.
             </p>
-            <button type="button" onClick={close} className="mt-8 cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90">
-              Fermer
+            {/* data-open-booking : l'écouteur global de BookingDialog ouvre la
+                réservation pendant que ce questionnaire se ferme. */}
+            <button type="button" data-open-booking onClick={close} className="mt-8 cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90">
+              {"Réserver un appel, 20\u00a0minutes"}
             </button>
           </div>
         ) : question ? (
