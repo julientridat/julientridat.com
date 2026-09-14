@@ -5,8 +5,8 @@
  */
 export const FAQ_ACCUEIL = [
   {
-    q: "Pourquoi 4 000 € le premier mois ?",
-    r: "Parce qu'un mois entier y passe, et qu'il produit le socle. Sans lui, on pourrait produire tout de suite — mais sur des bases que personne n'a arrêtées, et il faudrait tout reprendre ensuite. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
+    q: "Et l'installation du premier mois ?",
+    r: "Elle est comprise dans les 2 500 € : positionnement, identité, plan marketing sur douze mois, assistants IA. Un mois entier y passe, parce que c'est le socle — sans lui, il faudrait tout reprendre ensuite. Vous en gardez l'intégralité, même si vous vous arrêtez à l'issue du premier mois.",
   },
   {
     q: "Combien de demandes puis-je faire ?",

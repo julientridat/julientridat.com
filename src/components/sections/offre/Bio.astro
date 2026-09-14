@@ -1,8 +1,14 @@
 ---
 /**
- * Qui je suis — fusion des anciennes sections « Mes clients » et « Qui je
- * suis » (plus de 300 mots à elles deux). Un paragraphe, et la rareté en
- * chute : c'est l'équivalent du « limited roster » de Designjoy.
+ * Qui je suis — deux temps, et rien d'autre : les grandes marques d'où
+ * vient le métier, puis ce que j'en fais aujourd'hui pour les PME. La
+ * version précédente mêlait le marketing et la formation (300 formés, une
+ * cinquantaine d'organisations) : ce n'est pas l'offre vendue ici. Les
+ * formations citées le sont comme références de marques, pas comme offre.
+ * La rareté reste en chute — l'équivalent du « limited roster » de Designjoy.
+ *
+ * Pas de lien vers /realisations : ce portfolio est entièrement orienté
+ * formation, il ne prouve rien pour l'offre marketing.
  */
 import { Image } from "astro:assets";
 import Eyebrow from "@/components/Eyebrow.astro";
@@ -30,20 +36,23 @@ import julien from "@/assets/julien.jpg";
         <em class="text-lime">Un marketeur qui construit ce qu'il conseille.</em>
       </h2>
 
-      <p class="mt-8 text-lg leading-relaxed text-ink-2">
-        Vingt ans de marketing, dont huit aux côtés de dirigeants de PME. Plus de 300 dirigeants
-        et cadres formés à l'IA, dans une cinquantaine d'organisations, dont Dassault&nbsp;Systèmes
-        et SNCF&nbsp;Fret. Deux clients aujourd'hui&nbsp;: l'un depuis quatre ans, l'autre depuis deux.
-      </p>
+      <div class="mt-8 space-y-5 text-lg leading-relaxed text-ink-2">
+        <p>
+          J'ai travaillé pour Publicis, auprès de marques comme Heineken et L'Oréal. J'ai formé les
+          équipes de Dassault&nbsp;Systèmes et de Lagardère&nbsp;Travel&nbsp;Retail.
+        </p>
+        <p>
+          <strong class="font-medium text-foreground">
+            Aujourd'hui, augmenté par l'IA, j'accompagne des PME dans leur stratégie de
+            croissance
+          </strong>{" "}
+          — je deviens leur monsieur marketing et leur monsieur IA maison.
+        </p>
+      </div>
 
       <p class="mt-6 font-serif text-2xl italic leading-snug text-foreground">
         Il n'y a que quatre places.
       </p>
-
-      <a href="/realisations" class="group mt-8 inline-flex items-center gap-3 text-base text-lime">
-        Voir les réalisations
-        <span class="transition-transform group-hover:translate-x-1">→</span>
-      </a>
     </div>
   </div>
 </section>

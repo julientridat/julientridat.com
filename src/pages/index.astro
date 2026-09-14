@@ -26,28 +26,20 @@ import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
 // description, où ils ont la place.
 const title = "Direction marketing externalisée pour PME | Julien Tridat";
 const description =
-  "4 000 € le premier mois : positionnement, identité refaite, plan marketing sur douze mois, assistants IA. Puis 2 500 € par mois, sans engagement.";
+  "2 500 € par mois dès le premier, installation comprise : positionnement, identité, plan marketing sur douze mois, assistants IA. Sans engagement.";
 
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "@id": `${SITE.url}/#service`,
-    name: "Direction marketing externalisée — installation puis abonnement",
+    name: "Direction marketing externalisée — abonnement, installation comprise",
     description:
-      "Un mois d'installation du système marketing (positionnement et structure d'offre, identité refaite et gabarits, plan marketing sur douze mois, assistants IA installés dans les outils, équipes formées), puis un abonnement mensuel sans engagement : point stratégique hebdomadaire de 45 minutes, demandes non limitées, chacune livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
+      "Un abonnement mensuel dont le premier mois installe le système marketing (positionnement et structure d'offre, identité refaite et gabarits, plan marketing sur douze mois, assistants IA installés dans les outils, équipes formées), puis le fait tourner, sans engagement : point stratégique hebdomadaire de 45 minutes, demandes non limitées, chacune livrée en 48-72 h, site, campagnes, contenus, parcours de vente, extension des assistants service par service. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/`,
     makesOffer: [
-      {
-        "@type": "Offer",
-        name: "Mois 1 — Installation",
-        price: "4000",
-        priceCurrency: "EUR",
-        description:
-          "Positionnement et structure d'offre, identité refaite avec charte et gabarits, plan marketing sur douze mois, 2 à 3 assistants IA installés dans les outils de l'entreprise, équipes formées. Le client conserve l'intégralité des livrables, y compris s'il s'arrête à l'issue du premier mois.",
-      },
       {
         "@type": "Offer",
         name: "Abonnement mensuel — quatre places",
@@ -61,7 +53,7 @@ const jsonLd = [
           valueAddedTaxIncluded: false,
         },
         description:
-          "Point stratégique hebdomadaire de 45 minutes, accès direct des équipes, nombre de demandes non limité — elles sont traitées l'une après l'autre, chacune livrée en 48 à 72 heures une fois lancée, sans engagement, résiliable à tout moment. Suspension possible sans perte de place. Le client conserve tous les livrables et l'accès aux outils installés, y compris après résiliation.",
+          "Dès le premier mois, installation comprise : positionnement et structure d'offre, identité refaite avec charte et gabarits, plan marketing sur douze mois, 2 à 3 assistants IA installés, équipes formées. Ensuite : point stratégique hebdomadaire de 45 minutes, accès direct des équipes, nombre de demandes non limité — elles sont traitées l'une après l'autre, chacune livrée en 48 à 72 heures une fois lancée, sans engagement, résiliable à tout moment. Suspension possible sans perte de place. Le client conserve tous les livrables et l'accès aux outils installés, y compris après résiliation.",
       },
     ],
   },
