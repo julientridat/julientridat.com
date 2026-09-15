@@ -85,6 +85,15 @@
   em { font-family: var(--font-serif); font-style: italic; font-weight: 400; }
   ::selection { background: var(--lime); color: #FBFBFC; }
   html { scroll-behavior: smooth; }
+
+  /* Règle typographique de Julien : une fin de phrase ne tombe jamais seule
+     en début de ligne. « pretty » interdit le mot orphelin en fin de bloc ;
+     « balance » équilibre les titres courts. Les fins de phrase au milieu
+     d'un paragraphe, que ces règles ne voient pas, sont réglées au cas par
+     cas dans le texte (coupure ou espace insécable). Les titres h1, calés à
+     la main ligne par ligne, n'y sont pas soumis. */
+  p, li, blockquote, figcaption, dd, summary { text-wrap: pretty; }
+  h2, h3, h4 { text-wrap: balance; }
 }
 
 /* Corps de texte des artefacts (réalisations, notes) — sur papier, plus prose-invert */
