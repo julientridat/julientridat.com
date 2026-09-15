@@ -1,81 +1,95 @@
 ---
 /**
- * Le prix — une seule carte, sur le modèle de Designjoy : deux montants
- * lisibles d'un coup d'œil, sept lignes incluses, et à côté ce qui rassure
- * (l'équivalent de « Pause anytime / Try it for a week »).
+ * Le prix — seule section sombre au milieu de la page : c'est le moment de
+ * la décision, il doit rompre avec le parcours clair (hero et clôture sont
+ * les deux autres). Une carte, un montant — 2 500 € dès le premier mois,
+ * décision de lancement de septembre 2026 —, six lignes incluses, et à côté
+ * ce qui rassure.
  *
  * Aucune garantie de remboursement n'est écrite : il n'en existe pas. Ce qui
  * rassure ici est vrai — les livrables restent, la pause garde la place.
+ *
+ * `isolate` : sans stacking context, les halos en -z-10 passeraient derrière
+ * le fond et disparaîtraient.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 
 const inclus = [
-  "Positionnement et offre",
-  "Identité et gabarits",
-  "Plan marketing sur douze mois",
-  "Assistants IA installés, équipes formées",
-  "Demandes illimitées, 48 à 72 h chacune",
+  "Starter pack : audit, plan sur 12 mois, positionnement, charte, gabarits",
+  "Un livrable à date chaque semaine",
+  "Demandes supplémentaires, livrées de J+1 à J+3",
   "Un point de 45 minutes chaque semaine",
-  "Pause ou arrêt à tout moment",
+  "Contenus et fichiers sources, à vous",
+  "Pause après le starter pack, arrêt à tout moment",
 ];
-
-const montant = "font-serif text-[clamp(2.75rem,6vw,4.25rem)] italic leading-[0.9] tracking-tight";
-const surTitre = "text-[11px] uppercase tracking-[0.22em] text-ink-3";
 ---
 
-<section id="offres" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
+<section
+  id="offres"
+  class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-24"
+>
+  <div
+    class="pointer-events-none absolute inset-0 -z-10"
+    style="background: radial-gradient(45% 55% at 30% 55%, rgba(108,76,241,0.28), transparent 70%), radial-gradient(35% 40% at 85% 10%, rgba(185,166,255,0.10), transparent 70%);"
+  >
+  </div>
+
   <div class="mx-auto max-w-7xl">
-    <Eyebrow>Le prix</Eyebrow>
-    <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-      Une formule. <em class="text-lime">Sans engagement.</em>
-    </h2>
+    <div data-reveal>
+      <Eyebrow onDark>Le prix</Eyebrow>
+      <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]">
+        Une formule. <em class="text-violet-soft">Sans engagement.</em>
+      </h2>
+    </div>
 
-    <div class="mt-10 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)]">
-      <div class="rounded-2xl border border-lime bg-lime/[0.05] p-8 md:p-10">
-        <div class="flex flex-wrap items-end gap-x-6 gap-y-4">
-          <div>
-            <div class={surTitre}>Le premier mois</div>
-            <div class="mt-3 flex items-baseline gap-2">
-              <span class={`${montant} text-foreground`}>4&nbsp;000&nbsp;€</span>
-              <span class="text-base text-ink-3">HT</span>
-            </div>
+    <div class="mt-12 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.55fr)_minmax(0,1fr)]">
+      <!-- Bordure en dégradé violet : un fond dégradé dans un cadre de 1 px. -->
+      <div
+        data-reveal
+        style="--reveal-delay: 100ms"
+        class="rounded-[1.75rem] bg-gradient-to-br from-violet-soft/70 via-lime/60 to-lime/10 p-px shadow-[0_40px_120px_-40px_rgba(108,76,241,0.75)]"
+      >
+        <div class="h-full rounded-[calc(1.75rem-1px)] bg-[#17151f] p-8 md:p-11">
+          <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">
+            Chaque mois, dès le premier
           </div>
-          <span class="pb-2 font-serif text-2xl italic text-ink-3">puis</span>
-          <div>
-            <div class={surTitre}>Chaque mois</div>
-            <div class="mt-3 flex items-baseline gap-2">
-              <span class={`${montant} text-lime`}>2&nbsp;500&nbsp;€</span>
-              <span class="text-base text-ink-3">HT / mois</span>
-            </div>
+          <div class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <span class="font-serif text-[clamp(4.5rem,11vw,8.5rem)] italic leading-[0.82] tracking-tight text-white">
+              2&nbsp;500&nbsp;€
+            </span>
+            <span class="text-base text-white/60">HT / mois, starter pack compris</span>
           </div>
+
+          <ul class="mt-10 grid gap-x-10 border-t border-white/10 pt-7 sm:grid-cols-2">
+            {inclus.map((i) => (
+              <li class="flex gap-3 py-2 text-base leading-relaxed text-white/85">
+                <span class="text-violet-soft" aria-hidden="true">✓</span>
+                {i}
+              </li>
+            ))}
+          </ul>
         </div>
-
-        <ul class="mt-8 grid gap-x-8 border-t border-line pt-6 sm:grid-cols-2">
-          {inclus.map((i) => (
-            <li class="flex gap-3 py-2 text-base leading-relaxed text-ink-2">
-              <span class="text-lime" aria-hidden="true">✓</span>
-              {i}
-            </li>
-          ))}
-        </ul>
       </div>
 
-      <div class="flex flex-col gap-5">
-        <div class="rounded-2xl border border-line bg-background p-7">
-          <h3 class="text-lg font-medium text-foreground">Vous gardez tout.</h3>
-          <p class="mt-1.5 text-base leading-relaxed text-ink-2">
+      <div data-reveal style="--reveal-delay: 200ms" class="flex flex-col gap-5">
+        <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
+          <h3 class="text-lg font-medium text-white">Vous gardez tout.</h3>
+          <p class="mt-1.5 text-base leading-relaxed text-white/70">
             Si vous arrêtez après le premier mois, le positionnement, l'identité et le plan vous
             restent.
           </p>
         </div>
-        <div class="rounded-2xl border border-line bg-background p-7">
-          <h3 class="text-lg font-medium text-foreground">Pause possible.</h3>
-          <p class="mt-1.5 text-base leading-relaxed text-ink-2">Votre place est gardée.</p>
+        <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
+          <h3 class="text-lg font-medium text-white">Pause possible.</h3>
+          <p class="mt-1.5 text-base leading-relaxed text-white/70">
+            Deux semaines de travail, puis rien pendant trois mois&nbsp;? Les deux semaines
+            restantes vous attendent, et votre place aussi.
+          </p>
         </div>
         <div class="mt-auto flex flex-col items-start gap-4 pt-2">
-          <CtaButton ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
-          <p class="text-sm text-ink-3">Au-delà de 30&nbsp;salariés&nbsp;: sur devis.</p>
+          <CtaButton onDark ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
+          <p class="text-sm text-white/55">Au-delà de 30&nbsp;salariés&nbsp;: sur devis. Quatre places.</p>
         </div>
       </div>
     </div>

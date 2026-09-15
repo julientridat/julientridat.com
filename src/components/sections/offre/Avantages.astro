@@ -1,29 +1,28 @@
 ---
 /**
- * Pourquoi c'est mieux — six tuiles d'une ligne, sur le modèle des
- * « Membership benefits » de Designjoy. Remplace la section « Ce que ça
- * remplace » (157 mots) : sa comparaison chiffrée tient ici en une phrase.
+ * Pourquoi c'est mieux — six tuiles, chacune portée par un grand signe en
+ * serif italique (le chiffre fait le relief, le texte confirme). La tuile
+ * pleine est le plan : un dirigeant sans équipe marketing ne sait pas quoi
+ * demander — c'est le plan de 12 semaines qui distingue l'offre d'une file
+ * de demandes ouverte.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 
 const avantages = [
-  { titre: "Un seul interlocuteur", texte: "Celui qui pense la stratégie fabrique aussi." },
-  { titre: "Un prix fixe", texte: "Le même chaque mois. Rien ne s'ajoute." },
-  { titre: "Livré vite", texte: "48 à 72 heures par demande." },
-  { titre: "Pas de quota", texte: "Autant de demandes que vous voulez." },
-  {
-    titre: "Pause possible",
-    texte: "Saison basse, trésorerie tendue : votre place est gardée.",
-  },
-  { titre: "Tout est à vous", texte: "Charte, gabarits, assistants : sur vos comptes." },
+  { signe: "1", titre: "Un seul interlocuteur", texte: "Celui qui pense la stratégie fabrique aussi." },
+  { signe: "+0 €", titre: "Un prix fixe", texte: "Le même chaque mois. Rien ne s'ajoute." },
+  { signe: "J+1", titre: "Demandes livrées vite", texte: "Hors du plan : de J+1 à J+3 selon la demande." },
+  { signe: "3 mois", titre: "Tout est planifié", texte: "Chaque semaine, un livrable à date.", plein: true },
+  { signe: "pause", titre: "Pause possible", texte: "Vous ne consommez que les semaines utilisées. Le reste vous attend." },
+  { signe: "100 %", titre: "Tout est à vous", texte: "Contenus, charte, gabarits : tout ce qui est produit vous reste." },
 ];
 ---
 
-<section id="avantages" class="border-t border-line bg-card px-6 py-12 md:px-12 md:py-16">
+<section id="avantages" class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto max-w-7xl">
-    <Eyebrow>Pourquoi c'est mieux</Eyebrow>
-    <div>
-      <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
+    <div data-reveal>
+      <Eyebrow>Pourquoi c'est mieux</Eyebrow>
+      <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
         Moins cher qu'un recrutement.
         <br />
         <em class="text-lime">Plus direct qu'une agence.</em>
@@ -34,11 +33,37 @@ const avantages = [
       </p>
     </div>
 
-    <ul class="mt-10 grid gap-px overflow-hidden rounded-2xl border border-line bg-line sm:grid-cols-2 lg:grid-cols-3">
-      {avantages.map((a) => (
-        <li class="bg-background p-7">
-          <h3 class="text-lg font-medium text-foreground">{a.titre}</h3>
-          <p class="mt-1.5 text-base leading-relaxed text-ink-2">{a.texte}</p>
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      {avantages.map((a, i) => (
+        <li
+          data-reveal
+          style={`--reveal-delay: ${i * 70}ms`}
+          class={`group flex flex-col rounded-3xl p-7 transition duration-300 md:p-8 ${
+            a.plein
+              ? "bg-lime text-white shadow-[0_30px_70px_-30px_rgba(108,76,241,0.7)]"
+              : "border border-line bg-background hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)]"
+          }`}
+        >
+          {/* Deux signes n'existent pas dans le serif italique : la pause est
+              dessinée (deux barres), l'infini passe en sans-serif. */}
+          {a.signe === "pause" ? (
+            <span class="flex h-[clamp(3rem,5vw,4.25rem)] items-center gap-2.5" aria-hidden="true">
+              <i class="block h-[70%] w-3 rounded-full bg-lime"></i>
+              <i class="block h-[70%] w-3 rounded-full bg-lime"></i>
+            </span>
+          ) : (
+            <span
+              class={`leading-[0.9] tracking-tight ${
+                a.signe === "∞"
+                  ? "font-sans text-[clamp(3.6rem,6vw,5rem)] font-light"
+                  : "font-serif text-[clamp(3rem,5vw,4.25rem)] italic"
+              } ${a.plein ? "text-white" : "text-lime"}`}
+            >
+              {a.signe}
+            </span>
+          )}
+          <h3 class={`mt-8 text-lg font-medium ${a.plein ? "text-white" : "text-foreground"}`}>{a.titre}</h3>
+          <p class={`mt-1.5 text-base leading-relaxed ${a.plein ? "text-white/85" : "text-ink-2"}`}>{a.texte}</p>
         </li>
       ))}
     </ul>

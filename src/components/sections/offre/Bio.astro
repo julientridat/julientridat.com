@@ -1,18 +1,37 @@
 ---
 /**
- * Qui je suis — fusion des anciennes sections « Mes clients » et « Qui je
- * suis » (plus de 300 mots à elles deux). Un paragraphe, et la rareté en
- * chute : c'est l'équivalent du « limited roster » de Designjoy.
+ * Qui je suis — deux temps, et rien d'autre : les grandes marques d'où
+ * vient le métier, puis ce que j'en fais aujourd'hui pour les PME. La
+ * version précédente mêlait le marketing et la formation (300 formés, une
+ * cinquantaine d'organisations) : ce n'est pas l'offre vendue ici. Les
+ * formations citées le sont comme références de marques, pas comme offre.
+ * La rareté reste en chute — l'équivalent du « limited roster » de Designjoy.
+ *
+ * Pas de lien vers /realisations : ce portfolio est entièrement orienté
+ * formation, il ne prouve rien pour l'offre marketing.
  */
 import { Image } from "astro:assets";
 import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
+
+const references = [
+  "Publicis",
+  "Heineken",
+  "L'Oréal",
+  "Dassault Systèmes",
+  "SNCF Fret",
+  "Lagardère Travel Retail",
+  "Groupe LEH",
+  "La Maison Neuve",
+  "Maison des Vins et des Spiritueux",
+  "Le Nouveau Bélier",
+];
 ---
 
-<section id="about" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
+<section id="about" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto grid max-w-7xl items-center gap-10 md:grid-cols-[minmax(0,0.8fr)_minmax(0,1.4fr)] md:gap-16">
     <!-- 810 px : largeur native du recadrage, ne pas demander plus. -->
-    <div class="overflow-hidden rounded-2xl border border-line">
+    <div data-reveal class="overflow-hidden rounded-3xl border border-line">
       <Image
         src={julien}
         alt="Julien Tridat"
@@ -22,7 +41,7 @@ import julien from "@/assets/julien.jpg";
       />
     </div>
 
-    <div>
+    <div data-reveal style="--reveal-delay: 120ms">
       <Eyebrow>Qui je suis</Eyebrow>
       <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
         Julien Tridat.
@@ -30,20 +49,39 @@ import julien from "@/assets/julien.jpg";
         <em class="text-lime">Un marketeur qui construit ce qu'il conseille.</em>
       </h2>
 
-      <p class="mt-8 text-lg leading-relaxed text-ink-2">
-        Vingt ans de marketing, dont huit aux côtés de dirigeants de PME. Plus de 300 dirigeants
-        et cadres formés à l'IA, dans une cinquantaine d'organisations, dont Dassault&nbsp;Systèmes
-        et SNCF&nbsp;Fret. Deux clients aujourd'hui&nbsp;: l'un depuis quatre ans, l'autre depuis deux.
-      </p>
+      <div class="mt-8 space-y-5 text-lg leading-relaxed text-ink-2">
+        <p>
+          J'ai travaillé pour Publicis, auprès de marques comme Heineken et L'Oréal. J'ai formé les
+          équipes de Dassault&nbsp;Systèmes et de Lagardère&nbsp;Travel&nbsp;Retail.
+        </p>
+        <p>
+          <strong class="font-medium text-foreground">
+            Aujourd'hui, augmenté par l'IA, j'accompagne des PME dans leur stratégie de
+            croissance
+          </strong>{" "}
+          — je deviens leur monsieur marketing et leur monsieur IA maison.
+        </p>
+      </div>
 
       <p class="mt-6 font-serif text-2xl italic leading-snug text-foreground">
         Il n'y a que quatre places.
       </p>
-
-      <a href="/realisations" class="group mt-8 inline-flex items-center gap-3 text-base text-lime">
-        Voir les réalisations
-        <span class="transition-transform group-hover:translate-x-1">→</span>
-      </a>
     </div>
+  </div>
+
+  <!-- Références en noms typographiés, pas en logos : aucun visuel de marque
+       à licencier, et le texte reste lisible par les moteurs. -->
+  <div data-reveal class="mx-auto mt-14 max-w-7xl border-t border-line pt-8 md:mt-16">
+    <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Références</p>
+    <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 lg:gap-x-8">
+      {references.map((r, i) => (
+        <li class="flex items-center gap-6 lg:gap-8">
+          <span class="text-[clamp(1.2rem,2vw,1.7rem)] font-medium tracking-[-0.03em] text-ink-3 transition-colors hover:text-foreground">
+            {r}
+          </span>
+          {i < references.length - 1 && <span class="hidden text-lime/50 sm:inline">✦</span>}
+        </li>
+      ))}
+    </ul>
   </div>
 </section>
