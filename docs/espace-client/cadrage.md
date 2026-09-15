@@ -185,6 +185,44 @@ lien magique), `chantiers`, `taches`, `actions_client` (« à vous de jouer »),
 client ou table dédiée). Chaque ligne porte son `client_id` ; la RLS garantit que chacun
 ne voit que les siennes.
 
+## Le tableau — la version Trello (candidate pour remplacer les deux maquettes)
+
+Retour de Julien sur l'ensemble : « moins simple et clair que Trello, qui était ma
+référence ». Le diagnostic tient en trois lignes — Trello a **un objet** (la carte),
+**une métaphore** (la colonne est l'état) et **un geste** (déplacer) ; nous avions trois
+écrans, cinq types d'objets, une file, un composeur et des formulaires. D'où
+[`tableau.html`](tableau.html) : un tableau unique, et **le même tableau pour les deux**.
+
+- **Cinq colonnes, dans le sens du travail** : Demandes · Prévu · En cours · Chez vous /
+  Chez le client · Fait (cette semaine en tête, « avant » dessous).
+- **Une carte = une chose à faire**, colorée par chantier (le bandeau de couleur, comme
+  une étiquette Trello), avec ses puces (client, chantier, mois ou échéance, livrable,
+  âge quand elle est chez le client). Ouverte, la carte porte le pourquoi, « comment ça se
+  passe » (les jalons de la carte de process), les commentaires — et, côté Julien, les
+  boutons pour la déplacer.
+- **Deux faces, un tableau.** Julien déplace les cartes (glisser, ou depuis la carte) et
+  filtre par place ; il voit tous ses clients sur un seul tableau. Le client voit le même
+  tableau réduit à ses cartes, sans puce client, et **n'agit que dans « Chez vous »** :
+  Valider, Demander un ajustement, Répondre, ou trancher un arbitrage à deux boutons. Sa
+  phrase d'accueil compte ses cartes (« 3 cartes chez vous ») et descend à chaque geste.
+- **Les demandes sont des cartes** : le client en pose une en une ligne, l'assistant la
+  cadre (type, premier jalon) ; Julien la traite depuis la carte — Prévoir, Point mensuel
+  (elle se replie sous la colonne, « 2 au point mensuel du 5 novembre »), Faire arbitrer
+  (elle réapparaît chez le client avec ses deux issues).
+- **Le point de lundi n'est plus un écran** : un bouton le tire des colonnes (Parti = Fait
+  cette semaine, Chez vous, En cours), à relire et copier — ou à ne pas envoyer, puisque le
+  tableau est déjà chez le client.
+- **La frise de période** reste, réduite à une ligne en tête (« Semaine 4 sur 13 »).
+
+Ce qui sort du tableau (une page « Période », rarement ouverte) : engagements de fin de
+période, compteur du mois, relevé de décisions, vie de la place. Le modèle de données ne
+change pas : une carte est une ligne de `taches` ou de `demandes`, la colonne est son
+statut, « Chez le client » est une `actions_client`.
+
+À trancher par Julien : le tableau remplace-t-il l'espace client une colonne (la page
+« process » avec sa frise animée) et la console à trois écrans, ou seulement la console ?
+La maquette permet de comparer les deux faces au même endroit.
+
 ## La console — l'interface de Julien
 
 Maquette cliquable : [`console.html`](console.html) — trois écrans (En cours, Le point, La place), état simulé au lundi 12 octobre, gestes fonctionnels. Spécification issue d'un panel de trois approches (miroir éditable, bannette, rituel du lundi) jugées par trois lentilles (Julien, le client, l'architecte) — « Le Lundi » retenue à l'unanimité, greffée des meilleures idées des deux autres.
