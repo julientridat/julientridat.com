@@ -89,23 +89,23 @@ contrat, même interface :
   mensuel (« on ajoute et on retire, on n'empile pas ») et l'interface s'organise
   par chantier. C'est ce que montre la maquette, avec LEH en bêta.
 
-Ce que le mode mission ajoute :
+Ce que le mode mission ajoute — dans une page **unique, en une colonne**, pensée pour
+être lue en trente secondes :
 
-- **Un bloc par mission, avec son code couleur** (violet, magenta, teal, bleu — l'extension
-  fonctionnelle du design system, le « tout bleu et blanc » ne portait pas quatre chantiers) :
-  objectif de fin de période, avancement, tâches par mois (faite / en cours / à venir /
-  **à vous** en ambre), livrables à valider en ligne, fil de commentaires propre au chantier.
-- **Une mind map de navigation** en tête de page : le trimestre au centre, les missions
-  autour, chacune avec sa couleur, son avancement et un point ambre si une action attend
-  le client. Un clic mène au bloc. En mobile, elle devient une grille de vignettes.
-- **« En attente de votre côté »** — la carte ambre en tête de colonne : les points du
-  « ce dont j'ai besoin » du plan qui bloquent la production, avec leur échéance. C'est
-  l'anti-goulot d'étranglement : le plan LEH le dit, le risque n'est jamais la production,
-  c'est le délai de validation.
-- **Le point de lundi** — le point écrit hebdomadaire du plan, structuré tel quel :
+- **La règle de rôle, énoncée et tenue** : tout ce qui se clique est pour le client.
+  Ses actions sont regroupées en tête dans « À vous de jouer » — valider un livrable,
+  répondre à une question qui bloque la production — une carte par action, un bouton par
+  carte, et la phrase d'accueil compte ce qui reste (« Trois choses vous attendent…
+  Rien ne vous attend »). Le reste de la page est en lecture : « c'est mon terrain ».
+- **Un accordéon par mission, avec son code couleur** (orange, magenta, teal, bleu —
+  le violet reste réservé à la marque et aux actions client) : replié, une ligne d'état
+  et une barre d'avancement ; ouvert, l'objectif de fin de période, les tâches par mois
+  et le fil de commentaires du chantier. La sensation de simplicité vient de là : rien
+  ne s'affiche tant qu'on ne l'a pas demandé.
+- **Le point de lundi** — le point écrit hebdomadaire du plan, tel quel :
   parti / en validation / engagé, chaque ligne rattachée à sa mission par sa couleur.
-- **Les engagements de fin de période** — la liste « au 15 décembre » du plan, avec l'état
-  de chacun (fait / en cours / à venir). C'est là-dessus qu'on se juge au bilan.
+- **La période en bref** — les engagements du 15 décembre repliés en un lien discret,
+  et une ligne unique pour le mois (« 19 h à vos côtés · 12 campagnes »).
 
 ⚠️ La maquette contient des données réelles du client bêta (noms, chantiers). Tant que le
 repo n'est pas strictement privé, prévoir une variante anonymisée avant tout partage.
@@ -160,13 +160,15 @@ récurrent, souveraineté totale.
 
 ## Ce que la maquette montre
 
-`docs/espace-client/maquette.html` — un fichier autonome (fontes embarquées), design
-system « Navy ink on cool marble » (référence Calendly, choix de Julien) : canvas
-`#F8F9FB`, encre marine `#0B3558`, bleu signal `#006BFF` pour les actions, cartes
-blanches à ombres bleutées (rayon 24 px, contrôles 8 px), Manrope en substitut de
-Gilroy, blobs magenta/cyan en atmosphère discrète.
-Interactions fonctionnelles : naviguer par la mind map, commenter chaque mission, valider
-un livrable ou demander un ajustement, poster une demande via l'assistant (jalons annoncés,
+`docs/espace-client/maquette.html` — un fichier autonome (fontes embarquées), à la
+**charte Julien Tridat « pages de vente »** : papier `#F1F2F4`, encre `#111216`, violet
+`#6C4CF1` en accent unique (kickers, emphases serif italique, actions), Geist +
+Instrument Serif, cartes blanches rayon 22 px, boutons pilule encre → violet au survol.
+Les quatre missions portent chacune un code couleur (orange, magenta, teal, bleu),
+jamais le violet — il signale ce qui appartient au client.
+Interactions fonctionnelles : régler chaque carte « À vous de jouer » (valider,
+demander un ajustement, répondre — la phrase d'accueil se met à jour), ouvrir les
+missions, commenter chacune, poster une demande via l'assistant (jalons annoncés,
 récapitulatif, transmission aux arbitrages du point mensuel). Données du client bêta,
 état simulé au 12 octobre 2026.
 Pour tester l'assistant : écrire par exemple « il nous faut une landing page », « une
