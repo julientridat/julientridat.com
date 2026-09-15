@@ -1,31 +1,69 @@
 ---
 /**
- * Comment ça marche — trois étapes d'une ligne, sur le modèle de Designjoy
- * (Subscribe / Request / Receive). La version précédente faisait 477 mots :
- * deux phases, cartes de preuves, tuile agenda, encadré. Le détail des
- * livrables vit désormais dans la carte de prix et dans la FAQ.
+ * Comment ça marche — en deux temps, comme chez LEH.
+ *
+ *   1. Le starter pack, le premier mois : quatre semaines presque toujours
+ *      identiques d'un client à l'autre, chacune avec ce que le client reçoit.
+ *   2. Ensuite, chaque semaine un livrable à date, tiré du plan d'action ;
+ *      les demandes supplémentaires s'intercalent (J+1 à J+3). Aucune promesse
+ *      de volume : c'est le plan qui porte la valeur, pas une file ouverte.
+ *
+ * La file animée montre ce second temps : des livrables du plan qui sortent
+ * à leur date, et des demandes qui viennent s'intercaler. Décorative
+ * (aria-hidden), figée sans JS ou en mouvement réduit.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 
-const etapes = [
+const starterPack = [
   {
-    titre: "J'installe.",
+    semaine: "S1",
+    titre: "L'état des lieux",
     texte:
-      "Le premier mois : positionnement, identité, plan marketing sur douze mois, assistants IA dans vos outils.",
+      "Site, supports commerciaux, réseaux sociaux, fichier clients, chiffres de vente : je passe tout en revue et je rassemble vos contenus, logos, photos et accès.",
+    recu: "ce qui marche, ce qui manque, ce qui freine.",
   },
   {
-    titre: "Vous demandez.",
+    semaine: "S2",
+    titre: "Le plan",
     texte:
-      "Autant que vous voulez, dans l'ordre que vous fixez. Vos équipes m'écrivent en direct.",
+      "Le plan marketing sur douze mois — cibles, messages, canaux, calendrier —, les trois premiers mois détaillés. Nous validons ensemble le plan d'action des quatre semaines qui suivent.",
+    recu: "le plan, la feuille de route, les livrables semaine par semaine.",
   },
   {
-    titre: "C'est livré.",
-    texte: "En 48 à 72 heures par demande, avec un point de 45 minutes chaque semaine.",
+    semaine: "S3",
+    titre: "Les fondations",
+    texte: "Ce que vous vendez, à qui, et la phrase qui le dit. Votre identité remise au propre : logo, couleurs, typographies.",
+    recu: "une plateforme de marque d'une page et votre charte.",
+  },
+  {
+    semaine: "S4",
+    titre: "Les outils",
+    texte: "Les gabarits prêts à l'emploi : devis, présentation commerciale, publications, e-mails.",
+    recu: "vos gabarits, et le premier livrable du plan.",
   },
 ];
 
-// L'équivalent du bandeau de livrables de Designjoy, sans défilement : une
-// ligne qui se lit d'un coup d'œil vaut mieux qu'une animation à suivre.
+const ensuite = [
+  {
+    titre: "Chaque semaine, un livrable à date.",
+    texte:
+      "Le plan d'action fixe ce qui sort et quand. Un point de 45 minutes chaque semaine pour le tenir.",
+  },
+  {
+    titre: "Vos demandes s'intercalent.",
+    texte:
+      "Une demande hors du plan est livrée de J+1 à J+3. Si elle décale ce qui était prévu, c'est vous qui arbitrez.",
+  },
+];
+
+// État initial de la file, identique à ce que le script affiche au démarrage.
+const fileInitiale = [
+  { type: "plan", titre: "Refonte complète de la page Offre" },
+  { type: "demande", titre: "Campagne de relance : 3 e-mails" },
+  { type: "plan", titre: "Présentation commerciale, 15 slides" },
+  { type: "plan", titre: "Étude de 5 concurrents" },
+];
+
 const livrables = [
   "Site",
   "Supports de vente",
@@ -34,33 +72,317 @@ const livrables = [
   "Publications",
   "Identité",
   "Plan marketing",
-  "Assistants IA",
+  "Campagnes",
 ];
+
+const badge = {
+  attente: "border border-line text-ink-3",
+  cours: "bg-lime/10 text-lime",
+};
+const etiquette = {
+  plan: "border border-line text-ink-3",
+  demande: "bg-violet-soft/25 text-lime",
+};
 ---
 
-<section id="comment" class="border-t border-line px-6 py-12 md:px-12 md:py-16">
-  <div class="mx-auto max-w-7xl">
-    <Eyebrow>Comment ça marche</Eyebrow>
-    <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-      Un mois pour installer. <em class="text-lime">Puis ça tourne.</em>
-    </h2>
+<section id="comment" class="overflow-hidden border-t border-line pt-14 md:pt-20">
+  <div class="px-6 md:px-12">
+    <div class="mx-auto max-w-7xl">
+      <div data-reveal>
+        <Eyebrow>Comment ça marche</Eyebrow>
+        <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
+          Un mois pour démarrer.
+          <br />
+          <em class="text-lime">Puis un livrable chaque semaine.</em>
+        </h2>
+      </div>
 
-    <ol class="mt-10 grid gap-5 md:grid-cols-3">
-      {etapes.map((e, i) => (
-        <li class="rounded-2xl border border-line bg-card p-7">
-          <span class="font-serif text-3xl italic leading-none text-lime">
-            {String(i + 1).padStart(2, "0")}
+      <!-- Temps 1 — le starter pack, en frise de quatre semaines. -->
+      <div class="mt-12 md:mt-14">
+        <div data-reveal class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
+          <span class="rounded-full border border-lime/30 bg-lime/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-lime">
+            Mois 1 · Le starter pack
           </span>
-          <h3 class="mt-5 text-xl font-medium text-foreground">{e.titre}</h3>
-          <p class="mt-2 text-base leading-relaxed text-ink-2">{e.texte}</p>
-        </li>
-      ))}
-    </ol>
+          <span class="text-base text-ink-3">Presque le même pour tous : c'est ce qui le rend rapide.</span>
+        </div>
 
-    <ul class="mt-8 flex flex-wrap gap-2.5" aria-label="Ce que vous pouvez demander">
-      {livrables.map((l) => (
-        <li class="rounded-full border border-line px-4 py-1.5 text-sm text-ink-2">{l}</li>
+        <div class="relative mt-8">
+        {/* Le fil de la frise, derrière les pastilles S1 → S4 (desktop large). */}
+        <div class="pointer-events-none absolute left-6 right-6 top-[3.1rem] hidden h-px bg-gradient-to-r from-lime/50 via-lime/25 to-transparent xl:block" aria-hidden="true"></div>
+        <ol class="relative grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+          {starterPack.map((s, i) => (
+            <li
+              data-reveal
+              style={`--reveal-delay: ${i * 90}ms`}
+              class="relative flex flex-col rounded-3xl border border-line bg-card p-6 transition duration-300 hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)] md:p-7"
+            >
+              <span class="grid h-12 w-12 place-items-center rounded-full bg-foreground font-serif text-xl italic text-white">
+                {s.semaine}
+              </span>
+              <h3 class="mt-6 text-xl font-medium text-foreground">{s.titre}</h3>
+              <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{s.texte}</p>
+              <p class="mt-5 border-t border-line pt-4 text-[15px] leading-relaxed text-ink-2">
+                <span class="font-medium text-lime">Vous recevez&nbsp;:</span> {s.recu}
+              </p>
+            </li>
+          ))}
+        </ol>
+        </div>
+      </div>
+
+      <!-- Temps 2 — ensuite, chaque semaine. -->
+      <div class="mt-16 grid gap-12 md:mt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16">
+        <div data-reveal>
+          <span class="rounded-full border border-lime/30 bg-lime/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-lime">
+            Ensuite · Chaque semaine
+          </span>
+          <ol class="mt-8 space-y-7">
+            {ensuite.map((e, i) => (
+              <li class="grid grid-cols-[3.25rem_1fr] gap-x-4">
+                <span class="font-serif text-[2.6rem] italic leading-[0.85] text-lime">
+                  {String(i + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 class="text-xl font-medium text-foreground">{e.titre}</h3>
+                  <p class="mt-1 text-base leading-relaxed text-ink-2">{e.texte}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
+        </div>
+
+        <div data-reveal style="--reveal-delay: 120ms" class="relative min-w-0">
+          <div
+            class="pointer-events-none absolute -inset-10 -z-10 rounded-[3rem] opacity-70 blur-3xl"
+            style="background: radial-gradient(60% 60% at 60% 40%, rgba(108,76,241,0.18), transparent 70%);"
+          >
+          </div>
+          <div
+            id="file"
+            aria-hidden="true"
+            class="rounded-3xl border border-line bg-card p-5 shadow-[0_40px_90px_-45px_rgba(17,18,22,0.45)] md:p-7"
+          >
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Votre plan · vos demandes</span>
+              <span class="text-sm text-ink-2">
+                <span id="file-compteur" class="font-serif text-3xl italic leading-none text-lime">12</span>
+                livrés
+              </span>
+            </div>
+
+            <ul id="file-liste" class="relative mt-5 h-[18.5rem] overflow-hidden md:h-[19.5rem]">
+              {fileInitiale.map((l, i) => (
+                <li class="file-ligne mb-2.5 rounded-2xl border border-line bg-background px-4 py-3.5">
+                  <div class="flex items-center justify-between gap-3">
+                    <span class="flex min-w-0 items-center gap-2">
+                      <span class={`file-etiquette shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em] ${etiquette[l.type as "plan" | "demande"]}`}>
+                        {l.type === "plan" ? "Plan" : "Demande"}
+                      </span>
+                      <span class="min-w-0 truncate text-sm font-medium text-foreground sm:text-[15px]">{l.titre}</span>
+                    </span>
+                    <span class={`file-badge shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${i === 0 ? badge.cours : badge.attente}`}>
+                      {i === 0 ? "En cours" : `En attente · ${i}`}
+                    </span>
+                  </div>
+                  <div class={`mt-2.5 h-1 overflow-hidden rounded-full bg-line ${i === 0 ? "" : "hidden"}`}>
+                    <div class="file-barre h-full w-1/3 rounded-full bg-lime"></div>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bandeau de livrables. La seconde copie ne sert qu'à boucler le défilement. -->
+  <div class="marquee mt-16 border-t border-line py-7 md:mt-20 md:py-9" aria-label="Ce que le plan peut contenir">
+    <div class="marquee-piste flex w-max">
+      {[0, 1].map((k) => (
+        <ul class="flex shrink-0 items-center" aria-hidden={k === 1 ? "true" : undefined}>
+          {livrables.map((l, i) => (
+            <li class="flex items-center">
+              <span
+                class={`px-7 text-[clamp(1.9rem,4.2vw,3.4rem)] leading-none tracking-[-0.03em] whitespace-nowrap ${
+                  i % 2 ? "font-serif italic text-lime" : "font-medium text-foreground"
+                }`}
+              >
+                {l}
+              </span>
+              <span class="text-lg text-lime/50">✦</span>
+            </li>
+          ))}
+        </ul>
       ))}
-    </ul>
+    </div>
   </div>
 </section>
+
+<style>
+  .marquee {
+    mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
+  }
+  .marquee-piste {
+    animation: defile 42s linear infinite;
+  }
+  .marquee:hover .marquee-piste {
+    animation-play-state: paused;
+  }
+  @keyframes defile {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .marquee-piste {
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  /* La file avance d'un livrable toutes les 3,2 s : le premier est livré,
+     sort par le haut, les autres remontent, un autre arrive en bas.
+     Les livrables du plan sortent « à date » ; les demandes intercalées,
+     de J+1 à J+3. Tourne seulement quand la file est à l'écran. */
+  const liste = document.getElementById("file-liste");
+  const compteur = document.getElementById("file-compteur");
+  const reduit = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  type Ligne = { type: "plan" | "demande"; titre: string; delai: string };
+
+  // Environ une demande pour trois livrables du plan : le plan porte la
+  // semaine, les demandes s'y glissent. Les quatre dernières sont celles
+  // affichées au chargement.
+  const reserve: Ligne[] = [
+    { type: "plan", titre: "Landing page salon + formulaire", delai: "à date" },
+    { type: "demande", titre: "Visuels pour l'annonce d'un client", delai: "J+1" },
+    { type: "plan", titre: "Plaquette produit, 8 pages", delai: "à date" },
+    { type: "plan", titre: "Séquence de prospection LinkedIn", delai: "à date" },
+    { type: "demande", titre: "Modèle de devis pour un appel d'offres", delai: "J+3" },
+    { type: "plan", titre: "Argumentaire de la nouvelle gamme", delai: "à date" },
+    { type: "plan", titre: "Kit visuels réseaux sociaux du mois", delai: "à date" },
+    { type: "demande", titre: "Page recrutement + offre d'emploi", delai: "J+2" },
+    { type: "plan", titre: "Newsletter clients + visuels", delai: "à date" },
+    { type: "plan", titre: "Refonte complète de la page Offre", delai: "à date" },
+    { type: "demande", titre: "Campagne de relance : 3 e-mails", delai: "J+1" },
+    { type: "plan", titre: "Présentation commerciale, 15 slides", delai: "à date" },
+    { type: "plan", titre: "Étude de 5 concurrents", delai: "à date" },
+  ];
+  const initiales: Ligne[] = reserve.slice(-4);
+
+  const CLS_ATTENTE = "border border-line text-ink-3";
+  const CLS_COURS = "bg-lime/10 text-lime";
+  const CLS_LIVRE = "bg-lime text-white";
+  const BASE_BADGE =
+    "file-badge shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium";
+  const ETIQUETTE = {
+    plan: "border border-line text-ink-3",
+    demande: "bg-violet-soft/25 text-lime",
+  };
+  const BASE_ETIQUETTE =
+    "file-etiquette shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em]";
+
+  if (liste && compteur && !reduit) {
+    let prochain = 0;
+    let livres = 12;
+    let visible = false;
+    let occupe = false;
+    const infos = new WeakMap<Element, Ligne>();
+    [...liste.children].forEach((li, i) => infos.set(li, initiales[i]));
+
+    const badgeDe = (li: Element) => li.querySelector(".file-badge") as HTMLElement;
+    const barreDe = (li: Element) => li.querySelector(".file-barre") as HTMLElement;
+
+    const renumeroter = () => {
+      [...liste.children].forEach((li, i) => {
+        if (i === 0) return;
+        const b = badgeDe(li);
+        b.className = `${BASE_BADGE} ${CLS_ATTENTE}`;
+        b.textContent = `En attente · ${i}`;
+      });
+    };
+
+    const lancer = (li: Element) => {
+      const b = badgeDe(li);
+      b.className = `${BASE_BADGE} ${CLS_COURS}`;
+      b.textContent = "En cours";
+      const piste = barreDe(li).parentElement as HTMLElement;
+      piste.classList.remove("hidden");
+      barreDe(li).animate([{ width: "4%" }, { width: "100%" }], {
+        duration: 2400,
+        easing: "cubic-bezier(.4,.1,.3,1)",
+        fill: "forwards",
+      });
+    };
+
+    const nouvelleLigne = (l: Ligne) => {
+      const li = document.createElement("li");
+      li.className = "file-ligne mb-2.5 rounded-2xl border border-line bg-background px-4 py-3.5";
+      li.innerHTML = `<div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="${BASE_ETIQUETTE} ${ETIQUETTE[l.type]}"></span><span class="min-w-0 truncate text-sm font-medium text-foreground sm:text-[15px]"></span></span><span class="${BASE_BADGE} ${CLS_ATTENTE}"></span></div><div class="mt-2.5 hidden h-1 overflow-hidden rounded-full bg-line"><div class="file-barre h-full w-0 rounded-full bg-lime"></div></div>`;
+      const spans = li.querySelectorAll("span");
+      spans[1].textContent = l.type === "plan" ? "Plan" : "Demande";
+      spans[2].textContent = l.titre;
+      infos.set(li, l);
+      return li;
+    };
+
+    const avancer = async () => {
+      if (occupe || !visible || document.hidden) return;
+      occupe = true;
+      const premier = liste.children[0] as HTMLElement;
+      const info = infos.get(premier);
+
+      const b = badgeDe(premier);
+      b.className = `${BASE_BADGE} ${CLS_LIVRE}`;
+      b.textContent = info?.type === "demande" ? `✓ Livré à ${info.delai}` : "✓ Livré à date";
+      b.animate([{ transform: "scale(.85)" }, { transform: "scale(1.06)" }, { transform: "scale(1)" }], {
+        duration: 420,
+        easing: "ease-out",
+      });
+      livres += 1;
+      compteur.textContent = String(livres);
+      compteur.animate([{ transform: "translateY(6px)", opacity: 0.3 }, { transform: "none", opacity: 1 }], {
+        duration: 380,
+        easing: "ease-out",
+      });
+
+      await new Promise((r) => setTimeout(r, 850));
+
+      const arrivee = nouvelleLigne(reserve[prochain % reserve.length]);
+      prochain += 1;
+      liste.appendChild(arrivee);
+      arrivee.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], {
+        duration: 520,
+        easing: "cubic-bezier(.2,.7,.2,1)",
+      });
+
+      const hauteur = premier.getBoundingClientRect().height + 10;
+      await premier.animate(
+        [
+          { opacity: 1, marginTop: "0px" },
+          { opacity: 0, marginTop: `-${hauteur}px` },
+        ],
+        { duration: 520, easing: "cubic-bezier(.4,0,.2,1)", fill: "forwards" },
+      ).finished;
+      premier.remove();
+
+      renumeroter();
+      lancer(liste.children[0]);
+      occupe = false;
+    };
+
+    const premiere = liste.children[0];
+    if (premiere) lancer(premiere);
+
+    new IntersectionObserver(
+      (entrees) => {
+        visible = entrees.some((e) => e.isIntersecting);
+      },
+      { threshold: 0.25 },
+    ).observe(liste);
+
+    setInterval(avancer, 3200);
+  }
+</script>
