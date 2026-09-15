@@ -1,8 +1,9 @@
 # Espace client — cadrage v1 (à valider)
 
-L'interface unique entre Julien et **tous ses clients** — ceux des offres publiées sur
-[julientridat.com/#offres](https://julientridat.com/#offres) (audit, missions TPE/PME
-Augmentée) comme les accompagnements au long cours (type Groupe LEH, la bêta). Objectif :
+L'interface unique entre Julien et **tous ses clients** — ceux de l'offre publiée sur
+[julientridat.com/#offres](https://julientridat.com/#offres) (« Une formule. Sans
+engagement. » — 2 500 € HT/mois, starter pack compris) comme les accompagnements au long
+cours (type Groupe LEH, la bêta). Objectif :
 tout ce qui circule entre le client et moi passe par une seule page — actions attendues,
 avancement, livrables, point hebdo, demandes — sans jamais donner l'impression d'ajouter
 un outil. Né avec la page « Direction marketing externalisée » (2 500 €/mois), le concept
@@ -86,8 +87,9 @@ Le plan de mission trimestriel (type LEH 2026-2027) se transpose dans le tableau
 le document envoyé au client devient **l'état vivant de la mission**. Deux modes selon le
 contrat, même interface :
 
-- **Mode file** — l'offre de la page de vente : demandes illimitées, une à la fois,
-  48 à 72 h, ordre choisi par le client.
+- **Mode plan** — l'offre du site : le plan d'action fixe ce qui sort et quand, un
+  livrable à date chaque semaine ; les demandes s'intercalent (J+1 à J+3) et si l'une
+  d'elles décale le plan, c'est le client qui arbitre.
 - **Mode mission** — un plan de mission existe : les demandes s'arbitrent au point
   mensuel (« on ajoute et on retire, on n'empile pas ») et l'interface s'organise
   par chantier. C'est ce que montre la maquette, avec LEH en bêta.
@@ -119,13 +121,24 @@ Une seule application, une instance par client. **Le contenu est de la donnée, 
 code** : chantiers, jalons, couleurs, engagements, cadence viennent de la base. Signer un
 client, c'est remplir son plan — pas développer.
 
-### Le mapping avec les offres du site (état septembre 2026)
+### Le mapping avec l'offre du site (état de la home en ligne, septembre 2026)
 
-| Offre | Ce que l'espace devient |
+L'offre : **2 500 € HT/mois, sans engagement, starter pack compris** — un livrable à
+date chaque semaine tiré du plan, demandes supplémentaires livrées de J+1 à J+3, point
+de 45 minutes hebdomadaire, pause en semaines gardées, quatre places. Ce que l'espace
+en fait :
+
+| Moment de l'offre | Ce que l'espace affiche |
 |---|---|
-| **Audit — 1 500 €** | Pas d'espace complet : la restitution et l'outil de pilotage suffisent. Mais si la mission démarre sous 30 jours, l'espace s'ouvre **avec l'audit déjà dedans** — la continuité rend la déduction tangible. |
-| **TPE / PME Augmentée — 8 à 32 k€, 4 à 8 semaines** | Mode mission avec **compte à rebours contractuel** (« Semaine 3 sur 8 — le déploiement a commencé, comme promis »). Chantiers regroupés **par service** (commerce, gestion, RH…), pas par assistant — 7 à 10 assistants satureraient les codes couleurs. Chaque assistant suit ses jalons : cadré → construit → testé par l'équipe → en production. Formations tracées. Engagements de fin = les livrables contractuels. |
-| **Accompagnement au long cours (type LEH — la bêta)** | Même gabarit, périodes de 3 à 5 mois, arbitrage au point mensuel. |
+| **Mois 1 — le starter pack** | La frise S1 → S4 du site (état des lieux, plan, fondations, outils), avec ce que le client reçoit chaque semaine. La collecte de S1 (contenus, logos, accès) **est** l'onboarding de l'espace. |
+| **Ensuite — chaque semaine** | **Le livrable de la semaine, à date**, en tête de page — c'est le plan qui porte la valeur, pas une file ouverte. Les demandes s'intercalent (J+1 à J+3) ; si une demande décale le plan, **l'arbitrage devient une carte « À vous de jouer »** : c'est le client qui tranche, exactement comme la page de vente le promet. |
+| **La jauge** | Le point « compteur ou quota » est tranché par l'offre elle-même : **l'unité est la semaine, pas l'heure.** « Octobre : 3 semaines utilisées · 1 gardée. » La promesse de la pause (« les semaines restantes vous attendent, et votre place aussi ») devient un chiffre visible en permanence. |
+| **Le plan sur 12 mois** | La colonne vertébrale de l'espace : les chantiers du plan, avec leurs codes couleurs, remplacent les « missions » LEH — même gabarit, mêmes accordéons. |
+| **Au-delà de 30 salariés / long cours (type LEH — la bêta)** | Sur devis : même gabarit, périodes de 3 à 5 mois, arbitrage au point mensuel. |
+
+(La page `/installation-ia` — audit + missions TPE/PME Augmentée — est une autre
+activité : hors périmètre de cet espace pour l'instant ; le gabarit pourrait la couvrir
+plus tard avec un compte à rebours contractuel à la place des semaines.)
 
 ### Commun à tous / configuré par client
 
@@ -134,9 +147,9 @@ client, c'est remplir son plan — pas développer.
   vous »), les cartes de process de l'assistant, le point écrit hebdomadaire.
 - **Par client** : nom et personnes, mode et durée de la période, chantiers et leurs
   couleurs, jalons, engagements de fin, jour du point écrit, contenu de l'onboarding.
-- **Nuance sur le temps** : le compteur d'heures (« 19 h à vos côtés ») n'a de sens que
-  pour le long cours. Sur une mission à prix ferme, on affiche **le respect du délai,
-  jamais les heures** — le prix est ferme, les heures ne regardent que moi.
+- **Nuance sur le temps** : aucune heure affichée, nulle part. L'unité visible est la
+  **semaine** — utilisée, restante, gardée — pour la formule du site ; le respect des
+  périodes pour le long cours. Les heures ne regardent que moi.
 
 ### Provisioning d'un nouveau client
 
