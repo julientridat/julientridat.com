@@ -25,6 +25,10 @@ export const FAQ_ACCUEIL = [
     r: "C'est mon outil de production, pas le vôtre : c'est lui qui me permet de livrer de J+1 à J+3. Mes agents et mes méthodes restent chez moi ; vous gardez ce qu'ils produisent — contenus, supports, gabarits. Vous n'avez rien à installer ni à apprendre.",
   },
   {
+    q: "Comment marche la pause ?",
+    r: "Vous payez des semaines de travail, pas des mois de calendrier : un mois, c'est quatre semaines. Si vous n'avez besoin de moi que deux semaines, vous mettez en pause : les deux semaines restantes reprennent quand vous revenez, et votre place est gardée. Elles restent valables six mois. La pause est possible dès la fin du starter pack.",
+  },
+  {
     q: "Que se passe-t-il si j'arrête ?",
     r: "Vous partez avec tout. Rien n'est retenu, rien n'est désactivé : ce qui a été produit — contenus, charte, gabarits, fichiers sources — est déjà chez vous. Vous perdez une seule chose : votre place parmi les quatre.",
   },

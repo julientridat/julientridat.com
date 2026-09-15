@@ -42,7 +42,7 @@ export const GET: APIRoute = async () => {
     "  (trois premiers mois détaillés) et plan d'action validé ; semaine 3, positionnement et charte ;",
     "  semaine 4, gabarits et premier livrable du plan.",
     "- Ensuite : un livrable à date chaque semaine selon le plan d'action, point hebdomadaire de 45 minutes,",
-    "  demandes supplémentaires livrées de J+1 à J+3 (sans engagement de volume). Suspension possible sans perte de place.",
+    "  demandes supplémentaires livrées de J+1 à J+3 (sans engagement de volume). Pause possible après le starter pack : semaines non utilisées conservées six mois, place gardée.",
     "  Le client garde tous les livrables (contenus, charte, gabarits, fichiers sources), y compris après résiliation.",
     "  Les agents et skills IA utilisés pour produire restent chez le prestataire.",
     "  Quatre clients en abonnement au maximum.",
