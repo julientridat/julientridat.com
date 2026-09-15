@@ -112,6 +112,26 @@ Ce que le mode mission ajoute — dans une page **unique, en une colonne**, pens
 - **La période en bref** — les engagements du 15 décembre repliés en un lien discret,
   et une ligne unique pour le mois (« 19 h à vos côtés · 12 campagnes »).
 
+### L'expérience : entrer dans un process
+
+Le tableau de bord ne constate pas, il fait *sentir* que le client est entré dans une
+méthode — la mienne :
+
+- **Le tunnel est numéroté** comme les pages de vente (01 À vous de jouer → 04 Une
+  demande) : on descend la page comme on suit la méthode, cartes et missions
+  apparaissent en cascade.
+- **La frise de période en tête** : les semaines écoulées se remplissent à l'arrivée
+  sous les yeux du client, « vous êtes ici » pulse, les jalons à venir sont posés sur
+  la ligne, et la légende compte (« semaine 4 sur 13 — il en reste 9 avant le bilan »).
+  Le temps qui s'écoule se voit avant de se lire.
+- **Une grammaire de phases commune à toutes les missions** (cadrage › production ›
+  validation › livraison, adaptée à chaque chantier) : la phase en cours pulse dans la
+  couleur de la mission. Le même déroulé partout — c'est ce qui fait « process »,
+  pas « liste de tâches ».
+- **Les progressions s'animent** : barres qui se remplissent à l'apparition, accordéons
+  qui s'ouvrent en fluide, tâches qui s'enchaînent à l'ouverture. Tout est débrayé sous
+  `prefers-reduced-motion`.
+
 ⚠️ La maquette contient des données réelles du client bêta (noms, chantiers). Tant que le
 repo n'est pas strictement privé, prévoir une variante anonymisée avant tout partage.
 

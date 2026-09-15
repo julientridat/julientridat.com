@@ -67,6 +67,52 @@ button { font: inherit; cursor: pointer; }
 .greeting .sub { margin-top: 10px; font-size: 1.02rem; color: var(--ink-2); }
 .greeting .date { margin-top: 6px; font-size: 0.82rem; color: var(--ink-3); }
 
+/* ---- La frise de période — le temps qui s'écoule ---- */
+.periode-bar { margin-top: 34px; }
+.pb-track { position: relative; height: 40px; }
+.pb-line, .pb-fill {
+  position: absolute; top: 50%; left: 0; height: 3px;
+  transform: translateY(-50%); border-radius: 999px;
+}
+.pb-line { right: 0; background: var(--line); }
+.pb-fill { width: 0; background: var(--violet); transition: width 1.6s cubic-bezier(0.2, 0.6, 0.2, 1) 0.2s; }
+.in .pb-fill { width: var(--elapsed); }
+.pb-tick {
+  position: absolute; top: 50%; width: 4px; height: 4px; border-radius: 50%;
+  background: var(--ink-3); opacity: 0.3; transform: translate(-50%, -50%);
+}
+.pb-milestone {
+  position: absolute; top: 50%; width: 7px; height: 7px; border-radius: 2px;
+  transform: translate(-50%, -50%) rotate(45deg); background: var(--ink-2);
+}
+.pb-now {
+  position: absolute; top: 50%; transform: translate(-50%, -50%);
+  width: 13px; height: 13px; border-radius: 50%; background: var(--violet);
+  animation: pulse-v 2.4s infinite;
+}
+@keyframes pulse-v {
+  0% { box-shadow: 0 0 0 4px rgba(108, 76, 241, 0.16); }
+  70% { box-shadow: 0 0 0 11px rgba(108, 76, 241, 0); }
+  100% { box-shadow: 0 0 0 4px rgba(108, 76, 241, 0.16); }
+}
+.pb-now-label {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 0.75rem; font-weight: 600; color: var(--violet); white-space: nowrap;
+}
+.pb-labels { display: flex; justify-content: space-between; font-size: 0.75rem; color: var(--ink-3); }
+.pb-caption { margin-top: 12px; font-size: 0.9rem; color: var(--ink-2); }
+.pb-caption em { font-size: 1.15em; }
+
+/* ---- Cascade d'apparition (tunnel) ---- */
+#todos .todo, .missions .mission {
+  opacity: 0; transform: translateY(12px);
+  transition: opacity 0.6s cubic-bezier(0.2, 0.6, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.6, 0.2, 1);
+}
+.in #todos .todo, .in .missions .mission { opacity: 1; transform: none; }
+.in #todos .todo:nth-child(2), .in .missions .mission:nth-of-type(2) { transition-delay: 0.1s; }
+.in #todos .todo:nth-child(3), .in .missions .mission:nth-of-type(3) { transition-delay: 0.2s; }
+.in .missions .mission:nth-of-type(4) { transition-delay: 0.3s; }
+
 /* ---- Sections ---- */
 section { margin-top: 44px; }
 .kicker {
@@ -141,9 +187,37 @@ details.mission {
 .m-row .chev { color: var(--ink-3); font-size: 1rem; transition: transform 0.25s; }
 .mission[open] .m-row .chev { transform: rotate(45deg); }
 .m-now { margin: 5px 0 0 22px; font-size: 0.85rem; color: var(--ink-3); }
+.m-phases {
+  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  margin: 9px 0 0 22px; font-size: 0.73rem;
+}
+.ph { display: inline-flex; align-items: center; gap: 5px; color: var(--ink-3); }
+.ph::before {
+  content: ""; width: 6px; height: 6px; border-radius: 50%;
+  border: 1.5px solid var(--line); background: var(--white);
+}
+.ph.done { color: var(--ink-2); }
+.ph.done::before { background: var(--mc); border-color: var(--mc); }
+.ph.now { color: var(--ink); font-weight: 600; }
+.ph.now::before { background: var(--mc); border-color: var(--mc); animation: pulse 2.4s infinite; }
+.m-phases .sep { color: var(--ink-3); opacity: 0.5; }
 .m-bar { height: 3px; border-radius: 999px; background: var(--paper); overflow: hidden; margin: 12px 0 0 22px; }
-.m-bar i { display: block; height: 100%; border-radius: 999px; background: var(--mc); }
+.m-bar i {
+  display: block; height: 100%; border-radius: 999px; background: var(--mc);
+  width: 0; transition: width 1.2s cubic-bezier(0.2, 0.6, 0.2, 1) 0.35s;
+}
+.in .m-bar i { width: var(--p); }
 .m-body { padding: 4px 20px 18px 42px; }
+.m-body .m-now { margin: 0 0 8px; }
+.mission[open] .tasks li { animation: slidein 0.45s cubic-bezier(0.2, 0.6, 0.2, 1) both; }
+.mission[open] .tasks li:nth-child(2) { animation-delay: 0.07s; }
+.mission[open] .tasks li:nth-child(3) { animation-delay: 0.14s; }
+.mission[open] .tasks li:nth-child(4) { animation-delay: 0.21s; }
+.mission[open] .tasks li:nth-child(5) { animation-delay: 0.28s; }
+@keyframes slidein {
+  from { opacity: 0; transform: translateX(-7px); }
+  to { opacity: 1; transform: none; }
+}
 .m-goal { font-size: 0.88rem; color: var(--ink-2); padding-bottom: 4px; }
 .m-goal b { color: var(--ink); font-weight: 600; }
 .mmonth {
@@ -240,6 +314,11 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
   .btn:hover { transform: none; }
+  #todos .todo, .missions .mission { opacity: 1; transform: none; transition: none; }
+  .pb-fill { transition: none; width: var(--elapsed); }
+  .m-bar i { transition: none; width: var(--p); }
+  .pb-now, .ph.now::before { animation: none; }
+  .mission[open] .tasks li { animation: none; }
 }
 @media (max-width: 640px) {
   .greeting { padding-top: 36px; }
@@ -262,11 +341,24 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
     <h1>Bonjour Sébastien.</h1>
     <p class="sub" id="await-line"><em>Trois choses</em> vous attendent — deux minutes suffisent. Le reste, je m’en occupe.</p>
     <p class="date">Période 1 · 15 septembre → 15 décembre 2026 — état simulé au lundi 12 octobre (maquette).</p>
+
+    <div class="periode-bar reveal">
+      <div class="pb-track" id="pb-track">
+        <span class="pb-line"></span>
+        <span class="pb-fill" style="--elapsed: 27%;"></span>
+        <span class="pb-milestone" style="left: 50%;" title="Collecte Culture &amp; Patrimoine — fin octobre"></span>
+        <span class="pb-milestone" style="left: 69%;" title="6 000 destinataires — novembre"></span>
+        <span class="pb-milestone" style="left: 100%;" title="Livraison de l’ouvrage + bilan — 15 décembre"></span>
+        <span class="pb-now" style="left: 27%;"><span class="pb-now-label">Semaine 4 — vous êtes ici</span></span>
+      </div>
+      <div class="pb-labels"><span>15 septembre</span><span>15 décembre</span></div>
+      <p class="pb-caption">Semaine <em>4</em> sur 13 — il en reste <em>9</em> avant le bilan. Prochaine étape&nbsp;: la collecte Culture &amp;&nbsp;Patrimoine, fin octobre.</p>
+    </div>
   </div>
 
   <!-- ============ À vous de jouer ============ -->
   <section class="reveal">
-    <p class="kicker">À vous de jouer</p>
+    <p class="kicker">01 — À vous de jouer</p>
     <p class="section-hint">Tout ce qui se clique sur cette page est pour vous. Ce qu’il y a ici est le plus utile.</p>
     <div class="todo-list" id="todos">
 
@@ -323,17 +415,18 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
 
   <!-- ============ Les missions ============ -->
   <section class="reveal">
-    <p class="kicker">Où en est chaque mission</p>
+    <p class="kicker">02 — Où en est chaque mission</p>
     <p class="section-hint">Ouvrez pour le détail. Ici, rien à faire — c’est mon terrain. Un avis&nbsp;? Le commentaire est à vous.</p>
     <div class="missions">
 
       <details class="mission" id="m1" style="--mc: var(--c1);">
         <summary>
           <div class="m-row"><span class="dot"></span><h3>Culture &amp; Patrimoine</h3><span class="count">2 tâches sur 6</span><span class="chev">+</span></div>
-          <p class="m-now">En ce moment&nbsp;: trame d’entretiens chez vous, collecte à planifier</p>
-          <div class="m-bar"><i style="width: 33%;"></i></div>
+          <p class="m-phases"><span class="ph done">Cadrage</span><span class="sep">›</span><span class="ph now">Collecte</span><span class="sep">›</span><span class="ph">Rédaction</span><span class="sep">›</span><span class="ph">Livraison</span></p>
+          <div class="m-bar"><i style="--p: 33%;"></i></div>
         </summary>
         <div class="m-body">
+          <p class="m-now">En ce moment&nbsp;: trame d’entretiens chez vous, collecte à planifier.</p>
           <p class="m-goal">Internaliser la rédaction des ouvrages. <b>Au 15 décembre&nbsp;: un ouvrage livré</b>, coût comparé à l’ancienne méthode.</p>
           <p class="mmonth">Septembre</p>
           <ul class="tasks">
@@ -367,10 +460,11 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
       <details class="mission" id="m2" style="--mc: var(--c2);">
         <summary>
           <div class="m-row"><span class="dot"></span><h3>E-learning</h3><span class="count">1 tâche sur 5</span><span class="chev">+</span></div>
-          <p class="m-now">En ce moment&nbsp;: lancement parti lundi, relance de toute la base en cours</p>
-          <div class="m-bar"><i style="width: 20%;"></i></div>
+          <p class="m-phases"><span class="ph done">Lancement</span><span class="sep">›</span><span class="ph now">Relances</span><span class="sep">›</span><span class="ph">Rendez-vous</span><span class="sep">›</span><span class="ph">Bilan</span></p>
+          <div class="m-bar"><i style="--p: 20%;"></i></div>
         </summary>
         <div class="m-body">
+          <p class="m-now">En ce moment&nbsp;: lancement parti lundi, relance de toute la base en cours.</p>
           <p class="m-goal">Vendre le module existant, jamais présenté aux clients de la formation. <b>Au 15 décembre&nbsp;: toute la base sollicitée</b>, résultats chiffrés.</p>
           <p class="mmonth">Octobre</p>
           <ul class="tasks">
@@ -397,10 +491,11 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
       <details class="mission" id="m3" style="--mc: var(--c3);">
         <summary>
           <div class="m-row"><span class="dot"></span><h3>Mesure des ventes</h3><span class="count">2 tâches sur 5</span><span class="chev">+</span></div>
-          <p class="m-now">En ce moment&nbsp;: la remontée des commandes se développe avec Laurent</p>
-          <div class="m-bar"><i style="width: 40%;"></i></div>
+          <p class="m-phases"><span class="ph done">Cadrage</span><span class="sep">›</span><span class="ph now">Développement</span><span class="sep">›</span><span class="ph">Rapprochements</span><span class="sep">›</span><span class="ph">Recette</span></p>
+          <div class="m-bar"><i style="--p: 40%;"></i></div>
         </summary>
         <div class="m-body">
+          <p class="m-now">En ce moment&nbsp;: la remontée des commandes se développe avec Laurent.</p>
           <p class="m-goal">Rattacher chaque commande à ce qui l’a déclenchée. <b>Au 15 décembre&nbsp;: dispositif recetté</b> — il s’exploite en janvier.</p>
           <p class="mmonth">Septembre</p>
           <ul class="tasks">
@@ -428,10 +523,11 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
       <details class="mission" id="m4" style="--mc: var(--c4);">
         <summary>
           <div class="m-row"><span class="dot"></span><h3>Marketing &amp; diffusion</h3><span class="count">3 tâches sur 7</span><span class="chev">+</span></div>
-          <p class="m-now">En ce moment&nbsp;: 4 000 destinataires par annonce — objectif 8 000 au 15 décembre</p>
-          <div class="m-bar"><i style="width: 43%;"></i></div>
+          <p class="m-phases"><span class="ph done">Reprise</span><span class="sep">›</span><span class="ph now">Montée en charge</span><span class="sep">›</span><span class="ph">Transmission à l’équipe</span></p>
+          <div class="m-bar"><i style="--p: 43%;"></i></div>
         </summary>
         <div class="m-body">
+          <p class="m-now">En ce moment&nbsp;: 4 000 destinataires par annonce — objectif 8 000 au 15 décembre.</p>
           <p class="m-goal">Reprendre la fonction, élargir la diffusion, outiller l’équipe. <b>Au 15 décembre&nbsp;: 8 000 destinataires par annonce</b> — 2 800 au départ.</p>
           <p class="mmonth">Septembre</p>
           <ul class="tasks">
@@ -465,7 +561,7 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
 
   <!-- ============ Point de lundi ============ -->
   <section class="reveal">
-    <p class="kicker">Mon point de lundi</p>
+    <p class="kicker">03 — Mon point de lundi</p>
     <div class="card lundi">
       <h3>Lundi 12 octobre <span>le point écrit de la semaine</span></h3>
       <ul>
@@ -481,7 +577,7 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
 
   <!-- ============ Demande ============ -->
   <section class="reveal">
-    <p class="kicker">Une demande, une question&nbsp;?</p>
+    <p class="kicker">04 — Une demande, une question&nbsp;?</p>
     <div class="card ask">
       <textarea id="ask-input" placeholder="Écrivez comme dans un e-mail. Trois lignes suffisent."></textarea>
       <div class="ask-row">
@@ -535,6 +631,57 @@ footer { margin-top: 56px; background: var(--white); border-top: 1px solid var(-
     }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
     reveals.forEach(function (el) { io.observe(el); });
   }
+
+  /* La frise — 13 semaines, une graduation par semaine */
+  var track = document.getElementById("pb-track");
+  if (track) {
+    var now = track.querySelector(".pb-now");
+    for (var w = 1; w < 13; w++) {
+      var t = document.createElement("span");
+      t.className = "pb-tick";
+      t.style.left = (w / 13) * 100 + "%";
+      track.insertBefore(t, now);
+    }
+  }
+
+  /* Missions — ouverture et fermeture fluides des accordéons */
+  document.querySelectorAll("details.mission").forEach(function (d) {
+    var body = d.querySelector(".m-body");
+    d.querySelector("summary").addEventListener("click", function (ev) {
+      if (reduced) return;
+      ev.preventDefault();
+      if (d.open) {
+        body.style.overflow = "hidden";
+        body.style.height = body.offsetHeight + "px";
+        requestAnimationFrame(function () {
+          body.style.transition = "height 0.35s cubic-bezier(0.2, 0.6, 0.2, 1), opacity 0.3s";
+          body.style.height = "0px";
+          body.style.opacity = "0";
+        });
+        body.addEventListener("transitionend", function te() {
+          body.removeEventListener("transitionend", te);
+          body.removeAttribute("style");
+          d.open = false;
+        });
+      } else {
+        d.open = true;
+        var h = body.offsetHeight;
+        body.style.overflow = "hidden";
+        body.style.height = "0px";
+        body.style.opacity = "0";
+        requestAnimationFrame(function () {
+          body.style.transition = "height 0.4s cubic-bezier(0.2, 0.6, 0.2, 1), opacity 0.45s 0.1s";
+          body.style.height = h + "px";
+          body.style.opacity = "1";
+        });
+        body.addEventListener("transitionend", function te(e) {
+          if (e.propertyName !== "height") return;
+          body.removeEventListener("transitionend", te);
+          body.removeAttribute("style");
+        });
+      }
+    });
+  });
 
   /* À vous de jouer — chaque carte se règle en un clic */
   var awaitLine = document.getElementById("await-line");
