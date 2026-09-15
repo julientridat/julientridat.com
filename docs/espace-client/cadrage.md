@@ -1,11 +1,14 @@
 # Espace client — cadrage v1 (à valider)
 
-Interface unique entre Julien et chaque client de l'offre « Direction marketing externalisée »
-(2 500 €/mois). Objectif : tout ce qui circule entre le client et moi passe par une seule page —
-demandes, file d'attente, livrables, point hebdo, temps passé — sans jamais donner l'impression
-d'ajouter un outil.
+L'interface unique entre Julien et **tous ses clients** — ceux des offres publiées sur
+[julientridat.com/#offres](https://julientridat.com/#offres) (audit, missions TPE/PME
+Augmentée) comme les accompagnements au long cours (type Groupe LEH, la bêta). Objectif :
+tout ce qui circule entre le client et moi passe par une seule page — actions attendues,
+avancement, livrables, point hebdo, demandes — sans jamais donner l'impression d'ajouter
+un outil. Né avec la page « Direction marketing externalisée » (2 500 €/mois), le concept
+est devenu un gabarit : voir « Un gabarit, tous les clients » plus bas.
 
-Maquette cliquable : [`maquette.html`](maquette.html) (données fictives, interactions réelles).
+Maquette cliquable : [`maquette.html`](maquette.html) (instance bêta LEH, interactions réelles).
 
 ---
 
@@ -109,6 +112,45 @@ Ce que le mode mission ajoute — dans une page **unique, en une colonne**, pens
 
 ⚠️ La maquette contient des données réelles du client bêta (noms, chantiers). Tant que le
 repo n'est pas strictement privé, prévoir une variante anonymisée avant tout partage.
+
+## Un gabarit, tous les clients
+
+Une seule application, une instance par client. **Le contenu est de la donnée, jamais du
+code** : chantiers, jalons, couleurs, engagements, cadence viennent de la base. Signer un
+client, c'est remplir son plan — pas développer.
+
+### Le mapping avec les offres du site (état septembre 2026)
+
+| Offre | Ce que l'espace devient |
+|---|---|
+| **Audit — 1 500 €** | Pas d'espace complet : la restitution et l'outil de pilotage suffisent. Mais si la mission démarre sous 30 jours, l'espace s'ouvre **avec l'audit déjà dedans** — la continuité rend la déduction tangible. |
+| **TPE / PME Augmentée — 8 à 32 k€, 4 à 8 semaines** | Mode mission avec **compte à rebours contractuel** (« Semaine 3 sur 8 — le déploiement a commencé, comme promis »). Chantiers regroupés **par service** (commerce, gestion, RH…), pas par assistant — 7 à 10 assistants satureraient les codes couleurs. Chaque assistant suit ses jalons : cadré → construit → testé par l'équipe → en production. Formations tracées. Engagements de fin = les livrables contractuels. |
+| **Accompagnement au long cours (type LEH — la bêta)** | Même gabarit, périodes de 3 à 5 mois, arbitrage au point mensuel. |
+
+### Commun à tous / configuré par client
+
+- **Commun** : la charte (l'espace est toujours à la marque Julien Tridat — c'est le
+  produit, pas un livrable client), la règle de rôle (« tout ce qui se clique est pour
+  vous »), les cartes de process de l'assistant, le point écrit hebdomadaire.
+- **Par client** : nom et personnes, mode et durée de la période, chantiers et leurs
+  couleurs, jalons, engagements de fin, jour du point écrit, contenu de l'onboarding.
+- **Nuance sur le temps** : le compteur d'heures (« 19 h à vos côtés ») n'a de sens que
+  pour le long cours. Sur une mission à prix ferme, on affiche **le respect du délai,
+  jamais les heures** — le prix est ferme, les heures ne regardent que moi.
+
+### Provisioning d'un nouveau client
+
+Signature → je colle le plan de mission (le document que le client a déjà validé) →
+l'espace se génère → le client reçoit son lien magique et fait ses premiers pas
+(10 minutes). Objectif : **moins d'une heure de mon temps par nouveau client**, zéro code.
+
+### Modèle de données V1 (Supabase, RLS par `client_id`)
+
+Huit tables portent toutes les vues de la maquette : `clients`, `membres` (accès par
+lien magique), `chantiers`, `taches`, `actions_client` (« à vous de jouer »),
+`commentaires`, `demandes`, `points_hebdo` (+ les engagements de période, champ JSON du
+client ou table dédiée). Chaque ligne porte son `client_id` ; la RLS garantit que chacun
+ne voit que les siennes.
 
 ## L'onboarding — première connexion, dix minutes
 
