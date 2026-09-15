@@ -9,8 +9,8 @@ une page a besoin d'une voix tierce ou d'une liste de références.
 
 ## Verbatims
 
-Participants de sessions réelles. Les deux premiers sont déjà publiés sur
-`/formation-ia` ; **les quatre suivants ne sont publiés nulle part.**
+Participants de sessions réelles. **Les six sont publiés sur `/formation-ia`
+depuis le 16/09/2026.**
 
 | Verbatim | Qui |
 |---|---|
