@@ -1,0 +1,106 @@
+---
+/**
+ * Coupures de ligne — règle typographique de Julien : une fin de phrase ne
+ * tombe jamais seule en début de ligne (« …comment vous le / dites. »).
+ *
+ * text-wrap: pretty (global.css) traite le mot orphelin en fin de paragraphe,
+ * pas une fin de phrase au milieu d'un paragraphe ; et la coupure dépend de
+ * la largeur d'écran, aucune espace insécable posée à la main ne tient à
+ * toutes les largeurs.
+ *
+ * Ce script mesure donc les lignes réellement affichées. Quand une ligne
+ * s'ouvre sur un mot seul qui termine une phrase, il remplace l'espace qui
+ * le précède par une espace insécable : le mot emmène le précédent avec lui
+ * (« le dites. »). Deux mots en début de ligne restent acceptés — sur mobile,
+ * les lignes font quatre ou cinq mots. Rien n'est jamais élargi ni resserré.
+ * Les h1, calés à la main ligne par ligne, ne sont pas concernés.
+ *
+ * Relancé au redimensionnement, au chargement des polices et à l'ouverture
+ * d'une question de FAQ. Une espace déjà soudée le reste : à une autre
+ * largeur, deux mots gardés ensemble ne gênent pas.
+ */
+---
+
+<script>
+  const SELECTEUR =
+    "main p, main li, main blockquote, main figcaption, main dd, main h2, main h3, main summary > span:first-child";
+  const FIN = /[.!?…][»)"]?$/;
+
+  type Mot = { noeud: Text; debut: number; texte: string; haut: number; hauteur: number };
+
+  const motsDe = (el: HTMLElement): Mot[] => {
+    const mots: Mot[] = [];
+    const r = document.createRange();
+    const w = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+    let n: Node | null;
+    while ((n = w.nextNode())) {
+      const noeud = n as Text;
+      for (const m of noeud.data.matchAll(/[^\s ]+/g)) {
+        const debut = m.index ?? 0;
+        r.setStart(noeud, debut);
+        r.setEnd(noeud, debut + m[0].length);
+        const rects = r.getClientRects();
+        if (!rects.length) continue;
+        mots.push({ noeud, debut, texte: m[0], haut: rects[0].top, hauteur: rects[0].height });
+      }
+    }
+    return mots;
+  };
+
+  /** Soude le mot à celui qui précède, en remplaçant l'espace entre eux. */
+  const souder = (mot: Mot): boolean => {
+    const { noeud, debut } = mot;
+    if (debut > 0 && /\s/.test(noeud.data[debut - 1])) {
+      noeud.replaceData(debut - 1, 1, " ");
+      return true;
+    }
+    // Mot en tête de son nœud texte : l'espace est à la fin du nœud précédent.
+    const w = document.createTreeWalker(noeud.parentElement!.closest(SELECTEUR) ?? document.body, NodeFilter.SHOW_TEXT);
+    w.currentNode = noeud;
+    const precedent = w.previousNode() as Text | null;
+    if (precedent && precedent.data.length && /\s$/.test(precedent.data)) {
+      const i = precedent.data.search(/\s+$/);
+      precedent.replaceData(i, precedent.data.length - i, " ");
+      return true;
+    }
+    return false;
+  };
+
+  const corriger = (el: HTMLElement) => {
+    for (let passe = 0; passe < 6; passe++) {
+      const mots = motsDe(el);
+      const orphelin = mots.find(
+        (m, i) =>
+          i > 0 &&
+          Math.abs(m.haut - mots[i - 1].haut) > m.hauteur * 0.5 &&
+          FIN.test(m.texte) &&
+          !/^\d/.test(m.texte),
+      );
+      if (!orphelin || !souder(orphelin)) return;
+    }
+  };
+
+  const tout = (racine: ParentNode = document) =>
+    racine.querySelectorAll<HTMLElement>(SELECTEUR).forEach((el) => {
+      if (el.closest("[aria-hidden='true']") || el.offsetParent === null) return;
+      corriger(el);
+    });
+
+  let minuterie = 0;
+  const relancer = () => {
+    window.clearTimeout(minuterie);
+    minuterie = window.setTimeout(() => tout(), 150);
+  };
+
+  document.fonts?.ready.then(() => tout());
+  window.addEventListener("load", () => tout());
+  window.addEventListener("resize", relancer);
+  document.addEventListener(
+    "toggle",
+    (e) => {
+      const d = e.target as HTMLDetailsElement;
+      if (d.open) tout(d);
+    },
+    true,
+  );
+</script>
