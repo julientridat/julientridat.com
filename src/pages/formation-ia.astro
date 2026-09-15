@@ -1,46 +1,38 @@
 ---
 /**
- * Formation à l'IA générative — page PUBLIQUE (indexée, liée depuis le footer,
- * la nav et la deuxième offre de la home).
+ * Formation à l'IA générative — refaite en septembre 2026 sur le modèle de
+ * la page d'accueil (fond et forme), comme /integration-ia : hero sombre,
+ * aiguillage, déroulé « Vous recevez » avec une mécanique animée (le dossier
+ * qui se remplit), tuiles à grand signe, prix sur fond sombre, FAQ fermée,
+ * clôture sombre.
  *
- * DEUX destinataires, et c'est assumé depuis l'aiguillage placé sous le hero :
- *   • le dirigeant d'entreprise qui veut former ses équipes — il arrive par la
- *     section « Deuxième offre » de la home, et son argument est le financement
- *     OPCO via un organisme partenaire ;
- *   • le responsable pédagogique d'un organisme de formation qui cherche un
- *     intervenant à référencer — son argument est le dossier complet et la
- *     Qualiopi portée par son centre.
- * Le corps de la page (spectre, supports, modes) sert les deux ; seule la
- * section « Le cadre » est explicitement réservée au second.
+ * DEUX destinataires, nommés dès l'aiguillage : l'entreprise qui forme ses
+ * équipes (argument : financement OPCO via un organisme partenaire) et
+ * l'organisme de formation qui cherche un intervenant (argument : le dossier
+ * complet, la Qualiopi portée par son centre).
  *
- * Parti pris éditorial : page courte, ton sobre, première personne. L'argument
- * est l'ÉTENDUE de l'expérience (du comité de direction à l'équipe de TPE, tous
- * secteurs) — elle se démontre en laissant le lecteur chercher son propre public
- * dans le spectre, jamais en la revendiquant.
+ * Le titre du hero est calé ligne par ligne par Julien : deux lignes sur
+ * desktop, quatre en responsive. Ne pas y toucher sans lui.
  *
- * Règle éditoriale du dépôt : aucun chiffre invérifiable. Tout est adossé aux
- * études de cas publiées, aux références déjà nommées sur la page d'accueil, ou
- * aux déroulés réellement livrés.
+ * PRIX : à partir de 790 € HT la demi-journée (Julien, 15/09/2026).
+ * Aucun organisme partenaire n'est nommé à côté d'un client : les contrats
+ * l'interdisent.
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
+import Reveal from "@/components/Reveal.astro";
 import { SITE } from "@/lib/site";
 
-const title = "Formation à l'IA générative — Julien Tridat | Intra-entreprise et sous-traitance OF";
+const title = "Formation à l'IA générative | Julien Tridat";
 const description =
-  "Formateur IA générative depuis trois ans : plus de 300 dirigeants et cadres formés, des comités de direction aux équipes de terrain. En intra-entreprise (financement OPCO via organisme partenaire) ou en sous-traitance pour organismes de formation. Bordeaux et national.";
+  "Formation IA générative en intra ou pour organismes de formation. Plus de 300 dirigeants et cadres formés. Dès 790 € HT la demi-journée, OPCO possible.";
 
 /* ------------------------------------------------------------------ *
- * Données administratives — à compléter par Julien.
- *
- * La page étant désormais publique, une valeur manquante n'affiche plus
- * « [À VALIDER] » : la ligne est simplement omise, et un renvoi « sur demande »
- * la remplace. Un OF en phase de référencement redemande ces pièces de toute
- * façon ; mieux vaut une fiche sobre qu'une fiche qui a l'air inachevée.
- * Renseigner une valeur ici la fait apparaître automatiquement.
+ * Données administratives — à compléter par Julien. Une valeur absente
+ * n'affiche rien : elle rejoint la liste des pièces « sur demande ».
  * ------------------------------------------------------------------ */
 const ADMIN = {
   formeJuridique: null as string | null,
@@ -204,24 +196,138 @@ const ARTEFACTS = [
   },
 ];
 
-const MODES = [
+
+const etapes = [
   {
-    titre: "J'anime, vous vendez",
-    texte:
-      "Vous portez la convention, le financement et la relation client. J'interviens comme formateur et je vous rends le dossier complet. C'est déjà mon mode de travail avec trois organismes.",
+    moment: "Avant",
+    texte: "Questionnaire de positionnement, puis un programme construit sur vos métiers et vos dossiers.",
+    recu: "un programme daté, prêt à entrer dans la convention.",
   },
   {
-    titre: "On construit votre offre IA",
-    texte:
-      "Vous voulez ouvrir l'IA à votre catalogue sans savoir par quel segment commencer. On mesure, on score les cibles, on écrit les programmes, et vous gardez la méthode pour ouvrir les suivants.",
+    moment: "Le jour J",
+    texte: "J'anime en présentiel, en classe virtuelle ou en mixte, sur vos vrais cas.",
+    recu: "les supports de séance et les livrets par outil.",
   },
   {
-    titre: "J'interviens sur vos événements",
-    texte:
-      "Petits-déjeuners prescripteurs, salons, clubs clients. Je construis un livrable réel devant la salle plutôt que d'exposer le potentiel de l'IA.",
+    moment: "Après",
+    texte: "Quiz de fin, questionnaires de satisfaction, attestations.",
+    recu: "le dossier complet.",
   },
 ];
 
+/** Les pièces du dossier, cochées une à une par l'animation du bloc 3. */
+const DOSSIER = [
+  "CV formateur à jour",
+  "Programme daté",
+  "Questionnaire de positionnement",
+  "Supports de séance",
+  "Feuilles d'émargement",
+  "Quiz de fin et résultats",
+  "Questionnaires de satisfaction",
+  "Attestations",
+];
+
+const chiffres = [
+  { signe: "300+", titre: "dirigeants et cadres formés", plein: true },
+  { signe: "50", titre: "organisations" },
+  { signe: "10", titre: "secteurs" },
+];
+
+/* Références : les noms déjà publiés sur le site (archive
+   docs/verbatims-et-references.md) et Lagardère Travel Retail. Le club
+   d'affaires du Marmandais n'y est pas : hors financement de la formation. */
+const REFERENCES = [
+  "Dassault Systèmes",
+  "SNCF Fret",
+  "Lagardère Travel Retail",
+  "Le Nouveau Bélier",
+  "Maison Chapoutier",
+  "Zorba Group",
+  "WeThePeople",
+  "Cogefi",
+  "Bordeaux Négoce",
+  "Maison des Vins et des Spiritueux",
+  "Asqua BTP",
+  "Qwertys",
+];
+
+const cadre = [
+  "Qualiopi via l'organisme qui porte la convention",
+  "Bordeaux, Nouvelle-Aquitaine, national",
+  "Présentiel, classe virtuelle, mixte",
+  "De la demi-journée au parcours par vagues",
+  "ChatGPT · Claude · Copilot · Gemini · Perplexity · NotebookLM",
+];
+
+const questions = [
+  {
+    q: "Vous êtes certifié Qualiopi\u00a0?",
+    r: "Pas en propre. J'interviens sous la certification de l'organisme qui porte la convention — c'est déjà le cas avec trois organismes certifiés. Pour une entreprise, c'est un organisme partenaire qui la porte : vous n'avez pas à le chercher.",
+  },
+  {
+    q: "Comment marche le financement OPCO\u00a0?",
+    r: "La convention est portée par un organisme certifié Qualiopi, ce qui rend la formation éligible à une prise en charge par votre OPCO. Le montant dépend de votre OPCO et de votre entreprise.",
+  },
+  {
+    q: "Quelles durées, quels formats\u00a0?",
+    r: "De la demi-journée d'acculturation au parcours déployé par vagues. En présentiel intra, en classe virtuelle, ou en mixte avec suivi à distance. Bordeaux et Nouvelle-Aquitaine, national, et à distance partout.",
+  },
+  {
+    q: "Sur quels outils\u00a0?",
+    r: "ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM — et l'outil déjà déployé chez vous ou chez votre client, s'il y en a un.",
+  },
+  {
+    q: "Vous pouvez construire notre offre de formation IA\u00a0?",
+    r: "Oui. Vous voulez ouvrir l'IA à votre catalogue sans savoir par quel segment commencer : on mesure, on score les cibles, on écrit les programmes, et vous gardez la méthode pour ouvrir les suivants.",
+  },
+  {
+    q: "Vous intervenez sur des événements\u00a0?",
+    r: "Petits-déjeuners prescripteurs, salons, clubs clients. Je construis un livrable réel devant la salle plutôt que d'exposer le potentiel de l'IA.",
+  },
+  {
+    q: "Vous faites aussi du marketing et de l'intégration IA\u00a0?",
+    r: "Ce sont deux autres offres. Marketing IA : je deviens le service marketing d'une PME, avec un livrable chaque semaine. Intégration IA : j'installe des agents dans les outils d'une entreprise, en huit semaines.",
+  },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "@id": `${SITE.url}/formation-ia#service`,
+    name: "Formation à l'IA générative",
+    description:
+      "Formations à l'IA générative en intra-entreprise (convention portée par un organisme partenaire certifié Qualiopi, financement OPCO possible) ou en sous-traitance pour organismes de formation. Programme sous 48 heures, dossier complet remis à chaque session.",
+    provider: { "@id": `${SITE.url}/#julien-tridat` },
+    areaServed: "FR",
+    url: `${SITE.url}/formation-ia`,
+    makesOffer: [
+      {
+        "@type": "Offer",
+        name: "Demi-journée de formation",
+        priceCurrency: "EUR",
+        priceSpecification: {
+          "@type": "PriceSpecification",
+          minPrice: "790",
+          priceCurrency: "EUR",
+          valueAddedTaxIncluded: false,
+        },
+        description: "À partir de 790 € HT la demi-journée ; le tarif dépend du format, du volume et de l'ingénierie.",
+      },
+    ],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: questions.map((item) => ({
+      "@type": "Question",
+      name: item.q,
+      acceptedAnswer: { "@type": "Answer", text: item.r },
+    })),
+  },
+];
+
+const h2 = "text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]";
 /** Verbatims déjà publiés sur la page d'accueil — participants de sessions réelles. */
 const VERBATIMS = [
   [
@@ -235,111 +341,92 @@ const VERBATIMS = [
 ];
 ---
 
-<BaseLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`}>
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`} jsonLd={jsonLd}>
   <main class="bg-background text-foreground">
-    {/* ---------------------------------------------------------------- Hero */}
-    <header class="relative overflow-hidden border-b border-line px-6 pb-16 pt-36 md:px-12 md:pb-20 md:pt-44">
+    {/* ---------------------------------------------------------------- 1 · Hero */}
+    <header class="relative isolate overflow-hidden bg-foreground px-6 pb-20 pt-36 text-white md:px-12 md:pb-24 md:pt-44">
       <div
         class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(720px 400px at 18% 0%, rgba(108,76,241,0.07), transparent 70%);"
+        style="background: radial-gradient(45% 60% at 80% 40%, rgba(108,76,241,0.28), transparent 70%), radial-gradient(40% 50% at 5% 0%, rgba(185,166,255,0.10), transparent 70%);"
       >
       </div>
-      <Nav />
+      <Nav onDark />
       <div class="mx-auto max-w-7xl">
-        <Eyebrow>Formation à l'IA générative</Eyebrow>
+        <p class="mb-7 w-fit rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-white md:text-[13px]">
+          Formation IA générative<span class="hidden sm:inline">&nbsp;· Entreprises et organismes de formation</span>
+        </p>
         <h1 class="text-[clamp(1.85rem,5.2vw,3.5rem)] font-normal leading-[1.04] tracking-[-0.03em]">
           Je forme à l'IA générative
           <br class="lg:hidden" />{" "}
           depuis trois ans.
           <br />
-          <em class="text-lime">
+          <em class="text-violet-soft">
             Des comités de direction
             <br class="lg:hidden" />{" "}
             aux équipes de terrain.
           </em>
         </h1>
-        <p class="mt-8 max-w-2xl text-xl leading-relaxed text-ink-2">
-          Grands groupes, ETI, PME, TPE. Marketing, commercial, administration, direction.
-          Plus de 300 dirigeants et cadres formés, dans une cinquantaine d'organisations et une
-          dizaine de secteurs.
-          <strong class="font-medium text-foreground">
-            J'interviens de deux façons&nbsp;: directement chez l'entreprise qui forme ses équipes,
-            ou en sous-traitance pour l'organisme qui porte la convention.
-          </strong>{" "}
-          Dans les deux cas, je conçois, j'anime, et je rends le dossier complet.
+        <p class="mt-8 max-w-2xl text-lg leading-relaxed text-white/85 md:text-xl">
+          Plus de 300 dirigeants et cadres formés, sur leurs vrais dossiers. Vos équipes appliquent
+          dès le lendemain.
         </p>
-
         <div class="mt-10 flex flex-wrap items-center gap-4">
-          <CtaButton>Réserver 20 minutes</CtaButton>
-          <button
-            type="button"
-            data-open-contact
-            class="cursor-pointer rounded-full border border-line px-6 py-3.5 text-[15px] font-medium text-ink-2 transition-colors hover:border-lime hover:text-lime"
+          <CtaButton onDark>Réserver 20&nbsp;minutes</CtaButton>
+          <a
+            href="#deroule"
+            class="inline-flex items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
           >
-            Envoyer un message
-          </button>
+            Voir le dossier remis&nbsp;↓
+          </a>
         </div>
+        <p class="mt-6 text-sm text-white/70">
+          Dès 790&nbsp;€&nbsp;HT la demi-journée&nbsp;· Financement OPCO possible&nbsp;· Dossier complet à chaque session
+        </p>
       </div>
     </header>
 
-    {/* ------------------------------------------------------------ Aiguillage
-        Deux publics arrivent sur cette page et n'y cherchent pas la même chose.
-        Plutôt que d'en sacrifier un, on le nomme dès le deuxième écran : le
-        dirigeant sait en trois lignes que ça le concerne, et l'organisme sait
-        où sont ses pièces. La carte « entreprise » est la carte accentuée
-        parce que c'est le public qui, jusqu'ici, ne se reconnaissait nulle part. */}
-    <section class="border-b border-line px-6 py-10 md:px-12 md:py-14">
+    {/* ---------------------------------------------------- 2 · Deux façons d'arriver */}
+    <section class="px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
-        <Eyebrow>Deux façons d'arriver ici</Eyebrow>
-        <h2 class="max-w-3xl text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
-          Vous formez vos équipes, ou
-          <em class="text-lime"> vous cherchez qui les formera&nbsp;?</em>
-        </h2>
+        <div data-reveal>
+          <Eyebrow>Deux façons d'arriver ici</Eyebrow>
+          <h2 class={h2}>
+            Vous formez vos équipes,
+            <br />
+            <em class="text-lime">ou vous cherchez qui les formera&nbsp;?</em>
+          </h2>
+        </div>
 
-        <div class="mt-10 grid gap-5 md:grid-cols-2">
-          <article class="flex flex-col rounded-2xl border border-lime/40 bg-lime/[0.04] p-7 md:p-8">
-            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">
-              Vous êtes une entreprise
-            </div>
-            <h3 class="mt-4 text-[17px] font-medium text-foreground">
-              Une formation en intra, sur vos vrais dossiers.
-            </h3>
-            <p class="mt-3 flex-1 text-[15px] leading-relaxed text-ink-2">
-              Je construis le programme à partir de vos métiers, j'anime, et vos équipes repartent
-              avec des méthodes qu'elles appliquent dès le lendemain.{" "}
-              <strong class="font-medium text-foreground">Financement OPCO possible</strong>&nbsp;:
-              la convention est portée par un organisme partenaire certifié Qualiopi — vous n'avez
-              pas à le chercher.
+        <div class="mt-12 grid gap-4 md:grid-cols-2">
+          <article data-reveal class="flex flex-col rounded-3xl bg-lime p-8 text-white shadow-[0_30px_70px_-30px_rgba(108,76,241,0.7)] md:p-10">
+            <span class="text-[11px] uppercase tracking-[0.22em] text-white/75">Vous êtes une entreprise</span>
+            <h3 class="mt-5 text-2xl font-medium leading-snug">Une formation intra, construite sur vos métiers.</h3>
+            <p class="mt-3 flex-1 text-lg leading-relaxed text-white/85">
+              La convention est portée par un organisme certifié Qualiopi&nbsp;: financement OPCO
+              possible, et vous n'avez pas à le chercher.
             </p>
             <button
               type="button"
               data-open-contact
-              class="group mt-6 inline-flex w-fit cursor-pointer items-center gap-3 rounded-full border border-lime/50 px-6 py-3.5 text-[15px] font-medium leading-7 text-lime transition-colors hover:bg-lime hover:text-white"
+              class="group mt-8 inline-flex w-fit cursor-pointer items-center gap-3 rounded-full bg-white px-6 py-3.5 text-[15px] font-medium text-foreground transition-transform hover:-translate-y-0.5"
             >
               Décrire votre besoin
               <span class="transition-transform group-hover:translate-x-1">→</span>
             </button>
           </article>
 
-          <article class="flex flex-col rounded-2xl border border-line p-7 md:p-8">
-            <div class="text-[11px] uppercase tracking-[0.22em] text-ink-3">
-              Vous êtes un organisme de formation
-            </div>
-            <h3 class="mt-4 text-[17px] font-medium text-foreground">
-              Une intervention sous votre certification.
-            </h3>
-            <p class="mt-3 flex-1 text-[15px] leading-relaxed text-ink-2">
-              Vous portez la convention, le financement et la relation client. Je conçois, j'anime,
-              et je vous rends le dossier complet à chaque session.{" "}
-              <strong class="font-medium text-foreground">
-                C'est déjà mon mode de travail avec trois organismes certifiés.
-              </strong>
+          <article data-reveal style="--reveal-delay: 100ms" class="flex flex-col rounded-3xl border border-line bg-card p-8 md:p-10">
+            <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Vous êtes un organisme de formation</span>
+            <h3 class="mt-5 text-2xl font-medium leading-snug text-foreground">J'interviens sous votre certification.</h3>
+            <p class="mt-3 flex-1 text-lg leading-relaxed text-ink-2">
+              Vous portez la convention et la relation client. Je conçois, j'anime, et je vous rends
+              le dossier complet. C'est déjà le cas avec trois organismes.
             </p>
             <a
               href="#cadre"
-              class="group mt-6 inline-flex w-fit items-center gap-3 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium leading-7 text-ink-2 transition-colors hover:border-lime hover:text-lime"
+              class="group mt-8 inline-flex w-fit items-center gap-3 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium text-foreground transition-colors hover:border-lime hover:text-lime"
             >
-              Voir les pièces de référencement
+              Voir le cadre
               <span class="transition-transform group-hover:translate-y-0.5">↓</span>
             </a>
           </article>
@@ -347,164 +434,155 @@ const VERBATIMS = [
       </div>
     </section>
 
-    {/* -------------------------------------------------------------- Spectre */}
-    <section class="border-b border-line bg-card px-6 py-10 md:px-12 md:py-14">
-      <div class="mx-auto max-w-7xl">
-        <div class="grid gap-8 md:grid-cols-2 md:items-end">
-          <div>
-            <Eyebrow>Le spectre</Eyebrow>
-            <h2 class="text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
-              Quel public voulez-vous
+    {/* ------------------------------------------------------ 3 · Comment ça se passe
+        À droite, le dossier se remplit pièce par pièce puis affiche « Dossier
+        complet ». Décoratif : les pièces sont aussi listées en toutes lettres. */}
+    <section id="deroule" class="scroll-mt-24 border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-16">
+        <div>
+          <div data-reveal>
+            <Eyebrow>Comment ça se passe</Eyebrow>
+            <h2 class={`${h2} lg:text-[clamp(2.4rem,3.6vw,3.4rem)]`}>
+              Un programme sous&nbsp;48&nbsp;heures.
               <br />
-              <em class="text-lime">me confier&nbsp;?</em>
+              <em class="text-lime">Un dossier complet après.</em>
             </h2>
           </div>
-          <p class="max-w-lg text-[15px] leading-relaxed text-ink-2">
-            Trois ans à animer sur des terrains très différents m'ont surtout appris à ajuster.
-            Cherchez le vôtre&nbsp;: il y a de bonnes chances que je l'aie déjà eu en face de moi.
-          </p>
+          <ol class="mt-10 space-y-4">
+            {etapes.map((e, i) => (
+              <li data-reveal style={`--reveal-delay: ${i * 90}ms`} class="rounded-3xl border border-line bg-background p-6 md:p-7">
+                <div class="flex items-baseline gap-4">
+                  <span class="font-serif text-3xl italic leading-none text-lime">{String(i + 1).padStart(2, "0")}</span>
+                  <h3 class="text-xl font-medium text-foreground">{e.moment}</h3>
+                </div>
+                <p class="mt-3 text-base leading-relaxed text-ink-2">{e.texte}</p>
+                <p class="mt-4 border-t border-line pt-3 text-[15px] leading-relaxed text-ink-2">
+                  <span class="font-medium text-lime">Vous recevez&nbsp;:</span> {e.recu}
+                </p>
+              </li>
+            ))}
+          </ol>
         </div>
 
-        <div class="mt-10 flex flex-wrap gap-2">
+        <div data-reveal style="--reveal-delay: 150ms" class="relative min-w-0">
+          <div
+            class="pointer-events-none absolute -inset-10 -z-10 rounded-[3rem] opacity-70 blur-3xl"
+            style="background: radial-gradient(60% 60% at 50% 40%, rgba(108,76,241,0.18), transparent 70%);"
+          >
+          </div>
+          <div id="dossier" class="rounded-3xl border border-line bg-background p-6 shadow-[0_40px_90px_-45px_rgba(17,18,22,0.45)] md:p-8">
+            <div class="flex items-center justify-between gap-4">
+              <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Le dossier de la session</span>
+              <span id="dossier-compte" class="font-serif text-2xl italic leading-none text-lime">8&nbsp;/&nbsp;8</span>
+            </div>
+            <ul class="mt-6 space-y-2.5">
+              {DOSSIER.map((d) => (
+                <li class="dossier-piece flex items-center gap-3 rounded-xl border border-line px-4 py-2.5 text-[15px] text-foreground transition-colors duration-300">
+                  <span class="dossier-coche grid h-5 w-5 shrink-0 place-items-center rounded-full bg-lime text-[11px] text-white transition-all duration-300">✓</span>
+                  {d}
+                </li>
+              ))}
+            </ul>
+            <div id="dossier-statut" class="mt-6 flex items-center justify-between gap-4 border-t border-line pt-4">
+              <span class="text-sm text-ink-3">Remis à chaque session</span>
+              <span class="rounded-full bg-lime px-3 py-1 text-xs font-medium text-white">Dossier complet</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ---------------------------------------------------------- 4 · Qui j'ai formé */}
+    <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-7xl">
+        <div data-reveal>
+          <Eyebrow>Qui j'ai formé</Eyebrow>
+          <h2 class={h2}>
+            Quel public voulez-vous
+            <br />
+            <em class="text-lime">me confier&nbsp;?</em>
+          </h2>
+        </div>
+
+        <ul class="mt-12 grid gap-4 sm:grid-cols-3">
+          {chiffres.map((c, i) => (
+            <li
+              data-reveal
+              style={`--reveal-delay: ${i * 80}ms`}
+              class={`rounded-3xl p-7 md:p-8 ${c.plein ? "bg-lime text-white shadow-[0_30px_70px_-30px_rgba(108,76,241,0.7)]" : "border border-line bg-card"}`}
+            >
+              <span class={`font-serif text-[clamp(3.2rem,6vw,5rem)] italic leading-[0.85] tracking-tight ${c.plein ? "text-white" : "text-lime"}`}>{c.signe}</span>
+              <p class={`mt-6 text-lg font-medium ${c.plein ? "text-white" : "text-foreground"}`}>{c.titre}</p>
+            </li>
+          ))}
+        </ul>
+
+        <p data-reveal class="mt-12 max-w-2xl text-lg leading-relaxed text-ink-2">
+          Cherchez votre public&nbsp;: il y a de bonnes chances que je l'aie déjà eu en face de moi.
+        </p>
+        <div data-reveal class="mt-6 flex flex-wrap gap-2">
           {SPECTRE.map((axe, i) => (
             <button
               type="button"
               data-spectre-onglet
               data-val={axe.id}
               aria-pressed={i === 0 ? "true" : "false"}
-              class="cursor-pointer rounded-full border border-line px-4 py-2 text-[13px] text-ink-2 transition-colors hover:border-lime hover:text-lime aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-white"
+              class="cursor-pointer rounded-full border border-line px-5 py-2.5 text-sm text-ink-2 transition-colors hover:border-lime hover:text-lime aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-white"
             >
               {axe.onglet}
             </button>
           ))}
         </div>
-
-        <div class="mt-8 rounded-2xl border border-line bg-background p-7 md:p-9">
+        <div data-reveal class="mt-6">
           <h3 class="text-[11px] uppercase tracking-[0.22em] text-lime" id="sp-question"></h3>
-          <div class="mt-6" id="sp-corps"></div>
+          <div class="mt-5" id="sp-corps"></div>
         </div>
       </div>
     </section>
 
-    {/* ------------------------------------------------------------ Artefacts */}
-    <section class="border-b border-line px-6 py-10 md:px-12 md:py-14">
+    {/* ----------------------------------------------------------- 5 · Les supports */}
+    <section class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
-        <div class="grid gap-8 md:grid-cols-2 md:items-end">
-          <div>
-            <Eyebrow>Les supports</Eyebrow>
-            <h2 class="text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
-              Je conçois mes supports.
-              <br />
-              <em class="text-lime">Les voici.</em>
-            </h2>
-          </div>
-          <p class="max-w-lg text-[15px] leading-relaxed text-ink-2">
-            Ingénierie pédagogique comprise&nbsp;: programme, supports, exercices, quiz de fin,
-            livrets par outil. Trois artefacts réels, anonymisés — ouvrez-les plutôt que de me
-            croire sur parole.
-          </p>
+        <div data-reveal>
+          <Eyebrow>Les supports</Eyebrow>
+          <h2 class={h2}>
+            Je conçois mes supports. <em class="text-lime">Les voici.</em>
+          </h2>
         </div>
 
-        <div class="mt-12 grid gap-5 md:grid-cols-3">
-          {ARTEFACTS.map((a) => (
+        <div class="mt-12 grid gap-4 md:grid-cols-3">
+          {ARTEFACTS.map((a, i) => (
             <a
+              data-reveal
+              style={`--reveal-delay: ${i * 80}ms`}
               href={a.url}
               target="_blank"
               rel="noopener"
-              class="group flex flex-col rounded-2xl border border-line p-7 transition-colors hover:border-lime/60"
+              class="group flex flex-col rounded-3xl border border-line bg-background p-7 transition duration-300 hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)]"
             >
-              <h3 class="text-[17px] font-medium transition-colors group-hover:text-lime">
-                {a.titre}
-              </h3>
-              <p class="mt-3 flex-1 text-[14px] leading-relaxed text-ink-2">{a.detail}</p>
-              <span class="mt-6 text-[13px] text-ink-3 transition-colors group-hover:text-lime">
-                {a.lien} ↗
-              </span>
+              <h3 class="text-lg font-medium text-foreground transition-colors group-hover:text-lime">{a.titre}</h3>
+              <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{a.detail}</p>
+              <span class="mt-6 text-sm text-ink-3 transition-colors group-hover:text-lime">{a.lien} ↗</span>
             </a>
           ))}
         </div>
 
-        <div class="mt-10 grid gap-6 border-t border-line pt-10 md:grid-cols-2">
-          {VERBATIMS.map(([q, qui]) => (
-            <figure>
-              <blockquote class="text-[15px] leading-relaxed text-ink-2">
-                <span class="font-serif text-2xl leading-none text-lime">"</span>
-                {q}
-              </blockquote>
-              <figcaption class="mt-2 text-[13px] text-ink-3">{qui}</figcaption>
+        <div class="mt-12 grid gap-6 md:grid-cols-2">
+          {VERBATIMS.map(([q, qui], i) => (
+            <figure data-reveal style={`--reveal-delay: ${i * 80}ms`} class="border-l-2 border-lime pl-6">
+              <blockquote class="font-serif text-2xl italic leading-snug text-foreground">« {q} »</blockquote>
+              <figcaption class="mt-3 text-sm text-ink-3">{qui}</figcaption>
             </figure>
           ))}
         </div>
-      </div>
-    </section>
 
-    {/* ----------------------------------------------------------- Le cadre
-        Seule section réservée aux organismes de formation : c'est la cible du
-        lien de l'aiguillage, d'où l'id. */}
-    <section id="cadre" class="scroll-mt-24 border-b border-line bg-card px-6 py-10 md:px-12 md:py-14">
-      <div class="mx-auto max-w-7xl">
-        <Eyebrow>Le cadre</Eyebrow>
-        <h2 class="max-w-3xl text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
-          Ce qu'il vous faut <em class="text-lime">pour me référencer.</em>
-        </h2>
-
-        <div class="mt-12 grid gap-px overflow-hidden rounded-2xl bg-line md:grid-cols-2">
-          <dl class="space-y-5 bg-background p-8 md:p-9">
-            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Administratif</div>
-            {lignesAdmin.map(([k, val]) => (
-              <div class="grid gap-1 border-b border-line pb-4 last:border-0 last:pb-0 sm:grid-cols-[11rem_1fr] sm:gap-4">
-                <dt class="text-[13px] text-ink-3">{k}</dt>
-                <dd class="text-[14px] text-foreground">{val}</dd>
-              </div>
-            ))}
-            {piecesSurDemande.length > 0 && (
-              <p class="border-t border-line pt-4 text-[13px] leading-relaxed text-ink-3">
-                Pièces de référencement ({piecesSurDemande.join(", ")}) transmises sur demande, sous
-                24 h.
-              </p>
-            )}
-          </dl>
-
-          <dl class="space-y-5 bg-background p-8 md:p-9">
-            <div class="text-[11px] uppercase tracking-[0.22em] text-lime">Intervention</div>
-            {[
-              ["Zone", "Bordeaux et Nouvelle-Aquitaine, national, et classe virtuelle partout"],
-              ["Formats", "Présentiel intra, classe virtuelle, mixte avec suivi à distance"],
-              ["Durées", "De la demi-journée d'acculturation au parcours déployé par vagues"],
-              [
-                "Outils",
-                "ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM — et l'outil déjà déployé chez votre client, s'il y en a un",
-              ],
-              ["Tarifs", "Sur demande — ils dépendent du format, du volume et de l'ingénierie"],
-            ].map(([k, val]) => (
-              <div class="grid gap-1 border-b border-line pb-4 last:border-0 last:pb-0 sm:grid-cols-[11rem_1fr] sm:gap-4">
-                <dt class="text-[13px] text-ink-3">{k}</dt>
-                <dd class="text-[14px] text-foreground">{val}</dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-
-        <div class="mt-6 rounded-2xl border border-line bg-background p-7 md:p-8">
-          <p class="text-[15px] leading-relaxed text-ink-2">
-            <strong class="font-medium text-foreground">Le dossier que je vous remets à chaque session.</strong>{" "}
-            Vous restez responsable de la qualité de vos sous-traitants — vous n'avez rien à me
-            réclamer.
-          </p>
-          <ul class="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-[14px] text-ink-2">
-            {[
-              "CV formateur à jour",
-              "Programme daté",
-              "Questionnaire de positionnement",
-              "Supports de séance",
-              "Feuilles d'émargement",
-              "Quiz de fin et résultats",
-              "Questionnaires de satisfaction",
-              "Attestations",
-            ].map((d) => (
-              <li class="flex items-center gap-2">
-                <span class="text-lime">+</span>
-                {d}
+        <div data-reveal class="mt-14 border-t border-line pt-8">
+          <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Références</p>
+          <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 lg:gap-x-8">
+            {REFERENCES.map((r, i) => (
+              <li class="flex items-center gap-6 lg:gap-8">
+                <span class="text-[clamp(1.1rem,1.8vw,1.55rem)] font-medium tracking-[-0.03em] text-ink-3 transition-colors hover:text-foreground">{r}</span>
+                {i < REFERENCES.length - 1 && <span class="hidden text-lime/50 sm:inline">✦</span>}
               </li>
             ))}
           </ul>
@@ -512,48 +590,126 @@ const VERBATIMS = [
       </div>
     </section>
 
-    {/* ------------------------------------------------------------- Modes + CTA */}
-    <section class="px-6 py-10 md:px-12 md:py-14">
+    {/* ------------------------------------------------------ 6 · Le cadre et le prix */}
+    <section id="cadre" class="relative isolate scroll-mt-24 overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-24">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(45% 55% at 75% 55%, rgba(108,76,241,0.28), transparent 70%), radial-gradient(35% 40% at 10% 10%, rgba(185,166,255,0.10), transparent 70%);"
+      >
+      </div>
       <div class="mx-auto max-w-7xl">
-        <Eyebrow>Travailler ensemble</Eyebrow>
-        <h2 class="max-w-3xl text-[clamp(1.7rem,3.6vw,2.7rem)] font-normal leading-[1.1] tracking-[-0.03em]">
-          Trois façons, <em class="text-lime">selon ce qui vous manque.</em>
-        </h2>
-
-        <div class="mt-12 grid gap-5 md:grid-cols-3">
-          {MODES.map((m) => (
-            <article class="rounded-2xl border border-line p-7">
-              <h3 class="text-[17px] font-medium text-foreground">{m.titre}</h3>
-              <p class="mt-3 text-[14px] leading-relaxed text-ink-2">{m.texte}</p>
-            </article>
-          ))}
+        <div data-reveal>
+          <Eyebrow onDark>Le cadre et le prix</Eyebrow>
+          <h2 class={h2}>
+            Ce qu'il vous faut <em class="text-violet-soft">pour me référencer.</em>
+          </h2>
         </div>
 
-        <div class="mt-12 rounded-2xl border border-lime/40 bg-lime/[0.04] px-7 py-10 text-center md:px-12">
-          <h2 class="text-[clamp(1.6rem,3.4vw,2.5rem)] font-normal leading-[1.1] tracking-[-0.03em]">
-            Une session à remplir&nbsp;?
-            <em class="text-lime"> Parlons-en vingt minutes.</em>
-          </h2>
-          <p class="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-ink-2">
-            Dites-moi le public, la durée et le contexte&nbsp;: je vous renvoie un programme
-            ajusté sous quarante-huit heures, prêt à entrer dans votre convention.
-          </p>
-          <div class="mt-8 flex flex-wrap items-center justify-center gap-4">
-            <CtaButton>Réserver 20 minutes</CtaButton>
-            <button
-              type="button"
-              data-open-contact
-              class="cursor-pointer rounded-full border border-line px-6 py-3.5 text-[15px] font-medium text-ink-2 transition-colors hover:border-lime hover:text-lime"
-            >
-              Envoyer un message
-            </button>
+        <div class="mt-12 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
+          <div data-reveal class="flex flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm md:p-10">
+            <ul class="flex flex-wrap gap-2.5">
+              {cadre.map((c) => (
+                <li class="rounded-2xl border border-white/15 px-4 py-2 text-[15px] text-white/85 sm:rounded-full">{c}</li>
+              ))}
+            </ul>
+            {/* Pièces administratives renseignées dans ADMIN (hors Qualiopi, déjà en pastille). */}
+            {lignesAdmin.filter(([k]) => k !== "Qualiopi").length > 0 && (
+              <dl class="mt-6 grid gap-3 text-[15px] sm:grid-cols-2">
+                {lignesAdmin.filter(([k]) => k !== "Qualiopi").map(([k, val]) => (
+                  <div>
+                    <dt class="text-white/50">{k}</dt>
+                    <dd class="text-white/85">{val}</dd>
+                  </div>
+                ))}
+              </dl>
+            )}
+            {piecesSurDemande.length > 0 && (
+              <p class="mt-auto border-t border-white/10 pt-6 text-base leading-relaxed text-white/65">
+                Pièces de référencement ({piecesSurDemande.join(", ")}) transmises sur demande, sous
+                24&nbsp;h.
+              </p>
+            )}
           </div>
+
+          <div
+            data-reveal
+            style="--reveal-delay: 120ms"
+            class="rounded-[1.75rem] bg-gradient-to-br from-violet-soft/70 via-lime/60 to-lime/10 p-px shadow-[0_40px_120px_-40px_rgba(108,76,241,0.75)]"
+          >
+            <div class="flex h-full flex-col rounded-[calc(1.75rem-1px)] bg-[#17151f] p-8 md:p-10">
+              <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">La demi-journée, à partir de</div>
+              <div class="mt-4 flex flex-wrap items-baseline gap-x-3">
+                <span class="font-serif text-[clamp(4rem,9vw,6.5rem)] italic leading-[0.82] tracking-tight">790&nbsp;€</span>
+                <span class="text-base text-white/60">HT</span>
+              </div>
+              <p class="mt-6 flex-1 text-base leading-relaxed text-white/75">
+                Le tarif dépend du format, du volume et de l'ingénierie. Financement OPCO possible en
+                intra.
+              </p>
+              <div class="mt-8">
+                <CtaButton onDark>Réserver 20&nbsp;minutes</CtaButton>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* --------------------------------------------------------------- 7 · Questions */}
+    <section id="faq" class="px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>Questions</Eyebrow>
+        <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
+          <h2 data-reveal class={`${h2} md:sticky md:top-24 md:self-start`}>
+            Ce que vous alliez <em class="text-lime">me demander.</em>
+          </h2>
+          <div data-reveal style="--reveal-delay: 100ms">
+            {questions.map((item, i) => (
+              <details class={`border-t border-line ${i === questions.length - 1 ? "border-b" : ""}`}>
+                <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 text-lg font-medium text-foreground transition-colors hover:text-lime md:text-xl">
+                  <span>{item.q}</span>
+                  <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
+                </summary>
+                <p class="pb-5 text-lg leading-relaxed text-ink-2">{item.r}</p>
+              </details>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* ----------------------------------------------------------------- 8 · Clôture */}
+    <section id="contact" class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(58% 90% at 50% 115%, rgba(108,76,241,0.22), transparent 70%);"
+      >
+      </div>
+      <div class="mx-auto max-w-4xl text-center">
+        <Eyebrow onDark>Prochaine étape</Eyebrow>
+        <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
+          Une session à remplir&nbsp;? <em class="text-violet-soft">Parlons-en vingt minutes.</em>
+        </h2>
+        <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/80">
+          Dites-moi le public, la durée et le contexte&nbsp;: je vous renvoie un programme ajusté sous
+          quarante-huit heures.
+        </p>
+        <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
+          <CtaButton onDark>Réserver 20&nbsp;minutes</CtaButton>
+          <button
+            type="button"
+            data-open-contact
+            class="inline-flex cursor-pointer items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
+          >
+            Envoyer un message
+          </button>
         </div>
       </div>
     </section>
 
     <Footer />
   </main>
+  <Reveal />
 
   <script type="application/json" id="fi-spectre" set:html={JSON.stringify(SPECTRE)} />
 
@@ -588,15 +744,15 @@ const VERBATIMS = [
           corps.innerHTML = axe.items
             .map(
               (i) =>
-                `<span class="rounded-full border border-lime/30 bg-lime/[0.06] px-4 py-2 text-[14px] text-ink-2">${i.t}</span>`,
+                `<span class="rounded-full border border-line bg-card px-4 py-2 text-[15px] text-ink-2">${i.t}</span>`,
             )
             .join("");
         } else {
-          corps.className = "mt-6 grid gap-x-8 gap-y-7 sm:grid-cols-2 lg:grid-cols-3";
+          corps.className = "mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3";
           corps.innerHTML = axe.items
             .map(
               (i) =>
-                `<div><div class="text-[16px] font-medium text-foreground">${i.t}</div><p class="mt-2 text-[14px] leading-relaxed text-ink-2">${i.d ?? ""}</p></div>`,
+                `<div class="rounded-2xl border border-line bg-card p-5"><div class="text-[17px] font-medium text-foreground">${i.t}</div><p class="mt-2 text-[15px] leading-relaxed text-ink-2">${i.d ?? ""}</p></div>`,
             )
             .join("");
         }
@@ -615,4 +771,53 @@ const VERBATIMS = [
       if (SPECTRE.length > 0) rendre(SPECTRE[0].id);
     }
   </script>
+
+  <script>
+    /* Le dossier : les huit pièces se décochent, puis se cochent une à une
+       (0,45 s chacune) jusqu'à « Dossier complet », puis la boucle reprend.
+       Tourne seulement à l'écran ; figé et complet en mouvement réduit. */
+    const dossier = document.getElementById("dossier");
+    const compte = document.getElementById("dossier-compte");
+    const reduitD = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (dossier && compte && !reduitD) {
+      const pieces = [...dossier.querySelectorAll<HTMLElement>(".dossier-piece")];
+      const statut = document.getElementById("dossier-statut") as HTMLElement;
+      let visibleD = false;
+      let n = pieces.length;
+      const peindre = () => {
+        pieces.forEach((p, i) => {
+          const c = p.querySelector(".dossier-coche") as HTMLElement;
+          const fait = i < n;
+          c.classList.toggle("bg-lime", fait);
+          c.classList.toggle("text-white", fait);
+          c.classList.toggle("bg-line", !fait);
+          c.classList.toggle("text-transparent", !fait);
+          p.classList.toggle("text-ink-3", !fait);
+          p.classList.toggle("border-lime/40", fait && i === n - 1);
+        });
+        compte.textContent = `${n}\u00a0/\u00a0${pieces.length}`;
+        statut.style.opacity = n === pieces.length ? "1" : "0.35";
+      };
+      new IntersectionObserver((e) => { visibleD = e.some((x) => x.isIntersecting); }, { threshold: 0.3 }).observe(dossier);
+      let pauseFin = 0;
+      window.setInterval(() => {
+        if (!visibleD || document.hidden) return;
+        if (n === pieces.length) {
+          if (++pauseFin < 5) return;
+          pauseFin = 0;
+          n = 0;
+        } else {
+          n += 1;
+        }
+        peindre();
+      }, 450);
+    }
+  </script>
 </BaseLayout>
+
+<style>
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ""; }
+  .faq-marqueur::after { content: "+"; }
+  details[open] .faq-marqueur::after { content: "–"; }
+</style>
