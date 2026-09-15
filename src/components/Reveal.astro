@@ -1,0 +1,28 @@
+---
+/**
+ * Apparitions au défilement, partagées par toutes les pages refaites sur le
+ * modèle de l'accueil. Les éléments portent [data-reveal] (et, au besoin,
+ * style="--reveal-delay: 120ms"). Le CSS est dans global.css.
+ *
+ * Garde-fou : la classe .js-reveal n'est posée que si IntersectionObserver
+ * existe — sans lui, ou sans JS, rien n'est jamais masqué.
+ */
+---
+
+<script>
+  if ("IntersectionObserver" in window) {
+    document.documentElement.classList.add("js-reveal");
+    const io = new IntersectionObserver(
+      (entrees) => {
+        for (const e of entrees) {
+          if (e.isIntersecting) {
+            e.target.classList.add("est-visible");
+            io.unobserve(e.target);
+          }
+        }
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
+    );
+    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+  }
+</script>
