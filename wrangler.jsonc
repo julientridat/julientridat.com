@@ -17,5 +17,12 @@
   },
   "ai": {
     "binding": "AI"
-  }
+  },
+  // Le tableau client (/tableau) : un Durable Object à stockage SQLite — inclus
+  // dans le plan gratuit de Workers. Toutes les places vivent dans un seul objet,
+  // les navigateurs s'y connectent en WebSocket (worker/tableau.ts).
+  "durable_objects": {
+    "bindings": [{ "name": "TABLEAU", "class_name": "Tableau" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Tableau"] }]
 }
