@@ -18,6 +18,7 @@ import Prix from "@/components/sections/offre/Prix.astro";
 import Faq from "@/components/sections/offre/Faq.astro";
 import FinalCta from "@/components/sections/offre/FinalCta.astro";
 import Footer from "@/components/Footer.astro";
+import Reveal from "@/components/Reveal.astro";
 import { SITE } from "@/lib/site";
 import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
 
@@ -26,7 +27,7 @@ import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
 // description, où ils ont la place.
 const title = "Direction marketing externalisée pour PME | Julien Tridat";
 const description =
-  "2 500 € par mois, starter pack compris : audit, plan marketing sur douze mois, positionnement, charte. Puis un livrable chaque semaine. Sans engagement.";
+  "2 500 € par mois, starter pack compris : audit, plan marketing sur douze mois, positionnement, charte. Puis votre plan, mis en œuvre chaque semaine. Sans engagement.";
 
 const jsonLd = [
   {
@@ -35,7 +36,7 @@ const jsonLd = [
     "@id": `${SITE.url}/#service`,
     name: "Direction marketing externalisée — abonnement, starter pack compris",
     description:
-      "Abonnement mensuel sans engagement. Le premier mois est un starter pack : état des lieux (semaine 1), plan marketing sur douze mois avec les trois premiers mois détaillés et plan d'action validé (semaine 2), positionnement et charte (semaine 3), gabarits et premier livrable (semaine 4). Ensuite, un livrable à date chaque semaine selon le plan d'action, un point hebdomadaire de 45 minutes, et des demandes supplémentaires livrées de J+1 à J+3. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
+      "Abonnement mensuel sans engagement. Le premier mois est un starter pack : état des lieux (semaine 1), plan marketing sur douze mois avec les trois premiers mois détaillés et plan d'action validé (semaine 2), positionnement et charte (semaine 3), gabarits et premier livrable (semaine 4). Ensuite, le plan d'action mis en œuvre semaine après semaine, un livrable à date, un point hebdomadaire de 45 minutes, et des demandes supplémentaires livrées de J+1 à J+3. Pour PME jusqu'à 30 salariés, sans équipe marketing interne.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/`,
@@ -53,7 +54,7 @@ const jsonLd = [
           valueAddedTaxIncluded: false,
         },
         description:
-          "2 500 € HT par mois dès le premier mois, starter pack compris. Un livrable à date chaque semaine selon le plan d'action, point hebdomadaire de 45 minutes, demandes supplémentaires livrées de J+1 à J+3 sans engagement de volume. Sans engagement de durée, résiliable à tout moment. Pause possible après le starter pack : les semaines payées et non utilisées sont conservées six mois et la place est gardée. Le client conserve tous les livrables — contenus, charte, gabarits, fichiers sources — y compris après résiliation ; les agents IA utilisés pour produire restent la propriété du prestataire.",
+          "2 500 € HT par mois dès le premier mois, starter pack compris. Le plan d'action mis en œuvre chaque semaine, un livrable à date, point hebdomadaire de 45 minutes, demandes supplémentaires livrées de J+1 à J+3 sans engagement de volume. Sans engagement de durée, résiliable à tout moment. Pause possible après le starter pack : les semaines payées et non utilisées sont conservées six mois et la place est gardée. Le client conserve tous les livrables — contenus, charte, gabarits, fichiers sources — y compris après résiliation ; les agents IA utilisés pour produire restent la propriété du prestataire.",
       },
     ],
   },
@@ -80,24 +81,6 @@ const jsonLd = [
     <FinalCta />
     <Footer home />
   </main>
+  <Reveal />
 </BaseLayout>
 
-<script>
-  /* Apparitions au défilement. Garde-fou : si IntersectionObserver manque,
-     la classe n'est jamais posée et tout reste visible. */
-  if ("IntersectionObserver" in window) {
-    document.documentElement.classList.add("js-reveal");
-    const io = new IntersectionObserver(
-      (entrees) => {
-        for (const e of entrees) {
-          if (e.isIntersecting) {
-            e.target.classList.add("est-visible");
-            io.unobserve(e.target);
-          }
-        }
-      },
-      { rootMargin: "0px 0px -8% 0px", threshold: 0.12 },
-    );
-    document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
-  }
-</script>

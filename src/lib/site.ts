@@ -62,6 +62,5 @@ export const PERSON_JSONLD = {
   sameAs: [
     "https://www.linkedin.com/in/julien-tridat",
     "https://www.malt.fr/profile/julientridat",
-    "https://marketingjoy.fr",
   ],
 } as const;
