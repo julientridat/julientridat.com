@@ -197,6 +197,7 @@
       <div class="acces-in">
         <h1 id="acces-titre">Ce tableau s’ouvre avec <em>votre lien personnel</em>.</h1>
         <p id="acces-texte">Julien vous l’a envoyé par e-mail. Ouvrez-le une fois : ce navigateur s’en souviendra.</p>
+        <p><button class="btn" type="button" id="reessayer" hidden>Réessayer</button></p>
         <p class="petit">Pas de lien, ou il ne fonctionne plus&nbsp;? Écrivez à <a href="mailto:julien@julientridat.com">julien@julientridat.com</a>.</p>
       </div>
     </div>
@@ -286,6 +287,7 @@
           $("acces").hidden = false;
           ["top", "periode", "board", "apercu-bar"].forEach(function (id) { $(id).hidden = true; });
           if (message) $("acces-texte").textContent = message;
+          $("reessayer").hidden = !S.cle;
         }
         function connecter() {
           clearTimeout(reconnexionT);
@@ -308,10 +310,7 @@
             clearInterval(pingT);
             S.connecte = false;
             majLive();
-            if (e.code === 4001) {
-              try { localStorage.removeItem(CLE_STOCK); } catch (x) {}
-              return;
-            }
+            if (e.code === 4001) return;
             reconnexionT = setTimeout(connecter, Math.min(15000, 1000 * Math.pow(2, essais++)));
           };
         }
@@ -1009,6 +1008,12 @@
 
         /* L'âge des cartes chez le client bouge avec le temps, même sans geste. */
         setInterval(function () { if (S.recu && !feuille.mode && !saisieEnCours()) rendre(); }, 60000);
+
+        $("reessayer").addEventListener("click", function () {
+          $("acces-texte").textContent = "Connexion…";
+          essais = 0;
+          connecter();
+        });
 
         S.cle = lireCle();
         if (!S.cle) montrerAcces();
