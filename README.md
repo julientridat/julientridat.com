@@ -88,6 +88,40 @@ paragraphe.
 `src/pages/formation-ia.astro`. Tant qu'une valeur vaut `null`, la fiche affiche
 `[À VALIDER]` en lime plutôt qu'un chiffre inventé. **À compléter avant toute diffusion.**
 
+## Outillage — LinkedIn
+
+Deux voies distinctes, à ne pas confondre.
+
+### API officielle (recommandée) — `scripts/linkedin/`
+
+Publier un post depuis la ligne de commande via l'API publique LinkedIn
+(OAuth 2.0 + *Posts API*), sans dépendance. **Conforme aux CGU.**
+Mise en place et limites : [`scripts/linkedin/README.md`](scripts/linkedin/README.md).
+
+```bash
+cp .env.linkedin.example .env.linkedin   # puis y mettre client id / secret
+node scripts/linkedin/auth.js            # autorisation OAuth (token 60 jours)
+node scripts/linkedin/post.js "Mon texte"
+```
+
+Secrets jamais versionnés : `.env.linkedin` et `scripts/linkedin/.token.json`
+sont dans `.gitignore`.
+
+### MCP communautaire (lecture) — `.mcp.json`
+
+`.mcp.json` déclare un serveur MCP LinkedIn ([`stickerdaniel/linkedin-mcp-server`](https://github.com/stickerdaniel/linkedin-mcp-server)),
+chargé automatiquement par Claude Code (CLI et sessions web) au démarrage — approbation
+demandée une fois. Lancé via `uvx` (nécessite [`uv`](https://docs.astral.sh/uv/) installé) ;
+authentification par session navigateur (aucune clé API), déclenchée au premier appel :
+
+```bash
+uvx mcp-server-linkedin@latest --login   # ouvre le navigateur, gère 2FA / captcha
+```
+
+> ⚠️ **CGU** : LinkedIn interdit l'accès automatisé ; un compte utilisant des outils
+> d'automatisation peut être restreint. Projet communautaire sans lien avec LinkedIn,
+> à réserver à un usage personnel et à faible fréquence, risque assumé.
+
 ## Publier un artefact
 
 **Étude de cas** : créer `src/content/realisations/<slug>.md` — frontmatter :
