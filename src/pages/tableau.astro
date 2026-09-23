@@ -6,7 +6,9 @@
  * après présentation d'une clé personnelle (lien #cle=…, gardé ensuite par le navigateur).
  *
  * Un seul tableau, deux faces : Julien voit toutes ses places et déplace les cartes ;
- * un client voit ses cartes et n'agit que dans « Chez vous ».
+ * un client voit ses cartes, règle celles de « Chez vous » et range ses demandes.
+ * Une discussion par place, en direct. La page s'installe sur l'écran d'accueil
+ * d'un téléphone (manifeste /tableau.webmanifest) : pas de store, pas de compte.
  */
 ---
 
@@ -19,6 +21,13 @@
     <meta name="referrer" content="no-referrer" />
     <title>Le tableau · Julien Tridat</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/tableau.webmanifest" />
+    <link rel="apple-touch-icon" href="/tableau-180.png" />
+    <meta name="theme-color" content="#fbfbfc" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Le tableau" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -99,7 +108,7 @@
       .periode small { color: var(--ink-3); font-size: 0.8rem; }
 
       /* Le tableau */
-      .board { max-width: 1480px; margin: 0 auto; padding: 16px 24px 48px; display: grid; grid-template-columns: repeat(5, minmax(230px, 1fr)); gap: 14px; overflow-x: auto; align-items: start; }
+      .board { max-width: 1480px; margin: 0 auto; padding: 16px 24px 104px; display: grid; grid-template-columns: repeat(5, minmax(230px, 1fr)); gap: 14px; overflow-x: auto; align-items: start; }
       .column { background: var(--col); border-radius: 16px; padding: 10px; min-height: 160px; transition: box-shadow 0.2s; }
       .column.over { box-shadow: inset 0 0 0 2px var(--violet); }
       .column.vous { background: rgba(108, 76, 241, 0.07); }
@@ -108,12 +117,41 @@
       .column.vous .col-h h2 { color: var(--violet); }
       .col-h .n { font-size: 0.74rem; color: var(--ink-3); }
       .col-h .hint { margin-left: auto; font-size: 0.72rem; color: var(--ink-3); }
-      .cards { display: grid; gap: 8px; min-height: 30px; }
+      .cards { display: grid; gap: 8px; min-height: 30px; position: relative; }
       .vide { font-size: 0.8rem; color: var(--ink-3); padding: 6px; }
-      .card { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 10px 12px; cursor: pointer; box-shadow: 0 1px 2px rgba(24, 20, 60, 0.05); transition: transform 0.15s, box-shadow 0.15s; animation: entre 0.3s ease both; }
+      .card { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 10px 12px; cursor: pointer; box-shadow: 0 1px 2px rgba(24, 20, 60, 0.05); transition: transform 0.15s, box-shadow 0.15s; }
+      /* Seule une carte qui arrive (ou qui change de colonne) s'anime — pas tout le tableau à chaque mise à jour. */
+      .card.neuve { animation: entre 0.3s ease both; }
       @keyframes entre { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
       .card:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(24, 20, 60, 0.1); }
-      .card.dragging { opacity: 0.4; }
+      .card.dragging { opacity: 0.35; }
+
+      /* Glisser-déposer — souris, ou appui long au doigt */
+      .card.mobile { -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+      .card.mobile textarea { -webkit-user-select: text; user-select: text; }
+      @media (pointer: fine) { .card.mobile { cursor: grab; } }
+      .card.presse { transform: scale(0.97); transition: transform 0.3s; }
+      .fantome { position: fixed; z-index: 50; pointer-events: none; margin: 0; transform: rotate(2deg); box-shadow: 0 18px 40px rgba(24, 20, 60, 0.25); animation: none; }
+      body.glisse, body.glisse * { cursor: grabbing !important; }
+      body.glisse .board { scroll-snap-type: none; }
+      .column.interdite { opacity: 0.45; }
+      .column.cible { box-shadow: inset 0 0 0 1px rgba(108, 76, 241, 0.3); }
+      .column[data-depot] .cards::before { content: attr(data-depot); display: block; border: 2px dashed rgba(108, 76, 241, 0.5); border-radius: 12px; padding: 12px; text-align: center; color: var(--violet); font-size: 0.8rem; font-weight: 600; }
+      .marque { position: absolute; left: 2px; right: 2px; height: 3px; border-radius: 3px; background: var(--violet); pointer-events: none; }
+
+      /* Filtres */
+      .barre { max-width: 1480px; margin: 0 auto; padding: 14px 24px 0; display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; }
+      .f-groupe { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
+      .f-groupe::-webkit-scrollbar { display: none; }
+      .f-groupe:empty { display: none; }
+      .pill { white-space: nowrap; }
+      .pill .sw { width: 9px; height: 9px; border-radius: 3px; flex: none; }
+      .f-q { display: flex; align-items: center; gap: 7px; border: 1px solid var(--line); background: var(--white); border-radius: 999px; padding: 0 12px; flex: 0 1 260px; min-width: 180px; }
+      .f-q:focus-within { border-color: var(--violet); }
+      .f-q svg { width: 14px; height: 14px; color: var(--ink-3); flex: none; }
+      .f-q input { border: none; background: transparent; padding: 6px 0; font: inherit; font-size: 0.82rem; color: var(--ink); outline: none; width: 100%; }
+      .f-raz { background: none; border: none; color: var(--violet); font-size: 0.8rem; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
+      .f-n { font-size: 0.78rem; color: var(--ink-3); }
       .card h3 { font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
       .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
       .chip { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 0.68rem; font-weight: 600; background: var(--paper); color: var(--ink-3); border: 1px solid var(--line); }
@@ -122,6 +160,8 @@
       .chip.late { color: var(--late); border-color: rgba(180, 50, 31, 0.3); }
       .chip.ok { background: var(--violet); color: var(--white); border-color: transparent; }
       .chip.neuf { background: var(--ink); color: var(--white); border-color: transparent; }
+      .chip.etapes { background: var(--white); color: var(--ink-2); }
+      .chip.fini { background: var(--violet-wash); color: var(--violet); border-color: transparent; }
       .card .note { margin-top: 7px; font-size: 0.78rem; color: var(--violet); }
       .card .acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
       .card .zone { margin-top: 8px; display: grid; gap: 6px; justify-items: start; }
@@ -156,6 +196,16 @@
       .jalons { list-style: none; display: grid; gap: 4px; }
       .jalons li { display: flex; gap: 10px; align-items: baseline; font-size: 0.88rem; }
       .jalons .jn { font-family: var(--font-serif); font-style: italic; color: var(--violet); min-width: 14px; font-size: 1.05rem; }
+      .jalons li.ok { color: var(--ink-3); }
+      .jalons li.ok .jn { font-family: var(--font-sans); font-style: normal; font-size: 0.85rem; font-weight: 700; }
+      .avance { height: 4px; background: var(--line); border-radius: 999px; margin: 2px 0 10px; overflow: hidden; }
+      .avance i { display: block; height: 100%; background: var(--violet); border-radius: 999px; transition: width 0.6s; }
+      .etapes-ed { list-style: none; display: grid; gap: 6px; }
+      .etapes-ed li { display: flex; align-items: center; gap: 8px; }
+      .etapes-ed input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--violet); flex: none; }
+      .etapes-ed li.ok input[type="text"] { color: var(--ink-3); text-decoration: line-through; }
+      .etape-x { background: none; border: none; color: var(--ink-3); font-size: 1.2rem; line-height: 1; padding: 0 6px; }
+      .etape-x:hover { color: var(--late); }
       .comments { list-style: none; display: grid; gap: 8px; }
       .comments li { font-size: 0.86rem; }
       .comments b { color: var(--ink); font-weight: 600; }
@@ -176,8 +226,73 @@
       .point-text { white-space: pre-wrap; font-size: 0.88rem; color: var(--ink-2); background: var(--paper); border-radius: 12px; padding: 14px; margin-top: 12px; }
       .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(16px); background: var(--ink); color: var(--white); border-radius: 999px; padding: 9px 16px; font-size: 0.83rem; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 40; pointer-events: none; max-width: calc(100vw - 32px); }
       .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+      /* La discussion */
+      .fab { position: fixed; right: 20px; bottom: 20px; z-index: 20; display: inline-flex; align-items: center; gap: 8px; background: var(--violet); color: var(--white); border: none; border-radius: 999px; padding: 12px 18px; font-weight: 500; font-size: 0.88rem; box-shadow: 0 10px 28px rgba(108, 76, 241, 0.35); transition: transform 0.2s; }
+      .fab:hover { transform: translateY(-2px); }
+      .fab svg { width: 18px; height: 18px; flex: none; }
+      .fab .badge { position: absolute; top: -6px; right: -4px; min-width: 21px; height: 21px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 0.7rem; font-weight: 600; display: grid; place-items: center; padding: 0 5px; border: 2px solid var(--paper); }
+      .fab.pop { animation: pop 0.5s; }
+      @keyframes pop { 35% { transform: scale(1.14); } }
+      .chat { position: fixed; right: 20px; bottom: 20px; z-index: 25; width: 390px; height: min(660px, calc(100vh - 100px)); background: var(--paper); border-radius: 20px; border: 1px solid var(--line); box-shadow: 0 24px 60px rgba(24, 20, 60, 0.28); display: flex; flex-direction: column; overflow: hidden; }
+      .chat-h { display: flex; align-items: center; gap: 10px; padding: 11px 12px; background: var(--white); border-bottom: 1px solid var(--line); }
+      .chat-h button { background: none; border: none; color: var(--ink-3); font-size: 1.35rem; line-height: 1; padding: 4px 7px; border-radius: 8px; }
+      .chat-h button:hover { color: var(--ink); }
+      .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--violet); color: var(--white); display: grid; place-items: center; font-size: 0.78rem; font-weight: 600; flex: none; letter-spacing: 0.02em; }
+      .chat-qui { flex: 1; min-width: 0; line-height: 1.25; }
+      .chat-qui b { display: block; color: var(--ink); font-weight: 600; font-size: 0.93rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+      .chat-qui small { color: var(--ink-3); font-size: 0.75rem; }
+      .chat-qui small.vif { color: var(--violet); }
+      .chat-fil { flex: 1; overflow-y: auto; padding: 10px 12px 8px; display: flex; flex-direction: column; overscroll-behavior: contain; }
+      .jour { align-self: center; font-size: 0.7rem; font-weight: 600; color: var(--ink-3); background: var(--white); border-radius: 999px; padding: 3px 10px; margin: 10px 0 4px; }
+      .bulle { max-width: 82%; padding: 6px 10px 5px; border-radius: 14px 14px 14px 4px; background: var(--white); color: var(--ink); font-size: 0.88rem; line-height: 1.4; box-shadow: 0 1px 1px rgba(24, 20, 60, 0.06); align-self: flex-start; margin-top: 8px; white-space: pre-wrap; overflow-wrap: anywhere; }
+      .bulle.neuve { animation: entre 0.25s ease both; }
+      .bulle.suite { margin-top: 2px; border-radius: 14px; }
+      .bulle.moi { align-self: flex-end; background: var(--violet); color: var(--white); border-radius: 14px 14px 4px 14px; }
+      .bulle.moi.suite { border-radius: 14px; }
+      .bulle .qui { display: block; font-size: 0.72rem; font-weight: 600; color: var(--violet); }
+      .bulle .h { float: right; margin: 7px 0 0 10px; font-size: 0.66rem; line-height: 1; color: var(--ink-3); white-space: nowrap; }
+      .bulle.moi .h { color: rgba(255, 255, 255, 0.7); }
+      .bulle .h .coche-lu { margin-left: 4px; font-weight: 700; letter-spacing: -0.2em; }
+      .bulle .h .coche-lu.vu { color: var(--white); }
+      .bulle a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+      .bulle.attente { opacity: 0.65; }
+      .chat-vide { margin: auto; text-align: center; color: var(--ink-3); font-size: 0.86rem; padding: 24px; max-width: 280px; }
+      .chat-vide em { display: block; font-size: 1.35rem; margin-bottom: 6px; }
+      .plus-ancien { align-self: center; background: var(--white); border: 1px solid var(--line); border-radius: 999px; font-size: 0.74rem; padding: 4px 12px; color: var(--ink-2); margin-bottom: 4px; }
+      .chat-saisie { display: flex; align-items: flex-end; gap: 8px; padding: 10px 12px; border-top: 1px solid var(--line); }
+      .chat-saisie textarea { flex: 1; resize: none; border-radius: 20px; background: var(--white); padding: 9px 14px; max-height: 128px; line-height: 1.35; }
+      .chat-go { width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--violet); color: var(--white); display: grid; place-items: center; flex: none; }
+      .chat-go svg { width: 18px; height: 18px; }
+      .conv { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: none; border: none; text-align: left; width: 100%; }
+      .conv:hover { background: var(--white); }
+      .conv .txt { flex: 1; min-width: 0; }
+      .conv b { color: var(--ink); font-weight: 600; display: block; }
+      .conv small { color: var(--ink-3); display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; font-size: 0.8rem; }
+      .conv .fin { display: grid; justify-items: end; gap: 4px; font-size: 0.72rem; color: var(--ink-3); }
+      .conv .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.7rem; padding: 1px 7px; font-weight: 600; }
+
+      /* Accès : coller son lien (l'app installée ne partage pas la mémoire du navigateur) */
+      .coller { display: flex; gap: 8px; margin-top: 8px; }
+      .coller input { flex: 1; }
+      ol.pas { margin: 12px 0 0 20px; display: grid; gap: 8px; font-size: 0.92rem; }
+
       pre.format { font-family: ui-monospace, Menlo, monospace; font-size: 0.74rem; background: var(--paper); border-radius: 10px; padding: 10px 12px; color: var(--ink-2); white-space: pre-wrap; margin-top: 6px; }
 
+      @media (max-width: 700px) {
+        .chat { inset: 0; width: auto; height: 100vh; height: 100dvh; border-radius: 0; border: none; }
+        .chat-saisie { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
+        .chat-h { padding-top: calc(11px + env(safe-area-inset-top, 0px)); }
+        body.chat-plein { overflow: hidden; }
+        .fab { right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); padding: 15px; }
+        .fab span { display: none; }
+        .toast { bottom: calc(88px + env(safe-area-inset-bottom, 0px)); }
+        .barre { padding: 12px 16px 0; }
+        .f-q { flex: 1 1 100%; }
+      }
+      /* Sur téléphone, un champ sous 16 px fait zoomer Safari : on l'évite. */
+      @media (pointer: coarse) {
+        input, textarea { font-size: 16px !important; }
+      }
       @media (max-width: 900px) {
         .board { display: flex; gap: 12px; scroll-snap-type: x mandatory; }
         .column { flex: 0 0 84vw; scroll-snap-align: start; }
@@ -187,7 +302,7 @@
         .grille { grid-template-columns: 1fr; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .card, .btn, .toast, .periode .track i, .periode .track b { transition: none; animation: none; }
+        .card, .btn, .toast, .periode .track i, .periode .track b, .bulle, .fab, .avance i { transition: none; animation: none; }
         .live.on i { animation: none; }
       }
     </style>
@@ -198,6 +313,10 @@
         <h1 id="acces-titre">Ce tableau s’ouvre avec <em>votre lien personnel</em>.</h1>
         <p id="acces-texte">Julien vous l’a envoyé par e-mail. Ouvrez-le une fois : ce navigateur s’en souviendra.</p>
         <p><button class="btn" type="button" id="reessayer" hidden>Réessayer</button></p>
+        <form class="coller" id="coller">
+          <input type="text" id="coller-lien" placeholder="Ou collez ici votre lien" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Votre lien personnel" />
+          <button class="btn" type="submit">Ouvrir</button>
+        </form>
         <p class="petit">Pas de lien, ou il ne fonctionne plus&nbsp;? Écrivez à <a href="mailto:julien@julientridat.com">julien@julientridat.com</a>.</p>
       </div>
     </div>
@@ -214,6 +333,17 @@
     </header>
 
     <div class="periode" id="periode" hidden></div>
+
+    <div class="barre" id="barre" hidden>
+      <div class="f-groupe" id="f-ch"></div>
+      <div class="f-groupe" id="f-mois"></div>
+      <label class="f-q">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="m11 11 3.5 3.5"></path></svg>
+        <input type="search" id="f-q" placeholder="Chercher une carte" autocomplete="off" aria-label="Chercher une carte" />
+      </label>
+      <span class="f-n" id="f-n"></span>
+      <button type="button" class="f-raz" id="f-raz" hidden>Tout afficher</button>
+    </div>
 
     <main class="board" id="board" hidden>
       <section class="column" data-col="demandes">
@@ -243,6 +373,27 @@
       </section>
     </main>
 
+    <button type="button" class="fab" id="fab" hidden aria-label="Discussion">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5A2.5 2.5 0 0 1 6.5 3h11A2.5 2.5 0 0 1 20 5.5v8a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4H6.5A2.5 2.5 0 0 1 4 13.5z"></path></svg>
+      <span>Discussion</span>
+      <b class="badge" id="fab-n" hidden></b>
+    </button>
+    <aside class="chat" id="chat" hidden aria-label="Discussion">
+      <header class="chat-h">
+        <button type="button" id="chat-retour" aria-label="Toutes les discussions" hidden>‹</button>
+        <span class="avatar" id="chat-av"></span>
+        <div class="chat-qui"><b id="chat-nom"></b><small id="chat-etat"></small></div>
+        <button type="button" id="chat-x" aria-label="Fermer la discussion">×</button>
+      </header>
+      <div class="chat-fil" id="chat-fil" aria-live="polite"></div>
+      <form class="chat-saisie" id="chat-saisie">
+        <textarea id="chat-txt" rows="1" placeholder="Message" aria-label="Votre message"></textarea>
+        <button type="submit" class="chat-go" aria-label="Envoyer">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M3.4 20.4 21 12 3.4 3.6 3.4 10l12.6 2-12.6 2z"></path></svg>
+        </button>
+      </form>
+    </aside>
+
     <div class="back" id="back"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
@@ -262,7 +413,10 @@
         ];
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
-        var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false };
+        var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {} };
+        var tactile = window.matchMedia("(pointer: coarse)").matches;
+        var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
         var ws = null, essais = 0, pingT = null, reconnexionT = null;
 
@@ -285,8 +439,9 @@
         }
         function montrerAcces(message) {
           $("acces").hidden = false;
-          ["top", "periode", "board", "apercu-bar"].forEach(function (id) { $(id).hidden = true; });
+          ["top", "periode", "barre", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
           if (message) $("acces-texte").textContent = message;
+          else if (autonome) $("acces-texte").textContent = "Collez ci-dessous le lien reçu par e-mail : l’app s’en souviendra.";
           $("reessayer").hidden = !S.cle;
         }
         function connecter() {
@@ -336,12 +491,18 @@
             S.enLigne = m.enLigne || [];
             S.connecte = true;
             if (S.filtre !== "tous" && !clientParId(S.filtre)) S.filtre = "tous";
-            if (!S.recu) { S.recu = true; $("acces").hidden = true; $("top").hidden = false; $("board").hidden = false; }
-            if (saisieEnCours()) S.enAttente = true;
+            if (!S.recu) { S.recu = true; $("acces").hidden = true; $("top").hidden = false; $("board").hidden = false; $("fab").hidden = false; }
+            if (G || saisieEnCours()) S.enAttente = true;
             else rendre();
             rafraichirFeuille();
+            rendreChat();
             return;
           }
+          if (m.type === "discussion") return recevoirDiscussion(m);
+          if (m.type === "message") return recevoirMessage(m);
+          if (m.type === "lu") { var l = lusDe(m.client); l[m.qui] = Math.max(l[m.qui] || 0, m.ts); return rendreChat(); }
+          if (m.type === "frappe") return recevoirFrappe(m);
+          if (m.type === "historique") return recevoirHistorique(m);
           if (m.type === "cree") return montrerLien(m);
           if (m.type === "import") return toast(rapportImport(m.rapport));
           if (m.type === "export") return telecharger(m.data);
@@ -351,7 +512,7 @@
            que l'autre côté vient de bouger une carte : le rendu attend la fin de la saisie. */
         function saisieEnCours() { var a = document.activeElement; return !!(a && a.closest && a.closest("#board .zone")); }
         $("board").addEventListener("focusout", function () {
-          setTimeout(function () { if (S.enAttente && !saisieEnCours()) { S.enAttente = false; rendre(); } }, 0);
+          setTimeout(function () { if (S.enAttente && !saisieEnCours() && !G) { S.enAttente = false; rendre(); } }, 0);
         });
 
         /* ————— Vue courante ————— */
@@ -369,6 +530,28 @@
           if (S.filtre === "tous") return S.cartes.filter(function (c) { var cl = clientParId(c.client); return cl && !cl.archive; });
           return S.cartes.filter(function (c) { return c.client === S.filtre; });
         }
+        /* Les filtres de la barre — chantier, mois, mots — ne jouent que sur les colonnes. */
+        var MOIS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
+        var MOIS_AFFICHE = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
+        function sansAccent(t) { return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
+        function moisDe(c) {
+          var e = sansAccent(c.echeance);
+          for (var i = 0; i < 12; i++) if (new RegExp("\\b" + MOIS[i] + "\\b").test(e)) return i;
+          return -1;
+        }
+        function filtreActif() { return !!(S.f.ch || S.f.mois !== null || S.f.q.trim()); }
+        function passeFiltre(c) {
+          if (S.f.ch && c.ch !== S.f.ch) return false;
+          if (S.f.mois !== null && moisDe(c) !== S.f.mois) return false;
+          var mots = sansAccent(S.f.q).split(/\s+/).filter(Boolean);
+          if (mots.length) {
+            var ch = chantier(c), cl = clientParId(c.client);
+            var foin = sansAccent([c.t, c.desc, c.echeance, c.type, c.note, c.statut, ch ? ch.nom : "", cl ? cl.nom : ""].concat(c.jalons || []).join(" "));
+            for (var i = 0; i < mots.length; i++) if (foin.indexOf(mots[i]) < 0) return false;
+          }
+          return true;
+        }
+        function cartesAffichees() { return cartesVisibles().filter(passeFiltre); }
         function chantier(c) {
           var cl = clientParId(c.client);
           if (!cl || !c.ch) return null;
@@ -378,7 +561,7 @@
         function couleur(c) { var ch = chantier(c); return "var(--" + (ch ? ch.couleur : "c0") + ")"; }
         function roleVue() { return faceClient() ? "client" : "julien"; }
         function jours(ts) { return Math.floor((Date.now() - ts) / JOUR); }
-        function depuis(ts) { var j = jours(ts); return j <= 0 ? "aujourd’hui" : j === 1 ? "depuis hier" : "depuis " + j + " jours"; }
+        function depuis(ts) { var j = jours(ts); return j <= 0 ? "arrivée aujourd’hui" : j === 1 ? "arrivée hier" : "depuis " + j + " jours"; }
         function quand(ts) {
           var d = new Date(ts), n = new Date();
           if (d.toDateString() === n.toDateString()) return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", " h ");
@@ -401,8 +584,7 @@
           var cl = clientCourant();
           var fc = faceClient();
           document.body.classList.toggle("face-client", fc);
-          var nouveaux = S.cartes.filter(function (c) { return c.nouveau === (julien() ? "julien" : "client"); }).length;
-          document.title = (nouveaux ? "(" + nouveaux + ") " : "") + "Le tableau · Julien Tridat";
+          majTitre();
 
           $("sous-titre").textContent = fc ? "votre tableau · " + (cl ? cl.nom : "") : "le tableau · " + (S.filtre === "tous" ? "toutes les places" : cl ? cl.nom : "");
           var bar = $("apercu-bar");
@@ -424,8 +606,60 @@
           rendreFiltres();
           rendreOutils(cl);
           rendrePeriode(cl);
+          rendreBarre(cl);
           rendreColonnes(cl);
         }
+        function majTitre() {
+          var nouveaux = S.cartes.filter(function (c) { return c.nouveau === (julien() ? "julien" : "client"); }).length + nonLusTotal();
+          document.title = (nouveaux ? "(" + nouveaux + ") " : "") + "Le tableau · Julien Tridat";
+        }
+
+        function rendreBarre(cl) {
+          var visibles = cartesVisibles();
+          $("barre").hidden = !visibles.length;
+          // Chantiers : ceux de la place affichée — une place à la fois.
+          var chantiers = cl ? cl.chantiers : [];
+          if (S.f.ch && !chantiers.some(function (x) { return x.id === S.f.ch; })) S.f.ch = null;
+          var fch = $("f-ch");
+          fch.innerHTML = "";
+          if (chantiers.length > 1) chantiers.forEach(function (x) {
+            var n = visibles.filter(function (c) { return c.ch === x.id; }).length;
+            if (!n) return;
+            var b = el("button", "pill" + (S.f.ch === x.id ? " on" : ""));
+            b.type = "button";
+            var sw = el("span", "sw"); sw.style.background = "var(--" + x.couleur + ")";
+            b.appendChild(sw); b.appendChild(document.createTextNode(x.nom));
+            b.setAttribute("aria-pressed", S.f.ch === x.id ? "true" : "false");
+            b.addEventListener("click", function () { S.f.ch = S.f.ch === x.id ? null : x.id; rendre(); });
+            fch.appendChild(b);
+          });
+          // Mois : ceux que portent les échéances, dans l'ordre de la période.
+          var present = {};
+          visibles.forEach(function (c) { var m = moisDe(c); if (m >= 0) present[m] = true; });
+          var depart = cl && cl.debut ? new Date(cl.debut + "T12:00:00").getMonth() : new Date().getMonth();
+          if (isNaN(depart)) depart = new Date().getMonth();
+          var mois = Object.keys(present).map(Number).sort(function (a, b) { return ((a - depart + 12) % 12) - ((b - depart + 12) % 12); });
+          if (S.f.mois !== null && !present[S.f.mois]) S.f.mois = null;
+          var fm = $("f-mois");
+          fm.innerHTML = "";
+          if (mois.length > 1) mois.forEach(function (m) {
+            var b = el("button", "pill" + (S.f.mois === m ? " on" : ""), MOIS_AFFICHE[m]);
+            b.type = "button";
+            b.setAttribute("aria-pressed", S.f.mois === m ? "true" : "false");
+            b.addEventListener("click", function () { S.f.mois = S.f.mois === m ? null : m; rendre(); });
+            fm.appendChild(b);
+          });
+          var actif = filtreActif();
+          $("f-raz").hidden = !actif;
+          $("f-n").textContent = actif ? visibles.filter(passeFiltre).length + " sur " + visibles.length : "";
+        }
+        var rechercheT;
+        $("f-q").addEventListener("input", function () {
+          clearTimeout(rechercheT);
+          rechercheT = setTimeout(function () { S.f.q = $("f-q").value; rendre(); }, 120);
+        });
+        $("f-q").addEventListener("keydown", function (e) { if (e.key === "Escape") { $("f-q").value = ""; S.f.q = ""; rendre(); } });
+        $("f-raz").addEventListener("click", function () { S.f = { ch: null, mois: null, q: "" }; $("f-q").value = ""; rendre(); });
 
         function rendreFiltres() {
           var f = $("filtres");
@@ -449,7 +683,9 @@
         function rendreOutils(cl) {
           var o = $("outils");
           o.innerHTML = "";
-          if (!julien() || S.apercu) return;
+          if (S.apercu) return;
+          if (tactile && !autonome) o.appendChild(bouton("Installer l’app", "btn-ghost", ouvrirInstallation));
+          if (!julien()) return;
           if (cl) {
             o.appendChild(bouton("Voir comme " + (cl.contact || "le client"), "btn-ghost", function () { S.apercu = true; S.filtre = cl.id; rendre(); }));
             o.appendChild(bouton("Point de lundi", "btn-ghost", function () { ouvrirPoint(cl); }));
@@ -499,7 +735,8 @@
 
         function rendreColonnes(cl) {
           var fc = faceClient();
-          var visibles = cartesVisibles();
+          var visibles = cartesAffichees();
+          vuesCeRendu = {};
           document.querySelectorAll("[data-titre-vous]").forEach(function (h) { h.textContent = fc ? "Chez vous" : "Chez le client"; });
           document.querySelectorAll(".add.julien").forEach(function (a) { a.hidden = fc; });
           document.querySelectorAll(".add input").forEach(function (inp) {
@@ -527,7 +764,7 @@
                 if (anciennes.length > 12) wrap.appendChild(el("p", "vide", "et " + (anciennes.length - 12) + " plus anciennes."));
               }
             } else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
-            if (!liste.length) wrap.appendChild(el("p", "vide", name === "vous" && fc ? "Rien ne vous attend." : "—"));
+            if (!liste.length) wrap.appendChild(el("p", "vide", filtreActif() ? "—" : name === "vous" && fc ? "Rien ne vous attend." : "—"));
 
             if (name === "demandes") {
               var fold = colEl.querySelector(".folded");
@@ -545,13 +782,18 @@
               }
             }
           });
+          dejaVues = vuesCeRendu;
         }
 
         function chip(txt, cls) { return el("span", "chip" + (cls ? " " + cls : ""), txt); }
 
+        var dejaVues = {}, vuesCeRendu = {};
         function carteEl(c) {
           var fc = faceClient();
           var e = el("article", "card");
+          var trace = c.id + ":" + c.col;
+          if (!dejaVues[trace]) e.classList.add("neuve");
+          vuesCeRendu[trace] = true;
           e.style.setProperty("--mc", couleur(c));
           e.dataset.id = c.id;
           e.appendChild(el("h3", null, c.t));
@@ -563,6 +805,8 @@
           if (c.col === "demandes" && c.type) chips.appendChild(chip(c.type));
           if (c.echeance) chips.appendChild(chip(c.echeance));
           if (c.livrable) chips.appendChild(chip("livrable"));
+          var nj = (c.jalons || []).length;
+          if (nj) { var faites = jokDe(c).filter(Boolean).length; chips.appendChild(chip("✓ " + faites + "/" + nj, faites === nj ? "fini" : "etapes")); }
           if (c.col === "vous" && c.chezClientDepuis) { var j = jours(c.chezClientDepuis); chips.appendChild(chip(depuis(c.chezClientDepuis) + (j > 5 ? " — en retard" : ""), j > 5 ? "late" : "vous")); }
           if (c.statut) chips.appendChild(chip(c.statut, "ok"));
           if (c.com && c.com.length) chips.appendChild(chip(c.com.length + " comm."));
@@ -582,14 +826,16 @@
             r.appendChild(bouton("Relancer", "btn-ghost btn-sm", function () { op({ type: "carte.relancer", id: c.id }); toast("Relancée — la carte le dit chez le client. Envoyez-lui un mot avec le lien."); }));
             e.appendChild(r);
           }
-          if (!fc && window.matchMedia("(pointer: fine)").matches) {
-            e.draggable = true;
-            e.addEventListener("dragstart", function (ev) { ev.dataTransfer.setData("text/plain", c.id); ev.dataTransfer.effectAllowed = "move"; e.classList.add("dragging"); });
-            e.addEventListener("dragend", function () { e.classList.remove("dragging"); });
+          if (peutGlisser(c)) {
+            e.classList.add("mobile");
+            e.addEventListener("mousedown", function (ev) { preparerSouris(ev, c, e); });
+            e.addEventListener("touchstart", function (ev) { preparerDoigt(ev, c, e); }, { passive: true });
+            e.addEventListener("contextmenu", function (ev) { if (G || e.classList.contains("presse")) ev.preventDefault(); });
           }
-          e.addEventListener("click", function () { ouvrirCarte(c.id); });
+          e.addEventListener("click", function () { if (Date.now() - dernierLacher < 400) return; ouvrirCarte(c.id); });
           return e;
         }
+        function jokDe(c) { return (c.jalons || []).map(function (_, i) { return !!(c.jok && c.jok[i]); }); }
 
         function actionsClient(c, carteNode) {
           var a = el("div", "acts");
@@ -618,31 +864,240 @@
         }
 
         /* ————— Déplacer ————— */
+        /* Même calcul que le serveur : la carte prend sa place tout de suite, sans sauter. */
+        function ordreLocal(c, col, avant) {
+          var v = S.cartes.filter(function (x) { return x.client === c.client && x.col === col && x.id !== c.id; }).sort(function (a, b) { return a.ordre - b.ordre; });
+          var fin = Math.max((v.length ? v[v.length - 1].ordre : 0) + 1, Date.now());
+          if (!avant) return fin;
+          for (var i = 0; i < v.length; i++) if (v[i].id === avant) return i === 0 ? v[0].ordre - 1 : (v[i - 1].ordre + v[i].ordre) / 2;
+          return fin;
+        }
         function deplacer(c, col, avant) {
           if (col === "vous" && c.action === "arbitrer" && (!c.a || !c.b)) c.action = "repondre";
           if (op({ type: "carte.deplacer", id: c.id, col: col, avant: avant || null })) {
+            c.ordre = ordreLocal(c, col, avant);
+            var change = c.col !== col;
             c.col = col;
+            if (change && col === "fait") c.faitLe = Date.now();
             rendre();
+            if (!change) return;
             if (col === "vous") toast("Chez le client — la carte apparaît chez lui à l’instant, avec son bouton.");
             else if (col === "fait") toast("Fait.");
           }
         }
-        document.querySelectorAll(".column").forEach(function (colEl) {
-          colEl.addEventListener("dragover", function (e) { if (faceClient()) return; e.preventDefault(); colEl.classList.add("over"); });
-          colEl.addEventListener("dragleave", function (e) { if (!colEl.contains(e.relatedTarget)) colEl.classList.remove("over"); });
-          colEl.addEventListener("drop", function (e) {
-            if (faceClient()) return;
-            e.preventDefault();
-            colEl.classList.remove("over");
-            var id = e.dataTransfer.getData("text/plain");
-            var c = S.cartes.filter(function (x) { return x.id === id; })[0];
-            if (!c) return;
-            var cible = e.target.closest && e.target.closest(".card");
-            var avant = cible && cible.dataset.id !== id ? cible.dataset.id : null;
-            if (c.col === colEl.dataset.col && !avant) return;
-            deplacer(c, colEl.dataset.col, avant);
+
+        /* ————— Glisser-déposer : à la souris, ou au doigt après un appui long ————— */
+        var G = null, dernierLacher = 0;
+        var marque = el("div", "marque");
+
+        /* Julien déplace tout. Le client glisse ce qui lui revient : ses cartes de
+           « Chez vous » (vers « Fait », ou « En cours » pour un livrable à reprendre)
+           et ses demandes, qu'il range par priorité. */
+        function peutGlisser(c) {
+          if (S.apercu) return false;
+          if (julien()) return true;
+          var cl = clientParId(c.client);
+          if (!cl || cl.archive) return false;
+          if (c.col === "demandes") return true;
+          return c.col === "vous" && (c.action === "valider" || c.action === "repondre");
+        }
+        function ciblesPour(c) {
+          if (julien()) return COLS.slice();
+          if (c.col === "demandes") return ["demandes"];
+          return c.action === "valider" ? ["fait", "encours"] : ["fait"];
+        }
+        function rangeable(col) { return julien() ? col !== "fait" : col === "demandes"; }
+        function interactif(t) { return !!(t.closest && t.closest("button, a, input, textarea, select, label, .zone")); }
+
+        function preparerSouris(ev, c, noeud) {
+          if (ev.button !== 0 || interactif(ev.target)) return;
+          var x0 = ev.clientX, y0 = ev.clientY;
+          function bouge(m) {
+            if (!G) {
+              if (Math.abs(m.clientX - x0) + Math.abs(m.clientY - y0) < 6) return;
+              demarrer(c, noeud, x0, y0);
+            }
+            m.preventDefault();
+            suivre(m.clientX, m.clientY);
+          }
+          function lache() {
+            document.removeEventListener("mousemove", bouge);
+            document.removeEventListener("mouseup", lache);
+            if (G) lacher();
+          }
+          document.addEventListener("mousemove", bouge);
+          document.addEventListener("mouseup", lache);
+        }
+
+        function preparerDoigt(ev, c, noeud) {
+          if (G || ev.touches.length !== 1 || interactif(ev.target)) return;
+          var t = ev.touches[0], x0 = t.clientX, y0 = t.clientY, x = x0, y = y0;
+          noeud.classList.add("presse");
+          var appui = setTimeout(function () {
+            appui = null;
+            noeud.classList.remove("presse");
+            demarrer(c, noeud, x, y);
+            suivre(x, y);
+            if (navigator.vibrate) navigator.vibrate(12);
+          }, 320);
+          function bouge(m) {
+            var p = m.touches[0];
+            x = p.clientX; y = p.clientY;
+            if (!G) { if (Math.abs(x - x0) + Math.abs(y - y0) > 10) fin(); return; } // c'est un défilement
+            m.preventDefault();
+            suivre(x, y);
+          }
+          function fin() {
+            clearTimeout(appui);
+            noeud.classList.remove("presse");
+            document.removeEventListener("touchmove", bouge);
+            document.removeEventListener("touchend", lache);
+            document.removeEventListener("touchcancel", annule);
+          }
+          function lache(m) { fin(); if (G) { if (m.cancelable) m.preventDefault(); lacher(); } }
+          function annule() { fin(); if (G) nettoyer(); }
+          document.addEventListener("touchmove", bouge, { passive: false });
+          document.addEventListener("touchend", lache);
+          document.addEventListener("touchcancel", annule);
+        }
+
+        function demarrer(c, noeud, x, y) {
+          var r = noeud.getBoundingClientRect();
+          var f = noeud.cloneNode(true);
+          f.classList.add("fantome");
+          f.classList.remove("presse", "mobile");
+          f.style.width = r.width + "px";
+          f.style.left = r.left + "px";
+          f.style.top = r.top + "px";
+          document.body.appendChild(f);
+          noeud.classList.add("dragging");
+          G = { c: c, noeud: noeud, fantome: f, dx: x - r.left, dy: y - r.top, x: x, y: y, cibles: ciblesPour(c), col: null, avant: null, raf: 0 };
+          document.body.classList.add("glisse");
+          document.querySelectorAll(".column").forEach(function (k) {
+            var ok = G.cibles.indexOf(k.dataset.col) >= 0;
+            k.classList.toggle("cible", ok);
+            k.classList.toggle("interdite", !ok);
+            if (!julien() && ok && k.dataset.col !== c.col) k.dataset.depot = k.dataset.col === "fait" ? (c.action === "valider" ? "Déposer ici : je valide" : "Déposer ici : c’est réglé") : "Déposer ici : à reprendre";
           });
-        });
+          G.raf = requestAnimationFrame(defiler);
+        }
+
+        function suivre(x, y) {
+          G.x = x; G.y = y;
+          G.fantome.style.left = x - G.dx + "px";
+          G.fantome.style.top = y - G.dy + "px";
+          var sous = document.elementFromPoint(x, y);
+          var colEl = sous && sous.closest ? sous.closest(".column") : null;
+          var col = colEl && G.cibles.indexOf(colEl.dataset.col) >= 0 ? colEl.dataset.col : null;
+          var avant = null;
+          if (col && rangeable(col)) {
+            var cartes = colEl.querySelectorAll(".cards > .card");
+            for (var i = 0; i < cartes.length; i++) {
+              if (cartes[i] === G.noeud) continue;
+              var rr = cartes[i].getBoundingClientRect();
+              if (y < rr.top + rr.height / 2) { avant = cartes[i].dataset.id; break; }
+            }
+          }
+          if (col === G.col && avant === G.avant) return;
+          G.col = col; G.avant = avant;
+          document.querySelectorAll(".column.over").forEach(function (k) { k.classList.remove("over"); });
+          if (marque.parentNode) marque.parentNode.removeChild(marque);
+          if (!col) return;
+          colEl.classList.add("over");
+          if (!rangeable(col)) return;
+          var wrap = colEl.querySelector(".cards"), wr = wrap.getBoundingClientRect(), haut;
+          if (avant) haut = wrap.querySelector('.card[data-id="' + avant + '"]').getBoundingClientRect().top - wr.top - 6;
+          else {
+            var toutes = Array.prototype.filter.call(wrap.querySelectorAll(".card"), function (k) { return k !== G.noeud; });
+            haut = toutes.length ? toutes[toutes.length - 1].getBoundingClientRect().bottom - wr.top + 3 : 0;
+          }
+          marque.style.top = haut + "px";
+          wrap.appendChild(marque);
+        }
+
+        /* Près d'un bord, la page (ou le tableau, sur téléphone) défile toute seule. */
+        function defiler() {
+          if (!G) return;
+          var h = window.innerHeight, v = 0, haut = $("top").getBoundingClientRect().bottom + 50;
+          if (G.y < haut) v = -Math.ceil((haut - G.y) / 4);
+          else if (G.y > h - 60) v = Math.ceil((G.y - (h - 60)) / 4);
+          if (v) window.scrollBy(0, v);
+          var b = $("board"), br = b.getBoundingClientRect(), hz = 0;
+          if (b.scrollWidth > b.clientWidth) { if (G.x < br.left + 36) hz = -14; else if (G.x > br.right - 36) hz = 14; }
+          if (hz) b.scrollLeft += hz;
+          if (v || hz) { var x = G.x, y = G.y; G.col = undefined; suivre(x, y); }
+          G.raf = requestAnimationFrame(defiler);
+        }
+
+        function nettoyer() {
+          if (!G) return;
+          cancelAnimationFrame(G.raf);
+          G.fantome.remove();
+          G.noeud.classList.remove("dragging");
+          document.body.classList.remove("glisse");
+          document.querySelectorAll(".column").forEach(function (k) { k.classList.remove("cible", "interdite", "over"); delete k.dataset.depot; });
+          if (marque.parentNode) marque.parentNode.removeChild(marque);
+          G = null;
+          dernierLacher = Date.now();
+          if (S.enAttente && !saisieEnCours()) { S.enAttente = false; rendre(); }
+        }
+
+        function lacher() {
+          var c = G.c, col = G.col, avant = G.avant;
+          nettoyer();
+          if (!col) return;
+          if (col === c.col) {
+            // Même colonne : ne rien envoyer si la carte n'a pas changé de rang.
+            var v = S.cartes.filter(function (x) { return x.client === c.client && x.col === col; }).sort(function (a, b) { return a.ordre - b.ordre; });
+            var i = v.indexOf(c), suivante = v[i + 1] ? v[i + 1].id : null;
+            if (!rangeable(col) || avant === suivante || avant === c.id) return;
+          }
+          if (julien()) return deplacer(c, col, avant);
+          if (col === "demandes") {
+            if (op({ type: "carte.deplacer", id: c.id, col: "demandes", avant: avant })) { c.ordre = ordreLocal(c, "demandes", avant); rendre(); toast("Priorité notée — Julien la voit dans cet ordre."); }
+            return;
+          }
+          if (col === "fait" && c.action === "valider") {
+            if (op({ type: "carte.valider", id: c.id })) { c.col = "fait"; c.faitLe = Date.now(); c.statut = "validée"; rendre(); toast("Validée — Julien passe à la suite."); }
+            return;
+          }
+          if (col === "fait") return ouvrirRegler(c);
+          if (col === "encours") return ouvrirAjuster(c);
+        }
+
+        /* Le client a glissé une question dans « Fait » : un mot pour Julien, s'il veut. */
+        function ouvrirRegler(c) {
+          ouvrirFeuille("regler", c.id, couleur(c));
+          sheet.appendChild(el("p", "kicker", "C’est réglé"));
+          sheet.appendChild(el("h2", null, c.t));
+          sheet.appendChild(el("p", "lab", "Un mot pour Julien ? (facultatif)"));
+          var t = el("textarea"); t.rows = 3; t.placeholder = "Votre réponse — une ligne suffit.";
+          sheet.appendChild(t);
+          var f = el("div", "foot");
+          f.appendChild(bouton("Classer dans « Fait »", "btn", function () {
+            if (op({ type: "carte.repondre", id: c.id, txt: t.value.trim() })) { fermer(); toast(t.value.trim() ? "Transmis — Julien cale la suite dessus." : "Réglée — Julien le voit à l’instant."); }
+          }));
+          f.appendChild(bouton("Annuler", "btn-ghost", fermer));
+          sheet.appendChild(f);
+          t.focus();
+        }
+        /* Un livrable glissé dans « En cours » : il repart chez Julien, avec ce qui ne va pas. */
+        function ouvrirAjuster(c) {
+          ouvrirFeuille("ajuster", c.id, couleur(c));
+          sheet.appendChild(el("p", "kicker", "À reprendre"));
+          sheet.appendChild(el("h2", null, c.t));
+          sheet.appendChild(el("p", "lab", "Qu’est-ce qui ne va pas ?"));
+          var t = el("textarea"); t.rows = 3; t.placeholder = "Dites-le simplement — reprise sous 48 h.";
+          sheet.appendChild(t);
+          var f = el("div", "foot");
+          f.appendChild(bouton("Renvoyer à Julien", "btn", function () {
+            if (!t.value.trim()) return t.focus();
+            if (op({ type: "carte.ajuster", id: c.id, txt: t.value.trim() })) { fermer(); toast("Ajustement demandé — la carte repasse chez Julien."); }
+          }));
+          f.appendChild(bouton("Annuler", "btn-ghost", fermer));
+          sheet.appendChild(f);
+          t.focus();
+        }
 
         /* ————— Ajouter ————— */
         document.querySelectorAll(".add input").forEach(function (inp) {
@@ -688,13 +1143,22 @@
         function rafraichirFeuille() {
           if (!feuille.mode) return;
           var actif = document.activeElement;
-          var enSaisie = actif && sheet.contains(actif) && /INPUT|TEXTAREA/.test(actif.tagName);
+          var enSaisie = !!(actif && sheet.contains(actif) && (actif.tagName === "TEXTAREA" || (actif.tagName === "INPUT" && /^(text|url|date|search)$/.test(actif.type))));
           if (feuille.mode === "carte") {
             var c = trouverCarte(feuille.id);
             if (!c) { fermer(); return toast("Cette carte vient d’être retirée."); }
-            if (enSaisie) return majCommentaires(c);
-            ouvrirCarte(c.id, feuille.arbitrage, true);
+            // Un champ marqué data-garde (la nouvelle étape) survit au rendu ; les autres le suspendent.
+            if (enSaisie && !actif.dataset.garde) return majCommentaires(c);
+            refaireCarte();
           } else if (feuille.mode === "reglages" && !enSaisie) ouvrirReglages(feuille.id);
+        }
+        function refaireCarte() {
+          var actif = document.activeElement;
+          var garde = actif && sheet.contains(actif) && actif.dataset ? actif.dataset.garde : null, valeur = garde ? actif.value : "";
+          ouvrirCarte(feuille.id, feuille.arbitrage, true);
+          if (!garde) return;
+          var g = sheet.querySelector('[data-garde="' + garde + '"]');
+          if (g) { g.value = valeur; g.focus(); }
         }
         function trouverCarte(id) { for (var i = 0; i < S.cartes.length; i++) if (S.cartes[i].id === id) return S.cartes[i]; return null; }
 
@@ -748,8 +1212,53 @@
             sheet.appendChild(liv);
             sheet.appendChild(el("p", "lab", "Le pourquoi — ce que le client lit"));
             sheet.appendChild(saisie("textarea", c.desc, function (v) { op({ type: "carte.maj", id: c.id, champs: { desc: v } }); }, "Une phrase suffit."));
-            sheet.appendChild(el("p", "lab", "Comment ça se passe — une étape par ligne"));
-            sheet.appendChild(saisie("textarea", (c.jalons || []).join("\n"), function (v) { op({ type: "carte.maj", id: c.id, champs: { jalons: v.split("\n") } }); }));
+            // Les étapes : cochées au fil de l'eau, le client voit « 2/4 » sur sa carte.
+            var oks = jokDe(c), nOk = oks.filter(Boolean).length, js = c.jalons || [];
+            sheet.appendChild(el("p", "lab", "Étapes" + (js.length ? " — " + nOk + " sur " + js.length : "") + " · le client voit l’avancement"));
+            var majEtapes = function (liste, cochees) {
+              if (!op({ type: "carte.maj", id: c.id, champs: { jalons: liste, jok: cochees } })) return;
+              c.jalons = liste; c.jok = cochees;
+              refaireCarte();
+              rendre();
+            };
+            var ed = el("ul", "etapes-ed");
+            js.forEach(function (j, i) {
+              var li = el("li", oks[i] ? "ok" : "");
+              var cb = el("input"); cb.type = "checkbox"; cb.checked = oks[i]; cb.setAttribute("aria-label", "Étape faite : " + j);
+              cb.addEventListener("change", function () {
+                if (!op({ type: "carte.cocher", id: c.id, i: i, ok: cb.checked })) { cb.checked = !cb.checked; return; }
+                c.jok = jokDe(c); c.jok[i] = cb.checked;
+                li.classList.toggle("ok", cb.checked);
+                rendre();
+              });
+              li.appendChild(cb);
+              li.appendChild(saisie("text", j, function (v) {
+                var l = js.slice(), k = jokDe(c);
+                if (v.trim()) l[i] = v.trim(); else { l.splice(i, 1); k.splice(i, 1); }
+                majEtapes(l, k);
+              }));
+              li.appendChild(bouton("×", "etape-x", function () { var l = js.slice(), k = jokDe(c); l.splice(i, 1); k.splice(i, 1); majEtapes(l, k); }));
+              ed.appendChild(li);
+            });
+            sheet.appendChild(ed);
+            var nouvelle = el("input"); nouvelle.type = "text"; nouvelle.placeholder = "+ une étape, puis Entrée"; nouvelle.dataset.garde = "etape";
+            nouvelle.style.marginTop = "6px";
+            nouvelle.addEventListener("keydown", function (e) {
+              if (e.key !== "Enter" || !nouvelle.value.trim()) return;
+              e.preventDefault();
+              var v = nouvelle.value.trim();
+              nouvelle.value = "";
+              majEtapes(js.concat([v]), jokDe(c).concat([false]));
+            });
+            sheet.appendChild(nouvelle);
+            var typeCarte = js.length ? null : PROCESS.filter(function (x) { return x.test.test(c.t); })[0];
+            if (typeCarte) {
+              var prop = bouton("Étapes type « " + typeCarte.type + " » : " + typeCarte.jalons.join(" · "), "btn-ghost btn-sm", function () {
+                majEtapes(typeCarte.jalons.slice(), typeCarte.jalons.map(function () { return false; }));
+              });
+              prop.style.marginTop = "8px"; prop.style.textAlign = "left";
+              sheet.appendChild(prop);
+            }
 
             sheet.appendChild(el("p", "lab", "Quand elle est chez le client, il doit…"));
             var act = el("div", "choix");
@@ -776,9 +1285,16 @@
           }
 
           if (c.jalons && c.jalons.length && fc) {
-            sheet.appendChild(el("p", "lab", "Comment ça se passe"));
+            var coches = jokDe(c), faites = coches.filter(Boolean).length;
+            sheet.appendChild(el("p", "lab", "Comment ça se passe" + (faites ? " — " + faites + " sur " + c.jalons.length : "")));
+            if (faites) { var av = el("div", "avance"), trait = el("i"); trait.style.width = Math.round((faites / c.jalons.length) * 100) + "%"; av.appendChild(trait); sheet.appendChild(av); }
             var ul = el("ul", "jalons");
-            c.jalons.forEach(function (j, i) { var li = el("li"); li.appendChild(el("span", "jn", String(i + 1))); li.appendChild(document.createTextNode(j)); ul.appendChild(li); });
+            c.jalons.forEach(function (j, i) {
+              var li = el("li", coches[i] ? "ok" : "");
+              li.appendChild(el("span", "jn", coches[i] ? "✓" : String(i + 1)));
+              li.appendChild(document.createTextNode(j));
+              ul.appendChild(li);
+            });
             sheet.appendChild(ul);
           }
 
@@ -1006,8 +1522,312 @@
           toast("Export téléchargé.");
         }
 
+        /* ————— La discussion : une par place, en direct ————— */
+        var C = { ouvert: false, client: null, frappe: {}, frappeEnvoyee: 0, tmp: 0, bulles: {} };
+        var chatTxt = $("chat-txt");
+        function lusDe(client) { return S.lus[client] || (S.lus[client] = {}); }
+        function filDe(client) { return S.msgs[client] || (S.msgs[client] = []); }
+        function cleDe(m) { return m.role === "julien" ? "j" : "c:" + m.qui; }
+        function maCle() { return julien() ? "j" : "c:" + (S.me ? S.me.nom : ""); }
+        function estMien(m) { return cleDe(m) === maCle(); }
+        function nonLus(client) {
+          var lu = lusDe(client)[maCle()] || 0;
+          return filDe(client).filter(function (m) { return !estMien(m) && m.ts > lu; }).length;
+        }
+        function nonLusTotal() { return S.me ? S.clients.reduce(function (n, cl) { return n + nonLus(cl.id); }, 0) : 0; }
+        function placesDiscussion() { return S.clients.filter(function (c) { return !c.archive || filDe(c.id).length; }); }
+        function clientDuChat() {
+          if (!julien()) return S.clients[0] ? S.clients[0].id : null;
+          return C.client && clientParId(C.client) ? C.client : null;
+        }
+        /* Vu : pour Julien, lu par quelqu'un de la place ; pour le client, lu par Julien. */
+        function vuParLautre(client, ts) {
+          var l = lusDe(client);
+          return Object.keys(l).some(function (k) { return k !== maCle() && (julien() ? k.indexOf("c:") === 0 : k === "j") && l[k] >= ts; });
+        }
+        function initiales(t) {
+          var m = String(t || "").trim().split(/\s+/).filter(Boolean);
+          if (!m.length) return "?";
+          return (m.length > 1 ? m[0].charAt(0) + m[1].charAt(0) : m[0].slice(0, 2)).toUpperCase();
+        }
+        function jourDe(ts) {
+          var d = new Date(ts), n = new Date(), hier = new Date(n.getFullYear(), n.getMonth(), n.getDate() - 1);
+          if (d.toDateString() === n.toDateString()) return "Aujourd’hui";
+          if (d.toDateString() === hier.toDateString()) return "Hier";
+          return majuscule(d.toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" }));
+        }
+        function heure(ts) { return new Date(ts).toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", " h "); }
+        /* Les adresses deviennent des liens ; tout le reste reste du texte. */
+        function lierLiens(noeud, txt) {
+          var re = /https?:\/\/[^\s<>"]+/g, i = 0, m;
+          while ((m = re.exec(txt))) {
+            var url = m[0].replace(/[.,;:!?)\]]+$/, "");
+            if (m.index > i) noeud.appendChild(document.createTextNode(txt.slice(i, m.index)));
+            var a = el("a", null, url); a.href = url; a.target = "_blank"; a.rel = "noopener noreferrer";
+            noeud.appendChild(a);
+            i = m.index + url.length;
+            re.lastIndex = i;
+          }
+          if (i < txt.length) noeud.appendChild(document.createTextNode(txt.slice(i)));
+        }
+
+        function recevoirDiscussion(m) {
+          S.msgs = {}; S.lus = {}; S.debutFil = {};
+          (m.messages || []).forEach(function (x) { filDe(x.client).push(x); });
+          (m.lus || []).forEach(function (l) { lusDe(l.client)[l.qui] = l.ts; });
+          rendreChat("bas");
+          majTitre();
+        }
+        function recevoirMessage(m) {
+          var x = m.m, fil = filDe(x.client);
+          if (fil.some(function (y) { return y.id === x.id; })) return;
+          var i = -1;
+          if (m.tmp) for (var k = 0; k < fil.length; k++) if (fil[k].tmp === m.tmp) { i = k; break; }
+          if (i >= 0) { fil[i] = x; C.bulles[x.id] = true; } else fil.push(x);
+          var l = lusDe(x.client);
+          l[cleDe(x)] = Math.max(l[cleDe(x)] || 0, x.ts);
+          if (C.frappe[x.client] && C.frappe[x.client].qui === cleDe(x)) delete C.frappe[x.client];
+          var sousLesYeux = C.ouvert && clientDuChat() === x.client && !document.hidden;
+          if (!estMien(x) && !sousLesYeux) {
+            var fab = $("fab");
+            fab.classList.remove("pop"); void fab.offsetWidth; fab.classList.add("pop");
+            toast(x.qui + " : " + (x.txt.length > 70 ? x.txt.slice(0, 70) + "…" : x.txt));
+          }
+          rendreChat();
+          majTitre();
+        }
+        function recevoirFrappe(m) {
+          if (m.qui === maCle()) return;
+          C.frappe[m.client] = { qui: m.qui, nom: m.nom, jusqua: Date.now() + 4000 };
+          rendreEnTete();
+          setTimeout(rendreEnTete, 4100);
+        }
+        function recevoirHistorique(m) {
+          var fil = filDe(m.client), connus = {};
+          fil.forEach(function (x) { connus[x.id] = true; });
+          S.msgs[m.client] = (m.messages || []).filter(function (x) { return !connus[x.id]; }).concat(fil);
+          if ((m.messages || []).length < 200) S.debutFil[m.client] = true;
+          rendreChat("garder");
+        }
+
+        function majFab() {
+          var n = nonLusTotal(), b = $("fab-n");
+          b.hidden = !n;
+          b.textContent = n > 99 ? "99+" : String(n);
+          $("fab").setAttribute("aria-label", n ? "Discussion — " + n + (n > 1 ? " messages non lus" : " message non lu") : "Discussion");
+        }
+        function rendreEnTete() {
+          if (!C.ouvert) return;
+          var id = clientDuChat(), cl = id ? clientParId(id) : null;
+          var av = $("chat-av"), nom = $("chat-nom"), etat = $("chat-etat");
+          $("chat-retour").hidden = !(julien() && cl && placesDiscussion().length > 1);
+          av.hidden = !cl;
+          etat.className = "";
+          if (!cl) { nom.textContent = "Discussions"; etat.textContent = majuscule(nombre(placesDiscussion().length, "place", "places")); return; }
+          var f = C.frappe[id], ecrit = f && f.jusqua > Date.now();
+          if (julien()) {
+            av.textContent = initiales(cl.nom);
+            nom.textContent = cl.nom;
+            var la = S.enLigne.filter(function (p) { return p.client === id; }).map(function (p) { return p.nom; });
+            var pers = S.acces.filter(function (a) { return a.client === id; }).map(function (a) { return a.nom; }).join(", ");
+            etat.textContent = ecrit ? f.nom + " écrit…" : la.length ? la.join(", ") + " en ligne" : pers;
+            if (ecrit || la.length) etat.className = "vif";
+          } else {
+            av.textContent = "JT";
+            nom.textContent = "Julien Tridat";
+            var present = S.enLigne.some(function (p) { return p.role === "julien"; });
+            etat.textContent = ecrit ? f.nom + " écrit…" : present ? "en ligne" : "hors ligne — votre message l’attendra";
+            if (ecrit || present) etat.className = "vif";
+          }
+        }
+        function rendreChat(defilement) {
+          if (!S.me) return;
+          majFab();
+          if (!C.ouvert) return;
+          rendreEnTete();
+          var id = clientDuChat(), cl = id ? clientParId(id) : null, fil = $("chat-fil");
+          var enBas = fil.scrollHeight - fil.scrollTop - fil.clientHeight < 80, haut = fil.scrollTop, depuisBas = fil.scrollHeight - fil.scrollTop;
+          fil.innerHTML = "";
+          $("chat-saisie").hidden = !cl;
+          if (!cl) return rendreListe(fil);
+          var close = !julien() && cl.archive;
+          chatTxt.disabled = close;
+          chatTxt.placeholder = close ? "Place close — la discussion reste lisible" : "Message";
+          var msgs = filDe(id);
+          if (msgs.length >= 200 && !S.debutFil[id]) {
+            var plus = el("button", "plus-ancien", "Messages plus anciens");
+            plus.type = "button";
+            plus.addEventListener("click", function () { if (msgs[0].id) op({ type: "chat.historique", client: id, avant: msgs[0].id }); });
+            fil.appendChild(plus);
+          }
+          if (!msgs.length) {
+            var vide = el("div", "chat-vide");
+            vide.appendChild(el("em", null, julien() ? "Écrivez à " + (cl.contact || cl.nom) + "." : "Écrivez à Julien."));
+            vide.appendChild(document.createTextNode(julien()
+              ? "Le message arrive en direct si le tableau est ouvert de l’autre côté ; sinon, il l’attend."
+              : "Une question, un point rapide : c’est ici. Pour une nouvelle mission, passez plutôt par « Demandes » — l’assistant vous montre le déroulé."));
+            fil.appendChild(vide);
+          }
+          var autres = {};
+          msgs.forEach(function (m) { if (!estMien(m)) autres[cleDe(m)] = true; });
+          var plusieurs = Object.keys(autres).length > 1;
+          var jour = "", prec = null;
+          msgs.forEach(function (m) {
+            var j = jourDe(m.ts);
+            if (j !== jour) { fil.appendChild(el("p", "jour", j)); jour = j; prec = null; }
+            var mien = estMien(m), suite = !!prec && cleDe(prec) === cleDe(m) && m.ts - prec.ts < 5 * 60000;
+            var b = el("div", "bulle" + (mien ? " moi" : "") + (suite ? " suite" : "") + (m.attente ? " attente" : ""));
+            var trace = m.id || m.tmp;
+            if (!C.bulles[trace]) { C.bulles[trace] = true; b.classList.add("neuve"); }
+            if (!mien && plusieurs && !suite) b.appendChild(el("span", "qui", m.qui));
+            lierLiens(b, m.txt);
+            var h = el("span", "h", heure(m.ts));
+            if (mien) {
+              var vu = !m.attente && vuParLautre(id, m.ts);
+              var t = el("span", "coche-lu" + (vu ? " vu" : ""), m.attente ? "…" : vu ? "✓✓" : "✓");
+              t.title = m.attente ? "Envoi en cours" : vu ? "Vu" : "Envoyé";
+              h.appendChild(t);
+            }
+            b.appendChild(h);
+            fil.appendChild(b);
+            prec = m;
+          });
+          if (defilement === "bas" || enBas) fil.scrollTop = fil.scrollHeight;
+          else if (defilement === "garder") fil.scrollTop = fil.scrollHeight - depuisBas;
+          else fil.scrollTop = haut;
+          marquerLu();
+        }
+        function rendreListe(fil) {
+          var places = placesDiscussion().slice().sort(function (a, b) { return dernierTs(b.id) - dernierTs(a.id); });
+          if (!places.length) return fil.appendChild(el("div", "chat-vide", "Ouvrez une place : sa discussion apparaît ici."));
+          places.forEach(function (cl) {
+            var b = el("button", "conv");
+            b.type = "button";
+            b.appendChild(el("span", "avatar", initiales(cl.nom)));
+            var t = el("div", "txt"), msgs = filDe(cl.id), der = msgs[msgs.length - 1];
+            t.appendChild(el("b", null, cl.nom));
+            t.appendChild(el("small", null, der ? (estMien(der) ? "Vous : " : der.qui + " : ") + der.txt : "Pas encore de message"));
+            b.appendChild(t);
+            var fin = el("div", "fin"), n = nonLus(cl.id);
+            if (der) fin.appendChild(el("span", null, quand(der.ts)));
+            if (n) fin.appendChild(el("span", "nb", String(n)));
+            b.appendChild(fin);
+            b.addEventListener("click", function () { C.client = cl.id; rendreChat("bas"); if (!tactile) chatTxt.focus(); });
+            fil.appendChild(b);
+          });
+        }
+        function dernierTs(id) { var f = filDe(id); return f.length ? f[f.length - 1].ts : 0; }
+        function marquerLu() {
+          var id = clientDuChat();
+          if (!C.ouvert || !id || document.hidden || !S.connecte) return;
+          var fil = filDe(id), dernier = null;
+          for (var i = fil.length - 1; i >= 0; i--) if (!estMien(fil[i])) { dernier = fil[i]; break; }
+          var l = lusDe(id);
+          if (!dernier || (l[maCle()] || 0) >= dernier.ts) return;
+          l[maCle()] = dernier.ts;
+          op({ type: "chat.lu", client: id, ts: dernier.ts });
+          majFab();
+          majTitre();
+        }
+        document.addEventListener("visibilitychange", function () { if (!document.hidden) marquerLu(); });
+
+        function ouvrirChat() {
+          if (julien()) {
+            var cl = clientCourant(), places = placesDiscussion();
+            C.client = cl ? cl.id : places.length === 1 ? places[0].id : null;
+          }
+          C.ouvert = true;
+          $("chat").hidden = false;
+          $("fab").hidden = true;
+          document.body.classList.add("chat-plein");
+          ajusterClavier();
+          rendreChat("bas");
+          if (!tactile && clientDuChat()) chatTxt.focus();
+        }
+        function fermerChat() {
+          C.ouvert = false;
+          $("chat").hidden = true;
+          $("fab").hidden = !S.recu;
+          document.body.classList.remove("chat-plein");
+          majFab();
+        }
+        $("fab").addEventListener("click", ouvrirChat);
+        $("chat-x").addEventListener("click", fermerChat);
+        $("chat-retour").addEventListener("click", function () { C.client = null; rendreChat(); });
+        // En capture, pour passer avant la fermeture des feuilles : Échap ferme d'abord la feuille.
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && C.ouvert && !back.classList.contains("on")) fermerChat(); }, true);
+
+        function envoyerMessage() {
+          var id = clientDuChat(), v = chatTxt.value.trim();
+          if (!id || !v) return;
+          var tmp = "t" + Date.now() + "-" + ++C.tmp;
+          if (!op({ type: "chat.envoyer", client: id, txt: v, tmp: tmp })) return;
+          filDe(id).push({ id: 0, tmp: tmp, client: id, ts: Date.now(), role: S.me.role, qui: julien() ? "Julien" : S.me.nom, txt: v, attente: true });
+          chatTxt.value = "";
+          ajusterHauteur();
+          rendreChat("bas");
+        }
+        function ajusterHauteur() { chatTxt.style.height = "auto"; chatTxt.style.height = Math.min(chatTxt.scrollHeight, 128) + "px"; }
+        $("chat-saisie").addEventListener("submit", function (e) { e.preventDefault(); envoyerMessage(); chatTxt.focus(); });
+        // Entrée envoie à l'ordinateur ; au téléphone, Entrée va à la ligne et la flèche envoie.
+        chatTxt.addEventListener("keydown", function (e) { if (e.key === "Enter" && !e.shiftKey && !tactile && !e.isComposing) { e.preventDefault(); envoyerMessage(); } });
+        chatTxt.addEventListener("input", function () {
+          ajusterHauteur();
+          var id = clientDuChat();
+          if (id && chatTxt.value.trim() && S.connecte && Date.now() - C.frappeEnvoyee > 2500) { C.frappeEnvoyee = Date.now(); op({ type: "chat.frappe", client: id }); }
+        });
+        /* Téléphone : la discussion épouse la partie visible, clavier ouvert. */
+        function ajusterClavier() {
+          var ch = $("chat"), vv = window.visualViewport;
+          if (!vv || !C.ouvert || window.innerWidth > 700) { ch.style.height = ""; ch.style.top = ""; return; }
+          ch.style.height = vv.height + "px";
+          ch.style.top = vv.offsetTop + "px";
+          var fil = $("chat-fil");
+          fil.scrollTop = fil.scrollHeight;
+        }
+        if (window.visualViewport) { window.visualViewport.addEventListener("resize", ajusterClavier); window.visualViewport.addEventListener("scroll", ajusterClavier); }
+
+        /* ————— Sur le téléphone : le tableau s'installe comme une app ————— */
+        var invite = null;
+        window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); invite = e; });
+        window.addEventListener("appinstalled", function () { invite = null; toast("Installé — le tableau est sur votre écran d’accueil."); });
+        function surIphone() { return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); }
+        function ouvrirInstallation() {
+          ouvrirFeuille("installer");
+          sheet.appendChild(el("p", "kicker", "Sur votre téléphone"));
+          sheet.appendChild(el("h2", null, "Le tableau, comme une app"));
+          sheet.appendChild(el("p", "desc", "Une icône sur l’écran d’accueil, le tableau s’ouvre en plein écran. Rien à télécharger, rien à payer, aucun compte à créer."));
+          var f = el("div", "foot");
+          if (invite) {
+            f.appendChild(bouton("Installer", "btn", function () { invite.prompt(); invite.userChoice.then(function () { invite = null; fermer(); }); }));
+          } else if (surIphone()) {
+            var ol = el("ol", "pas");
+            ol.appendChild(el("li", null, "Touchez « Copier mon lien », ci-dessous : l’app vous le demandera une seule fois."));
+            ol.appendChild(el("li", null, "Touchez « Partager » (le carré avec une flèche vers le haut), puis « Sur l’écran d’accueil » et « Ajouter »."));
+            ol.appendChild(el("li", null, "Ouvrez l’icône « Le tableau » et collez le lien."));
+            sheet.appendChild(ol);
+            f.appendChild(bouton("Copier mon lien", "btn", function () { copier(lienPour(S.cle), "Lien copié — collez-le à l’ouverture de l’app."); }));
+          } else {
+            sheet.appendChild(el("p", "desc", "Dans le menu du navigateur (⋮), choisissez « Installer l’application » ou « Ajouter à l’écran d’accueil »."));
+          }
+          f.appendChild(bouton("Fermer", "btn-ghost", fermer));
+          sheet.appendChild(f);
+        }
+        $("coller").addEventListener("submit", function (e) {
+          e.preventDefault();
+          var v = $("coller-lien").value.trim(), m = v.match(/cle=([^&\s#]+)/);
+          var k = m ? decodeURIComponent(m[1]) : /^[\w-]{16,200}$/.test(v) ? v : null;
+          if (!k) { $("acces-texte").textContent = "Ce n’est pas un lien de tableau : il ressemble à julientridat.com/tableau#cle=…"; return; }
+          try { localStorage.setItem(CLE_STOCK, k); } catch (x) {}
+          S.cle = k;
+          $("coller-lien").value = "";
+          $("acces-texte").textContent = "Connexion…";
+          essais = 0;
+          connecter();
+        });
+
         /* L'âge des cartes chez le client bouge avec le temps, même sans geste. */
-        setInterval(function () { if (S.recu && !feuille.mode && !saisieEnCours()) rendre(); }, 60000);
+        setInterval(function () { if (S.recu && !feuille.mode && !saisieEnCours() && !G) rendre(); }, 60000);
 
         $("reessayer").addEventListener("click", function () {
           $("acces-texte").textContent = "Connexion…";

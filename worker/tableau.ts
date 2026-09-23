@@ -13,6 +13,9 @@
  *
  * Hibernation : les sockets inactives ne coûtent rien, l'objet se réveille au
  * premier message. Le « ping » du navigateur reçoit « pong » sans le réveiller.
+ *
+ * La discussion (une par place) passe à part : chaque message part seul vers les
+ * sockets concernées, sans renvoyer tout le tableau ; l'historique arrive à la connexion.
  */
 import { DurableObject } from "cloudflare:workers";
 
@@ -56,6 +59,8 @@ interface Carte {
   lien: string;
   type: string;
   jalons: string[];
+  /** Étapes cochées, dans l'ordre de `jalons` (absent sur les cartes d'avant les cases). */
+  jok?: boolean[];
   action: Action | null;
   a: string;
   b: string;
@@ -68,6 +73,16 @@ interface Carte {
   creeLe: number;
   majLe: number;
 }
+
+// Un type (et non une interface) : les lignes SQL typées exigent une signature indexable.
+type Message = {
+  id: number;
+  client: string;
+  ts: number;
+  role: Role;
+  qui: string;
+  txt: string;
+};
 
 interface Chantier {
   id: string;
@@ -92,6 +107,10 @@ const COULEURS = ["c1", "c2", "c3", "c4", "c5", "c6"];
 const MAX_CARTES = 3000;
 const MAX_MESSAGE = 64_000;
 const MAX_EVENEMENTS = 5000;
+const MAX_TEXTE_MESSAGE = 4000;
+/** Messages envoyés à la connexion, par place ; les plus anciens se chargent à la demande. */
+const MESSAGES_PAR_PAGE = 200;
+const MAX_MESSAGES_PLACE = 20_000;
 
 /** Les cartes de process de l'assistant : le client voit le vrai déroulé avant d'envoyer. */
 const PROCESS: Array<{ type: string; test: RegExp; jalons: string[] }> = [
@@ -149,6 +168,12 @@ export class Tableau extends DurableObject<EnvTableau> {
     this.sql.exec(
       "CREATE TABLE IF NOT EXISTS evenements (id INTEGER PRIMARY KEY AUTOINCREMENT, ts INTEGER NOT NULL, qui TEXT NOT NULL, client TEXT, type TEXT NOT NULL, carte TEXT, detail TEXT)",
     );
+    this.sql.exec(
+      "CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, client TEXT NOT NULL, ts INTEGER NOT NULL, role TEXT NOT NULL, qui TEXT NOT NULL, txt TEXT NOT NULL)",
+    );
+    this.sql.exec("CREATE INDEX IF NOT EXISTS messages_client ON messages (client, id)");
+    // Dernier message lu, par place et par personne : « j » pour Julien, « c:Prénom » côté client.
+    this.sql.exec("CREATE TABLE IF NOT EXISTS lus (client TEXT NOT NULL, qui TEXT NOT NULL, ts INTEGER NOT NULL, PRIMARY KEY (client, qui))");
     ctx.setWebSocketAutoResponse(new WebSocketRequestResponsePair("ping", "pong"));
   }
 
@@ -177,6 +202,7 @@ export class Tableau extends DurableObject<EnvTableau> {
     if (msg.type !== "op" || !msg.op || typeof msg.op !== "object") return;
 
     try {
+      if (typeof msg.op.type === "string" && msg.op.type.startsWith("chat.")) return this.discussion(ws, session, msg.op);
       const reponse = this.appliquer(session, msg.op);
       if (reponse) ws.send(JSON.stringify(reponse));
       this.diffuser();
@@ -224,6 +250,7 @@ export class Tableau extends DurableObject<EnvTableau> {
     ws.serializeAttachment(session);
     ws.send(JSON.stringify({ type: "session", me: { role: session.role, nom: session.nom, client: session.client } }));
     this.diffuser();
+    this.envoyerDiscussion(ws, session);
   }
 
   /* ————— Diffusion : à chacun sa vue ————— */
@@ -266,6 +293,102 @@ export class Tableau extends DurableObject<EnvTableau> {
       ws.send(JSON.stringify({ type: "erreur", code, message }));
     } catch {
       /* rien */
+    }
+  }
+
+  /* ————— La discussion ————— */
+
+  /** Les sockets qui voient une place : Julien, et les personnes de cette place. */
+  private audience(client: string, sauf?: WebSocket): WebSocket[] {
+    return this.ctx.getWebSockets().filter((s) => {
+      if (s === sauf || s.readyState !== WebSocket.OPEN) return false;
+      const sess = s.deserializeAttachment() as Session | null;
+      return !!sess && (sess.role === "julien" || sess.client === client);
+    });
+  }
+
+  private envoyerA(sockets: WebSocket[], charge: Record<string, unknown>): void {
+    const texteCharge = JSON.stringify(charge);
+    for (const s of sockets) {
+      try {
+        s.send(texteCharge);
+      } catch {
+        /* socket en cours de fermeture */
+      }
+    }
+  }
+
+  private messages(client: string, avant?: number): Message[] {
+    const lignes = avant
+      ? this.sql.exec<Message>("SELECT id, client, ts, role, qui, txt FROM messages WHERE client = ? AND id < ? ORDER BY id DESC LIMIT ?", client, avant, MESSAGES_PAR_PAGE)
+      : this.sql.exec<Message>("SELECT id, client, ts, role, qui, txt FROM messages WHERE client = ? ORDER BY id DESC LIMIT ?", client, MESSAGES_PAR_PAGE);
+    return lignes.toArray().reverse();
+  }
+
+  /** À la connexion : les derniers messages de chaque place visible, et où chacun en est de sa lecture. */
+  private envoyerDiscussion(ws: WebSocket, session: Session): void {
+    const places = session.role === "julien" ? this.clients().map((c) => c.id) : [session.client as string];
+    const lus = this.sql
+      .exec<{ client: string; qui: string; ts: number }>("SELECT client, qui, ts FROM lus")
+      .toArray()
+      .filter((l) => places.includes(l.client));
+    try {
+      ws.send(JSON.stringify({ type: "discussion", messages: places.flatMap((id) => this.messages(id)), lus }));
+    } catch {
+      /* socket en cours de fermeture */
+    }
+  }
+
+  private marquerLu(client: string, qui: string, ts: number): boolean {
+    const avant = this.sql.exec<{ ts: number }>("SELECT ts FROM lus WHERE client = ? AND qui = ?", client, qui).toArray()[0];
+    if (avant && avant.ts >= ts) return false;
+    this.sql.exec("INSERT OR REPLACE INTO lus (client, qui, ts) VALUES (?, ?, ?)", client, qui, ts);
+    return true;
+  }
+
+  private discussion(ws: WebSocket, session: Session, op: Record<string, unknown>): void {
+    const julien = session.role === "julien";
+    const client = julien ? texte(op.client, 80, true) : (session.client as string);
+    if (!this.client(client)) throw new Refus("Place inconnue.");
+    const moi = julien ? "j" : "c:" + session.nom;
+    switch (op.type) {
+      case "chat.envoyer": {
+        if (!julien) this.placeActive(client);
+        const txt = texte(op.txt, MAX_TEXTE_MESSAGE, true);
+        const ts = Date.now();
+        const qui = julien ? "Julien" : session.nom;
+        this.sql.exec("INSERT INTO messages (client, ts, role, qui, txt) VALUES (?, ?, ?, ?, ?)", client, ts, session.role, qui, txt);
+        const id = this.sql.exec<{ id: number }>("SELECT last_insert_rowid() AS id").one().id;
+        this.sql.exec(
+          "DELETE FROM messages WHERE client = ? AND id <= (SELECT id FROM messages WHERE client = ? ORDER BY id DESC LIMIT 1 OFFSET ?)",
+          client,
+          client,
+          MAX_MESSAGES_PLACE,
+        );
+        this.marquerLu(client, moi, ts);
+        const m: Message = { id, client, ts, role: session.role, qui, txt };
+        this.envoyerA(this.audience(client), { type: "message", m, tmp: texte(op.tmp, 40) });
+        this.journal(session, "message", client, null, { txt });
+        return;
+      }
+      case "chat.lu": {
+        const ts = Math.min(Date.now(), Number(op.ts) || 0);
+        if (ts > 0 && this.marquerLu(client, moi, ts)) this.envoyerA(this.audience(client), { type: "lu", client, qui: moi, ts });
+        return;
+      }
+      case "chat.frappe": {
+        // « … écrit » : relayé, jamais stocké.
+        this.envoyerA(this.audience(client, ws), { type: "frappe", client, qui: moi, nom: julien ? "Julien" : session.nom });
+        return;
+      }
+      case "chat.historique": {
+        const avant = Number(op.avant);
+        if (!Number.isFinite(avant) || avant <= 0) return;
+        ws.send(JSON.stringify({ type: "historique", client, messages: this.messages(client, avant) }));
+        return;
+      }
+      default:
+        throw new Refus("Geste inconnu.");
     }
   }
 
@@ -335,6 +458,7 @@ export class Tableau extends DurableObject<EnvTableau> {
       lien: "",
       type: "",
       jalons: [],
+      jok: [],
       action: null,
       a: "",
       b: "",
@@ -447,10 +571,11 @@ export class Tableau extends DurableObject<EnvTableau> {
         return null;
       }
       case "carte.repondre": {
+        // La réponse est facultative : glisser la carte dans « Fait » suffit à dire « c'est réglé ».
         const c = carteChezLeClient(op.id, "repondre");
-        const txt = texte(op.txt, 2000, true);
-        c.com.push({ qui: session.nom, role: "client", txt, ts: Date.now() });
-        Object.assign(c, { col: "fait", faitLe: Date.now(), statut: "répondu", note: txt, nouveau: "julien", ordre: this.ordreFin(c.client, "fait") });
+        const txt = texte(op.txt, 2000);
+        if (txt) c.com.push({ qui: session.nom, role: "client", txt, ts: Date.now() });
+        Object.assign(c, { col: "fait", faitLe: Date.now(), statut: txt ? "répondu" : "réglé", note: txt, nouveau: "julien", ordre: this.ordreFin(c.client, "fait") });
         this.ecrireCarte(c);
         this.journal(session, "reponse", c.client, c, { txt });
         return null;
@@ -495,7 +620,15 @@ export class Tableau extends DurableObject<EnvTableau> {
         if ("livrable" in ch) c.livrable = ch.livrable === true;
         if ("lien" in ch) c.lien = lienSur(ch.lien);
         if ("ch" in ch) c.ch = typeof ch.ch === "string" && cl?.chantiers.some((x) => x.id === ch.ch) ? ch.ch : null;
-        if ("jalons" in ch) c.jalons = Array.isArray(ch.jalons) ? ch.jalons.map((j) => texte(j, 200)).filter(Boolean).slice(0, 12) : [];
+        if ("jalons" in ch) {
+          // Les cases suivent leur étape : fournies avec la liste, ou retrouvées par leur texte.
+          const cochees = new Map(c.jalons.map((j, i) => [j, c.jok?.[i] === true]));
+          const fournies = Array.isArray(ch.jok) ? (ch.jok as unknown[]) : null;
+          const jalons = Array.isArray(ch.jalons) ? ch.jalons.map((j, i) => ({ t: texte(j, 200), ok: fournies ? fournies[i] === true : undefined })) : [];
+          const gardes = jalons.filter((j) => j.t).slice(0, 12);
+          c.jalons = gardes.map((j) => j.t);
+          c.jok = gardes.map((j) => j.ok ?? cochees.get(j.t) ?? false);
+        }
         if ("action" in ch) c.action = ch.action === "valider" || ch.action === "repondre" || ch.action === "arbitrer" ? ch.action : null;
         if ("a" in ch) c.a = texte(ch.a, 160);
         if ("b" in ch) c.b = texte(ch.b, 160);
@@ -504,9 +637,13 @@ export class Tableau extends DurableObject<EnvTableau> {
         return null;
       }
       case "carte.deplacer": {
-        exigerJulien();
-        const c = this.carte(op.id);
+        const c = carteVisible(op.id);
         const col = COLS.includes(op.col as Col) ? (op.col as Col) : c.col;
+        if (!julien) {
+          // Le client range ses demandes par priorité ; le reste du plan ne bouge qu'avec Julien.
+          this.placeActive(c.client);
+          if (c.col !== "demandes" || col !== "demandes") throw new Refus("Seul Julien déplace les cartes du plan.");
+        }
         let ordre = this.ordreFin(c.client, col);
         if (typeof op.avant === "string" && op.avant !== c.id) {
           const voisines = this.cartes()
@@ -518,6 +655,11 @@ export class Tableau extends DurableObject<EnvTableau> {
         }
         const avant = c.col;
         c.ordre = ordre;
+        if (!julien) {
+          this.ecrireCarte(c);
+          this.journal(session, "priorite", c.client, c);
+          return null;
+        }
         if (col !== avant) {
           c.col = col;
           c.statut = "";
@@ -532,6 +674,17 @@ export class Tableau extends DurableObject<EnvTableau> {
           this.journal(session, "deplacement", c.client, c, { de: avant, vers: col });
         }
         this.ecrireCarte(c);
+        return null;
+      }
+      case "carte.cocher": {
+        exigerJulien();
+        const c = this.carte(op.id);
+        const i = Number(op.i);
+        if (!Number.isInteger(i) || i < 0 || i >= c.jalons.length) throw new Refus("Cette étape n’existe plus.");
+        c.jok = c.jalons.map((_, k) => c.jok?.[k] === true);
+        c.jok[i] = op.ok === true;
+        this.ecrireCarte(c);
+        this.journal(session, "etape", c.client, c, { etape: c.jalons[i], faite: c.jok[i] });
         return null;
       }
       case "carte.supprimer": {
@@ -662,7 +815,11 @@ export class Tableau extends DurableObject<EnvTableau> {
       case "export": {
         exigerJulien();
         const evenements = this.sql.exec("SELECT * FROM evenements ORDER BY id").toArray();
-        return { type: "export", data: { exporteLe: new Date().toISOString(), clients: this.clients(), cartes: this.cartes(), acces: this.acces(), evenements } };
+        const messages = this.sql.exec("SELECT * FROM messages ORDER BY id").toArray();
+        return {
+          type: "export",
+          data: { exporteLe: new Date().toISOString(), clients: this.clients(), cartes: this.cartes(), acces: this.acces(), messages, evenements },
+        };
       }
       default:
         throw new Refus("Geste inconnu.");

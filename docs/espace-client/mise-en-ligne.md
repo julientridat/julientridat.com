@@ -30,6 +30,47 @@ clé ; il l'ouvre une fois.
 - Voir ce que voit Sébastien : « Voir comme Sébastien ». Ne pas ouvrir son lien dans ton
   propre navigateur (il remplacerait ta clé) — une fenêtre privée, si tu veux vraiment.
 
+## Qui déplace quoi
+
+- **Julien** glisse toutes les cartes, d'une colonne à l'autre ou dans l'ordre d'une colonne —
+  à la souris, ou au doigt (appui long, puis glisser).
+- **Le client** glisse ce qui lui revient, et seulement ça (le serveur refuse le reste) :
+  - une question de « Chez vous » vers « Fait » : c'est réglé, avec un mot s'il veut ;
+  - un livrable de « Chez vous » vers « Fait » : validé ; vers « En cours » : à reprendre,
+    il dit pourquoi ;
+  - ses demandes, qu'il range par priorité.
+  Les cartes du plan (Prévu, En cours) ne bougent qu'avec Julien.
+
+## Filtres
+
+Pastilles par chantier (à leur couleur), par mois (lu dans l'échéance : « Octobre »,
+« avant fin octobre »…) et un champ de recherche. Les deux faces les ont ; « Tout afficher »
+remet à zéro.
+
+## Étapes à cocher
+
+Dans une carte, côté Julien : une étape par ligne, cochée au fil de l'eau — ou les étapes
+type proposées d'après le titre (site : maquette, validation, V1…). Le client voit « ✓ 2/4 »
+sur la carte et l'avancement dans la fiche ; il ne coche pas.
+
+## La discussion
+
+Bouton « Discussion » en bas à droite : un fil par place, en direct, comme une messagerie.
+Pastille des non-lus sur le bouton et dans l'onglet, « écrit… », ✓ envoyé, ✓✓ vu. Les liens
+deviennent cliquables. Côté Julien, avec plusieurs places, la liste des discussions d'abord.
+Chaque message part aussi vers les automatisations (événement `message`).
+Pour une nouvelle mission, le client passe par « Demandes » : le fil le lui rappelle.
+
+## Sur le téléphone — et sur le Mac
+
+Le tableau s'installe comme une app : icône sur l'écran d'accueil, plein écran, aucun store.
+Le bouton « Installer l'app » (sur téléphone) explique la marche à suivre.
+- **Android** : un bouton « Installer » suffit.
+- **iPhone** : l'app installée ne partage pas la mémoire de Safari. D'où l'étape « Copier
+  mon lien » : à la première ouverture, l'app demande le lien, on le colle, c'est fini.
+- **Mac, dans Chrome** : menu ⋮ → « Caster, enregistrer et partager » → « Installer la page
+  en tant qu'application ». Le tableau a alors sa fenêtre et son icône dans le Dock.
+
 ## Ce que fait le temps réel
 
 Chaque geste — une carte déplacée, une réponse, une validation, un commentaire, une demande —
@@ -60,4 +101,8 @@ l'automatisation vérifie l'expéditeur).
 
 - Pas d'e-mail automatique : le lien et le point de lundi partent de ta messagerie
   (« Point de lundi » prépare le texte à copier).
-- Pas de pièces jointes : on colle le lien du fichier (Drive, Figma…) dans la carte.
+- Pas de pièces jointes : on colle le lien du fichier (Drive, Figma…) dans la carte ou la
+  discussion.
+- Pas de notification sur le téléphone quand l'app est fermée : l'étape suivante (Web Push,
+  gratuit, deux secrets Cloudflare de plus). En attendant, l'événement `message` peut
+  déclencher un e-mail depuis n8n ou Make.
