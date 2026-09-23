@@ -12,8 +12,13 @@
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { redirectionCanonique } from "./canonique";
+import type { EnvTableau } from "./tableau";
 
-interface Env {
+// Classe du Durable Object du tableau client : Cloudflare la cherche parmi les
+// exports nommés du module principal (déclarée dans wrangler.jsonc).
+export { Tableau } from "./tableau";
+
+interface Env extends EnvTableau {
   ASSETS: Fetcher;
   AI?: Ai;
   ANTHROPIC_API_KEY?: string;
@@ -1057,6 +1062,15 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
   return response;
 }
 
+/** Le tableau client : toutes les places vivent dans un seul Durable Object. */
+function handleTableau(request: Request, env: Env): Response | Promise<Response> {
+  if (!env.TABLEAU) return new Response("Tableau non configuré.", { status: 503 });
+  if (request.headers.get("Upgrade") !== "websocket") return new Response("WebSocket attendu.", { status: 426 });
+  const origine = request.headers.get("Origin");
+  if (origine && new URL(origine).host !== new URL(request.url).host) return new Response("Origine refusée.", { status: 403 });
+  return env.TABLEAU.get(env.TABLEAU.idFromName("atelier")).fetch(request);
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const redirection = redirectionCanonique(request);
@@ -1064,6 +1078,15 @@ export default {
 
     const url = new URL(request.url);
     if (url.pathname === "/api/experience") return handleExperience(request, env);
+    if (url.pathname === "/api/tableau/ws") return handleTableau(request, env);
+    if (url.pathname === "/api/tableau/sante") {
+      // Vérification de mise en service, sans rien révéler : l'objet est-il
+      // déclaré, la clé de Julien est-elle posée ?
+      return Response.json(
+        { tableau: !!env.TABLEAU, cleJulien: !!env.TABLEAU_ADMIN_KEY && env.TABLEAU_ADMIN_KEY.length >= 16 },
+        { headers: { "Cache-Control": "no-store" } },
+      );
+    }
     return env.ASSETS.fetch(request);
   },
 } satisfies ExportedHandler<Env>;

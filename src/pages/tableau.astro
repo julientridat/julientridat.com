@@ -1,0 +1,1019 @@
+---
+/**
+ * Le tableau client — page applicative, hors du site vitrine : pas de BaseLayout,
+ * pas d'indexation, absente du sitemap et de llms.txt. La page ne contient aucune
+ * donnée : tout arrive par WebSocket depuis le Durable Object (worker/tableau.ts),
+ * après présentation d'une clé personnelle (lien #cle=…, gardé ensuite par le navigateur).
+ *
+ * Un seul tableau, deux faces : Julien voit toutes ses places et déplace les cartes ;
+ * un client voit ses cartes et n'agit que dans « Chez vous ».
+ */
+---
+
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="referrer" content="no-referrer" />
+    <title>Le tableau · Julien Tridat</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Instrument+Serif:ital@0;1&display=swap"
+    />
+    <style is:global>
+      :root {
+        --paper: #f1f2f4;
+        --col: #e7e8ec;
+        --white: #fbfbfc;
+        --ink: #111216;
+        --ink-2: #43464e;
+        --ink-3: #7a7e88;
+        --line: rgba(17, 18, 22, 0.1);
+        --violet: #6c4cf1;
+        --violet-wash: rgba(108, 76, 241, 0.1);
+        --late: #b4321f;
+        --c1: #df7e1f;
+        --c2: #d6409f;
+        --c3: #0d9488;
+        --c4: #2e90fa;
+        --c5: #65a30d;
+        --c6: #8b6f47;
+        --c0: #9aa0ab;
+        --font-sans: "Geist", -apple-system, "Helvetica Neue", sans-serif;
+        --font-serif: "Instrument Serif", Georgia, serif;
+      }
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      html { color-scheme: light; }
+      body { background: var(--paper); color: var(--ink-2); font-family: var(--font-sans); font-size: 0.92rem; line-height: 1.45; -webkit-font-smoothing: antialiased; min-height: 100vh; }
+      em { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--violet); }
+      button { font: inherit; cursor: pointer; }
+      a { color: inherit; }
+      :focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 6px; }
+      [hidden] { display: none !important; }
+
+      /* Écran d'accès */
+      .acces { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
+      .acces-in { max-width: 460px; }
+      .acces h1 { font-weight: 300; letter-spacing: -0.03em; color: var(--ink); font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.15; }
+      .acces p { margin-top: 14px; font-size: 1rem; }
+      .acces .petit { font-size: 0.85rem; color: var(--ink-3); }
+
+      /* En-tête */
+      .top { background: var(--white); border-bottom: 1px solid var(--line); position: sticky; top: env(safe-area-inset-top, 0px); z-index: 10; }
+      .top-in { max-width: 1480px; margin: 0 auto; padding: 12px 24px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+      .wordmark { font-weight: 600; color: var(--ink); white-space: nowrap; }
+      .wordmark span { color: var(--ink-3); font-weight: 400; margin-left: 8px; }
+      .live { display: inline-flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--ink-3); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
+      .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); }
+      .live.on { color: var(--violet); border-color: rgba(108, 76, 241, 0.3); }
+      .live.on i { background: var(--violet); animation: pouls 2.4s infinite; }
+      @keyframes pouls { 0% { box-shadow: 0 0 0 0 rgba(108, 76, 241, 0.35); } 70% { box-shadow: 0 0 0 6px rgba(108, 76, 241, 0); } 100% { box-shadow: 0 0 0 0 rgba(108, 76, 241, 0); } }
+      .presence { font-size: 0.78rem; color: var(--violet); white-space: nowrap; }
+      .filters { display: flex; gap: 6px; flex-wrap: wrap; }
+      .pill { border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 5px 12px; font-size: 0.8rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+      .pill.on, .pill:hover { border-color: var(--violet); color: var(--violet); }
+      .pill .pt { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); }
+      .pill .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.66rem; padding: 0 6px; }
+      .pill.close { opacity: 0.55; }
+      .right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+      .btn { border: none; border-radius: 999px; background: var(--ink); color: var(--white); padding: 8px 16px; font-weight: 500; font-size: 0.84rem; transition: background 0.2s, transform 0.2s; }
+      .btn:hover { background: var(--violet); transform: translateY(-1px); }
+      .btn-ghost { background: var(--white); border: 1px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 6px 13px; font-size: 0.8rem; font-weight: 500; }
+      .btn-ghost:hover { color: var(--violet); border-color: var(--violet); }
+      .btn-sm { padding: 5px 11px; font-size: 0.76rem; }
+      .btn-danger:hover { color: var(--late); border-color: var(--late); }
+      .apercu-bar { background: var(--violet); color: var(--white); text-align: center; font-size: 0.8rem; padding: 6px 12px; }
+      .apercu-bar button { background: none; border: none; color: var(--white); text-decoration: underline; margin-left: 8px; }
+
+      /* Ligne de période */
+      .periode { max-width: 1480px; margin: 0 auto; padding: 18px 24px 0; display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; }
+      .periode h1 { font-weight: 300; letter-spacing: -0.03em; color: var(--ink); font-size: clamp(1.35rem, 2.4vw, 1.9rem); }
+      .periode .track { flex: 1; min-width: 160px; height: 3px; background: var(--line); border-radius: 999px; position: relative; top: -5px; }
+      .periode .track i { position: absolute; left: 0; top: 0; height: 100%; background: var(--violet); border-radius: 999px; transition: width 1.2s cubic-bezier(0.2, 0.6, 0.2, 1); }
+      .periode .track b { position: absolute; top: 50%; width: 11px; height: 11px; border-radius: 50%; background: var(--violet); transform: translate(-50%, -50%); box-shadow: 0 0 0 4px rgba(108, 76, 241, 0.15); transition: left 1.2s cubic-bezier(0.2, 0.6, 0.2, 1); }
+      .periode small { color: var(--ink-3); font-size: 0.8rem; }
+
+      /* Le tableau */
+      .board { max-width: 1480px; margin: 0 auto; padding: 16px 24px 48px; display: grid; grid-template-columns: repeat(5, minmax(230px, 1fr)); gap: 14px; overflow-x: auto; align-items: start; }
+      .column { background: var(--col); border-radius: 16px; padding: 10px; min-height: 160px; transition: box-shadow 0.2s; }
+      .column.over { box-shadow: inset 0 0 0 2px var(--violet); }
+      .column.vous { background: rgba(108, 76, 241, 0.07); }
+      .col-h { display: flex; align-items: baseline; gap: 8px; padding: 4px 6px 10px; }
+      .col-h h2 { font-size: 0.74rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); }
+      .column.vous .col-h h2 { color: var(--violet); }
+      .col-h .n { font-size: 0.74rem; color: var(--ink-3); }
+      .col-h .hint { margin-left: auto; font-size: 0.72rem; color: var(--ink-3); }
+      .cards { display: grid; gap: 8px; min-height: 30px; }
+      .vide { font-size: 0.8rem; color: var(--ink-3); padding: 6px; }
+      .card { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 10px 12px; cursor: pointer; box-shadow: 0 1px 2px rgba(24, 20, 60, 0.05); transition: transform 0.15s, box-shadow 0.15s; animation: entre 0.3s ease both; }
+      @keyframes entre { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: none; } }
+      .card:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(24, 20, 60, 0.1); }
+      .card.dragging { opacity: 0.4; }
+      .card h3 { font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
+      .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
+      .chip { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 0.68rem; font-weight: 600; background: var(--paper); color: var(--ink-3); border: 1px solid var(--line); }
+      .chip.client { background: var(--white); color: var(--ink); border-color: rgba(17, 18, 22, 0.35); }
+      .chip.vous { background: var(--violet-wash); color: var(--violet); border-color: transparent; }
+      .chip.late { color: var(--late); border-color: rgba(180, 50, 31, 0.3); }
+      .chip.ok { background: var(--violet); color: var(--white); border-color: transparent; }
+      .chip.neuf { background: var(--ink); color: var(--white); border-color: transparent; }
+      .card .note { margin-top: 7px; font-size: 0.78rem; color: var(--violet); }
+      .card .acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+      .card .zone { margin-top: 8px; display: grid; gap: 6px; justify-items: start; }
+      textarea, input[type="text"], input[type="date"], input[type="url"] { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); padding: 8px 10px; font: inherit; font-size: 0.86rem; color: var(--ink); resize: vertical; }
+      textarea:focus, input:focus { outline: 2px solid var(--violet); outline-offset: 0; border-color: transparent; background: var(--white); }
+      .add { margin-top: 8px; }
+      .add input { background: transparent; border: 1px dashed rgba(17, 18, 22, 0.2); font-size: 0.82rem; }
+      .add input:focus { background: var(--white); }
+      .folded { margin-top: 10px; font-size: 0.76rem; color: var(--ink-3); padding: 0 6px; }
+      .folded b { color: var(--ink-2); font-weight: 500; }
+      .folded button { background: none; border: none; color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; font-size: 0.76rem; }
+      .divider { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); padding: 6px 6px 2px; }
+
+      /* Feuille : carte ouverte, dialogues */
+      .back { position: fixed; inset: 0; background: rgba(17, 18, 22, 0.35); display: none; align-items: flex-start; justify-content: center; padding: 48px 16px; z-index: 30; overflow: auto; }
+      .back.on { display: flex; }
+      .sheet { background: var(--white); border-radius: 22px; width: min(640px, 100%); padding: 24px 26px; border-top: 5px solid var(--mc, var(--violet)); }
+      .sheet .kicker { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--violet); }
+      .sheet h2 { font-weight: 500; color: var(--ink); font-size: 1.25rem; letter-spacing: -0.01em; margin-top: 4px; }
+      .sheet .titre { font-size: 1.15rem; font-weight: 500; margin-top: 6px; }
+      .sheet p.desc { margin-top: 12px; color: var(--ink-2); white-space: pre-wrap; }
+      .sheet .lab { font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); margin: 16px 0 6px; }
+      .sheet .aide { font-size: 0.8rem; color: var(--ink-3); margin-top: 4px; }
+      .grille { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+      .grille label, .champ { display: grid; gap: 4px; font-size: 0.78rem; color: var(--ink-3); }
+      .coche { display: flex !important; align-items: center; gap: 8px; font-size: 0.85rem !important; color: var(--ink-2) !important; }
+      .coche input { width: auto; }
+      .choix { display: flex; gap: 6px; flex-wrap: wrap; }
+      .choix button { border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 4px 11px; font-size: 0.78rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+      .choix button.on { border-color: var(--violet); color: var(--violet); background: var(--violet-wash); }
+      .choix .sw { width: 9px; height: 9px; border-radius: 3px; }
+      .jalons { list-style: none; display: grid; gap: 4px; }
+      .jalons li { display: flex; gap: 10px; align-items: baseline; font-size: 0.88rem; }
+      .jalons .jn { font-family: var(--font-serif); font-style: italic; color: var(--violet); min-width: 14px; font-size: 1.05rem; }
+      .comments { list-style: none; display: grid; gap: 8px; }
+      .comments li { font-size: 0.86rem; }
+      .comments b { color: var(--ink); font-weight: 600; }
+      .comments .when { color: var(--ink-3); font-size: 0.76rem; margin-left: 6px; }
+      .comments p { white-space: pre-wrap; }
+      .c-add { display: flex; gap: 8px; margin-top: 8px; }
+      .sheet .foot { display: flex; gap: 8px; margin-top: 20px; flex-wrap: wrap; align-items: center; }
+      .sheet .foot .fin { margin-left: auto; display: flex; gap: 8px; }
+      .move { display: flex; gap: 6px; flex-wrap: wrap; }
+      .lien-cle { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; background: var(--paper); border-radius: 10px; padding: 10px 12px; word-break: break-all; margin-top: 8px; }
+      .personnes { display: grid; gap: 8px; }
+      .personne { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.86rem; }
+      .personne b { color: var(--ink); font-weight: 500; }
+      .personne small { color: var(--ink-3); }
+      .personne .fin { margin-left: auto; display: flex; gap: 6px; }
+      .ch-ligne { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
+      .ch-ligne .sw { width: 22px; height: 22px; border-radius: 7px; border: none; flex: none; }
+      .point-text { white-space: pre-wrap; font-size: 0.88rem; color: var(--ink-2); background: var(--paper); border-radius: 12px; padding: 14px; margin-top: 12px; }
+      .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(16px); background: var(--ink); color: var(--white); border-radius: 999px; padding: 9px 16px; font-size: 0.83rem; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 40; pointer-events: none; max-width: calc(100vw - 32px); }
+      .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
+      pre.format { font-family: ui-monospace, Menlo, monospace; font-size: 0.74rem; background: var(--paper); border-radius: 10px; padding: 10px 12px; color: var(--ink-2); white-space: pre-wrap; margin-top: 6px; }
+
+      @media (max-width: 900px) {
+        .board { display: flex; gap: 12px; scroll-snap-type: x mandatory; }
+        .column { flex: 0 0 84vw; scroll-snap-align: start; }
+        /* Côté client, sur téléphone : sa colonne d'abord, c'est la seule où il agit. */
+        .face-client .column.vous { order: -1; }
+        .periode .track { flex-basis: 100%; order: 3; }
+        .grille { grid-template-columns: 1fr; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .card, .btn, .toast, .periode .track i, .periode .track b { transition: none; animation: none; }
+        .live.on i { animation: none; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="acces" id="acces" hidden>
+      <div class="acces-in">
+        <h1 id="acces-titre">Ce tableau s’ouvre avec <em>votre lien personnel</em>.</h1>
+        <p id="acces-texte">Julien vous l’a envoyé par e-mail. Ouvrez-le une fois : ce navigateur s’en souviendra.</p>
+        <p class="petit">Pas de lien, ou il ne fonctionne plus&nbsp;? Écrivez à <a href="mailto:julien@julientridat.com">julien@julientridat.com</a>.</p>
+      </div>
+    </div>
+
+    <div class="apercu-bar" id="apercu-bar" hidden></div>
+    <header class="top" id="top" hidden>
+      <div class="top-in">
+        <p class="wordmark">Julien Tridat <span id="sous-titre">le tableau</span></p>
+        <span class="live" id="live"><i></i><span>connexion…</span></span>
+        <span class="presence" id="presence"></span>
+        <div class="filters" id="filtres"></div>
+        <div class="right" id="outils"></div>
+      </div>
+    </header>
+
+    <div class="periode" id="periode" hidden></div>
+
+    <main class="board" id="board" hidden>
+      <section class="column" data-col="demandes">
+        <div class="col-h"><h2>Demandes</h2><span class="n"></span><span class="hint">reçues</span></div>
+        <div class="cards"></div>
+        <div class="add"><input type="text" data-add="demandes" /></div>
+        <p class="folded"></p>
+      </section>
+      <section class="column" data-col="prevu">
+        <div class="col-h"><h2>Prévu</h2><span class="n"></span><span class="hint">au plan</span></div>
+        <div class="cards"></div>
+        <div class="add julien"><input type="text" data-add="prevu" placeholder="+ carte" /></div>
+      </section>
+      <section class="column" data-col="encours">
+        <div class="col-h"><h2>En cours</h2><span class="n"></span><span class="hint">chez Julien</span></div>
+        <div class="cards"></div>
+        <div class="add julien"><input type="text" data-add="encours" placeholder="+ carte" /></div>
+      </section>
+      <section class="column vous" data-col="vous">
+        <div class="col-h"><h2 data-titre-vous>Chez le client</h2><span class="n"></span><span class="hint">à régler</span></div>
+        <div class="cards"></div>
+        <div class="add julien"><input type="text" data-add="vous" placeholder="+ une question au client" /></div>
+      </section>
+      <section class="column" data-col="fait">
+        <div class="col-h"><h2>Fait</h2><span class="n"></span><span class="hint">le plus récent en tête</span></div>
+        <div class="cards"></div>
+      </section>
+    </main>
+
+    <div class="back" id="back"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <script is:inline>
+      (function () {
+        "use strict";
+        var CLE_STOCK = "tableau.cle";
+        var COLS = ["demandes", "prevu", "encours", "vous", "fait"];
+        var NOM_COL = { demandes: "Demande", prevu: "Prévu", encours: "En cours", vous: "Chez le client", fait: "Fait", mensuel: "Au point mensuel" };
+        var COULEURS = ["c1", "c2", "c3", "c4", "c5", "c6"];
+        var JOUR = 86400000;
+        var PROCESS = [
+          { type: "formation", test: /formation|former|atelier|session/i, intro: "C’est une formation. Pour qu’elle serve vraiment, voici les étapes :", jalons: ["Programme proposé — sous 48 h", "Votre validation, et le choix de la date", "Session animée + support remis"] },
+          { type: "site", test: /site|page|landing|refonte|vitrine|e-?commerce/i, intro: "Un site ne se livre pas fini en 72 h — et c’est ce qui vous protège. Voici comment ça se passe :", jalons: ["Maquette — sous 48 h", "Votre validation — un aller-retour", "V1 en ligne — sous 72 h après validation"] },
+          { type: "contenu", test: /mail|s[ée]quence|article|blog|post|linkedin|newsletter|contenu|campagne|visuel/i, intro: "C’est du contenu. On valide l’angle avant d’écrire — jamais l’inverse :", jalons: ["Angle et plan — sous 24 h", "Votre validation", "Version complète — sous 48 h"] },
+          { type: "outil", test: /outil|crm|automatis|install|\bia\b|assistant|logiciel|brevo/i, intro: "C’est une installation d’outil. Personne ne reçoit un outil sans savoir s’en servir :", jalons: ["Cadrage — trois questions", "Installation sur vos comptes", "Démonstration à l’équipe — 30 min"] }
+        ];
+        var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
+
+        var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false };
+        var feuille = { mode: null, id: null };
+        var ws = null, essais = 0, pingT = null, reconnexionT = null;
+
+        var $ = function (id) { return document.getElementById(id); };
+        function el(tag, cls, txt) { var e = document.createElement(tag); if (cls) e.className = cls; if (txt != null) e.textContent = txt; return e; }
+        function bouton(txt, cls, fn) { var b = el("button", cls || "btn-ghost btn-sm", txt); b.type = "button"; b.addEventListener("click", function (e) { e.stopPropagation(); fn(e); }); return b; }
+        var toastT;
+        function toast(m) { var t = $("toast"); t.textContent = m; t.classList.add("on"); clearTimeout(toastT); toastT = setTimeout(function () { t.classList.remove("on"); }, 3200); }
+
+        /* ————— Clé et connexion ————— */
+        function lireCle() {
+          var m = location.hash.match(/cle=([^&]+)/);
+          if (m) {
+            var k = decodeURIComponent(m[1]);
+            try { localStorage.setItem(CLE_STOCK, k); } catch (e) {}
+            history.replaceState(null, "", location.pathname + location.search);
+            return k;
+          }
+          try { return localStorage.getItem(CLE_STOCK); } catch (e) { return null; }
+        }
+        function montrerAcces(message) {
+          $("acces").hidden = false;
+          ["top", "periode", "board", "apercu-bar"].forEach(function (id) { $(id).hidden = true; });
+          if (message) $("acces-texte").textContent = message;
+        }
+        function connecter() {
+          clearTimeout(reconnexionT);
+          if (!S.cle) return montrerAcces();
+          if (ws && (ws.readyState === 0 || ws.readyState === 1)) return;
+          ws = new WebSocket((location.protocol === "https:" ? "wss://" : "ws://") + location.host + "/api/tableau/ws");
+          ws.onopen = function () {
+            essais = 0;
+            ws.send(JSON.stringify({ type: "bonjour", cle: S.cle }));
+            clearInterval(pingT);
+            pingT = setInterval(function () { if (ws && ws.readyState === 1) ws.send("ping"); }, 25000);
+          };
+          ws.onmessage = function (e) {
+            if (e.data === "pong") return;
+            var m;
+            try { m = JSON.parse(e.data); } catch (x) { return; }
+            recevoir(m);
+          };
+          ws.onclose = function (e) {
+            clearInterval(pingT);
+            S.connecte = false;
+            majLive();
+            if (e.code === 4001) {
+              try { localStorage.removeItem(CLE_STOCK); } catch (x) {}
+              return;
+            }
+            reconnexionT = setTimeout(connecter, Math.min(15000, 1000 * Math.pow(2, essais++)));
+          };
+        }
+        document.addEventListener("visibilitychange", function () { if (!document.hidden && (!ws || ws.readyState > 1)) { essais = 0; connecter(); } });
+        window.addEventListener("online", function () { essais = 0; connecter(); });
+
+        function op(o) {
+          if (!ws || ws.readyState !== 1) { toast("Hors ligne — le geste n’est pas parti. Reconnexion en cours…"); return false; }
+          ws.send(JSON.stringify({ type: "op", op: o }));
+          return true;
+        }
+
+        function recevoir(m) {
+          if (m.type === "session") { S.me = m.me; return; }
+          if (m.type === "erreur") {
+            if (m.code === "cle") return montrerAcces(m.message);
+            return toast(m.message);
+          }
+          if (m.type === "etat") {
+            S.clients = m.clients || [];
+            S.cartes = m.cartes || [];
+            S.acces = m.acces || [];
+            S.enLigne = m.enLigne || [];
+            S.connecte = true;
+            if (S.filtre !== "tous" && !clientParId(S.filtre)) S.filtre = "tous";
+            if (!S.recu) { S.recu = true; $("acces").hidden = true; $("top").hidden = false; $("board").hidden = false; }
+            if (saisieEnCours()) S.enAttente = true;
+            else rendre();
+            rafraichirFeuille();
+            return;
+          }
+          if (m.type === "cree") return montrerLien(m);
+          if (m.type === "import") return toast(rapportImport(m.rapport));
+          if (m.type === "export") return telecharger(m.data);
+        }
+
+        /* Une réponse en cours de frappe sur une carte ne doit pas disparaître parce
+           que l'autre côté vient de bouger une carte : le rendu attend la fin de la saisie. */
+        function saisieEnCours() { var a = document.activeElement; return !!(a && a.closest && a.closest("#board .zone")); }
+        $("board").addEventListener("focusout", function () {
+          setTimeout(function () { if (S.enAttente && !saisieEnCours()) { S.enAttente = false; rendre(); } }, 0);
+        });
+
+        /* ————— Vue courante ————— */
+        function julien() { return S.me && S.me.role === "julien"; }
+        function faceClient() { return !julien() || S.apercu; }
+        function clientParId(id) { for (var i = 0; i < S.clients.length; i++) if (S.clients[i].id === id) return S.clients[i]; return null; }
+        function clientCourant() {
+          if (!julien()) return S.clients[0] || null;
+          if (S.filtre !== "tous") return clientParId(S.filtre);
+          var actifs = S.clients.filter(function (c) { return !c.archive; });
+          return actifs.length === 1 ? actifs[0] : null;
+        }
+        function cartesVisibles() {
+          if (!julien()) return S.cartes;
+          if (S.filtre === "tous") return S.cartes.filter(function (c) { var cl = clientParId(c.client); return cl && !cl.archive; });
+          return S.cartes.filter(function (c) { return c.client === S.filtre; });
+        }
+        function chantier(c) {
+          var cl = clientParId(c.client);
+          if (!cl || !c.ch) return null;
+          for (var i = 0; i < cl.chantiers.length; i++) if (cl.chantiers[i].id === c.ch) return cl.chantiers[i];
+          return null;
+        }
+        function couleur(c) { var ch = chantier(c); return "var(--" + (ch ? ch.couleur : "c0") + ")"; }
+        function roleVue() { return faceClient() ? "client" : "julien"; }
+        function jours(ts) { return Math.floor((Date.now() - ts) / JOUR); }
+        function depuis(ts) { var j = jours(ts); return j <= 0 ? "aujourd’hui" : j === 1 ? "depuis hier" : "depuis " + j + " jours"; }
+        function quand(ts) {
+          var d = new Date(ts), n = new Date();
+          if (d.toDateString() === n.toDateString()) return d.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }).replace(":", " h ");
+          if (Date.now() - ts < 6 * JOUR) return d.toLocaleDateString("fr-FR", { weekday: "long" });
+          return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+        }
+        function dateLongue(iso) { if (!iso) return ""; var d = new Date(iso + "T12:00:00"); return isNaN(d) ? iso : d.toLocaleDateString("fr-FR", { day: "numeric", month: "long" }); }
+        function nombre(n, un, plusieurs) { return n === 0 ? "aucune " + un : n === 1 ? "une " + un : n + " " + plusieurs; }
+        function majuscule(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+        /* ————— Rendu ————— */
+        function majLive() {
+          var l = $("live");
+          l.classList.toggle("on", S.connecte);
+          l.lastChild.textContent = S.connecte ? "en direct" : "reconnexion…";
+        }
+
+        function rendre() {
+          majLive();
+          var cl = clientCourant();
+          var fc = faceClient();
+          document.body.classList.toggle("face-client", fc);
+          var nouveaux = S.cartes.filter(function (c) { return c.nouveau === (julien() ? "julien" : "client"); }).length;
+          document.title = (nouveaux ? "(" + nouveaux + ") " : "") + "Le tableau · Julien Tridat";
+
+          $("sous-titre").textContent = fc ? "votre tableau · " + (cl ? cl.nom : "") : "le tableau · " + (S.filtre === "tous" ? "toutes les places" : cl ? cl.nom : "");
+          var bar = $("apercu-bar");
+          bar.hidden = !S.apercu;
+          if (S.apercu && cl) {
+            bar.textContent = "Aperçu — vous voyez le tableau comme " + (cl.contact || "votre client") + " le voit. Ses boutons sont inactifs ici.";
+            bar.appendChild(bouton("Revenir à mon tableau", "", function () { S.apercu = false; rendre(); }));
+          }
+
+          var presence = $("presence");
+          presence.textContent = "";
+          if (!julien()) {
+            if (S.enLigne.some(function (p) { return p.role === "julien"; })) presence.textContent = "Julien est en ligne";
+          } else if (cl && !S.apercu) {
+            var la = S.enLigne.filter(function (p) { return p.client === cl.id; }).map(function (p) { return p.nom; });
+            if (la.length) presence.textContent = la.join(", ") + (la.length > 1 ? " sont" : " est") + " en ligne";
+          }
+
+          rendreFiltres();
+          rendreOutils(cl);
+          rendrePeriode(cl);
+          rendreColonnes(cl);
+        }
+
+        function rendreFiltres() {
+          var f = $("filtres");
+          f.innerHTML = "";
+          f.hidden = !julien() || S.apercu || S.clients.length < 2;
+          if (f.hidden) return;
+          var tous = el("button", "pill" + (S.filtre === "tous" ? " on" : ""), "Tous");
+          tous.addEventListener("click", function () { S.filtre = "tous"; rendre(); });
+          f.appendChild(tous);
+          S.clients.forEach(function (c) {
+            var b = el("button", "pill" + (S.filtre === c.id ? " on" : "") + (c.archive ? " close" : ""));
+            if (S.enLigne.some(function (p) { return p.client === c.id; })) { var pt = el("span", "pt"); pt.title = "En ligne"; b.appendChild(pt); }
+            b.appendChild(document.createTextNode(c.nom + (c.archive ? " (close)" : "")));
+            var n = S.cartes.filter(function (x) { return x.client === c.id && x.nouveau === "julien"; }).length;
+            if (n) b.appendChild(el("span", "nb", String(n)));
+            b.addEventListener("click", function () { S.filtre = c.id; rendre(); });
+            f.appendChild(b);
+          });
+        }
+
+        function rendreOutils(cl) {
+          var o = $("outils");
+          o.innerHTML = "";
+          if (!julien() || S.apercu) return;
+          if (cl) {
+            o.appendChild(bouton("Voir comme " + (cl.contact || "le client"), "btn-ghost", function () { S.apercu = true; S.filtre = cl.id; rendre(); }));
+            o.appendChild(bouton("Point de lundi", "btn-ghost", function () { ouvrirPoint(cl); }));
+            o.appendChild(bouton("Réglages de la place", "btn-ghost", function () { ouvrirReglages(cl.id); }));
+          }
+          o.appendChild(bouton("Nouvelle place", "btn", ouvrirNouvellePlace));
+        }
+
+        function rendrePeriode(cl) {
+          var p = $("periode");
+          p.innerHTML = "";
+          p.hidden = false;
+          var h = el("h1");
+          var visibles = cartesVisibles();
+          var chezClient = visibles.filter(function (c) { return c.col === "vous"; }).length;
+          if (faceClient()) {
+            var prenom = julien() ? (cl && cl.contact) || "" : S.me.nom;
+            h.appendChild(document.createTextNode("Bonjour " + prenom + ". "));
+            h.appendChild(el("em", null, chezClient ? majuscule(nombre(chezClient, "carte", "cartes")) + " chez vous." : "Rien ne vous attend."));
+          } else if (!cl) {
+            var actives = S.clients.filter(function (c) { return !c.archive; });
+            var neufs = S.cartes.filter(function (c) { return c.nouveau === "julien"; }).length;
+            h.appendChild(document.createTextNode(actives.length ? majuscule(nombre(actives.length, "place", "places")) + ". " : "Aucune place pour l’instant. "));
+            h.appendChild(el("em", null, actives.length ? chezClient + " chez vos clients, " + neufs + (neufs > 1 ? " nouvelles" : " nouvelle") + " pour vous." : "Ouvrez la première avec « Nouvelle place »."));
+          } else {
+            h.appendChild(document.createTextNode(cl.nom + ". "));
+            h.appendChild(el("em", null, chezClient ? majuscule(nombre(chezClient, "carte", "cartes")) + " chez " + (cl.contact || "le client") + "." : "Rien n’attend " + (cl.contact || "le client") + "."));
+          }
+          p.appendChild(h);
+          if (cl && cl.debut && cl.fin) {
+            var d = new Date(cl.debut + "T00:00:00").getTime(), f = new Date(cl.fin + "T23:59:59").getTime();
+            if (f > d) {
+              var r = Math.max(0, Math.min(1, (Date.now() - d) / (f - d)));
+              var total = Math.max(1, Math.round((f - d) / (7 * JOUR)));
+              var sem = Math.max(1, Math.min(total, Math.floor((Date.now() - d) / (7 * JOUR)) + 1));
+              var tr = el("div", "track"), fill = el("i"), pt = el("b");
+              var cible = r * 100 + "%";
+              fill.style.width = S.periodeVue ? cible : "0%"; pt.style.left = S.periodeVue ? cible : "0%";
+              tr.appendChild(fill); tr.appendChild(pt);
+              p.appendChild(tr);
+              if (!S.periodeVue) { S.periodeVue = true; requestAnimationFrame(function () { requestAnimationFrame(function () { fill.style.width = cible; pt.style.left = cible; }); }); }
+              var info = Date.now() < d ? "Démarrage le " + dateLongue(cl.debut) : "Semaine " + sem + " sur " + total;
+              p.appendChild(el("small", null, info + " · " + dateLongue(cl.debut) + " → " + dateLongue(cl.fin) + (cl.mensuel ? " · point mensuel " + cl.mensuel : "")));
+            }
+          }
+        }
+
+        function rendreColonnes(cl) {
+          var fc = faceClient();
+          var visibles = cartesVisibles();
+          document.querySelectorAll("[data-titre-vous]").forEach(function (h) { h.textContent = fc ? "Chez vous" : "Chez le client"; });
+          document.querySelectorAll(".add.julien").forEach(function (a) { a.hidden = fc; });
+          document.querySelectorAll(".add input").forEach(function (inp) {
+            var col = inp.dataset.add;
+            var bloque = !fc && !cl;
+            inp.disabled = bloque || (fc && julien());
+            if (col === "demandes") inp.placeholder = bloque ? "Choisissez une place pour ajouter" : fc ? "+ Une demande — trois lignes suffisent" : "+ demande reçue par e-mail ou téléphone";
+            else inp.placeholder = bloque ? "Choisissez une place pour ajouter" : col === "vous" ? "+ une question au client" : "+ carte";
+          });
+
+          document.querySelectorAll(".column").forEach(function (colEl) {
+            var name = colEl.dataset.col, wrap = colEl.querySelector(".cards");
+            wrap.innerHTML = "";
+            var liste = visibles.filter(function (c) { return c.col === name; });
+            if (name === "fait") liste.sort(function (a, b) { return (b.faitLe || 0) - (a.faitLe || 0); });
+            else liste.sort(function (a, b) { return a.ordre - b.ordre; });
+            colEl.querySelector(".n").textContent = liste.length;
+            if (name === "fait") {
+              var recentes = liste.filter(function (c) { return c.faitLe && Date.now() - c.faitLe < 7 * JOUR; });
+              var anciennes = liste.filter(function (c) { return !(c.faitLe && Date.now() - c.faitLe < 7 * JOUR); });
+              recentes.forEach(function (c) { wrap.appendChild(carteEl(c)); });
+              if (anciennes.length) {
+                wrap.appendChild(el("p", "divider", recentes.length ? "avant" : "plus d’une semaine"));
+                anciennes.slice(0, 12).forEach(function (c) { wrap.appendChild(carteEl(c)); });
+                if (anciennes.length > 12) wrap.appendChild(el("p", "vide", "et " + (anciennes.length - 12) + " plus anciennes."));
+              }
+            } else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
+            if (!liste.length) wrap.appendChild(el("p", "vide", name === "vous" && fc ? "Rien ne vous attend." : "—"));
+
+            if (name === "demandes") {
+              var fold = colEl.querySelector(".folded");
+              fold.innerHTML = "";
+              var mensuel = visibles.filter(function (c) { return c.col === "mensuel"; });
+              if (mensuel.length) {
+                fold.appendChild(el("b", null, mensuel.length + " au point mensuel"));
+                fold.appendChild(document.createTextNode((cl && cl.mensuel ? " (" + cl.mensuel + ")" : "") + " — "));
+                mensuel.forEach(function (c, i) {
+                  if (i) fold.appendChild(document.createTextNode(", "));
+                  var b = el("button", null, c.t);
+                  b.addEventListener("click", function () { ouvrirCarte(c.id); });
+                  fold.appendChild(b);
+                });
+              }
+            }
+          });
+        }
+
+        function chip(txt, cls) { return el("span", "chip" + (cls ? " " + cls : ""), txt); }
+
+        function carteEl(c) {
+          var fc = faceClient();
+          var e = el("article", "card");
+          e.style.setProperty("--mc", couleur(c));
+          e.dataset.id = c.id;
+          e.appendChild(el("h3", null, c.t));
+          var chips = el("div", "chips");
+          if (c.nouveau === roleVue()) chips.appendChild(chip("nouveau", "neuf"));
+          if (!fc && S.filtre === "tous") { var cl = clientParId(c.client); if (cl) chips.appendChild(chip(cl.nom, "client")); }
+          var ch = chantier(c);
+          if (ch) chips.appendChild(chip(ch.nom));
+          if (c.col === "demandes" && c.type) chips.appendChild(chip(c.type));
+          if (c.echeance) chips.appendChild(chip(c.echeance));
+          if (c.livrable) chips.appendChild(chip("livrable"));
+          if (c.col === "vous" && c.chezClientDepuis) { var j = jours(c.chezClientDepuis); chips.appendChild(chip(depuis(c.chezClientDepuis) + (j > 5 ? " — en retard" : ""), j > 5 ? "late" : "vous")); }
+          if (c.statut) chips.appendChild(chip(c.statut, "ok"));
+          if (c.com && c.com.length) chips.appendChild(chip(c.com.length + " comm."));
+          e.appendChild(chips);
+          if (c.note) e.appendChild(el("p", "note", c.statut === "répondu" ? "« " + c.note + " »" : c.note));
+
+          if (c.col === "vous" && fc) e.appendChild(actionsClient(c, e));
+          if (!fc && c.col === "demandes") {
+            var a = el("div", "acts");
+            a.appendChild(bouton("Prévoir", "btn btn-sm", function () { deplacer(c, "prevu"); }));
+            a.appendChild(bouton("Point mensuel", "btn-ghost btn-sm", function () { deplacer(c, "mensuel"); toast("Gardée pour le point mensuel."); }));
+            a.appendChild(bouton("Faire arbitrer", "btn-ghost btn-sm", function () { ouvrirCarte(c.id, true); }));
+            e.appendChild(a);
+          }
+          if (!fc && c.col === "vous" && c.chezClientDepuis && jours(c.chezClientDepuis) > 5) {
+            var r = el("div", "acts");
+            r.appendChild(bouton("Relancer", "btn-ghost btn-sm", function () { op({ type: "carte.relancer", id: c.id }); toast("Relancée — la carte le dit chez le client. Envoyez-lui un mot avec le lien."); }));
+            e.appendChild(r);
+          }
+          if (!fc && window.matchMedia("(pointer: fine)").matches) {
+            e.draggable = true;
+            e.addEventListener("dragstart", function (ev) { ev.dataTransfer.setData("text/plain", c.id); ev.dataTransfer.effectAllowed = "move"; e.classList.add("dragging"); });
+            e.addEventListener("dragend", function () { e.classList.remove("dragging"); });
+          }
+          e.addEventListener("click", function () { ouvrirCarte(c.id); });
+          return e;
+        }
+
+        function actionsClient(c, carteNode) {
+          var a = el("div", "acts");
+          var inactif = S.apercu;
+          function garde(fn) { return function () { if (inactif) return toast("Aperçu — c’est " + ((clientCourant() || {}).contact || "le client") + " qui clique ici."); fn(); }; }
+          function zone(placeholder, envoyer) {
+            if (carteNode.querySelector(".zone")) return;
+            var z = el("div", "zone");
+            var ta = el("textarea"); ta.rows = 2; ta.placeholder = placeholder;
+            z.addEventListener("click", function (ev) { ev.stopPropagation(); });
+            z.appendChild(ta);
+            z.appendChild(bouton("Envoyer", "btn btn-sm", function () { if (!ta.value.trim()) return ta.focus(); var v = ta.value.trim(); if (document.activeElement) document.activeElement.blur(); envoyer(v); }));
+            carteNode.appendChild(z);
+            ta.focus();
+          }
+          if (c.action === "valider") {
+            a.appendChild(bouton("Valider", "btn btn-sm", garde(function () { op({ type: "carte.valider", id: c.id }); toast("Validée — Julien passe à la suite."); })));
+            a.appendChild(bouton("Demander un ajustement", "btn-ghost btn-sm", garde(function () { zone("Dites simplement ce qui ne va pas — reprise sous 48 h.", function (t) { op({ type: "carte.ajuster", id: c.id, txt: t }); toast("Ajustement demandé — la carte repasse chez Julien."); }); })));
+          } else if (c.action === "arbitrer") {
+            a.appendChild(bouton(c.a, "btn btn-sm", garde(function () { op({ type: "carte.arbitrer", id: c.id, choix: "a" }); toast("C’est noté — « " + c.a + " »."); })));
+            a.appendChild(bouton(c.b, "btn-ghost btn-sm", garde(function () { op({ type: "carte.arbitrer", id: c.id, choix: "b" }); toast("C’est noté — « " + c.b + " »."); })));
+          } else {
+            a.appendChild(bouton("Répondre", "btn btn-sm", garde(function () { zone("Votre réponse — une ligne suffit.", function (t) { op({ type: "carte.repondre", id: c.id, txt: t }); toast("Transmis — Julien cale la suite dessus."); }); })));
+          }
+          return a;
+        }
+
+        /* ————— Déplacer ————— */
+        function deplacer(c, col, avant) {
+          if (col === "vous" && c.action === "arbitrer" && (!c.a || !c.b)) c.action = "repondre";
+          if (op({ type: "carte.deplacer", id: c.id, col: col, avant: avant || null })) {
+            c.col = col;
+            rendre();
+            if (col === "vous") toast("Chez le client — la carte apparaît chez lui à l’instant, avec son bouton.");
+            else if (col === "fait") toast("Fait.");
+          }
+        }
+        document.querySelectorAll(".column").forEach(function (colEl) {
+          colEl.addEventListener("dragover", function (e) { if (faceClient()) return; e.preventDefault(); colEl.classList.add("over"); });
+          colEl.addEventListener("dragleave", function (e) { if (!colEl.contains(e.relatedTarget)) colEl.classList.remove("over"); });
+          colEl.addEventListener("drop", function (e) {
+            if (faceClient()) return;
+            e.preventDefault();
+            colEl.classList.remove("over");
+            var id = e.dataTransfer.getData("text/plain");
+            var c = S.cartes.filter(function (x) { return x.id === id; })[0];
+            if (!c) return;
+            var cible = e.target.closest && e.target.closest(".card");
+            var avant = cible && cible.dataset.id !== id ? cible.dataset.id : null;
+            if (c.col === colEl.dataset.col && !avant) return;
+            deplacer(c, colEl.dataset.col, avant);
+          });
+        });
+
+        /* ————— Ajouter ————— */
+        document.querySelectorAll(".add input").forEach(function (inp) {
+          inp.addEventListener("keydown", function (e) {
+            if (e.key !== "Enter" || !inp.value.trim()) return;
+            var t = inp.value.trim(), col = inp.dataset.add, cl = clientCourant();
+            if (col === "demandes" && !julien()) { ouvrirDemande(t, function () { inp.value = ""; }); return; }
+            if (!cl) return toast("Choisissez d’abord une place.");
+            if (col === "demandes") { if (op({ type: "demande.creer", client: cl.id, t: t })) { inp.value = ""; toast("Demande ajoutée au nom de " + (cl.contact || cl.nom) + "."); } return; }
+            if (op({ type: "carte.creer", client: cl.id, col: col, t: t })) { inp.value = ""; if (col === "vous") toast("Question posée — elle apparaît chez " + (cl.contact || "le client") + "."); }
+          });
+        });
+
+        /* ————— Feuilles ————— */
+        var back = $("back"), sheet = $("sheet");
+        function ouvrirFeuille(mode, id, couleurBord) {
+          feuille = { mode: mode, id: id || null };
+          sheet.innerHTML = "";
+          sheet.style.setProperty("--mc", couleurBord || "var(--violet)");
+          back.classList.add("on");
+        }
+        function fermer() { feuille = { mode: null, id: null }; back.classList.remove("on"); sheet.innerHTML = ""; }
+        back.addEventListener("click", function (e) { if (e.target === back) fermer(); });
+        document.addEventListener("keydown", function (e) { if (e.key === "Escape" && back.classList.contains("on")) fermer(); });
+        function pied(extra) {
+          var f = el("div", "foot");
+          if (extra) f.appendChild(extra);
+          var fin = el("div", "fin");
+          fin.appendChild(bouton("Fermer", "btn", fermer));
+          f.appendChild(fin);
+          return f;
+        }
+        function champ(label, input) { var l = el("label", "champ"); l.appendChild(document.createTextNode(label)); l.appendChild(input); return l; }
+        function saisie(type, valeur, surChange, placeholder) {
+          var i = el(type === "textarea" ? "textarea" : "input");
+          if (type !== "textarea") i.type = type;
+          i.value = valeur || "";
+          if (placeholder) i.placeholder = placeholder;
+          i.addEventListener("change", function () { surChange(i.value); });
+          return i;
+        }
+
+        function rafraichirFeuille() {
+          if (!feuille.mode) return;
+          var actif = document.activeElement;
+          var enSaisie = actif && sheet.contains(actif) && /INPUT|TEXTAREA/.test(actif.tagName);
+          if (feuille.mode === "carte") {
+            var c = trouverCarte(feuille.id);
+            if (!c) { fermer(); return toast("Cette carte vient d’être retirée."); }
+            if (enSaisie) return majCommentaires(c);
+            ouvrirCarte(c.id, feuille.arbitrage, true);
+          } else if (feuille.mode === "reglages" && !enSaisie) ouvrirReglages(feuille.id);
+        }
+        function trouverCarte(id) { for (var i = 0; i < S.cartes.length; i++) if (S.cartes[i].id === id) return S.cartes[i]; return null; }
+
+        function ouvrirCarte(id, arbitrage, rafraichir) {
+          var c = trouverCarte(id);
+          if (!c) return;
+          var fc = faceClient();
+          if (!rafraichir && c.nouveau === roleVue() && !S.apercu) op({ type: "carte.vue", id: c.id });
+          var scroll = back.scrollTop;
+          ouvrirFeuille("carte", c.id, couleur(c));
+          feuille.arbitrage = !!arbitrage;
+          var cl = clientParId(c.client), ch = chantier(c);
+          sheet.appendChild(el("p", "kicker", (ch ? ch.nom : "Sans chantier") + (fc ? "" : " · " + (cl ? cl.nom : ""))));
+
+          if (fc) {
+            sheet.appendChild(el("h2", null, c.t));
+            var m = el("div", "chips");
+            m.appendChild(chip(c.col === "vous" ? "Chez vous" : NOM_COL[c.col], c.col === "vous" ? "vous" : ""));
+            if (c.echeance) m.appendChild(chip(c.echeance));
+            if (c.livrable) m.appendChild(chip("livrable"));
+            if (c.statut) m.appendChild(chip(c.statut, "ok"));
+            sheet.appendChild(m);
+            if (c.desc) sheet.appendChild(el("p", "desc", c.desc));
+            if (c.lien) { var a = el("a", "btn-ghost", "Ouvrir le document ↗"); a.href = c.lien; a.target = "_blank"; a.rel = "noopener noreferrer"; a.style.display = "inline-block"; a.style.marginTop = "12px"; a.style.textDecoration = "none"; sheet.appendChild(a); }
+            if (c.col === "vous") { var z = el("div"); z.style.marginTop = "14px"; z.appendChild(actionsClient(c, z)); sheet.appendChild(z); }
+          } else {
+            var titre = saisie("text", c.t, function (v) { if (v.trim()) op({ type: "carte.maj", id: c.id, champs: { t: v } }); });
+            titre.className = "titre";
+            sheet.appendChild(titre);
+            if (cl && cl.chantiers.length) {
+              sheet.appendChild(el("p", "lab", "Chantier"));
+              var chx = el("div", "choix");
+              cl.chantiers.forEach(function (x) {
+                var b = el("button", x.id === c.ch ? "on" : "");
+                var sw = el("span", "sw"); sw.style.background = "var(--" + x.couleur + ")";
+                b.appendChild(sw); b.appendChild(document.createTextNode(x.nom));
+                b.addEventListener("click", function () { op({ type: "carte.maj", id: c.id, champs: { ch: x.id } }); });
+                chx.appendChild(b);
+              });
+              sheet.appendChild(chx);
+            }
+            var g = el("div", "grille");
+            g.style.marginTop = "14px";
+            g.appendChild(champ("Échéance", saisie("text", c.echeance, function (v) { op({ type: "carte.maj", id: c.id, champs: { echeance: v } }); }, "jeudi, 14 octobre, S43…")));
+            g.appendChild(champ("Lien du livrable", saisie("url", c.lien, function (v) { op({ type: "carte.maj", id: c.id, champs: { lien: v } }); }, "https://drive.google.com/…")));
+            sheet.appendChild(g);
+            var liv = el("label", "coche"); var cb = el("input"); cb.type = "checkbox"; cb.checked = !!c.livrable;
+            cb.addEventListener("change", function () { op({ type: "carte.maj", id: c.id, champs: { livrable: cb.checked } }); });
+            liv.appendChild(cb); liv.appendChild(document.createTextNode("Livrable — chez le client, il se valide"));
+            liv.style.marginTop = "10px";
+            sheet.appendChild(liv);
+            sheet.appendChild(el("p", "lab", "Le pourquoi — ce que le client lit"));
+            sheet.appendChild(saisie("textarea", c.desc, function (v) { op({ type: "carte.maj", id: c.id, champs: { desc: v } }); }, "Une phrase suffit."));
+            sheet.appendChild(el("p", "lab", "Comment ça se passe — une étape par ligne"));
+            sheet.appendChild(saisie("textarea", (c.jalons || []).join("\n"), function (v) { op({ type: "carte.maj", id: c.id, champs: { jalons: v.split("\n") } }); }));
+
+            sheet.appendChild(el("p", "lab", "Quand elle est chez le client, il doit…"));
+            var act = el("div", "choix");
+            var courant = c.action || (c.livrable ? "valider" : "repondre");
+            [["valider", "Valider"], ["repondre", "Répondre"], ["arbitrer", "Arbitrer entre deux options"]].forEach(function (p) {
+              var b = el("button", (arbitrage ? p[0] === "arbitrer" : courant === p[0]) ? "on" : "", p[1]);
+              b.addEventListener("click", function () { op({ type: "carte.maj", id: c.id, champs: { action: p[0] } }); if (p[0] === "arbitrer") ouvrirCarte(c.id, true, true); });
+              act.appendChild(b);
+            });
+            sheet.appendChild(act);
+            if (arbitrage || courant === "arbitrer") {
+              var ga = el("div", "grille"); ga.style.marginTop = "10px";
+              var ia = saisie("text", c.a || "Garder le plan", function (v) { op({ type: "carte.maj", id: c.id, champs: { a: v } }); });
+              var ib = saisie("text", c.b || "Prendre cette demande maintenant", function (v) { op({ type: "carte.maj", id: c.id, champs: { b: v } }); });
+              ga.appendChild(champ("Option 1", ia)); ga.appendChild(champ("Option 2", ib));
+              sheet.appendChild(ga);
+              if (c.col !== "vous") {
+                var envoyer = bouton("Envoyer l’arbitrage au client", "btn btn-sm", function () { op({ type: "demande.arbitrer", id: c.id, a: ia.value, b: ib.value }); fermer(); toast("Carte d’arbitrage posée — c’est " + ((cl && cl.contact) || "le client") + " qui tranche."); });
+                envoyer.style.marginTop = "10px";
+                sheet.appendChild(envoyer);
+              }
+            }
+            if (c.statut || c.note) sheet.appendChild(el("p", "aide", [c.statut, c.note].filter(Boolean).join(" — ")));
+          }
+
+          if (c.jalons && c.jalons.length && fc) {
+            sheet.appendChild(el("p", "lab", "Comment ça se passe"));
+            var ul = el("ul", "jalons");
+            c.jalons.forEach(function (j, i) { var li = el("li"); li.appendChild(el("span", "jn", String(i + 1))); li.appendChild(document.createTextNode(j)); ul.appendChild(li); });
+            sheet.appendChild(ul);
+          }
+
+          sheet.appendChild(el("p", "lab", "Commentaires"));
+          var cl2 = el("ul", "comments"); cl2.id = "commentaires";
+          sheet.appendChild(cl2);
+          majCommentaires(c);
+          var ca = el("div", "c-add");
+          var ci = el("input"); ci.type = "text"; ci.placeholder = fc ? "Un avis, une question ?" : "Répondre — signé Julien";
+          function envoyerCom() { if (!ci.value.trim()) return; if (S.apercu) return toast("Aperçu — le commentaire n’est pas parti."); if (op({ type: "carte.commenter", id: c.id, txt: ci.value.trim() })) ci.value = ""; }
+          ci.addEventListener("keydown", function (e) { if (e.key === "Enter") envoyerCom(); });
+          ca.appendChild(ci); ca.appendChild(bouton("Envoyer", "btn-ghost", envoyerCom));
+          sheet.appendChild(ca);
+
+          var extra = null;
+          if (!fc) {
+            extra = el("div", "move");
+            [["prevu", "→ Prévu"], ["encours", "→ En cours"], ["vous", "→ Chez le client"], ["fait", "→ Fait"], ["mensuel", "→ Point mensuel"]].forEach(function (p) {
+              if (p[0] === c.col) return;
+              extra.appendChild(bouton(p[1], "btn-ghost btn-sm", function () { deplacer(c, p[0]); fermer(); }));
+            });
+            extra.appendChild(bouton("Supprimer", "btn-ghost btn-sm btn-danger", function () { if (confirm("Supprimer « " + c.t + " » ? C’est définitif, chez le client aussi.")) { op({ type: "carte.supprimer", id: c.id }); fermer(); } }));
+          }
+          sheet.appendChild(pied(extra));
+          back.scrollTop = rafraichir ? scroll : 0;
+        }
+
+        function majCommentaires(c) {
+          var ul = $("commentaires");
+          if (!ul) return;
+          ul.innerHTML = "";
+          (c.com || []).forEach(function (x) {
+            var li = el("li");
+            li.appendChild(el("b", null, x.role === "julien" ? "Julien" : x.qui));
+            li.appendChild(el("span", "when", quand(x.ts)));
+            li.appendChild(el("p", null, x.txt));
+            ul.appendChild(li);
+          });
+          if (!(c.com || []).length) ul.appendChild(el("li", "vide", "Rien pour l’instant."));
+        }
+
+        /* La demande côté client : l'assistant annonce le vrai déroulé avant l'envoi. */
+        function ouvrirDemande(t, apresEnvoi) {
+          var p = PROCESS.filter(function (x) { return x.test.test(t); })[0] || HORS_CADRE;
+          ouvrirFeuille("demande");
+          sheet.appendChild(el("p", "kicker", "L’assistant"));
+          sheet.appendChild(el("h2", null, t));
+          sheet.appendChild(el("p", "desc", p.intro));
+          var ul = el("ul", "jalons"); ul.style.marginTop = "10px";
+          p.jalons.forEach(function (j, i) { var li = el("li"); li.appendChild(el("span", "jn", String(i + 1))); li.appendChild(document.createTextNode(j + (i === 0 ? " — c’est ce qui arrive en premier" : ""))); ul.appendChild(li); });
+          sheet.appendChild(ul);
+          sheet.appendChild(el("p", "lab", "Un détail à ajouter ? (facultatif)"));
+          var d = el("textarea"); d.rows = 3; d.placeholder = "Contexte, exemple, lien…";
+          sheet.appendChild(d);
+          var f = el("div", "foot");
+          f.appendChild(bouton("Envoyer à Julien", "btn", function () {
+            if (S.apercu) return toast("Aperçu — la demande n’est pas partie.");
+            if (op({ type: "demande.creer", t: t, desc: d.value.trim() })) { apresEnvoi(); fermer(); toast("Envoyée — elle est dans « Demandes », Julien la voit à l’instant."); }
+          }));
+          f.appendChild(bouton("Modifier", "btn-ghost", fermer));
+          sheet.appendChild(f);
+        }
+
+        /* ————— Côté Julien : places, accès, point de lundi ————— */
+        var FORMAT_PLAN = "# Culture & Patrimoine\n## Octobre\n- Choisir l’établissement test (à vous)\n- Trame d’entretiens (livrable)\n- Cadrage du chantier (fait)\n# Marketing & diffusion\n- Sortie du stock de contenus (en cours)";
+
+        function ouvrirNouvellePlace() {
+          ouvrirFeuille("place");
+          sheet.appendChild(el("p", "kicker", "Nouvelle place"));
+          sheet.appendChild(el("h2", null, "Ouvrir le tableau d’un client"));
+          var nom = el("input"); nom.type = "text"; nom.placeholder = "Groupe LEH";
+          var contact = el("input"); contact.type = "text"; contact.placeholder = "Sébastien";
+          var debut = el("input"); debut.type = "date";
+          var fin = el("input"); fin.type = "date";
+          var mensuel = el("input"); mensuel.type = "text"; mensuel.placeholder = "jeudi 5 novembre";
+          var chantiers = el("textarea"); chantiers.rows = 4; chantiers.placeholder = "Un chantier par ligne";
+          var plan = el("textarea"); plan.rows = 8; plan.placeholder = "Facultatif — collez le plan ici";
+          var g = el("div", "grille"); g.style.marginTop = "14px";
+          g.appendChild(champ("Nom de la place", nom)); g.appendChild(champ("Prénom du contact", contact));
+          g.appendChild(champ("Début de période", debut)); g.appendChild(champ("Fin de période", fin));
+          sheet.appendChild(g);
+          var m2 = champ("Point mensuel (facultatif)", mensuel); m2.style.marginTop = "10px"; sheet.appendChild(m2);
+          var c2 = champ("Chantiers — un par ligne (4 au plus, c’est plus lisible)", chantiers); c2.style.marginTop = "10px"; sheet.appendChild(c2);
+          sheet.appendChild(el("p", "lab", "Le plan, à coller"));
+          sheet.appendChild(plan);
+          sheet.appendChild(el("p", "aide", "Format : # chantier, ## mois, - tâche. Entre parenthèses : fait, en cours, à vous, livrable, ou une échéance."));
+          sheet.appendChild(el("pre", "format", FORMAT_PLAN));
+          var f = el("div", "foot");
+          f.appendChild(bouton("Créer la place et son lien", "btn", function () {
+            if (!nom.value.trim() || !contact.value.trim()) return toast("Le nom de la place et le prénom du contact suffisent pour commencer.");
+            op({ type: "place.creer", nom: nom.value, contact: contact.value, debut: debut.value, fin: fin.value, mensuel: mensuel.value, chantiers: chantiers.value.split("\n"), plan: plan.value });
+          }));
+          f.appendChild(bouton("Annuler", "btn-ghost", fermer));
+          sheet.appendChild(f);
+          nom.focus();
+        }
+
+        function lienPour(cle) { return location.origin + "/tableau#cle=" + cle; }
+        function copier(txt, msg) {
+          if (navigator.clipboard) navigator.clipboard.writeText(txt).then(function () { toast(msg || "Copié."); }, function () { toast("Copie impossible — sélectionnez le texte."); });
+          else toast("Copie impossible — sélectionnez le texte.");
+        }
+        function rapportImport(r) {
+          if (!r) return "";
+          return r.cartes + (r.cartes > 1 ? " cartes importées" : " carte importée") + (r.ignorees && r.ignorees.length ? " — " + r.ignorees.length + " ligne(s) non comprise(s) : « " + r.ignorees[0] + " »" + (r.ignorees.length > 1 ? "…" : "") : ".");
+        }
+        function montrerLien(m) {
+          S.filtre = m.client;
+          rendre();
+          ouvrirFeuille("lien");
+          sheet.appendChild(el("p", "kicker", "Le lien de " + m.nom));
+          sheet.appendChild(el("h2", null, "À envoyer à " + m.nom + ", par e-mail."));
+          sheet.appendChild(el("p", "desc", "C’est sa clé : il l’ouvre une fois, son navigateur s’en souvient. Ne le publiez nulle part — si le lien circule, renouvelez-le depuis « Réglages de la place »."));
+          var l = el("div", "lien-cle", lienPour(m.cle));
+          sheet.appendChild(l);
+          if (m.rapport) sheet.appendChild(el("p", "aide", rapportImport(m.rapport)));
+          var f = el("div", "foot");
+          f.appendChild(bouton("Copier le lien", "btn", function () { copier(lienPour(m.cle), "Lien copié — collez-le dans votre e-mail."); }));
+          f.appendChild(bouton("Fermer", "btn-ghost", fermer));
+          sheet.appendChild(f);
+        }
+
+        function ouvrirReglages(id) {
+          var cl = clientParId(id);
+          if (!cl) return fermer();
+          var scroll = back.scrollTop;
+          ouvrirFeuille("reglages", id);
+          sheet.appendChild(el("p", "kicker", "Réglages de la place"));
+          sheet.appendChild(el("h2", null, cl.nom));
+          function maj(champs) { op({ type: "place.maj", id: cl.id, champs: champs }); }
+          var g = el("div", "grille"); g.style.marginTop = "14px";
+          g.appendChild(champ("Nom de la place", saisie("text", cl.nom, function (v) { if (v.trim()) maj({ nom: v }); })));
+          g.appendChild(champ("Prénom du contact", saisie("text", cl.contact, function (v) { maj({ contact: v }); })));
+          g.appendChild(champ("Début de période", saisie("date", cl.debut, function (v) { maj({ debut: v }); })));
+          g.appendChild(champ("Fin de période", saisie("date", cl.fin, function (v) { maj({ fin: v }); })));
+          sheet.appendChild(g);
+          var pm = champ("Point mensuel", saisie("text", cl.mensuel, function (v) { maj({ mensuel: v }); }, "jeudi 5 novembre")); pm.style.marginTop = "10px"; sheet.appendChild(pm);
+
+          sheet.appendChild(el("p", "lab", "Chantiers — clic sur la pastille pour changer de couleur"));
+          cl.chantiers.forEach(function (x, i) {
+            var ligne = el("div", "ch-ligne");
+            var sw = el("button", "sw"); sw.style.background = "var(--" + x.couleur + ")"; sw.title = "Changer de couleur";
+            sw.addEventListener("click", function () {
+              var liste = cl.chantiers.map(function (y) { return { id: y.id, nom: y.nom, couleur: y.couleur }; });
+              liste[i].couleur = COULEURS[(COULEURS.indexOf(x.couleur) + 1) % COULEURS.length];
+              maj({ chantiers: liste });
+            });
+            var n = saisie("text", x.nom, function (v) { var liste = cl.chantiers.map(function (y) { return { id: y.id, nom: y.nom, couleur: y.couleur }; }); liste[i].nom = v; maj({ chantiers: liste }); });
+            ligne.appendChild(sw); ligne.appendChild(n);
+            ligne.appendChild(bouton("Retirer", "btn-ghost btn-sm btn-danger", function () { maj({ chantiers: cl.chantiers.filter(function (y) { return y.id !== x.id; }) }); }));
+            sheet.appendChild(ligne);
+          });
+          if (cl.chantiers.length < 8) sheet.appendChild(saisie("text", "", function (v) { if (v.trim()) maj({ chantiers: cl.chantiers.concat([{ nom: v }]) }); }, "+ un chantier, puis Entrée"));
+
+          sheet.appendChild(el("p", "lab", "Personnes — un lien chacune"));
+          var pers = el("div", "personnes");
+          S.acces.filter(function (a) { return a.client === cl.id; }).forEach(function (a) {
+            var p = el("div", "personne");
+            p.appendChild(el("b", null, a.nom));
+            p.appendChild(el("small", null, a.vuLe ? "venu " + quand(a.vuLe) : "jamais venu"));
+            var fin = el("div", "fin");
+            fin.appendChild(bouton("Copier son lien", "btn-ghost btn-sm", function () { copier(lienPour(a.cle), "Lien de " + a.nom + " copié."); }));
+            fin.appendChild(bouton("Renouveler", "btn-ghost btn-sm btn-danger", function () {
+              if (!confirm("Renouveler le lien de " + a.nom + " ? L’ancien cesse de fonctionner tout de suite.")) return;
+              op({ type: "acces.revoquer", cle: a.cle });
+              op({ type: "acces.creer", client: cl.id, nom: a.nom });
+            }));
+            p.appendChild(fin);
+            pers.appendChild(p);
+          });
+          sheet.appendChild(pers);
+          var ajout = saisie("text", "", function (v) { if (v.trim()) op({ type: "acces.creer", client: cl.id, nom: v }); }, "+ une personne (prénom), puis Entrée");
+          ajout.style.marginTop = "8px";
+          sheet.appendChild(ajout);
+
+          sheet.appendChild(el("p", "lab", "Coller un plan"));
+          var plan = el("textarea"); plan.rows = 5; plan.placeholder = FORMAT_PLAN;
+          sheet.appendChild(plan);
+          var imp = bouton("Importer dans « Prévu »", "btn-ghost btn-sm", function () { if (plan.value.trim() && op({ type: "place.importer", id: cl.id, plan: plan.value })) plan.value = ""; });
+          imp.style.marginTop = "8px";
+          sheet.appendChild(imp);
+
+          var extra = el("div", "move");
+          extra.appendChild(bouton("Exporter tout (JSON)", "btn-ghost btn-sm", function () { op({ type: "export" }); }));
+          extra.appendChild(bouton(cl.archive ? "Rouvrir la place" : "Clore la place", "btn-ghost btn-sm btn-danger", function () {
+            if (!cl.archive && !confirm("Clore " + cl.nom + " ? Le tableau reste consultable par le client — il garde tout —, mais plus rien n’y bouge.")) return;
+            maj({ archive: !cl.archive });
+          }));
+          sheet.appendChild(pied(extra));
+          back.scrollTop = scroll;
+        }
+
+        function ouvrirPoint(cl) {
+          var w = S.cartes.filter(function (c) { return c.client === cl.id; });
+          function lignes(liste, fmt) { return liste.length ? liste.map(fmt).join("\n") : "· —"; }
+          var parti = w.filter(function (c) { return c.col === "fait" && c.faitLe && Date.now() - c.faitLe < 7 * JOUR; });
+          var chez = w.filter(function (c) { return c.col === "vous"; });
+          var encours = w.filter(function (c) { return c.col === "encours"; });
+          var prevu = w.filter(function (c) { return c.col === "prevu"; }).sort(function (a, b) { return a.ordre - b.ordre; }).slice(0, 4);
+          var date = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
+          var txt = "Point du " + date + " — " + cl.nom + "\n\n" +
+            "Parti cette semaine\n" + lignes(parti, function (c) { return "· " + c.t + (c.statut ? " (" + c.statut + ")" : ""); }) + "\n\n" +
+            "Chez vous\n" + lignes(chez, function (c) { return "· " + c.t + (c.chezClientDepuis ? " — " + depuis(c.chezClientDepuis) : ""); }) + "\n\n" +
+            "En cours\n" + lignes(encours, function (c) { return "· " + c.t + (c.echeance ? " — " + c.echeance : ""); }) + "\n\n" +
+            "Ensuite\n" + lignes(prevu, function (c) { return "· " + c.t + (c.echeance ? " — " + c.echeance : ""); }) +
+            "\n\nTout est à jour dans votre tableau : " + location.origin + "/tableau";
+          ouvrirFeuille("point");
+          sheet.appendChild(el("p", "kicker", "Le point de lundi — tiré du tableau"));
+          sheet.appendChild(el("h2", null, cl.nom));
+          sheet.appendChild(el("p", "desc", "Parti, chez vous, en cours, ensuite. À relire et à coller dans un e-mail — ou à ne pas envoyer : le tableau est déjà chez " + (cl.contact || "le client") + "."));
+          var t = el("textarea", "point-text"); t.value = txt; t.rows = 16;
+          sheet.appendChild(t);
+          var f = el("div", "foot");
+          f.appendChild(bouton("Copier", "btn", function () { copier(t.value, "Point copié."); }));
+          f.appendChild(bouton("Fermer", "btn-ghost", fermer));
+          sheet.appendChild(f);
+        }
+
+        function telecharger(data) {
+          var blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+          var a = el("a"); a.href = URL.createObjectURL(blob);
+          a.download = "tableau-" + new Date().toISOString().slice(0, 10) + ".json";
+          document.body.appendChild(a); a.click(); a.remove();
+          setTimeout(function () { URL.revokeObjectURL(a.href); }, 2000);
+          toast("Export téléchargé.");
+        }
+
+        /* L'âge des cartes chez le client bouge avec le temps, même sans geste. */
+        setInterval(function () { if (S.recu && !feuille.mode && !saisieEnCours()) rendre(); }, 60000);
+
+        S.cle = lireCle();
+        if (!S.cle) montrerAcces();
+        else connecter();
+      })();
+    </script>
+  </body>
+</html>
