@@ -1,0 +1,17 @@
+{
+  "name": "Le tableau — Julien Tridat",
+  "short_name": "Le tableau",
+  "description": "Le tableau partagé d’une mission : ce qui est prévu, en cours, chez vous, fait — et la discussion.",
+  "lang": "fr",
+  "id": "/tableau",
+  "start_url": "/tableau",
+  "scope": "/tableau",
+  "display": "standalone",
+  "background_color": "#f1f2f4",
+  "theme_color": "#fbfbfc",
+  "icons": [
+    { "src": "/tableau-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/tableau-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "/tableau-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
