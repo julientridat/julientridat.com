@@ -114,6 +114,38 @@ apparaît chez l'autre sans recharger. « Sébastien est en ligne » / « Julien
 s'affiche quand l'autre a le tableau ouvert ; l'onglet compte les cartes nouvelles, par
 exemple « (2) Le tableau ». Une coupure réseau se rattrape seule à la reconnexion.
 
+## Le connecteur Claude
+
+Claude peut lire et mettre à jour le tableau depuis n'importe quelle conversation
+(claude.ai, l'app, Claude Code) : « liste mes places », « crée les sous-tâches du plan
+LEH », « qu'est-ce que j'ai cette semaine ? ». Chaque geste apparaît en direct dans les
+tableaux ouverts et porte la mention `via: claude` dans le journal (export, webhook).
+
+**Mise en service, une fois** (rien à poser chez Cloudflare : l'espace KV
+`julientridat-oauth` est déclaré dans `wrangler.jsonc`) :
+
+1. claude.ai → Réglages → Connecteurs → « Ajouter un connecteur personnalisé » :
+   nom « Le tableau », URL `https://julientridat.com/mcp` → Ajouter, puis Connecter.
+2. La page julientridat.com/authorize s'ouvre. Si ce navigateur a déjà le tableau ouvert,
+   un clic sur « Autoriser » suffit ; sinon, colle ton lien du tableau.
+3. Dans une conversation, active « Le tableau » dans le menu des outils.
+
+**Ce que Claude fait seul** : consulter (places, cartes, projets, Ma semaine, discussion) ;
+créer et modifier des cartes, ajouter et cocher des sous-tâches, commenter, coller un plan
+(qui complète les cartes existantes), fixer l'objectif et les dates clés d'un projet.
+
+**Ce qu'il ne fait que si tu le lui demandes** : écrire au client (message dans la
+discussion) ou envoyer une carte « Chez le client ». Tout ce qui est dans une place reste
+visible du client : ses consignes le lui rappellent.
+
+**Ce qu'il ne fait pas** : supprimer quoi que ce soit, voir les liens et les clés d'accès.
+
+**Retirer l'accès** : changer `TABLEAU_ADMIN_KEY` (secret Cloudflare) coupe tout accès
+accordé à Claude — il faudra reconnecter le connecteur, et rouvrir le tableau avec le
+nouveau lien. La page d'autorisation ne renvoie l'accès qu'à Claude (claude.ai,
+claude.com, ou la machine locale pour Claude Code) : une application qui se ferait passer
+pour lui ne récupérerait rien.
+
 ## Sécurité, en bref
 
 - Ta clé n'existe que dans les secrets Cloudflare, jamais dans le dépôt.

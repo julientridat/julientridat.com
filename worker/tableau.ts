@@ -41,6 +41,18 @@ interface Session {
   nom: string;
   client: string | null;
   cle?: string;
+  /** « claude » quand le geste vient du connecteur (worker/mcp.ts) : il figure au journal. */
+  via?: string;
+}
+
+/** Ce que le connecteur lit : tout sauf les clés d'accès des clients. */
+export interface EtatMcp {
+  clients: Client[];
+  cartes: Carte[];
+  personnes: Array<{ client: string; nom: string; vuLe: number | null }>;
+  enLigne: Array<{ role: Role; nom: string; client: string | null }>;
+  messages: Message[];
+  lectures: Array<{ client: string; fil: string; qui: string; ts: number }>;
 }
 
 interface Commentaire {
@@ -194,7 +206,15 @@ function nouvelleCle(): string {
   return btoa(String.fromCharCode(...octets)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
 }
 
-async function egal(a: string, b: string): Promise<boolean> {
+/** L'empreinte de la clé de Julien : portée par les accès accordés à Claude, elle les fait
+ *  tomber dès que la clé change. */
+export async function empreinteCle(cle: string | undefined): Promise<string> {
+  if (!cle) return "";
+  const h = new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(cle)));
+  return [...h.slice(0, 8)].map((x) => x.toString(16).padStart(2, "0")).join("");
+}
+
+export async function egal(a: string, b: string): Promise<boolean> {
   const enc = new TextEncoder();
   const [ha, hb] = await Promise.all([
     crypto.subtle.digest("SHA-256", enc.encode(a)),
@@ -202,6 +222,8 @@ async function egal(a: string, b: string): Promise<boolean> {
   ]);
   return crypto.subtle.timingSafeEqual(ha, hb);
 }
+
+export type { Carte, Client, Message, SousTache };
 
 export class Tableau extends DurableObject<EnvTableau> {
   private sql: SqlStorage;
@@ -412,6 +434,71 @@ export class Tableau extends DurableObject<EnvTableau> {
     }
   }
 
+  /** Un message dans un fil : stocké, diffusé aux sockets de la place, journalisé. */
+  private ecrireMessage(session: Session, cl: Client, fil: string, txt: string, tmp = ""): Message {
+    const ts = Date.now();
+    const qui = session.role === "julien" ? "Julien" : session.nom;
+    this.sql.exec("INSERT INTO messages (client, fil, ts, role, qui, txt) VALUES (?, ?, ?, ?, ?, ?)", cl.id, fil, ts, session.role, qui, txt);
+    const id = this.sql.exec<{ id: number }>("SELECT last_insert_rowid() AS id").one().id;
+    this.sql.exec(
+      "DELETE FROM messages WHERE client = ? AND id <= (SELECT id FROM messages WHERE client = ? ORDER BY id DESC LIMIT 1 OFFSET ?)",
+      cl.id,
+      cl.id,
+      MAX_MESSAGES_PLACE,
+    );
+    this.marquerLu(cl.id, fil, session.role === "julien" ? "j" : "c:" + session.nom, ts);
+    const m: Message = { id, client: cl.id, fil, ts, role: session.role, qui, txt };
+    this.envoyerA(this.audience(cl.id), { type: "message", m, tmp });
+    this.journal(session, "message", cl.id, null, { txt, fil, projet: cl.chantiers.find((x) => x.id === fil)?.nom ?? "" });
+    return m;
+  }
+
+  /* ————— Le connecteur Claude (worker/mcp.ts) : appels RPC, au nom de Julien ————— */
+
+  private sessionClaude(): Session {
+    return { role: "julien", nom: "Julien", client: null, via: "claude" };
+  }
+
+  /** Tout le tableau, pour les lectures du connecteur — sans les clés d'accès. */
+  async mcpEtat(): Promise<EtatMcp> {
+    const places = this.clients().map((c) => c.id);
+    return {
+      clients: this.clients(),
+      cartes: this.cartes(),
+      personnes: this.acces().map((a) => ({ client: a.client, nom: a.nom, vuLe: a.vuLe })),
+      enLigne: this.ctx
+        .getWebSockets()
+        .map((s) => s.deserializeAttachment() as Session | null)
+        .filter((x): x is Session => !!x)
+        .map((x) => ({ role: x.role, nom: x.nom, client: x.client })),
+      messages: places.flatMap((id) => this.messages(id)),
+      lectures: this.sql.exec<{ client: string; fil: string; qui: string; ts: number }>("SELECT client, fil, qui, ts FROM lectures").toArray(),
+    };
+  }
+
+  /** Un geste de Julien, fait par Claude : mêmes règles que depuis le tableau, puis diffusion. */
+  async mcpGeste(op: Record<string, unknown>): Promise<{ ok: true; reponse: Record<string, unknown> | null } | { ok: false; erreur: string }> {
+    try {
+      const reponse = this.appliquer(this.sessionClaude(), op);
+      this.diffuser();
+      return { ok: true, reponse };
+    } catch (e) {
+      if (e instanceof Refus) return { ok: false, erreur: e.message };
+      console.error("tableau (connecteur) :", e instanceof Error ? e.message : e);
+      return { ok: false, erreur: "Le geste n’a pas été enregistré." };
+    }
+  }
+
+  /** Un message de Julien dans la discussion d'une place, envoyé par Claude. */
+  async mcpMessage(client: string, fil: string, txt: string): Promise<{ ok: true; message: Message } | { ok: false; erreur: string }> {
+    const cl = this.client(client);
+    if (!cl) return { ok: false, erreur: "Place inconnue." };
+    if (fil && !cl.chantiers.some((x) => x.id === fil)) return { ok: false, erreur: "Ce projet n’existe pas dans cette place." };
+    const t = typeof txt === "string" ? txt.trim().slice(0, MAX_TEXTE_MESSAGE) : "";
+    if (!t) return { ok: false, erreur: "Message vide." };
+    return { ok: true, message: this.ecrireMessage(this.sessionClaude(), cl, fil, t) };
+  }
+
   private marquerLu(client: string, fil: string, qui: string, ts: number): boolean {
     const avant = this.sql.exec<{ ts: number }>("SELECT ts FROM lectures WHERE client = ? AND fil = ? AND qui = ?", client, fil, qui).toArray()[0];
     if (avant && avant.ts >= ts) return false;
@@ -430,21 +517,7 @@ export class Tableau extends DurableObject<EnvTableau> {
     switch (op.type) {
       case "chat.envoyer": {
         if (!julien) this.placeActive(client);
-        const txt = texte(op.txt, MAX_TEXTE_MESSAGE, true);
-        const ts = Date.now();
-        const qui = julien ? "Julien" : session.nom;
-        this.sql.exec("INSERT INTO messages (client, fil, ts, role, qui, txt) VALUES (?, ?, ?, ?, ?, ?)", client, fil, ts, session.role, qui, txt);
-        const id = this.sql.exec<{ id: number }>("SELECT last_insert_rowid() AS id").one().id;
-        this.sql.exec(
-          "DELETE FROM messages WHERE client = ? AND id <= (SELECT id FROM messages WHERE client = ? ORDER BY id DESC LIMIT 1 OFFSET ?)",
-          client,
-          client,
-          MAX_MESSAGES_PLACE,
-        );
-        this.marquerLu(client, fil, moi, ts);
-        const m: Message = { id, client, fil, ts, role: session.role, qui, txt };
-        this.envoyerA(this.audience(client), { type: "message", m, tmp: texte(op.tmp, 40) });
-        this.journal(session, "message", client, null, { txt, fil, projet: cl.chantiers.find((x) => x.id === fil)?.nom ?? "" });
+        this.ecrireMessage(session, cl, fil, texte(op.txt, MAX_TEXTE_MESSAGE, true), texte(op.tmp, 40));
         return;
       }
       case "chat.lu": {
@@ -581,6 +654,7 @@ export class Tableau extends DurableObject<EnvTableau> {
   private journal(session: Session, type: string, client: string | null, carte: Carte | null, detail: Record<string, unknown> = {}): void {
     const ts = Date.now();
     const qui = session.role === "julien" ? "Julien" : session.nom;
+    if (session.via) detail = { ...detail, via: session.via };
     this.sql.exec(
       "INSERT INTO evenements (ts, qui, client, type, carte, detail) VALUES (?, ?, ?, ?, ?, ?)",
       ts,
@@ -656,7 +730,7 @@ export class Tableau extends DurableObject<EnvTableau> {
         const c = this.nouvelleCarte(client, "demandes", { t, type: p.type, st, ch, nouveau: julien ? null : "julien", desc: texte(op.desc, 2000) });
         this.ecrireCarte(c);
         this.journal(session, "demande", client, c, { type: p.type });
-        return null;
+        return { type: "carte", id: c.id };
       }
 
       /* — Le client, dans « Chez vous » — */
@@ -714,7 +788,7 @@ export class Tableau extends DurableObject<EnvTableau> {
         });
         this.ecrireCarte(c);
         this.journal(session, "carte", client, c);
-        return null;
+        return { type: "carte", id: c.id };
       }
       case "carte.maj": {
         exigerJulien();
