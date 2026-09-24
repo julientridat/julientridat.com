@@ -610,7 +610,7 @@
         }
         function montrerAcces(message) {
           $("acces").hidden = false;
-          ["top", "periode", "projet", "barre", "vue", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
+          ["top", "periode", "aide-client", "projet", "barre", "onglets", "vue", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
           if (message) $("acces-texte").textContent = message;
           else if (autonome) $("acces-texte").textContent = "Collez ci-dessous le lien reçu par e-mail : l’app s’en souviendra.";
           $("reessayer").hidden = !S.cle;
