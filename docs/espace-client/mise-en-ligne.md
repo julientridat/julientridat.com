@@ -21,7 +21,11 @@ tous les navigateurs ouverts. Rien d'autre à héberger, aucun compte à créer,
 ## Ouvrir une place (Sébastien, puis chaque nouveau client)
 
 « Nouvelle place » → nom, prénom du contact, dates de période, chantiers, et le plan collé
-(format : `# chantier`, `## mois`, `- tâche (fait | en cours | à vous | livrable | échéance)`).
+(format : `# chantier`, `## mois`, `- tâche (fait | en cours | à vous | livrable | échéance)`,
+et, en retrait sous une tâche, ses sous-tâches : `  - sous-tâche (à vous | Julien | prénom, 15/10)`).
+Réglages de la place → « Coller un plan » fonctionne aussi après coup : une tâche déjà
+présente (même titre) n'est pas recréée, ses sous-tâches s'y ajoutent — sans doublon, on
+peut coller deux fois.
 Le tableau affiche alors **le lien de Sébastien** : copie-le, envoie-le par e-mail. C'est sa
 clé ; il l'ouvre une fois.
 
@@ -29,6 +33,21 @@ clé ; il l'ouvre une fois.
 - Un lien a circulé : Réglages → « Renouveler » — l'ancien cesse de marcher à l'instant.
 - Voir ce que voit Sébastien : « Voir comme Sébastien ». Ne pas ouvrir son lien dans ton
   propre navigateur (il remplacerait ta clé) — une fenêtre privée, si tu veux vraiment.
+
+## Tes vues : vue d'ensemble et « Ma semaine »
+
+En haut, pour Julien seulement : « Vue d'ensemble · Ma semaine · » puis une pastille par place.
+- **Vue d'ensemble** : une tuile par client — semaine x sur n, avancement, à traiter, en
+  cours, chez le client (cartes + tâches, et depuis combien de temps), prochaine échéance,
+  retards, messages non lus, dernière activité. Les clients qui te demandent quelque chose
+  passent en premier ; un clic ouvre son tableau.
+- **Ma semaine** : tout ce qui est à toi, tous clients confondus — ce que tes clients ont
+  fait (à traiter), puis en retard, aujourd'hui, cette semaine, plus tard, et ce qui est en
+  cours sans date. La case coche la sous-tâche ou passe la carte en « Fait ».
+- À l'ouverture : « Ma semaine » sur le téléphone ; le tableau du client s'il n'y en a
+  qu'un ; sinon la vue d'ensemble.
+- **Date précise d'une carte** : « Pour le » dans sa fiche (à côté du libellé libre
+  « Échéance »), ou `(15/10)` dans un plan collé. C'est elle qui range « Ma semaine ».
 
 ## Qui déplace quoi
 
@@ -41,21 +60,38 @@ clé ; il l'ouvre une fois.
   - ses demandes, qu'il range par priorité.
   Les cartes du plan (Prévu, En cours) ne bougent qu'avec Julien.
 
+## Projets (un chantier = un projet)
+
+Un clic sur la pastille d'un chantier ouvre son sous-tableau :
+- l'objectif, en une phrase (Julien l'écrit, le client le lit) ;
+- l'avancement : cartes faites et sous-tâches cochées, sur le total, et la prochaine échéance ;
+- la frise : la période, les mois, aujourd'hui, les dates clés (Julien les ajoute sous la frise)
+  et les sous-tâches datées (violet : chez le client ; rouge : en retard) ;
+- les colonnes limitées au projet, sous-tâches dépliées sous chaque carte ; une carte ou une
+  demande ajoutée ici reste dans le projet ;
+- son fil de discussion (la discussion s'ouvre sur lui).
+« ‹ Toute la mission » ramène au tableau entier.
+
 ## Filtres
 
-Pastilles par chantier (à leur couleur), par mois (lu dans l'échéance : « Octobre »,
-« avant fin octobre »…) et un champ de recherche. Les deux faces les ont ; « Tout afficher »
-remet à zéro.
+Par mois (lu dans l'échéance : « Octobre », « avant fin octobre »…) et par mot, sur les deux
+faces, dans toute la mission ou dans un projet ; « Tout afficher » les efface.
 
-## Étapes à cocher
+## Sous-tâches
 
-Dans une carte, côté Julien : une étape par ligne, cochée au fil de l'eau — ou les étapes
-type proposées d'après le titre (site : maquette, validation, V1…). Le client voit « ✓ 2/4 »
-sur la carte et l'avancement dans la fiche ; il ne coche pas.
+Dans une carte, côté Julien : un nom, un responsable (Julien, le contact, chaque personne qui a
+un lien) et une date — ou les étapes type proposées d'après le titre (site : maquette,
+validation, V1…). La carte montre « ✓ 2/4 », « 1 au client », « sous-tâche en retard ».
+Une sous-tâche confiée au client apparaît dans son « Chez vous » (« Vos tâches ») et compte
+dans « … chez vous » quand elle est du moment — sa carte est en cours ou chez lui, ou sa
+date tombe dans les deux semaines (ou est passée) ; les autres attendent sur leur carte ; c'est lui qui la coche, Julien le voit à l'instant. Il ne peut pas
+cocher celles de Julien (refusé par le serveur). Les étapes d'avant sont devenues des
+sous-tâches, cases comprises.
 
 ## La discussion
 
-Bouton « Discussion » en bas à droite : un fil par place, en direct, comme une messagerie.
+Bouton « Discussion » en bas à droite : par place, un fil « Général » et un fil par projet
+(onglets en haut, non-lus sur chacun), en direct, comme une messagerie.
 Pastille des non-lus sur le bouton et dans l'onglet, « écrit… », ✓ envoyé, ✓✓ vu. Les liens
 deviennent cliquables. Côté Julien, avec plusieurs places, la liste des discussions d'abord.
 Chaque message part aussi vers les automatisations (événement `message`).

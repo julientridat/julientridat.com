@@ -7,6 +7,13 @@
  *
  * Un seul tableau, deux faces : Julien voit toutes ses places et déplace les cartes ;
  * un client voit ses cartes, règle celles de « Chez vous » et range ses demandes.
+ * Côté Julien, deux vues de plus : la vue d'ensemble (une tuile par place : avancement,
+ * ce qui attend qui, retards, non-lus) et « Ma semaine » (tout ce qui est à lui, toutes
+ * places confondues, rangé par date).
+ * Chaque chantier est un projet : un clic sur sa pastille ouvre son sous-tableau
+ * (objectif, avancement, frise des dates clés, colonnes, fil de discussion). Les cartes
+ * portent des sous-tâches avec un responsable et une date ; celles confiées au client
+ * apparaissent dans « Chez vous », et c'est lui qui les coche.
  * Une discussion par place, en direct. La page s'installe sur l'écran d'accueil
  * d'un téléphone (manifeste /tableau.webmanifest) : pas de store, pas de compte.
  */
@@ -139,6 +146,45 @@
       .column[data-depot] .cards::before { content: attr(data-depot); display: block; border: 2px dashed rgba(108, 76, 241, 0.5); border-radius: 12px; padding: 12px; text-align: center; color: var(--violet); font-size: 0.8rem; font-weight: 600; }
       .marque { position: absolute; left: 2px; right: 2px; height: 3px; border-radius: 3px; background: var(--violet); pointer-events: none; }
 
+      /* Vue d'ensemble et « Ma semaine » (Julien) */
+      .vue { max-width: 1480px; margin: 0 auto; padding: 18px 24px 104px; }
+      .tuiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; align-items: start; }
+      .tuile { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 10px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
+      .tuile:hover, .tuile:focus-visible { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(24, 20, 60, 0.1); border-color: rgba(108, 76, 241, 0.35); }
+      .tuile.urgente { border-top: 4px solid var(--late); }
+      .tuile .t-h { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+      .tuile h2 { font-weight: 500; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--ink); }
+      .tuile .t-h small { color: var(--violet); font-size: 0.74rem; }
+      .tuile .t-periode, .tuile .t-activite { font-size: 0.78rem; color: var(--ink-3); }
+      .tuile .jauge { height: 6px; border-radius: 999px; background: var(--col); overflow: hidden; }
+      .tuile .jauge i { display: block; height: 100%; background: var(--violet); border-radius: 999px; }
+      .tuile .t-av { font-size: 0.8rem; color: var(--ink-3); }
+      .tuile .t-av b { color: var(--ink); font-weight: 600; }
+      .t-chiffres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+      .t-chiffres div { background: var(--paper); border-radius: 10px; padding: 8px 10px; }
+      .t-chiffres dt { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; }
+      .t-chiffres dd { font-size: 1.3rem; font-weight: 300; color: var(--ink); font-variant-numeric: tabular-nums; }
+      .t-chiffres dd small { display: block; font-size: 0.72rem; color: var(--ink-3); font-weight: 400; }
+      .t-chiffres .vous { background: var(--violet-wash); }
+      .t-chiffres .vous dt { color: var(--violet); }
+      .tuile .t-suite { font-size: 0.84rem; color: var(--ink-2); }
+      .vue-vide { color: var(--ink-3); font-size: 0.95rem; }
+      .semaine { display: grid; gap: 18px; max-width: 860px; }
+      .semaine section h2 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-3); font-weight: 600; margin-bottom: 8px; display: flex; gap: 8px; align-items: baseline; }
+      .semaine section h2 .n { font-weight: 400; }
+      .sec-retard h2 { color: var(--late) !important; }
+      .sec-traiter h2 { color: var(--violet) !important; }
+      .sem-liste { list-style: none; display: grid; gap: 6px; }
+      .sem-liste li { display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 10px; align-items: center; background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 9px 12px; }
+      .sem-liste input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--violet); cursor: pointer; }
+      .sem-liste .point { width: 8px; height: 8px; border-radius: 50%; background: var(--violet); justify-self: center; }
+      .sem-liste .sem-t { background: none; border: none; padding: 0; text-align: left; color: var(--ink); font-size: 0.9rem; line-height: 1.35; }
+      .sem-liste .sem-t:hover { color: var(--violet); }
+      .sem-liste .sem-t small { display: block; color: var(--ink-3); font-size: 0.74rem; margin-top: 2px; }
+      .sem-liste .quand { font-size: 0.76rem; color: var(--ink-3); white-space: nowrap; }
+      .sem-liste .quand.retard { color: var(--late); font-weight: 600; }
+      .sem-liste li.fait-local { opacity: 0.45; }
+
       /* Filtres */
       .barre { max-width: 1480px; margin: 0 auto; padding: 14px 24px 0; display: flex; align-items: center; gap: 8px 14px; flex-wrap: wrap; }
       .f-groupe { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; max-width: 100%; }
@@ -196,16 +242,82 @@
       .jalons { list-style: none; display: grid; gap: 4px; }
       .jalons li { display: flex; gap: 10px; align-items: baseline; font-size: 0.88rem; }
       .jalons .jn { font-family: var(--font-serif); font-style: italic; color: var(--violet); min-width: 14px; font-size: 1.05rem; }
-      .jalons li.ok { color: var(--ink-3); }
-      .jalons li.ok .jn { font-family: var(--font-sans); font-style: normal; font-size: 0.85rem; font-weight: 700; }
       .avance { height: 4px; background: var(--line); border-radius: 999px; margin: 2px 0 10px; overflow: hidden; }
       .avance i { display: block; height: 100%; background: var(--violet); border-radius: 999px; transition: width 0.6s; }
-      .etapes-ed { list-style: none; display: grid; gap: 6px; }
-      .etapes-ed li { display: flex; align-items: center; gap: 8px; }
-      .etapes-ed input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--violet); flex: none; }
-      .etapes-ed li.ok input[type="text"] { color: var(--ink-3); text-decoration: line-through; }
       .etape-x { background: none; border: none; color: var(--ink-3); font-size: 1.2rem; line-height: 1; padding: 0 6px; }
       .etape-x:hover { color: var(--late); }
+
+      /* Sous-tâches : sur la carte (sous-tableau), dans la fiche, dans « Chez vous » */
+      .st-liste { list-style: none; display: grid; gap: 5px; margin-top: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
+      .st-liste li { display: flex; align-items: flex-start; gap: 7px; font-size: 0.8rem; color: var(--ink-2); line-height: 1.3; }
+      .st-liste li.ok .t { color: var(--ink-3); text-decoration: line-through; }
+      .st-liste input[type="checkbox"] { width: 15px; height: 15px; margin-top: 1px; accent-color: var(--violet); flex: none; cursor: pointer; }
+      .st-liste .coche-fixe { width: 15px; flex: none; text-align: center; color: var(--ink-3); font-size: 0.74rem; }
+      .st-liste .t { flex: 1; min-width: 0; }
+      .st-liste .meta { font-size: 0.7rem; color: var(--ink-3); white-space: nowrap; }
+      .st-liste .meta.client { color: var(--violet); font-weight: 600; }
+      .st-liste .meta.retard { color: var(--late); font-weight: 600; }
+      .st-liste button.parent { background: none; border: none; padding: 0; color: var(--ink-3); font-size: 0.7rem; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
+      .sheet .st-liste { border-top: none; padding-top: 0; gap: 8px; }
+      .sheet .st-liste li { font-size: 0.88rem; }
+      .confiees { background: var(--white); border: 1px dashed rgba(108, 76, 241, 0.4); border-radius: 12px; padding: 10px 12px; }
+      .confiees h4 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--violet); font-weight: 600; }
+      .confiees .st-liste { border-top: none; padding-top: 0; gap: 9px; }
+      .st-ed { list-style: none; display: grid; gap: 8px; }
+      .st-ed li { display: grid; grid-template-columns: 18px minmax(0, 1fr) 150px 140px 26px; gap: 8px; align-items: center; }
+      .st-ed li.ok input[type="text"] { color: var(--ink-3); text-decoration: line-through; }
+      .st-ed input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--violet); }
+      .st-ed select { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); padding: 7px 8px; font: inherit; font-size: 0.82rem; color: var(--ink); }
+      @media (max-width: 640px) {
+        .st-ed li { grid-template-columns: 18px minmax(0, 1fr) 26px; }
+        .st-ed select, .st-ed input[type="date"] { grid-column: 2; }
+      }
+
+      /* Le sous-tableau d'un projet (chantier) */
+      .projet { max-width: 1480px; margin: 0 auto; padding: 16px 24px 0; }
+      .pj { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--pc, var(--violet)); border-radius: 16px; padding: 14px 18px 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; }
+      .pj-h { display: flex; align-items: baseline; gap: 6px 14px; flex-wrap: wrap; }
+      .pj-retour { background: none; border: none; color: var(--ink-3); font-size: 0.82rem; padding: 0; }
+      .pj-retour:hover { color: var(--violet); }
+      .pj-h h2 { font-weight: 400; letter-spacing: -0.02em; color: var(--ink); font-size: clamp(1.2rem, 2.2vw, 1.6rem); display: flex; align-items: center; gap: 10px; }
+      .pj-h h2 .sw { width: 12px; height: 12px; border-radius: 4px; background: var(--pc); }
+      p.pj-objectif { font-size: 0.95rem; color: var(--ink-2); max-width: 70ch; }
+      textarea.pj-objectif { background: transparent; border: 1px dashed var(--line); font-size: 0.95rem; max-width: 70ch; resize: vertical; }
+      .pj-avance { display: grid; gap: 6px; }
+      .pj-avance .jauge { height: 8px; border-radius: 999px; background: var(--col); overflow: hidden; }
+      .pj-avance .jauge i { display: block; height: 100%; background: var(--pc, var(--violet)); border-radius: 999px; transition: width 0.8s cubic-bezier(0.2, 0.6, 0.2, 1); }
+      .pj-avance p { font-size: 0.82rem; color: var(--ink-3); }
+      .pj-avance b { color: var(--ink); font-weight: 600; }
+      .pj-avance .retard { color: var(--late); font-weight: 600; }
+      .frise { overflow-x: auto; }
+      .frise-in { position: relative; min-width: 640px; height: 122px; margin: 0 10px; }
+      .frise .axe { position: absolute; left: 0; right: 0; top: 60px; height: 2px; background: var(--line); }
+      .frise .duree { position: absolute; top: 59px; height: 4px; background: var(--col); border-radius: 999px; }
+      .frise .mois { position: absolute; top: 70px; height: 14px; padding-left: 4px; border-left: 1px solid var(--line); font-size: 0.66rem; color: var(--ink-3); white-space: nowrap; }
+      .frise .auj { position: absolute; top: 44px; height: 34px; width: 2px; margin-left: -1px; background: var(--violet); }
+      .frise .auj span { position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); font-size: 0.62rem; font-weight: 600; color: var(--violet); white-space: nowrap; }
+      .frise .cle { position: absolute; top: 54px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--pc, var(--violet)); border: 3px solid var(--white); box-shadow: 0 0 0 1px var(--pc, var(--violet)); }
+      .frise .cle.passee { opacity: 0.45; }
+      .frise .etiq { position: absolute; font-size: 0.72rem; color: var(--ink); white-space: nowrap; line-height: 1.2; max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
+      .frise .etiq small { display: block; color: var(--ink-3); font-size: 0.64rem; }
+      .frise .etiq.haut { top: 12px; }
+      .frise .etiq.bas { top: 88px; }
+      .frise .pt { position: absolute; top: 57px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--ink-3); border: 2px solid var(--white); box-sizing: content-box; }
+      .frise .pt.client { background: var(--violet); }
+      .frise .pt.ok { opacity: 0.35; }
+      .frise .pt.retard { background: var(--late); }
+      .frise-leg { display: flex; gap: 14px; flex-wrap: wrap; font-size: 0.7rem; color: var(--ink-3); }
+      .frise-leg i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 5px; vertical-align: 0; background: var(--ink-3); }
+      .frise-leg i.cle { background: var(--pc, var(--violet)); }
+      .frise-leg i.client { background: var(--violet); }
+      .pj-dates summary { cursor: pointer; color: var(--ink-3); font-size: 0.8rem; font-weight: 500; width: fit-content; }
+      .pj-dates summary:hover { color: var(--violet); }
+      .pj-dates .ligne { display: grid; grid-template-columns: minmax(0, 1fr) 160px auto; gap: 8px; margin-top: 8px; align-items: center; }
+      @media (max-width: 600px) {
+        .projet { padding: 12px 16px 0; }
+        .pj-dates .ligne { grid-template-columns: minmax(0, 1fr) auto; }
+        .pj-dates .ligne input[type="date"] { grid-column: 1; }
+      }
       .comments { list-style: none; display: grid; gap: 8px; }
       .comments li { font-size: 0.86rem; }
       .comments b { color: var(--ink); font-weight: 600; }
@@ -263,6 +375,13 @@
       .chat-saisie textarea { flex: 1; resize: none; border-radius: 20px; background: var(--white); padding: 9px 14px; max-height: 128px; line-height: 1.35; }
       .chat-go { width: 40px; height: 40px; border-radius: 50%; border: none; background: var(--violet); color: var(--white); display: grid; place-items: center; flex: none; }
       .chat-go svg { width: 18px; height: 18px; }
+      .chat-fils { display: flex; gap: 6px; overflow-x: auto; padding: 8px 12px; background: var(--white); border-bottom: 1px solid var(--line); scrollbar-width: none; }
+      .chat-fils::-webkit-scrollbar { display: none; }
+      .chat-fils:empty { display: none; }
+      .chat-fils button { flex: none; border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 4px 10px; font-size: 0.76rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
+      .chat-fils button.on { border-color: var(--violet); color: var(--violet); background: var(--violet-wash); }
+      .chat-fils .sw { width: 8px; height: 8px; border-radius: 3px; }
+      .chat-fils .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.64rem; padding: 0 6px; }
       .conv { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: none; border: none; text-align: left; width: 100%; }
       .conv:hover { background: var(--white); }
       .conv .txt { flex: 1; min-width: 0; }
@@ -279,6 +398,9 @@
       pre.format { font-family: ui-monospace, Menlo, monospace; font-size: 0.74rem; background: var(--paper); border-radius: 10px; padding: 10px 12px; color: var(--ink-2); white-space: pre-wrap; margin-top: 6px; }
 
       @media (max-width: 700px) {
+        .vue { padding: 14px 16px 104px; }
+        .filters { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+        .filters::-webkit-scrollbar { display: none; }
         .chat { inset: 0; width: auto; height: 100vh; height: 100dvh; border-radius: 0; border: none; }
         .chat-saisie { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
         .chat-h { padding-top: calc(11px + env(safe-area-inset-top, 0px)); }
@@ -302,7 +424,7 @@
         .grille { grid-template-columns: 1fr; }
       }
       @media (prefers-reduced-motion: reduce) {
-        .card, .btn, .toast, .periode .track i, .periode .track b, .bulle, .fab, .avance i { transition: none; animation: none; }
+        .card, .btn, .toast, .periode .track i, .periode .track b, .bulle, .fab, .avance i, .pj-avance .jauge i { transition: none; animation: none; }
         .live.on i { animation: none; }
       }
     </style>
@@ -333,6 +455,7 @@
     </header>
 
     <div class="periode" id="periode" hidden></div>
+    <section class="projet" id="projet" hidden aria-label="Le projet"></section>
 
     <div class="barre" id="barre" hidden>
       <div class="f-groupe" id="f-ch"></div>
@@ -344,6 +467,8 @@
       <span class="f-n" id="f-n"></span>
       <button type="button" class="f-raz" id="f-raz" hidden>Tout afficher</button>
     </div>
+
+    <section class="vue" id="vue" hidden></section>
 
     <main class="board" id="board" hidden>
       <section class="column" data-col="demandes">
@@ -385,6 +510,7 @@
         <div class="chat-qui"><b id="chat-nom"></b><small id="chat-etat"></small></div>
         <button type="button" id="chat-x" aria-label="Fermer la discussion">×</button>
       </header>
+      <div class="chat-fils" id="chat-fils" role="tablist" aria-label="Fils de discussion"></div>
       <div class="chat-fil" id="chat-fil" aria-live="polite"></div>
       <form class="chat-saisie" id="chat-saisie">
         <textarea id="chat-txt" rows="1" placeholder="Message" aria-label="Votre message"></textarea>
@@ -439,7 +565,7 @@
         }
         function montrerAcces(message) {
           $("acces").hidden = false;
-          ["top", "periode", "barre", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
+          ["top", "periode", "projet", "barre", "vue", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
           if (message) $("acces-texte").textContent = message;
           else if (autonome) $("acces-texte").textContent = "Collez ci-dessous le lien reçu par e-mail : l’app s’en souviendra.";
           $("reessayer").hidden = !S.cle;
@@ -490,8 +616,16 @@
             S.acces = m.acces || [];
             S.enLigne = m.enLigne || [];
             S.connecte = true;
-            if (S.filtre !== "tous" && !clientParId(S.filtre)) S.filtre = "tous";
-            if (!S.recu) { S.recu = true; $("acces").hidden = true; $("top").hidden = false; $("board").hidden = false; $("fab").hidden = false; }
+            if (S.filtre !== "tous" && S.filtre !== "semaine" && !clientParId(S.filtre)) S.filtre = "tous";
+            if (!S.recu) {
+              S.recu = true;
+              $("acces").hidden = true; $("top").hidden = false; $("board").hidden = false; $("fab").hidden = false;
+              // Julien ouvre sur sa semaine au téléphone, sur sa place s'il n'en a qu'une, sinon sur la vue d'ensemble.
+              if (julien()) {
+                var actives = S.clients.filter(function (c) { return !c.archive; });
+                S.filtre = tactile ? "semaine" : actives.length === 1 ? actives[0].id : "tous";
+              }
+            }
             if (G || saisieEnCours()) S.enAttente = true;
             else rendre();
             rafraichirFeuille();
@@ -500,7 +634,7 @@
           }
           if (m.type === "discussion") return recevoirDiscussion(m);
           if (m.type === "message") return recevoirMessage(m);
-          if (m.type === "lu") { var l = lusDe(m.client); l[m.qui] = Math.max(l[m.qui] || 0, m.ts); return rendreChat(); }
+          if (m.type === "lu") { var l = lusDe(m.client, m.fil || ""); l[m.qui] = Math.max(l[m.qui] || 0, m.ts); return rendreChat(); }
           if (m.type === "frappe") return recevoirFrappe(m);
           if (m.type === "historique") return recevoirHistorique(m);
           if (m.type === "cree") return montrerLien(m);
@@ -510,9 +644,14 @@
 
         /* Une réponse en cours de frappe sur une carte ne doit pas disparaître parce
            que l'autre côté vient de bouger une carte : le rendu attend la fin de la saisie. */
-        function saisieEnCours() { var a = document.activeElement; return !!(a && a.closest && a.closest("#board .zone")); }
-        $("board").addEventListener("focusout", function () {
-          setTimeout(function () { if (S.enAttente && !saisieEnCours() && !G) { S.enAttente = false; rendre(); } }, 0);
+        function saisieEnCours() {
+          var a = document.activeElement;
+          return !!(a && a.closest && (a.closest("#board .zone") || (a.closest("#projet") && /^(INPUT|TEXTAREA)$/.test(a.tagName))));
+        }
+        ["board", "projet"].forEach(function (id) {
+          $(id).addEventListener("focusout", function () {
+            setTimeout(function () { if (S.enAttente && !saisieEnCours() && !G) { S.enAttente = false; rendre(); } }, 0);
+          });
         });
 
         /* ————— Vue courante ————— */
@@ -521,10 +660,10 @@
         function clientParId(id) { for (var i = 0; i < S.clients.length; i++) if (S.clients[i].id === id) return S.clients[i]; return null; }
         function clientCourant() {
           if (!julien()) return S.clients[0] || null;
-          if (S.filtre !== "tous") return clientParId(S.filtre);
-          var actifs = S.clients.filter(function (c) { return !c.archive; });
-          return actifs.length === 1 ? actifs[0] : null;
+          return clientParId(S.filtre);
         }
+        /* « tous » : la vue d'ensemble ; « semaine » : Ma semaine ; sinon le tableau d'une place. */
+        function modeVue() { return julien() && !S.apercu && (S.filtre === "tous" || S.filtre === "semaine") ? S.filtre : null; }
         function cartesVisibles() {
           if (!julien()) return S.cartes;
           if (S.filtre === "tous") return S.cartes.filter(function (c) { var cl = clientParId(c.client); return cl && !cl.archive; });
@@ -535,18 +674,21 @@
         var MOIS_AFFICHE = ["Janvier", "Février", "Mars", "Avril", "Mai", "Juin", "Juillet", "Août", "Septembre", "Octobre", "Novembre", "Décembre"];
         function sansAccent(t) { return String(t || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase(); }
         function moisDe(c) {
+          if (c.date) return Number(c.date.slice(5, 7)) - 1;
           var e = sansAccent(c.echeance);
           for (var i = 0; i < 12; i++) if (new RegExp("\\b" + MOIS[i] + "\\b").test(e)) return i;
           return -1;
         }
-        function filtreActif() { return !!(S.f.ch || S.f.mois !== null || S.f.q.trim()); }
+        function filtreActif() { return !!(S.f.ch || filtreBarre()); }
+        /* Mois et mots : les filtres que « Tout afficher » efface ; le projet ouvert reste ouvert. */
+        function filtreBarre() { return !!(S.f.mois !== null || S.f.q.trim()); }
         function passeFiltre(c) {
           if (S.f.ch && c.ch !== S.f.ch) return false;
           if (S.f.mois !== null && moisDe(c) !== S.f.mois) return false;
           var mots = sansAccent(S.f.q).split(/\s+/).filter(Boolean);
           if (mots.length) {
             var ch = chantier(c), cl = clientParId(c.client);
-            var foin = sansAccent([c.t, c.desc, c.echeance, c.type, c.note, c.statut, ch ? ch.nom : "", cl ? cl.nom : ""].concat(c.jalons || []).join(" "));
+            var foin = sansAccent([c.t, c.desc, c.echeance, c.type, c.note, c.statut, ch ? ch.nom : "", cl ? cl.nom : ""].concat((c.st || []).map(function (x) { return x.t + " " + x.qui; })).join(" "));
             for (var i = 0; i < mots.length; i++) if (foin.indexOf(mots[i]) < 0) return false;
           }
           return true;
@@ -586,7 +728,7 @@
           document.body.classList.toggle("face-client", fc);
           majTitre();
 
-          $("sous-titre").textContent = fc ? "votre tableau · " + (cl ? cl.nom : "") : "le tableau · " + (S.filtre === "tous" ? "toutes les places" : cl ? cl.nom : "");
+          $("sous-titre").textContent = fc ? "votre tableau · " + (cl ? cl.nom : "") : "le tableau · " + (S.filtre === "tous" ? "toutes les places" : S.filtre === "semaine" ? "ma semaine" : cl ? cl.nom : "");
           var bar = $("apercu-bar");
           bar.hidden = !S.apercu;
           if (S.apercu && cl) {
@@ -606,6 +748,16 @@
           rendreFiltres();
           rendreOutils(cl);
           rendrePeriode(cl);
+          var vue = modeVue();
+          $("vue").hidden = !vue;
+          $("board").hidden = !!vue;
+          if (vue) {
+            $("projet").hidden = true;
+            $("barre").hidden = true;
+            if (vue === "tous") rendreEnsemble(); else rendreSemaine();
+            return;
+          }
+          rendreProjet(cl);
           rendreBarre(cl);
           rendreColonnes(cl);
         }
@@ -630,7 +782,8 @@
             var sw = el("span", "sw"); sw.style.background = "var(--" + x.couleur + ")";
             b.appendChild(sw); b.appendChild(document.createTextNode(x.nom));
             b.setAttribute("aria-pressed", S.f.ch === x.id ? "true" : "false");
-            b.addEventListener("click", function () { S.f.ch = S.f.ch === x.id ? null : x.id; rendre(); });
+            b.title = S.f.ch === x.id ? "Revenir à toute la mission" : "Ouvrir le projet";
+            b.addEventListener("click", function () { S.f.ch = S.f.ch === x.id ? null : x.id; rendre(); window.scrollTo({ top: 0, behavior: "smooth" }); });
             fch.appendChild(b);
           });
           // Mois : ceux que portent les échéances, dans l'ordre de la période.
@@ -649,9 +802,10 @@
             b.addEventListener("click", function () { S.f.mois = S.f.mois === m ? null : m; rendre(); });
             fm.appendChild(b);
           });
-          var actif = filtreActif();
+          var actif = filtreBarre();
           $("f-raz").hidden = !actif;
-          $("f-n").textContent = actif ? visibles.filter(passeFiltre).length + " sur " + visibles.length : "";
+          var base = S.f.ch ? visibles.filter(function (c) { return c.ch === S.f.ch; }) : visibles;
+          $("f-n").textContent = actif ? base.filter(passeFiltre).length + " sur " + base.length : "";
         }
         var rechercheT;
         $("f-q").addEventListener("input", function () {
@@ -659,25 +813,204 @@
           rechercheT = setTimeout(function () { S.f.q = $("f-q").value; rendre(); }, 120);
         });
         $("f-q").addEventListener("keydown", function (e) { if (e.key === "Escape") { $("f-q").value = ""; S.f.q = ""; rendre(); } });
-        $("f-raz").addEventListener("click", function () { S.f = { ch: null, mois: null, q: "" }; $("f-q").value = ""; rendre(); });
+        $("f-raz").addEventListener("click", function () { S.f.mois = null; S.f.q = ""; $("f-q").value = ""; rendre(); });
 
         function rendreFiltres() {
           var f = $("filtres");
           f.innerHTML = "";
-          f.hidden = !julien() || S.apercu || S.clients.length < 2;
+          f.hidden = !julien() || S.apercu;
           if (f.hidden) return;
-          var tous = el("button", "pill" + (S.filtre === "tous" ? " on" : ""), "Tous");
-          tous.addEventListener("click", function () { S.filtre = "tous"; rendre(); });
-          f.appendChild(tous);
+          var ensemble = el("button", "pill" + (S.filtre === "tous" ? " on" : ""), "Vue d’ensemble");
+          ensemble.type = "button";
+          ensemble.addEventListener("click", function () { S.filtre = "tous"; S.f.ch = null; rendre(); });
+          f.appendChild(ensemble);
+          var semaine = el("button", "pill" + (S.filtre === "semaine" ? " on" : ""), "Ma semaine");
+          semaine.type = "button";
+          var urgent = maSemaine().urgent;
+          if (urgent) semaine.appendChild(el("span", "nb", String(urgent)));
+          semaine.addEventListener("click", function () { S.filtre = "semaine"; S.f.ch = null; rendre(); });
+          f.appendChild(semaine);
           S.clients.forEach(function (c) {
             var b = el("button", "pill" + (S.filtre === c.id ? " on" : "") + (c.archive ? " close" : ""));
             if (S.enLigne.some(function (p) { return p.client === c.id; })) { var pt = el("span", "pt"); pt.title = "En ligne"; b.appendChild(pt); }
             b.appendChild(document.createTextNode(c.nom + (c.archive ? " (close)" : "")));
             var n = S.cartes.filter(function (x) { return x.client === c.id && x.nouveau === "julien"; }).length;
             if (n) b.appendChild(el("span", "nb", String(n)));
+            b.type = "button";
             b.addEventListener("click", function () { S.filtre = c.id; rendre(); });
             f.appendChild(b);
           });
+        }
+
+        /* ————— Vue d'ensemble : une tuile par place ————— */
+        function semaineDe(cl) {
+          if (!cl || !cl.debut || !cl.fin) return null;
+          var d = new Date(cl.debut + "T00:00:00").getTime(), f = new Date(cl.fin + "T23:59:59").getTime();
+          if (!(f > d)) return null;
+          var total = Math.max(1, Math.round((f - d) / (7 * JOUR)));
+          return {
+            avant: Date.now() < d,
+            r: Math.max(0, Math.min(1, (Date.now() - d) / (f - d))),
+            total: total,
+            sem: Math.max(1, Math.min(total, Math.floor((Date.now() - d) / (7 * JOUR)) + 1)),
+          };
+        }
+        function donneesPlace(cl) {
+          var cartes = S.cartes.filter(function (c) { return c.client === cl.id; });
+          var auj = aujourdhui(), prochaine = null, retards = 0, derniere = 0;
+          function candidate(date, t) { if (date >= auj && (!prochaine || date < prochaine.date)) prochaine = { date: date, t: t }; }
+          cl.chantiers.forEach(function (x) { (x.dates || []).forEach(function (d) { if (d.date) candidate(d.date, d.t); }); });
+          cartes.forEach(function (c) {
+            derniere = Math.max(derniere, c.majLe || 0);
+            if (c.col === "fait") return;
+            if (c.date) { if (c.date < auj) retards++; else candidate(c.date, c.t); }
+            (c.st || []).forEach(function (k) { if (k.ok || !k.date) return; if (k.date < auj) retards++; else candidate(k.date, k.t); });
+          });
+          filDe(cl.id).forEach(function (m) { derniere = Math.max(derniere, m.ts || 0); });
+          var chez = cartes.filter(function (c) { return c.col === "vous"; });
+          var depuisLe = chez.reduce(function (m, c) { return c.chezClientDepuis && (!m || c.chezClientDepuis < m) ? c.chezClientDepuis : m; }, 0);
+          return {
+            aTraiter: cartes.filter(function (c) { return c.col === "demandes" || c.nouveau === "julien"; }).length,
+            enCours: cartes.filter(function (c) { return c.col === "encours"; }).length,
+            chez: chez.length,
+            taches: tachesConfiees(cartes).length,
+            attente: depuisLe ? jours(depuisLe) : 0,
+            av: avancementDe(cartes),
+            retards: retards,
+            prochaine: prochaine,
+            nonLus: nonLus(cl.id),
+            enLigne: S.enLigne.filter(function (p) { return p.client === cl.id; }).map(function (p) { return p.nom; }),
+            derniere: derniere,
+          };
+        }
+        function rendreEnsemble() {
+          var zone = $("vue");
+          zone.innerHTML = "";
+          var places = S.clients.filter(function (c) { return !c.archive; }).map(function (cl) { return { cl: cl, d: donneesPlace(cl) }; });
+          if (!places.length) return zone.appendChild(el("p", "vue-vide", "Aucune place pour l’instant : ouvrez la première avec « Nouvelle place »."));
+          // Ce qui demande Julien d'abord : retards, retours à traiter, messages, attente longue chez le client.
+          function score(x) { return x.d.retards * 4 + x.d.aTraiter * 3 + x.d.nonLus * 2 + (x.d.attente > 5 ? 2 : 0); }
+          places.sort(function (a, b) { return score(b) - score(a) || a.cl.nom.localeCompare(b.cl.nom, "fr"); });
+          var grille = el("div", "tuiles");
+          places.forEach(function (x) { grille.appendChild(tuile(x.cl, x.d)); });
+          zone.appendChild(grille);
+        }
+        function tuile(cl, d) {
+          var t = el("article", "tuile" + (d.retards ? " urgente" : ""));
+          t.tabIndex = 0;
+          t.setAttribute("role", "link");
+          t.setAttribute("aria-label", "Ouvrir le tableau de " + cl.nom);
+          function ouvrir() { S.filtre = cl.id; rendre(); window.scrollTo(0, 0); }
+          t.addEventListener("click", ouvrir);
+          t.addEventListener("keydown", function (e) { if (e.key === "Enter") ouvrir(); });
+          var h = el("div", "t-h");
+          h.appendChild(el("h2", null, cl.nom));
+          if (d.enLigne.length) h.appendChild(el("small", null, d.enLigne.join(", ") + (d.enLigne.length > 1 ? " en ligne" : " en ligne")));
+          t.appendChild(h);
+          var sem = semaineDe(cl);
+          if (sem) t.appendChild(el("p", "t-periode", (sem.avant ? "Démarrage le " + dateLongue(cl.debut) : "Semaine " + sem.sem + " sur " + sem.total) + " · jusqu’au " + dateLongue(cl.fin)));
+          var jauge = el("div", "jauge"), trait = el("i");
+          trait.style.width = d.av.pct + "%";
+          jauge.appendChild(trait);
+          t.appendChild(jauge);
+          var av = el("p", "t-av");
+          av.appendChild(el("b", null, d.av.pct + " %"));
+          av.appendChild(document.createTextNode(" — " + d.av.fait + " sur " + d.av.total + (d.av.total > 1 ? " tâches faites" : " tâche faite")));
+          t.appendChild(av);
+          var dl = el("dl", "t-chiffres");
+          [["À traiter", d.aTraiter, ""], ["En cours", d.enCours, ""], ["Chez " + (cl.contact || "le client"), d.chez, d.taches ? "+ " + nombre(d.taches, "tâche", "tâches") : "", "vous"]].forEach(function (k) {
+            var b = el("div", k[3] || "");
+            b.appendChild(el("dt", null, k[0]));
+            var dd = el("dd", null, String(k[1]));
+            if (k[2]) { dd.appendChild(document.createTextNode(" ")); dd.appendChild(el("small", null, k[2])); }
+            b.appendChild(dd);
+            dl.appendChild(b);
+          });
+          t.appendChild(dl);
+          if (d.prochaine) t.appendChild(el("p", "t-suite", "Prochaine échéance : " + d.prochaine.t + ", " + dateLongue(d.prochaine.date)));
+          var chips = el("div", "chips");
+          if (d.retards) chips.appendChild(chip(d.retards > 1 ? d.retards + " retards" : "1 retard", "late"));
+          if (d.nonLus) chips.appendChild(chip(d.nonLus + (d.nonLus > 1 ? " messages non lus" : " message non lu"), "vous"));
+          if (d.attente > 5) chips.appendChild(chip("attend " + (cl.contact || "le client") + " depuis " + d.attente + " jours", "late"));
+          if (chips.childNodes.length) t.appendChild(chips);
+          if (d.derniere) t.appendChild(el("p", "t-activite", "Dernière activité : " + quand(d.derniere)));
+          return t;
+        }
+
+        /* ————— Ma semaine : tout ce qui est à Julien, toutes places confondues ————— */
+        function finDeSemaine() { var d = new Date(); d.setDate(d.getDate() + ((7 - d.getDay()) % 7)); return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate()); }
+        function maSemaine() {
+          var auj = aujourdhui(), dimanche = finDeSemaine();
+          var sections = { traiter: [], retard: [], auj: [], semaine: [], plusTard: [], sansDate: [] };
+          S.cartes.forEach(function (c) {
+            var cl = clientParId(c.client);
+            if (!cl || cl.archive) return;
+            var retour = c.nouveau === "julien";
+            if (retour) sections.traiter.push({ c: c });
+            var items = [];
+            if (!retour && (c.col === "encours" || (c.col === "prevu" && c.date))) items.push({ c: c, date: c.date || "" });
+            if (c.col !== "fait") (c.st || []).forEach(function (k) { if (!k.ok && k.qui === "Julien" && (k.date || c.col === "encours" || c.col === "vous")) items.push({ c: c, s: k, date: k.date || "" }); });
+            items.forEach(function (it) {
+              var d = it.date;
+              (!d ? sections.sansDate : d < auj ? sections.retard : d === auj ? sections.auj : d <= dimanche ? sections.semaine : sections.plusTard).push(it);
+            });
+          });
+          ["retard", "auj", "semaine", "plusTard"].forEach(function (k) { sections[k].sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }); });
+          sections.urgent = sections.traiter.length + sections.retard.length + sections.auj.length;
+          sections.aFaire = sections.urgent + sections.semaine.length;
+          return sections;
+        }
+        function rendreSemaine() {
+          var zone = $("vue");
+          zone.innerHTML = "";
+          var m = maSemaine(), bloc = el("div", "semaine"), rien = true;
+          [["traiter", "À traiter — ce que vos clients ont fait"], ["retard", "En retard"], ["auj", "Aujourd’hui"], ["semaine", "Cette semaine"], ["plusTard", "Plus tard"], ["sansDate", "En cours, sans date"]].forEach(function (k) {
+            var liste = m[k[0]];
+            if (!liste.length) return;
+            rien = false;
+            var sec = el("section", "sec-" + k[0]);
+            var h = el("h2", null, k[1]);
+            h.appendChild(el("span", "n", String(liste.length)));
+            sec.appendChild(h);
+            var ul = el("ul", "sem-liste");
+            liste.forEach(function (it) { ul.appendChild(ligneSemaine(it, k[0])); });
+            sec.appendChild(ul);
+            bloc.appendChild(sec);
+          });
+          if (rien) bloc.appendChild(el("p", "vue-vide", "Rien ne vous attend : ni retour à traiter, ni tâche datée."));
+          zone.appendChild(bloc);
+        }
+        function ligneSemaine(it, section) {
+          var c = it.c, k = it.s, cl = clientParId(c.client), ch = chantier(c);
+          var li = el("li");
+          li.style.setProperty("--mc", couleur(c));
+          if (section === "traiter") li.appendChild(el("span", "point"));
+          else {
+            var cb = el("input");
+            cb.type = "checkbox";
+            cb.id = "sem-" + c.id.slice(0, 8) + (k ? "-" + k.id : "");
+            cb.setAttribute("aria-label", "Fait : " + (k ? k.t : c.t));
+            cb.addEventListener("change", function () {
+              if (!cb.checked) return;
+              li.classList.add("fait-local");
+              if (k) cocher(c, k, true);
+              else { deplacer(c, "fait"); toast("« " + c.t + " » : fait."); }
+            });
+            li.appendChild(cb);
+          }
+          var titre = el("button", "sem-t");
+          titre.type = "button";
+          titre.appendChild(document.createTextNode(k ? k.t : c.t));
+          var ou = [cl ? cl.nom : "", ch ? ch.nom : ""].filter(Boolean).join(" · ");
+          var detail = section === "traiter"
+            ? (c.statut ? majuscule(c.statut) : c.col === "demandes" ? "Nouvelle demande" : "Nouveau") + (ou ? " — " + ou : "")
+            : (k ? "Dans « " + c.t + " »" + (ou ? " — " + ou : "") : ou + (c.col === "encours" ? " · en cours" : ""));
+          titre.appendChild(el("small", null, detail));
+          titre.addEventListener("click", function () { ouvrirCarte(c.id); });
+          li.appendChild(titre);
+          var d = it.date;
+          li.appendChild(el("span", "quand" + (d && d < aujourdhui() ? " retard" : ""), d ? dateCourte(d) : section === "traiter" ? quand(c.majLe || Date.now()) : ""));
+          return li;
         }
 
         function rendreOutils(cl) {
@@ -701,10 +1034,19 @@
           var h = el("h1");
           var visibles = cartesVisibles();
           var chezClient = visibles.filter(function (c) { return c.col === "vous"; }).length;
+          var taches = tachesConfiees(visibles).length;
+          var attend = [chezClient ? nombre(chezClient, "carte", "cartes") : "", taches ? nombre(taches, "tâche", "tâches") : ""].filter(Boolean).join(" et ");
+          if (modeVue() === "semaine") {
+            var ms = maSemaine();
+            h.appendChild(document.createTextNode("Ma semaine. "));
+            h.appendChild(el("em", null, ms.aFaire ? majuscule(nombre(ms.aFaire, "chose", "choses")) + " à faire" + (ms.retard.length ? ", dont " + ms.retard.length + " en retard." : ".") : "Rien d’urgent."));
+            p.appendChild(h);
+            return;
+          }
           if (faceClient()) {
             var prenom = julien() ? (cl && cl.contact) || "" : S.me.nom;
             h.appendChild(document.createTextNode("Bonjour " + prenom + ". "));
-            h.appendChild(el("em", null, chezClient ? majuscule(nombre(chezClient, "carte", "cartes")) + " chez vous." : "Rien ne vous attend."));
+            h.appendChild(el("em", null, attend ? majuscule(attend) + " chez vous." : "Rien ne vous attend."));
           } else if (!cl) {
             var actives = S.clients.filter(function (c) { return !c.archive; });
             var neufs = S.cartes.filter(function (c) { return c.nouveau === "julien"; }).length;
@@ -712,7 +1054,7 @@
             h.appendChild(el("em", null, actives.length ? chezClient + " chez vos clients, " + neufs + (neufs > 1 ? " nouvelles" : " nouvelle") + " pour vous." : "Ouvrez la première avec « Nouvelle place »."));
           } else {
             h.appendChild(document.createTextNode(cl.nom + ". "));
-            h.appendChild(el("em", null, chezClient ? majuscule(nombre(chezClient, "carte", "cartes")) + " chez " + (cl.contact || "le client") + "." : "Rien n’attend " + (cl.contact || "le client") + "."));
+            h.appendChild(el("em", null, attend ? majuscule(attend) + " chez " + (cl.contact || "le client") + "." : "Rien n’attend " + (cl.contact || "le client") + "."));
           }
           p.appendChild(h);
           if (cl && cl.debut && cl.fin) {
@@ -764,7 +1106,16 @@
                 if (anciennes.length > 12) wrap.appendChild(el("p", "vide", "et " + (anciennes.length - 12) + " plus anciennes."));
               }
             } else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
-            if (!liste.length) wrap.appendChild(el("p", "vide", filtreActif() ? "—" : name === "vous" && fc ? "Rien ne vous attend." : "—"));
+            var confiees = name === "vous" ? tachesConfiees(visibles) : [];
+            if (confiees.length) {
+              var box = el("div", "confiees");
+              box.appendChild(el("h4", null, fc ? "Vos tâches" : "Tâches confiées au client"));
+              var ul = el("ul", "st-liste");
+              confiees.forEach(function (x) { ul.appendChild(ligneSousTache(x.c, x.s, true)); });
+              box.appendChild(ul);
+              wrap.appendChild(box);
+            }
+            if (!liste.length && !confiees.length) wrap.appendChild(el("p", "vide", filtreActif() ? "—" : name === "vous" && fc ? "Rien ne vous attend." : "—"));
 
             if (name === "demandes") {
               var fold = colEl.querySelector(".folded");
@@ -804,14 +1155,23 @@
           if (ch) chips.appendChild(chip(ch.nom));
           if (c.col === "demandes" && c.type) chips.appendChild(chip(c.type));
           if (c.echeance) chips.appendChild(chip(c.echeance));
+          if (c.date) chips.appendChild(chip(dateCourte(c.date), c.col !== "fait" && c.date < aujourdhui() ? "late" : ""));
           if (c.livrable) chips.appendChild(chip("livrable"));
-          var nj = (c.jalons || []).length;
-          if (nj) { var faites = jokDe(c).filter(Boolean).length; chips.appendChild(chip("✓ " + faites + "/" + nj, faites === nj ? "fini" : "etapes")); }
+          var st = c.st || [];
+          if (st.length) { var faites = st.filter(function (x) { return x.ok; }).length; chips.appendChild(chip("✓ " + faites + "/" + st.length, faites === st.length ? "fini" : "etapes")); }
+          var aLui = c.col === "fait" ? 0 : st.filter(function (x) { return !x.ok && coteClient(x.qui); }).length;
+          if (aLui) chips.appendChild(chip(aLui + (fc ? " à vous" : " au client"), "vous"));
+          if (st.some(function (x) { return enRetard(c, x); })) chips.appendChild(chip("sous-tâche en retard", "late"));
           if (c.col === "vous" && c.chezClientDepuis) { var j = jours(c.chezClientDepuis); chips.appendChild(chip(depuis(c.chezClientDepuis) + (j > 5 ? " — en retard" : ""), j > 5 ? "late" : "vous")); }
           if (c.statut) chips.appendChild(chip(c.statut, "ok"));
           if (c.com && c.com.length) chips.appendChild(chip(c.com.length + " comm."));
           e.appendChild(chips);
           if (c.note) e.appendChild(el("p", "note", c.statut === "répondu" ? "« " + c.note + " »" : c.note));
+          if (S.f.ch && st.length) {
+            var liste = el("ul", "st-liste");
+            st.forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
+            e.appendChild(liste);
+          }
 
           if (c.col === "vous" && fc) e.appendChild(actionsClient(c, e));
           if (!fc && c.col === "demandes") {
@@ -835,7 +1195,263 @@
           e.addEventListener("click", function () { if (Date.now() - dernierLacher < 400) return; ouvrirCarte(c.id); });
           return e;
         }
-        function jokDe(c) { return (c.jalons || []).map(function (_, i) { return !!(c.jok && c.jok[i]); }); }
+        /* ————— Sous-tâches ————— */
+        function coteClient(qui) { return !!qui && qui !== "Julien"; }
+        function deux(n) { return (n < 10 ? "0" : "") + n; }
+        function aujourdhui() { var d = new Date(); return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate()); }
+        function dateCourte(iso) { return iso ? new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : ""; }
+        function enRetard(c, x) { return !x.ok && !!x.date && x.date < aujourdhui() && c.col !== "fait"; }
+        function idLocal() { return "n" + Date.now().toString(36).slice(-5) + Math.random().toString(36).slice(2, 5); }
+        /* Julien coche tout ; le client, ce qui est confié à quelqu'un de chez lui. */
+        function peutCocher(c, x) {
+          if (S.apercu) return false;
+          if (julien()) return true;
+          var cl = clientParId(c.client);
+          return !!cl && !cl.archive && coteClient(x.qui);
+        }
+        function cocher(c, x, ok) {
+          if (!op({ type: "carte.cocher", id: c.id, st: x.id, ok: ok })) return false;
+          x.ok = ok;
+          rendre();
+          if (feuille.mode === "carte" && feuille.id === c.id) refaireCarte();
+          if (!julien() && ok) toast("Cochée — Julien le voit à l’instant.");
+          return true;
+        }
+        function dansJours(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate()); }
+        /* Une sous-tâche est « du moment » si sa carte avance (en cours, chez le client), ou si
+           sa date tombe dans les deux semaines (ou est passée). Les autres attendent sur leur carte. */
+        function duMoment(c, x) { return c.col === "encours" || c.col === "vous" || (!!x.date && x.date <= dansJours(14)); }
+        /* Les sous-tâches ouvertes confiées au client, du moment, de la plus proche à la plus lointaine. */
+        function tachesConfiees(cartes) {
+          var out = [];
+          cartes.forEach(function (c) {
+            if (c.col === "fait" || c.col === "demandes") return;
+            (c.st || []).forEach(function (x) { if (!x.ok && coteClient(x.qui) && duMoment(c, x)) out.push({ c: c, s: x }); });
+          });
+          return out.sort(function (a, b) { return (a.s.date || "9999") < (b.s.date || "9999") ? -1 : (a.s.date || "9999") > (b.s.date || "9999") ? 1 : 0; });
+        }
+        function ligneSousTache(c, x, avecCarte) {
+          var li = el("li", x.ok ? "ok" : "");
+          if (peutCocher(c, x)) {
+            var cb = el("input");
+            cb.type = "checkbox";
+            cb.checked = x.ok;
+            cb.id = "st-" + c.id.slice(0, 8) + "-" + x.id + (avecCarte ? "-v" : "");
+            cb.setAttribute("aria-label", (x.ok ? "Rouvrir : " : "Fait : ") + x.t);
+            cb.addEventListener("change", function () { if (!cocher(c, x, cb.checked)) cb.checked = !cb.checked; });
+            li.appendChild(cb);
+          } else li.appendChild(el("span", "coche-fixe", x.ok ? "✓" : "○"));
+          var t = el("span", "t", x.t);
+          if (avecCarte) {
+            t.appendChild(el("br"));
+            t.appendChild(bouton(c.t, "parent", function () { ouvrirCarte(c.id); }));
+          }
+          li.appendChild(t);
+          var meta = [];
+          if (x.qui) meta.push(!julien() && S.me && x.qui === S.me.nom ? "vous" : x.qui);
+          if (x.date) meta.push(dateCourte(x.date));
+          if (meta.length) li.appendChild(el("span", "meta" + (enRetard(c, x) ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
+          li.addEventListener("click", function (e) { e.stopPropagation(); });
+          return li;
+        }
+        function personnesDe(cl) {
+          var noms = ["Julien"];
+          function ajouter(n) { if (n && noms.indexOf(n) < 0) noms.push(n); }
+          if (cl) { ajouter(cl.contact); S.acces.forEach(function (a) { if (a.client === cl.id) ajouter(a.nom); }); }
+          return noms;
+        }
+
+        /* ————— Le sous-tableau d'un projet ————— */
+        function chantierDe(cl, id) { for (var i = 0; cl && i < cl.chantiers.length; i++) if (cl.chantiers[i].id === id) return cl.chantiers[i]; return null; }
+        function avancement(x) { return avancementDe(cartesVisibles().filter(function (c) { return c.ch === x.id; })); }
+        /* Cartes faites et sous-tâches cochées, sur le total (les demandes n'en sont pas encore). */
+        function avancementDe(cartes) {
+          var fait = 0, total = 0;
+          cartes.forEach(function (c) {
+            if (c.col === "demandes" || c.col === "mensuel") return;
+            var st = c.st || [];
+            if (st.length) { total += st.length; fait += c.col === "fait" ? st.length : st.filter(function (k) { return k.ok; }).length; }
+            else { total += 1; if (c.col === "fait") fait += 1; }
+          });
+          return { fait: fait, total: total, pct: total ? Math.round((fait / total) * 100) : 0 };
+        }
+        /* Ce qui a une date dans le projet : ses dates clés, et les sous-tâches datées. */
+        function echeancesDe(x) {
+          var out = [];
+          (x.dates || []).forEach(function (d) { if (d.date) out.push({ date: d.date, t: d.t, cle: true }); });
+          cartesVisibles().forEach(function (c) {
+            if (c.ch !== x.id) return;
+            if (c.date) out.push({ date: c.date, t: c.t, qui: c.col === "vous" ? "client" : "Julien", ok: c.col === "fait", retard: c.col !== "fait" && c.date < aujourdhui() });
+            (c.st || []).forEach(function (k) { if (k.date) out.push({ date: k.date, t: k.t, qui: k.qui, ok: k.ok || c.col === "fait", retard: enRetard(c, k) }); });
+          });
+          return out.sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; });
+        }
+        function rendreProjet(cl) {
+          var p = $("projet");
+          var x = cl ? chantierDe(cl, S.f.ch) : null;
+          // Le panneau des dates clés reste ouvert d'un rendu à l'autre.
+          var ouvert = p.querySelector(".pj-dates");
+          if (ouvert) S.datesOuvertes = ouvert.open;
+          p.hidden = !x;
+          if (!x) { p.innerHTML = ""; delete p.dataset.sig; return; }
+          var edite = julien() && !S.apercu;
+          var a = avancement(x), dates = echeancesDe(x), auj = aujourdhui();
+          // Rien n'a changé : on ne touche pas au DOM (un clic en cours n'est pas perdu).
+          var sig = JSON.stringify([x, a, dates, edite, auj, cl.debut, cl.fin, cl.contact, S.acces.length]);
+          if (p.dataset.sig === sig) return;
+          p.dataset.sig = sig;
+          p.innerHTML = "";
+          p.style.setProperty("--pc", "var(--" + x.couleur + ")");
+          var bloc = el("div", "pj");
+          var h = el("div", "pj-h");
+          var t = el("h2");
+          t.appendChild(el("span", "sw"));
+          t.appendChild(document.createTextNode(x.nom));
+          h.appendChild(t);
+          h.appendChild(bouton("‹ Toute la mission", "pj-retour", function () { S.f.ch = null; rendre(); }));
+          bloc.appendChild(h);
+          if (edite) {
+            var obj = saisie("textarea", x.objectif, function (v) { majChantier(cl, x, { objectif: v }); }, "L’objectif du projet, en une phrase — le client le lit ici");
+            obj.rows = 2;
+            obj.className = "pj-objectif";
+            obj.id = "pj-objectif";
+            bloc.appendChild(obj);
+          } else if (x.objectif) bloc.appendChild(el("p", "pj-objectif", x.objectif));
+
+          var prochaine = dates.filter(function (d) { return d.date >= auj && !d.ok; })[0];
+          var retards = dates.filter(function (d) { return d.retard; }).length;
+          var av = el("div", "pj-avance");
+          var jauge = el("div", "jauge"), trait = el("i");
+          trait.style.width = a.pct + "%";
+          jauge.appendChild(trait);
+          av.appendChild(jauge);
+          var ligne = el("p");
+          ligne.appendChild(el("b", null, a.pct + " %"));
+          ligne.appendChild(document.createTextNode(" — " + a.fait + " sur " + a.total + (a.total > 1 ? " tâches faites" : " tâche faite")));
+          if (prochaine) ligne.appendChild(document.createTextNode(" · Prochaine échéance : " + prochaine.t + ", " + dateLongue(prochaine.date)));
+          if (retards) { ligne.appendChild(document.createTextNode(" · ")); ligne.appendChild(el("span", "retard", nombre(retards, "sous-tâche", "sous-tâches") + " en retard")); }
+          av.appendChild(ligne);
+          bloc.appendChild(av);
+          bloc.appendChild(frise(cl, x, dates));
+          if (edite) bloc.appendChild(editeurDates(cl, x));
+          p.appendChild(bloc);
+        }
+        function majChantier(cl, x, champs) { op({ type: "chantier.maj", client: cl.id, ch: x.id, champs: champs }); }
+
+        /* La frise : la période de la mission, les mois, aujourd'hui, les dates clés au-dessus,
+           les sous-tâches datées en points (violet : chez le client ; rouge : en retard). */
+        function frise(cl, x, dates) {
+          var boite = el("div", "frise-boite");
+          var jalon = function (iso) { return new Date(iso + "T12:00:00").getTime(); };
+          var bornes = dates.map(function (d) { return jalon(d.date); });
+          if (cl.debut) bornes.push(jalon(cl.debut));
+          if (cl.fin) bornes.push(jalon(cl.fin));
+          if (!dates.length) {
+            boite.appendChild(el("p", "frise-leg", julien() ? "Pas encore de date : ajoutez les dates clés du projet, ou datez des sous-tâches." : "Les dates clés du projet s’afficheront ici."));
+            if (bornes.length < 2) return boite;
+          }
+          var t0 = Math.min.apply(null, bornes), t1 = Math.max.apply(null, bornes);
+          if (t1 - t0 < 20 * JOUR) { t0 -= 10 * JOUR; t1 += 10 * JOUR; }
+          var marge = (t1 - t0) * 0.03;
+          t0 -= marge; t1 += marge;
+          var pos = function (t) { return ((t - t0) / (t1 - t0)) * 100; };
+          var zone = el("div", "frise"), dedans = el("div", "frise-in");
+          dedans.appendChild(el("div", "axe"));
+          if (cl.debut && cl.fin) {
+            var du = el("div", "duree");
+            du.style.left = pos(jalon(cl.debut)) + "%";
+            du.style.width = pos(jalon(cl.fin)) - pos(jalon(cl.debut)) + "%";
+            du.title = "La période : " + dateLongue(cl.debut) + " → " + dateLongue(cl.fin);
+            dedans.appendChild(du);
+          }
+          var m = new Date(t0); m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+          while (m.getTime() < t1) {
+            var mo = el("span", "mois", m.toLocaleDateString("fr-FR", { month: "short" }) + (m.getMonth() === 0 ? " " + m.getFullYear() : ""));
+            mo.style.left = pos(m.getTime()) + "%";
+            dedans.appendChild(mo);
+            m = new Date(m.getFullYear(), m.getMonth() + 1, 1);
+          }
+          var maintenant = Date.now();
+          if (maintenant > t0 && maintenant < t1) {
+            var au = el("div", "auj");
+            au.style.left = pos(maintenant) + "%";
+            au.appendChild(el("span", null, "aujourd’hui"));
+            dedans.appendChild(au);
+          }
+          var n = 0;
+          dates.forEach(function (d) {
+            var x0 = pos(jalon(d.date));
+            if (!d.cle) {
+              var pt = el("span", "pt" + (d.retard ? " retard" : coteClient(d.qui) ? " client" : "") + (d.ok ? " ok" : ""));
+              pt.style.left = x0 + "%";
+              pt.title = d.t + (d.qui ? " — " + d.qui : "") + " — " + dateLongue(d.date) + (d.ok ? " (fait)" : "");
+              dedans.appendChild(pt);
+              return;
+            }
+            var point = el("span", "cle" + (d.date < aujourdhui() ? " passee" : ""));
+            point.style.left = x0 + "%";
+            point.title = d.t + " — " + dateLongue(d.date);
+            dedans.appendChild(point);
+            // Étiquettes alternées au-dessus et au-dessous, calées sur les bords.
+            var etiq = el("span", "etiq " + (n++ % 2 ? "bas" : "haut"));
+            etiq.appendChild(document.createTextNode(d.t));
+            etiq.appendChild(el("small", null, dateLongue(d.date)));
+            etiq.style.left = x0 + "%";
+            etiq.style.transform = x0 < 10 ? "none" : x0 > 90 ? "translateX(-100%)" : "translateX(-50%)";
+            dedans.appendChild(etiq);
+          });
+          zone.appendChild(dedans);
+          boite.appendChild(zone);
+          var leg = el("p", "frise-leg");
+          [["cle", "date clé"], ["client", "chez le client"], ["", "chez Julien"]].forEach(function (l) {
+            var s0 = el("span"); s0.appendChild(el("i", l[0])); s0.appendChild(document.createTextNode(l[1])); leg.appendChild(s0);
+          });
+          boite.appendChild(leg);
+          return boite;
+        }
+        function editeurDates(cl, x) {
+          var d = el("details", "pj-dates");
+          d.open = !!S.datesOuvertes;
+          d.addEventListener("toggle", function () { S.datesOuvertes = d.open; });
+          var liste = (x.dates || []).map(function (k) { return { id: k.id, t: k.t, date: k.date }; });
+          d.appendChild(el("summary", null, liste.length ? "Dates clés (" + liste.length + ") — modifier" : "Ajouter les dates clés du projet"));
+          // Chaque geste repart de l'état du moment (un rendu venu de l'autre côté a pu le remplacer).
+          function courant() { return chantierDe(clientParId(cl.id), x.id) || x; }
+          function actuelles() { return (courant().dates || []).map(function (k) { return { id: k.id, t: k.t, date: k.date }; }); }
+          function enregistrer(l) { courant().dates = l; majChantier(cl, x, { dates: l }); }
+          function modifier(id, fn) { var l = actuelles(); for (var i = 0; i < l.length; i++) if (l[i].id === id) { fn(l, i); break; } enregistrer(l); }
+          liste.forEach(function (k) {
+            var ligne = el("div", "ligne");
+            var t = saisie("text", k.t, function (v) { modifier(k.id, function (l, i) { if (v.trim()) l[i].t = v.trim(); else l.splice(i, 1); }); });
+            t.id = "pj-date-t-" + k.id;
+            t.setAttribute("aria-label", "Date clé");
+            var j = saisie("date", k.date, function (v) { modifier(k.id, function (l, i) { l[i].date = v; }); });
+            j.id = "pj-date-j-" + k.id;
+            j.setAttribute("aria-label", "Le");
+            ligne.appendChild(t); ligne.appendChild(j);
+            ligne.appendChild(bouton("×", "etape-x", function () { modifier(k.id, function (l, i) { l.splice(i, 1); }); rendre(); }));
+            d.appendChild(ligne);
+          });
+          var neuve = el("div", "ligne");
+          // Ce qui est tapé ici survit à un rendu venu de l'autre côté.
+          var brouillon = S.nouvelleDate || (S.nouvelleDate = { t: "", date: "" });
+          var nt = el("input"); nt.type = "text"; nt.id = "pj-date-nouvelle"; nt.placeholder = "Accord de Laurent, recette…"; nt.setAttribute("aria-label", "Nouvelle date clé"); nt.value = brouillon.t;
+          var nj = el("input"); nj.type = "date"; nj.id = "pj-date-nouvelle-j"; nj.setAttribute("aria-label", "Le"); nj.value = brouillon.date;
+          nt.addEventListener("input", function () { brouillon.t = nt.value; });
+          nj.addEventListener("input", function () { brouillon.date = nj.value; });
+          neuve.appendChild(nt); neuve.appendChild(nj);
+          neuve.appendChild(bouton("Ajouter", "btn-ghost btn-sm", function () {
+            if (!nt.value.trim()) return nt.focus();
+            enregistrer(actuelles().concat([{ id: idLocal(), t: nt.value.trim(), date: nj.value }]));
+            S.nouvelleDate = { t: "", date: "" };
+            S.datesOuvertes = true;
+            rendre();
+            var suite = $("pj-date-nouvelle");
+            if (suite) suite.focus();
+          }));
+          d.appendChild(neuve);
+          return d;
+        }
 
         function actionsClient(c, carteNode) {
           var a = el("div", "acts");
@@ -1106,8 +1722,8 @@
             var t = inp.value.trim(), col = inp.dataset.add, cl = clientCourant();
             if (col === "demandes" && !julien()) { ouvrirDemande(t, function () { inp.value = ""; }); return; }
             if (!cl) return toast("Choisissez d’abord une place.");
-            if (col === "demandes") { if (op({ type: "demande.creer", client: cl.id, t: t })) { inp.value = ""; toast("Demande ajoutée au nom de " + (cl.contact || cl.nom) + "."); } return; }
-            if (op({ type: "carte.creer", client: cl.id, col: col, t: t })) { inp.value = ""; if (col === "vous") toast("Question posée — elle apparaît chez " + (cl.contact || "le client") + "."); }
+            if (col === "demandes") { if (op({ type: "demande.creer", client: cl.id, t: t, ch: S.f.ch })) { inp.value = ""; toast("Demande ajoutée au nom de " + (cl.contact || cl.nom) + "."); } return; }
+            if (op({ type: "carte.creer", client: cl.id, col: col, t: t, ch: S.f.ch })) { inp.value = ""; if (col === "vous") toast("Question posée — elle apparaît chez " + (cl.contact || "le client") + "."); }
           });
         });
 
@@ -1178,6 +1794,7 @@
             var m = el("div", "chips");
             m.appendChild(chip(c.col === "vous" ? "Chez vous" : NOM_COL[c.col], c.col === "vous" ? "vous" : ""));
             if (c.echeance) m.appendChild(chip(c.echeance));
+            if (c.date) m.appendChild(chip("pour le " + dateLongue(c.date)));
             if (c.livrable) m.appendChild(chip("livrable"));
             if (c.statut) m.appendChild(chip(c.statut, "ok"));
             sheet.appendChild(m);
@@ -1202,7 +1819,10 @@
             }
             var g = el("div", "grille");
             g.style.marginTop = "14px";
-            g.appendChild(champ("Échéance", saisie("text", c.echeance, function (v) { op({ type: "carte.maj", id: c.id, champs: { echeance: v } }); }, "jeudi, 14 octobre, S43…")));
+            g.appendChild(champ("Échéance (libellé)", saisie("text", c.echeance, function (v) { op({ type: "carte.maj", id: c.id, champs: { echeance: v } }); }, "Octobre, S43, avant le salon…")));
+            var pourLe = saisie("date", c.date, function (v) { op({ type: "carte.maj", id: c.id, champs: { date: v } }); });
+            pourLe.id = "carte-date";
+            g.appendChild(champ("Pour le — range « Ma semaine »", pourLe));
             g.appendChild(champ("Lien du livrable", saisie("url", c.lien, function (v) { op({ type: "carte.maj", id: c.id, champs: { lien: v } }); }, "https://drive.google.com/…")));
             sheet.appendChild(g);
             var liv = el("label", "coche"); var cb = el("input"); cb.type = "checkbox"; cb.checked = !!c.livrable;
@@ -1212,49 +1832,62 @@
             sheet.appendChild(liv);
             sheet.appendChild(el("p", "lab", "Le pourquoi — ce que le client lit"));
             sheet.appendChild(saisie("textarea", c.desc, function (v) { op({ type: "carte.maj", id: c.id, champs: { desc: v } }); }, "Une phrase suffit."));
-            // Les étapes : cochées au fil de l'eau, le client voit « 2/4 » sur sa carte.
-            var oks = jokDe(c), nOk = oks.filter(Boolean).length, js = c.jalons || [];
-            sheet.appendChild(el("p", "lab", "Étapes" + (js.length ? " — " + nOk + " sur " + js.length : "") + " · le client voit l’avancement"));
-            var majEtapes = function (liste, cochees) {
-              if (!op({ type: "carte.maj", id: c.id, champs: { jalons: liste, jok: cochees } })) return;
-              c.jalons = liste; c.jok = cochees;
+            // Les sous-tâches : un responsable, une date. Le client voit l'avancement et coche les siennes.
+            var sts = (c.st || []).map(function (k) { return { id: k.id, t: k.t, ok: k.ok, qui: k.qui, date: k.date }; });
+            var nOk = sts.filter(function (k) { return k.ok; }).length;
+            sheet.appendChild(el("p", "lab", "Sous-tâches" + (sts.length ? " — " + nOk + " sur " + sts.length : "")));
+            // Chaque geste repart de la carte à jour : une case cochée entre-temps par le client n'est pas écrasée.
+            var majSousTaches = function (liste) {
+              if (!op({ type: "carte.maj", id: c.id, champs: { st: liste } })) return;
+              (trouverCarte(c.id) || c).st = liste;
               refaireCarte();
               rendre();
             };
-            var ed = el("ul", "etapes-ed");
-            js.forEach(function (j, i) {
-              var li = el("li", oks[i] ? "ok" : "");
-              var cb = el("input"); cb.type = "checkbox"; cb.checked = oks[i]; cb.setAttribute("aria-label", "Étape faite : " + j);
+            var actuelles = function () { return ((trouverCarte(c.id) || c).st || []).map(function (k) { return { id: k.id, t: k.t, ok: k.ok, qui: k.qui, date: k.date }; }); };
+            var modifier = function (id, fn) { var l = actuelles(); for (var i = 0; i < l.length; i++) if (l[i].id === id) { fn(l, i); break; } majSousTaches(l); };
+            var responsables = personnesDe(cl);
+            var ed = el("ul", "st-ed");
+            sts.forEach(function (k) {
+              var li = el("li", k.ok ? "ok" : "");
+              var cb = el("input"); cb.type = "checkbox"; cb.checked = k.ok; cb.id = "st-ed-" + k.id; cb.setAttribute("aria-label", "Faite : " + k.t);
               cb.addEventListener("change", function () {
-                if (!op({ type: "carte.cocher", id: c.id, i: i, ok: cb.checked })) { cb.checked = !cb.checked; return; }
-                c.jok = jokDe(c); c.jok[i] = cb.checked;
-                li.classList.toggle("ok", cb.checked);
-                rendre();
+                var vraie = (c.st || []).filter(function (x) { return x.id === k.id; })[0];
+                if (!vraie || !cocher(c, vraie, cb.checked)) cb.checked = !cb.checked;
               });
               li.appendChild(cb);
-              li.appendChild(saisie("text", j, function (v) {
-                var l = js.slice(), k = jokDe(c);
-                if (v.trim()) l[i] = v.trim(); else { l.splice(i, 1); k.splice(i, 1); }
-                majEtapes(l, k);
-              }));
-              li.appendChild(bouton("×", "etape-x", function () { var l = js.slice(), k = jokDe(c); l.splice(i, 1); k.splice(i, 1); majEtapes(l, k); }));
+              var tx = saisie("text", k.t, function (v) { modifier(k.id, function (l, j) { if (v.trim()) l[j].t = v.trim(); else l.splice(j, 1); }); });
+              tx.id = "st-ed-t-" + k.id;
+              tx.setAttribute("aria-label", "Sous-tâche");
+              li.appendChild(tx);
+              var sel = el("select"); sel.id = "st-ed-qui-" + k.id; sel.setAttribute("aria-label", "Responsable");
+              [["", "Responsable —"]].concat(responsables.map(function (n) { return [n, n]; })).forEach(function (o) {
+                var opt = el("option", null, o[1]); opt.value = o[0]; if (o[0] === k.qui) opt.selected = true; sel.appendChild(opt);
+              });
+              sel.addEventListener("change", function () { modifier(k.id, function (l, j) { l[j].qui = sel.value; }); });
+              li.appendChild(sel);
+              var dt = saisie("date", k.date, function (v) { modifier(k.id, function (l, j) { l[j].date = v; }); });
+              dt.id = "st-ed-date-" + k.id;
+              dt.setAttribute("aria-label", "Pour le");
+              li.appendChild(dt);
+              li.appendChild(bouton("×", "etape-x", function () { modifier(k.id, function (l, j) { l.splice(j, 1); }); }));
               ed.appendChild(li);
             });
             sheet.appendChild(ed);
-            var nouvelle = el("input"); nouvelle.type = "text"; nouvelle.placeholder = "+ une étape, puis Entrée"; nouvelle.dataset.garde = "etape";
-            nouvelle.style.marginTop = "6px";
+            if (sts.length) sheet.appendChild(el("p", "aide", "Confiée au client, une sous-tâche apparaît dans son « Chez vous » : c’est lui qui la coche."));
+            var nouvelle = el("input"); nouvelle.type = "text"; nouvelle.id = "st-nouvelle"; nouvelle.placeholder = "+ une sous-tâche, puis Entrée"; nouvelle.dataset.garde = "etape";
+            nouvelle.style.marginTop = "8px";
             nouvelle.addEventListener("keydown", function (e) {
               if (e.key !== "Enter" || !nouvelle.value.trim()) return;
               e.preventDefault();
               var v = nouvelle.value.trim();
               nouvelle.value = "";
-              majEtapes(js.concat([v]), jokDe(c).concat([false]));
+              majSousTaches(actuelles().concat([{ id: idLocal(), t: v, ok: false, qui: "", date: "" }]));
             });
             sheet.appendChild(nouvelle);
-            var typeCarte = js.length ? null : PROCESS.filter(function (x) { return x.test.test(c.t); })[0];
+            var typeCarte = sts.length ? null : PROCESS.filter(function (x) { return x.test.test(c.t); })[0];
             if (typeCarte) {
               var prop = bouton("Étapes type « " + typeCarte.type + " » : " + typeCarte.jalons.join(" · "), "btn-ghost btn-sm", function () {
-                majEtapes(typeCarte.jalons.slice(), typeCarte.jalons.map(function () { return false; }));
+                majSousTaches(typeCarte.jalons.map(function (t) { return { id: idLocal(), t: t, ok: false, qui: "", date: "" }; }));
               });
               prop.style.marginTop = "8px"; prop.style.textAlign = "left";
               sheet.appendChild(prop);
@@ -1284,17 +1917,12 @@
             if (c.statut || c.note) sheet.appendChild(el("p", "aide", [c.statut, c.note].filter(Boolean).join(" — ")));
           }
 
-          if (c.jalons && c.jalons.length && fc) {
-            var coches = jokDe(c), faites = coches.filter(Boolean).length;
-            sheet.appendChild(el("p", "lab", "Comment ça se passe" + (faites ? " — " + faites + " sur " + c.jalons.length : "")));
-            if (faites) { var av = el("div", "avance"), trait = el("i"); trait.style.width = Math.round((faites / c.jalons.length) * 100) + "%"; av.appendChild(trait); sheet.appendChild(av); }
-            var ul = el("ul", "jalons");
-            c.jalons.forEach(function (j, i) {
-              var li = el("li", coches[i] ? "ok" : "");
-              li.appendChild(el("span", "jn", coches[i] ? "✓" : String(i + 1)));
-              li.appendChild(document.createTextNode(j));
-              ul.appendChild(li);
-            });
+          if ((c.st || []).length && fc) {
+            var faites = c.st.filter(function (k) { return k.ok; }).length;
+            sheet.appendChild(el("p", "lab", (c.col === "demandes" ? "Comment ça se passe" : "Sous-tâches") + (faites ? " — " + faites + " sur " + c.st.length : "")));
+            if (faites) { var av = el("div", "avance"), trait = el("i"); trait.style.width = Math.round((faites / c.st.length) * 100) + "%"; av.appendChild(trait); sheet.appendChild(av); }
+            var ul = el("ul", "st-liste");
+            c.st.forEach(function (k) { ul.appendChild(ligneSousTache(c, k, false)); });
             sheet.appendChild(ul);
           }
 
@@ -1352,14 +1980,14 @@
           var f = el("div", "foot");
           f.appendChild(bouton("Envoyer à Julien", "btn", function () {
             if (S.apercu) return toast("Aperçu — la demande n’est pas partie.");
-            if (op({ type: "demande.creer", t: t, desc: d.value.trim() })) { apresEnvoi(); fermer(); toast("Envoyée — elle est dans « Demandes », Julien la voit à l’instant."); }
+            if (op({ type: "demande.creer", t: t, desc: d.value.trim(), ch: S.f.ch })) { apresEnvoi(); fermer(); toast("Envoyée — elle est dans « Demandes », Julien la voit à l’instant."); }
           }));
           f.appendChild(bouton("Modifier", "btn-ghost", fermer));
           sheet.appendChild(f);
         }
 
         /* ————— Côté Julien : places, accès, point de lundi ————— */
-        var FORMAT_PLAN = "# Culture & Patrimoine\n## Octobre\n- Choisir l’établissement test (à vous)\n- Trame d’entretiens (livrable)\n- Cadrage du chantier (fait)\n# Marketing & diffusion\n- Sortie du stock de contenus (en cours)";
+        var FORMAT_PLAN = "# Culture & Patrimoine\n## Octobre\n- Choisir l’établissement test (à vous)\n- Trame d’entretiens (livrable)\n- Cadrage du chantier (fait)\n# Mesure des ventes\n- Poser les liens sur les campagnes (en cours)\n  - Accès Google Analytics (à vous, 15/10)\n  - Liens identifiés dans Brevo (Julien, 20/10)";
 
         function ouvrirNouvellePlace() {
           ouvrirFeuille("place");
@@ -1380,7 +2008,7 @@
           var c2 = champ("Chantiers — un par ligne (4 au plus, c’est plus lisible)", chantiers); c2.style.marginTop = "10px"; sheet.appendChild(c2);
           sheet.appendChild(el("p", "lab", "Le plan, à coller"));
           sheet.appendChild(plan);
-          sheet.appendChild(el("p", "aide", "Format : # chantier, ## mois, - tâche. Entre parenthèses : fait, en cours, à vous, livrable, ou une échéance."));
+          sheet.appendChild(el("p", "aide", "Format : # chantier, ## mois, - tâche. Entre parenthèses : fait, en cours, à vous, livrable, une date (15/10) ou une échéance. En retrait sous une tâche : ses sous-tâches, avec qui (à vous, Julien, un prénom) et une date (15/10)."));
           sheet.appendChild(el("pre", "format", FORMAT_PLAN));
           var f = el("div", "foot");
           f.appendChild(bouton("Créer la place et son lien", "btn", function () {
@@ -1399,7 +2027,12 @@
         }
         function rapportImport(r) {
           if (!r) return "";
-          return r.cartes + (r.cartes > 1 ? " cartes importées" : " carte importée") + (r.ignorees && r.ignorees.length ? " — " + r.ignorees.length + " ligne(s) non comprise(s) : « " + r.ignorees[0] + " »" + (r.ignorees.length > 1 ? "…" : "") : ".");
+          var parts = [];
+          if (r.cartes || !r.completees) parts.push(r.cartes + (r.cartes > 1 ? " cartes importées" : " carte importée"));
+          if (r.completees) parts.push(r.completees + (r.completees > 1 ? " cartes complétées" : " carte complétée"));
+          if (r.sousTaches) parts.push(r.sousTaches + (r.sousTaches > 1 ? " sous-tâches ajoutées" : " sous-tâche ajoutée"));
+          else if (r.completees) parts.push("aucune sous-tâche nouvelle");
+          return parts.join(", ") + (r.ignorees && r.ignorees.length ? " — " + r.ignorees.length + " ligne(s) non comprise(s) : « " + r.ignorees[0] + " »" + (r.ignorees.length > 1 ? "…" : "") : ".");
         }
         function montrerLien(m) {
           S.filtre = m.client;
@@ -1473,7 +2106,8 @@
           sheet.appendChild(el("p", "lab", "Coller un plan"));
           var plan = el("textarea"); plan.rows = 5; plan.placeholder = FORMAT_PLAN;
           sheet.appendChild(plan);
-          var imp = bouton("Importer dans « Prévu »", "btn-ghost btn-sm", function () { if (plan.value.trim() && op({ type: "place.importer", id: cl.id, plan: plan.value })) plan.value = ""; });
+          sheet.appendChild(el("p", "aide", "Les nouvelles tâches arrivent dans « Prévu ». Une tâche déjà présente (même titre) n’est pas recréée : ses sous-tâches s’y ajoutent, sans doublon."));
+          var imp = bouton("Importer", "btn-ghost btn-sm", function () { if (plan.value.trim() && op({ type: "place.importer", id: cl.id, plan: plan.value })) plan.value = ""; });
           imp.style.marginTop = "8px";
           sheet.appendChild(imp);
 
@@ -1497,7 +2131,8 @@
           var date = new Date().toLocaleDateString("fr-FR", { weekday: "long", day: "numeric", month: "long" });
           var txt = "Point du " + date + " — " + cl.nom + "\n\n" +
             "Parti cette semaine\n" + lignes(parti, function (c) { return "· " + c.t + (c.statut ? " (" + c.statut + ")" : ""); }) + "\n\n" +
-            "Chez vous\n" + lignes(chez, function (c) { return "· " + c.t + (c.chezClientDepuis ? " — " + depuis(c.chezClientDepuis) : ""); }) + "\n\n" +
+            "Chez vous\n" + lignes(chez, function (c) { return "· " + c.t + (c.chezClientDepuis ? " — " + depuis(c.chezClientDepuis) : ""); }) +
+            tachesConfiees(w).map(function (x) { return "\n· " + x.s.t + " (" + x.s.qui + (x.s.date ? ", pour le " + dateLongue(x.s.date) : "") + ")"; }).join("") + "\n\n" +
             "En cours\n" + lignes(encours, function (c) { return "· " + c.t + (c.echeance ? " — " + c.echeance : ""); }) + "\n\n" +
             "Ensuite\n" + lignes(prevu, function (c) { return "· " + c.t + (c.echeance ? " — " + c.echeance : ""); }) +
             "\n\nTout est à jour dans votre tableau : " + location.origin + "/tableau";
@@ -1523,16 +2158,23 @@
         }
 
         /* ————— La discussion : une par place, en direct ————— */
-        var C = { ouvert: false, client: null, frappe: {}, frappeEnvoyee: 0, tmp: 0, bulles: {} };
+        var C = { ouvert: false, client: null, fil: "", frappe: {}, frappeEnvoyee: 0, tmp: 0, bulles: {} };
         var chatTxt = $("chat-txt");
-        function lusDe(client) { return S.lus[client] || (S.lus[client] = {}); }
+        /* Une place a un fil général ("") et un fil par projet (l'id du chantier). */
+        function lusDe(client, fil) { var p = S.lus[client] || (S.lus[client] = {}); return p[fil] || (p[fil] = {}); }
         function filDe(client) { return S.msgs[client] || (S.msgs[client] = []); }
+        function sonFil(m) { return m.fil || ""; }
+        function messagesDu(client, f) { return filDe(client).filter(function (m) { return sonFil(m) === f; }); }
+        function nomDuFil(client, f) { var x = f ? chantierDe(clientParId(client), f) : null; return x ? x.nom : ""; }
         function cleDe(m) { return m.role === "julien" ? "j" : "c:" + m.qui; }
         function maCle() { return julien() ? "j" : "c:" + (S.me ? S.me.nom : ""); }
         function estMien(m) { return cleDe(m) === maCle(); }
-        function nonLus(client) {
-          var lu = lusDe(client)[maCle()] || 0;
-          return filDe(client).filter(function (m) { return !estMien(m) && m.ts > lu; }).length;
+        /* Non lus d'un fil, ou de tous les fils de la place quand f est omis. */
+        function nonLus(client, f) {
+          return filDe(client).filter(function (m) {
+            if (f !== undefined && sonFil(m) !== f) return false;
+            return !estMien(m) && m.ts > (lusDe(client, sonFil(m))[maCle()] || 0);
+          }).length;
         }
         function nonLusTotal() { return S.me ? S.clients.reduce(function (n, cl) { return n + nonLus(cl.id); }, 0) : 0; }
         function placesDiscussion() { return S.clients.filter(function (c) { return !c.archive || filDe(c.id).length; }); }
@@ -1541,8 +2183,8 @@
           return C.client && clientParId(C.client) ? C.client : null;
         }
         /* Vu : pour Julien, lu par quelqu'un de la place ; pour le client, lu par Julien. */
-        function vuParLautre(client, ts) {
-          var l = lusDe(client);
+        function vuParLautre(client, f, ts) {
+          var l = lusDe(client, f);
           return Object.keys(l).some(function (k) { return k !== maCle() && (julien() ? k.indexOf("c:") === 0 : k === "j") && l[k] >= ts; });
         }
         function initiales(t) {
@@ -1574,7 +2216,7 @@
         function recevoirDiscussion(m) {
           S.msgs = {}; S.lus = {}; S.debutFil = {};
           (m.messages || []).forEach(function (x) { filDe(x.client).push(x); });
-          (m.lus || []).forEach(function (l) { lusDe(l.client)[l.qui] = l.ts; });
+          (m.lus || []).forEach(function (l) { lusDe(l.client, l.fil || "")[l.qui] = l.ts; });
           rendreChat("bas");
           majTitre();
         }
@@ -1584,29 +2226,30 @@
           var i = -1;
           if (m.tmp) for (var k = 0; k < fil.length; k++) if (fil[k].tmp === m.tmp) { i = k; break; }
           if (i >= 0) { fil[i] = x; C.bulles[x.id] = true; } else fil.push(x);
-          var l = lusDe(x.client);
+          var l = lusDe(x.client, sonFil(x)), cleFrappe = x.client + "|" + sonFil(x);
           l[cleDe(x)] = Math.max(l[cleDe(x)] || 0, x.ts);
-          if (C.frappe[x.client] && C.frappe[x.client].qui === cleDe(x)) delete C.frappe[x.client];
-          var sousLesYeux = C.ouvert && clientDuChat() === x.client && !document.hidden;
+          if (C.frappe[cleFrappe] && C.frappe[cleFrappe].qui === cleDe(x)) delete C.frappe[cleFrappe];
+          var sousLesYeux = C.ouvert && clientDuChat() === x.client && C.fil === sonFil(x) && !document.hidden;
           if (!estMien(x) && !sousLesYeux) {
             var fab = $("fab");
             fab.classList.remove("pop"); void fab.offsetWidth; fab.classList.add("pop");
-            toast(x.qui + " : " + (x.txt.length > 70 ? x.txt.slice(0, 70) + "…" : x.txt));
+            var projet = nomDuFil(x.client, sonFil(x));
+            toast(x.qui + (projet ? " · " + projet : "") + " : " + (x.txt.length > 70 ? x.txt.slice(0, 70) + "…" : x.txt));
           }
           rendreChat();
           majTitre();
         }
         function recevoirFrappe(m) {
           if (m.qui === maCle()) return;
-          C.frappe[m.client] = { qui: m.qui, nom: m.nom, jusqua: Date.now() + 4000 };
+          C.frappe[m.client + "|" + (m.fil || "")] = { qui: m.qui, nom: m.nom, jusqua: Date.now() + 4000 };
           rendreEnTete();
           setTimeout(rendreEnTete, 4100);
         }
         function recevoirHistorique(m) {
           var fil = filDe(m.client), connus = {};
           fil.forEach(function (x) { connus[x.id] = true; });
-          S.msgs[m.client] = (m.messages || []).filter(function (x) { return !connus[x.id]; }).concat(fil);
-          if ((m.messages || []).length < 200) S.debutFil[m.client] = true;
+          S.msgs[m.client] = (m.messages || []).filter(function (x) { return !connus[x.id]; }).concat(fil).sort(function (a, b) { return (a.id || 1e15) - (b.id || 1e15); });
+          if ((m.messages || []).length < 200) S.debutFil[m.client + "|" + (m.fil || "")] = true;
           rendreChat("garder");
         }
 
@@ -1623,8 +2266,10 @@
           $("chat-retour").hidden = !(julien() && cl && placesDiscussion().length > 1);
           av.hidden = !cl;
           etat.className = "";
-          if (!cl) { nom.textContent = "Discussions"; etat.textContent = majuscule(nombre(placesDiscussion().length, "place", "places")); return; }
-          var f = C.frappe[id], ecrit = f && f.jusqua > Date.now();
+          if (!cl) { rendreFils(null); nom.textContent = "Discussions"; etat.textContent = majuscule(nombre(placesDiscussion().length, "place", "places")); return; }
+          if (C.fil && !chantierDe(cl, C.fil)) C.fil = "";
+          rendreFils(cl);
+          var f = C.frappe[id + "|" + C.fil], ecrit = f && f.jusqua > Date.now();
           if (julien()) {
             av.textContent = initiales(cl.nom);
             nom.textContent = cl.nom;
@@ -1640,6 +2285,26 @@
             if (ecrit || present) etat.className = "vif";
           }
         }
+        /* Les onglets : « Général », puis un fil par projet, avec ses non-lus. */
+        function rendreFils(cl) {
+          var f = $("chat-fils");
+          f.innerHTML = "";
+          if (!cl || !cl.chantiers.length) return;
+          [{ id: "", nom: "Général" }].concat(cl.chantiers).forEach(function (x) {
+            var b = el("button", C.fil === x.id ? "on" : "");
+            b.type = "button";
+            b.setAttribute("role", "tab");
+            b.setAttribute("aria-selected", C.fil === x.id ? "true" : "false");
+            if (x.couleur) { var sw = el("span", "sw"); sw.style.background = "var(--" + x.couleur + ")"; b.appendChild(sw); }
+            b.appendChild(document.createTextNode(x.nom));
+            var n = nonLus(cl.id, x.id);
+            if (n) b.appendChild(el("span", "nb", String(n)));
+            b.addEventListener("click", function () { C.fil = x.id; rendreChat("bas"); });
+            f.appendChild(b);
+          });
+          var actif = f.querySelector(".on");
+          if (actif && actif.scrollIntoView) actif.scrollIntoView({ block: "nearest", inline: "nearest" });
+        }
         function rendreChat(defilement) {
           if (!S.me) return;
           majFab();
@@ -1653,19 +2318,24 @@
           var close = !julien() && cl.archive;
           chatTxt.disabled = close;
           chatTxt.placeholder = close ? "Place close — la discussion reste lisible" : "Message";
-          var msgs = filDe(id);
-          if (msgs.length >= 200 && !S.debutFil[id]) {
+          var msgs = messagesDu(id, C.fil), projet = nomDuFil(id, C.fil);
+          if (msgs.length && (filDe(id).length >= 200 || msgs.length >= 200) && !S.debutFil[id + "|" + C.fil]) {
             var plus = el("button", "plus-ancien", "Messages plus anciens");
             plus.type = "button";
-            plus.addEventListener("click", function () { if (msgs[0].id) op({ type: "chat.historique", client: id, avant: msgs[0].id }); });
+            plus.addEventListener("click", function () { if (msgs[0].id) op({ type: "chat.historique", client: id, fil: C.fil, avant: msgs[0].id }); });
             fil.appendChild(plus);
           }
           if (!msgs.length) {
             var vide = el("div", "chat-vide");
-            vide.appendChild(el("em", null, julien() ? "Écrivez à " + (cl.contact || cl.nom) + "." : "Écrivez à Julien."));
-            vide.appendChild(document.createTextNode(julien()
-              ? "Le message arrive en direct si le tableau est ouvert de l’autre côté ; sinon, il l’attend."
-              : "Une question, un point rapide : c’est ici. Pour une nouvelle mission, passez plutôt par « Demandes » — l’assistant vous montre le déroulé."));
+            if (projet) {
+              vide.appendChild(el("em", null, "Le fil « " + projet + " »."));
+              vide.appendChild(document.createTextNode("Tout ce qui concerne ce projet, ici — séparé du fil général."));
+            } else {
+              vide.appendChild(el("em", null, julien() ? "Écrivez à " + (cl.contact || cl.nom) + "." : "Écrivez à Julien."));
+              vide.appendChild(document.createTextNode(julien()
+                ? "Le message arrive en direct si le tableau est ouvert de l’autre côté ; sinon, il l’attend."
+                : "Une question, un point rapide : c’est ici. Pour une nouvelle mission, passez plutôt par « Demandes » — l’assistant vous montre le déroulé."));
+            }
             fil.appendChild(vide);
           }
           var autres = {};
@@ -1683,7 +2353,7 @@
             lierLiens(b, m.txt);
             var h = el("span", "h", heure(m.ts));
             if (mien) {
-              var vu = !m.attente && vuParLautre(id, m.ts);
+              var vu = !m.attente && vuParLautre(id, C.fil, m.ts);
               var t = el("span", "coche-lu" + (vu ? " vu" : ""), m.attente ? "…" : vu ? "✓✓" : "✓");
               t.title = m.attente ? "Envoi en cours" : vu ? "Vu" : "Envoyé";
               h.appendChild(t);
@@ -1706,13 +2376,13 @@
             b.appendChild(el("span", "avatar", initiales(cl.nom)));
             var t = el("div", "txt"), msgs = filDe(cl.id), der = msgs[msgs.length - 1];
             t.appendChild(el("b", null, cl.nom));
-            t.appendChild(el("small", null, der ? (estMien(der) ? "Vous : " : der.qui + " : ") + der.txt : "Pas encore de message"));
+            t.appendChild(el("small", null, der ? (estMien(der) ? "Vous : " : der.qui + " : ") + (sonFil(der) ? "[" + nomDuFil(cl.id, sonFil(der)) + "] " : "") + der.txt : "Pas encore de message"));
             b.appendChild(t);
             var fin = el("div", "fin"), n = nonLus(cl.id);
             if (der) fin.appendChild(el("span", null, quand(der.ts)));
             if (n) fin.appendChild(el("span", "nb", String(n)));
             b.appendChild(fin);
-            b.addEventListener("click", function () { C.client = cl.id; rendreChat("bas"); if (!tactile) chatTxt.focus(); });
+            b.addEventListener("click", function () { C.client = cl.id; C.fil = ""; rendreChat("bas"); if (!tactile) chatTxt.focus(); });
             fil.appendChild(b);
           });
         }
@@ -1720,12 +2390,12 @@
         function marquerLu() {
           var id = clientDuChat();
           if (!C.ouvert || !id || document.hidden || !S.connecte) return;
-          var fil = filDe(id), dernier = null;
+          var fil = messagesDu(id, C.fil), dernier = null;
           for (var i = fil.length - 1; i >= 0; i--) if (!estMien(fil[i])) { dernier = fil[i]; break; }
-          var l = lusDe(id);
+          var l = lusDe(id, C.fil);
           if (!dernier || (l[maCle()] || 0) >= dernier.ts) return;
           l[maCle()] = dernier.ts;
-          op({ type: "chat.lu", client: id, ts: dernier.ts });
+          op({ type: "chat.lu", client: id, fil: C.fil, ts: dernier.ts });
           majFab();
           majTitre();
         }
@@ -1736,6 +2406,9 @@
             var cl = clientCourant(), places = placesDiscussion();
             C.client = cl ? cl.id : places.length === 1 ? places[0].id : null;
           }
+          // Ouverte depuis un projet, la discussion ouvre son fil.
+          var place = clientDuChat() ? clientParId(clientDuChat()) : null;
+          C.fil = S.f.ch && chantierDe(place, S.f.ch) ? S.f.ch : "";
           C.ouvert = true;
           $("chat").hidden = false;
           $("fab").hidden = true;
@@ -1761,8 +2434,8 @@
           var id = clientDuChat(), v = chatTxt.value.trim();
           if (!id || !v) return;
           var tmp = "t" + Date.now() + "-" + ++C.tmp;
-          if (!op({ type: "chat.envoyer", client: id, txt: v, tmp: tmp })) return;
-          filDe(id).push({ id: 0, tmp: tmp, client: id, ts: Date.now(), role: S.me.role, qui: julien() ? "Julien" : S.me.nom, txt: v, attente: true });
+          if (!op({ type: "chat.envoyer", client: id, fil: C.fil, txt: v, tmp: tmp })) return;
+          filDe(id).push({ id: 0, tmp: tmp, client: id, fil: C.fil, ts: Date.now(), role: S.me.role, qui: julien() ? "Julien" : S.me.nom, txt: v, attente: true });
           chatTxt.value = "";
           ajusterHauteur();
           rendreChat("bas");
@@ -1774,7 +2447,7 @@
         chatTxt.addEventListener("input", function () {
           ajusterHauteur();
           var id = clientDuChat();
-          if (id && chatTxt.value.trim() && S.connecte && Date.now() - C.frappeEnvoyee > 2500) { C.frappeEnvoyee = Date.now(); op({ type: "chat.frappe", client: id }); }
+          if (id && chatTxt.value.trim() && S.connecte && Date.now() - C.frappeEnvoyee > 2500) { C.frappeEnvoyee = Date.now(); op({ type: "chat.frappe", client: id, fil: C.fil }); }
         });
         /* Téléphone : la discussion épouse la partie visible, clavier ouvert. */
         function ajusterClavier() {
