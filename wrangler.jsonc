@@ -24,5 +24,8 @@
   "durable_objects": {
     "bindings": [{ "name": "TABLEAU", "class_name": "Tableau" }]
   },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Tableau"] }]
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["Tableau"] }],
+  // Le connecteur Claude du tableau (/mcp) : les autorisations OAuth accordées par
+  // Julien et les jetons (chiffrés) vivent dans cet espace KV — inclus dans le plan gratuit.
+  "kv_namespaces": [{ "binding": "OAUTH_KV", "id": "25b2cb5fa7684566932f6c51df2161f8" }]
 }

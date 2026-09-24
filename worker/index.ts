@@ -11,14 +11,17 @@
  * `done` (latence), `error`. Le front affiche le flux brut dans « sous le capot ».
  */
 import Anthropic from "@anthropic-ai/sdk";
+import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
+import { autoriser, type EnvAutorisation } from "./autorisation";
 import { redirectionCanonique } from "./canonique";
+import { servirMcp } from "./mcp";
 import type { EnvTableau } from "./tableau";
 
 // Classe du Durable Object du tableau client : Cloudflare la cherche parmi les
 // exports nommés du module principal (déclarée dans wrangler.jsonc).
 export { Tableau } from "./tableau";
 
-interface Env extends EnvTableau {
+interface Env extends EnvTableau, EnvAutorisation {
   ASSETS: Fetcher;
   AI?: Ai;
   ANTHROPIC_API_KEY?: string;
@@ -1071,7 +1074,8 @@ function handleTableau(request: Request, env: Env): Response | Promise<Response>
   return env.TABLEAU.get(env.TABLEAU.idFromName("atelier")).fetch(request);
 }
 
-export default {
+/** Le site : pages, API du site et page d'autorisation du connecteur Claude. */
+const site = {
   async fetch(request: Request, env: Env): Promise<Response> {
     const redirection = redirectionCanonique(request);
     if (redirection) return redirection;
@@ -1087,6 +1091,37 @@ export default {
         { headers: { "Cache-Control": "no-store" } },
       );
     }
+    if (url.pathname === "/authorize") return autoriser(request, env);
     return env.ASSETS.fetch(request);
+  },
+} satisfies ExportedHandler<Env>;
+
+/* Le connecteur Claude du tableau (worker/mcp.ts) : OAuth 2.1 devant /mcp.
+   La bibliothèque sert /token, /register et les /.well-known ; tout le reste va au site.
+   Elle exige l'adresse exacte de la ressource protégée : julientridat.com en production,
+   l'origine locale en développement (http n'est accepté que sur localhost). */
+const connecteurs = new Map<string, OAuthProvider<Env>>();
+function connecteur(url: URL): OAuthProvider<Env> {
+  const origine = /^(localhost|127\.0\.0\.1)(:\d+)?$/.test(url.host) ? url.origin : "https://julientridat.com";
+  let c = connecteurs.get(origine);
+  if (!c) {
+    c = new OAuthProvider<Env>({
+      apiRoute: "/mcp",
+      apiHandler: { fetch: servirMcp as ExportedHandlerFetchHandler<Env> },
+      defaultHandler: site,
+      authorizeEndpoint: "/authorize",
+      tokenEndpoint: "/token",
+      clientRegistrationEndpoint: "/register",
+      refreshTokenTTL: 90 * 24 * 3600,
+      resourceMetadata: { resource: `${origine}/mcp`, resource_name: "Le tableau de Julien Tridat" },
+    });
+    connecteurs.set(origine, c);
+  }
+  return c;
+}
+
+export default {
+  fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    return connecteur(new URL(request.url)).fetch(request, env, ctx);
   },
 } satisfies ExportedHandler<Env>;
