@@ -12,7 +12,7 @@
  */
 import Anthropic from "@anthropic-ai/sdk";
 import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
-import { autoriser, type EnvAutorisation } from "./autorisation";
+import { autoriser, pageConnecteur, type EnvAutorisation } from "./autorisation";
 import { redirectionCanonique } from "./canonique";
 import { servirMcp } from "./mcp";
 import type { EnvTableau } from "./tableau";
@@ -1121,7 +1121,13 @@ function connecteur(url: URL): OAuthProvider<Env> {
 }
 
 export default {
-  fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    return connecteur(new URL(request.url)).fetch(request, env, ctx);
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const url = new URL(request.url);
+    // /mcp ouvert dans un navigateur : une page qui explique, au lieu de l'erreur 401 brute.
+    // Un client MCP n'envoie jamais Accept: text/html, et toute requête avec jeton va à la bibliothèque.
+    if (url.pathname === "/mcp" && request.method === "GET" && !request.headers.has("Authorization") && (request.headers.get("Accept") || "").includes("text/html")) {
+      return pageConnecteur(request);
+    }
+    return connecteur(url).fetch(request, env, ctx);
   },
 } satisfies ExportedHandler<Env>;

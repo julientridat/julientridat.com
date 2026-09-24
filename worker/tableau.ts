@@ -138,6 +138,8 @@ interface Client {
   fin: string;
   mensuel: string;
   chantiers: Chantier[];
+  /** L'équipe du client : des prénoms qui portent des sous-tâches sans avoir de lien. */
+  equipe?: string[];
   archive: boolean;
   creeLe: number;
 }
@@ -584,10 +586,11 @@ export class Tableau extends DurableObject<EnvTableau> {
     return cle;
   }
 
-  /** Qui peut porter une sous-tâche : Julien, le contact, et chaque personne qui a un lien. */
+  /** Qui peut porter une sous-tâche : Julien, le contact, son équipe, et chaque personne qui a un lien. */
   private personnes(cl: Client): string[] {
     const noms = new Set<string>(["Julien"]);
     if (cl.contact) noms.add(cl.contact);
+    for (const n of cl.equipe ?? []) noms.add(n);
     for (const a of this.acces()) if (a.client === cl.id) noms.add(a.nom);
     return [...noms];
   }
@@ -946,6 +949,21 @@ export class Tableau extends DurableObject<EnvTableau> {
         if ("fin" in ch) cl.fin = texte(ch.fin, 10);
         if ("mensuel" in ch) cl.mensuel = texte(ch.mensuel, 80);
         if ("archive" in ch) cl.archive = ch.archive === true;
+        if ("equipe" in ch && Array.isArray(ch.equipe)) {
+          const vus = new Set(["julien"]);
+          cl.equipe = (ch.equipe as unknown[])
+            .map((x) => texte(x, 60))
+            .filter((n) => n && !vus.has(norme(n)) && vus.add(norme(n)))
+            .slice(0, 20);
+          // Un nom retiré de l'équipe (sans lien, et qui n'est pas le contact) : ses sous-tâches
+          // restent, sans responsable.
+          const restent = this.personnes(cl);
+          for (const c of this.cartes()) {
+            if (c.client !== cl.id || !c.st.some((x) => x.qui && !restent.includes(x.qui))) continue;
+            for (const x of c.st) if (x.qui && !restent.includes(x.qui)) x.qui = "";
+            this.ecrireCarte(c);
+          }
+        }
         if ("chantiers" in ch && Array.isArray(ch.chantiers)) {
           // Renommer ou recolorer un chantier garde son objectif et ses dates clés.
           const avant = new Map(cl.chantiers.map((x) => [x.id, x]));
@@ -1082,7 +1100,7 @@ export class Tableau extends DurableObject<EnvTableau> {
         const x: SousTache = { id: idCourt(), t: m[1].slice(0, 200), ok: false, qui: "", date: "" };
         for (const d of (m[2] ?? "").split(",").map((k) => k.trim()).filter(Boolean)) {
           const k = d.toLowerCase();
-          const nom = personnes.find((p) => p.toLowerCase() === k);
+          const nom = personnes.find((p) => norme(p) === norme(d));
           if (k === "fait") x.ok = true;
           else if (k === "à vous" || k === "a vous") x.qui = cl.contact || "";
           else if (nom) x.qui = nom;

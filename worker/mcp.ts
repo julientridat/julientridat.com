@@ -32,7 +32,7 @@ const ORDRE = ["demandes", "prevu", "encours", "vous", "fait", "mensuel"];
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const INSTRUCTIONS = `Le tableau de Julien Tridat (julientridat.com/tableau), partagé en direct avec ses clients.
-Une « place » par client. Dans une place : des cartes en colonnes — Demandes, Prévu, En cours, Chez le client (« vous » : le client doit répondre ou valider), Fait, Point mensuel — ; des projets (les chantiers) avec objectif, dates clés et fil de discussion ; des sous-tâches sur les cartes, avec un responsable (« Julien » ou un prénom de la place) et une date.
+Une « place » par client. Dans une place : des cartes en colonnes — Demandes, Prévu, En cours, Chez le client (« vous » : le client doit répondre ou valider), Fait, Point mensuel — ; des projets (les chantiers) avec objectif, dates clés et fil de discussion ; des sous-tâches sur les cartes, avec un responsable (« Julien » ou un prénom de la place : le contact, son équipe, les personnes qui ont un lien) et une date. L'équipe du client n'ouvre pas le tableau : le contact voit et coche ses tâches.
 Règles :
 - Tout ce qui est dans une place est visible du client.
 - Écrire au client — envoyer_message, commenter_carte, deplacer_carte vers « vous », creer_carte en colonne « vous » — seulement si Julien l'a demandé explicitement dans la conversation. Sinon, proposer le texte et attendre son accord.
@@ -95,7 +95,7 @@ function nonLus(etat: EtatMcp, client: string): number {
 
 function personnes(etat: EtatMcp, cl: Client): string[] {
   const noms = ["Julien"];
-  for (const n of [cl.contact, ...etat.personnes.filter((p) => p.client === cl.id).map((p) => p.nom)]) if (n && !noms.includes(n)) noms.push(n);
+  for (const n of [cl.contact, ...(cl.equipe ?? []), ...etat.personnes.filter((p) => p.client === cl.id).map((p) => p.nom)]) if (n && !noms.includes(n)) noms.push(n);
   return noms;
 }
 
@@ -226,7 +226,12 @@ function creerServeur(stub: Stub): McpServer {
       const cl = trouverPlace(etat, place);
       const auj = aujourdhui();
       const x = projet ? trouverProjet(cl, projet) : null;
-      const lignes = [resumePlace(etat, cl, auj), "", `Personnes (responsables possibles) : ${personnes(etat, cl).join(", ")}`];
+      const lignes = [
+        resumePlace(etat, cl, auj),
+        "",
+        `Personnes (responsables possibles) : ${personnes(etat, cl).join(", ")}`,
+        ...(cl.equipe?.length ? [`dont l’équipe, sans lien : ${cl.equipe.join(", ")}`] : []),
+      ];
       lignes.push("", "Projets :");
       for (const k of x ? [x] : cl.chantiers) {
         lignes.push(`- ${k.nom} [${k.id}]${k.objectif ? " — objectif : " + k.objectif : ""}`);
@@ -481,6 +486,28 @@ function creerServeur(stub: Stub): McpServer {
         `${cl.nom} : ${rap.cartes} carte(s) créée(s), ${rap.completees} complétée(s), ${rap.sousTaches} sous-tâche(s) ajoutée(s).` +
         (rap.ignorees.length ? `\nLignes non comprises (${rap.ignorees.length}) :\n${rap.ignorees.map((l) => "- " + l).join("\n")}` : "")
       );
+    },
+  );
+
+  outil(
+    "ajouter_equipe",
+    {
+      title: "Ajouter des personnes à l’équipe d’une place",
+      description:
+        "Ajoute des prénoms à l’équipe du client : ils peuvent ensuite porter des sous-tâches (responsable), sans lien ni accès au tableau ; le contact voit et coche leurs tâches. Les noms déjà présents sont ignorés. Pour en retirer, le dire à Julien (Réglages de la place).",
+      inputSchema: { place: z.string(), noms: z.array(z.string().min(1).max(60)).min(1).max(20) },
+      annotations: ecriture,
+    },
+    async (a: { place: string; noms: string[] }) => {
+      const etat = await lire();
+      const cl = trouverPlace(etat, a.place);
+      const avant = personnes(etat, cl).map(norme);
+      const nouveaux = a.noms.map((n) => n.trim()).filter((n, i, t) => n && !avant.includes(norme(n)) && t.findIndex((m) => norme(m) === norme(n)) === i);
+      if (!nouveaux.length) return `Rien à ajouter : ${cl.nom} compte déjà ${a.noms.join(", ")}.`;
+      const equipe = [...(cl.equipe ?? []), ...nouveaux];
+      if (equipe.length > 20) throw new Erreur("Vingt personnes au plus dans l’équipe d’une place.");
+      await geste({ type: "place.maj", id: cl.id, champs: { equipe } });
+      return `Équipe de ${cl.nom} : ${equipe.join(", ")} (ajouté : ${nouveaux.join(", ")}).`;
     },
   );
 
