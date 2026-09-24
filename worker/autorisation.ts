@@ -105,6 +105,26 @@ const SCRIPT = `(function () {
   });
 })();`;
 
+/** /mcp ouvert dans un navigateur : l'adresse se colle dans Claude, elle ne s'ouvre pas.
+ *  Même refus (401) et même en-tête que la bibliothèque : rien ne change pour un client MCP. */
+export function pageConnecteur(request: Request): Response {
+  const origine = new URL(request.url).origin;
+  return page(
+    "Le connecteur Claude",
+    `<p class="kicker">Le tableau · julientridat.com</p>
+<h1>L’adresse du connecteur Claude</h1>
+<p>Cette adresse ne s’ouvre pas dans un navigateur : elle se colle dans Claude.</p>
+<ul>
+  <li>claude.ai → Réglages → Connecteurs → « Ajouter un connecteur personnalisé » ;</li>
+  <li>nom « Le tableau », URL <b>${esc(origine)}/mcp</b> → Ajouter, puis Connecter ;</li>
+  <li>sur la page qui s’ouvre, « Autoriser ».</li>
+</ul>
+<p class="note">Ensuite, dans une conversation, active « Le tableau » dans les outils.</p>`,
+    401,
+    { "www-authenticate": `Bearer realm="OAuth", resource_metadata="${origine}/.well-known/oauth-protected-resource/mcp"` },
+  );
+}
+
 function expiree(): Response {
   return page("Demande expirée", `<p class="kicker">Le tableau</p><h1>Demande expirée</h1><p>Relancez la connexion depuis Claude.</p>`, 400);
 }
