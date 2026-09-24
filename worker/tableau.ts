@@ -169,6 +169,15 @@ function lienSur(v: unknown): string {
 }
 
 const idCourt = () => crypto.randomUUID().slice(0, 8);
+/** Un titre comparable : sans accents, apostrophes unifiées, espaces réduits, minuscules. */
+const norme = (t: string) =>
+  t
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/[’‘`]/g, "'")
+    .replace(/\s+/g, " ")
+    .trim()
+    .toLowerCase();
 const DATE_ISO = /^\d{4}-\d{2}-\d{2}$/;
 
 /** Une carte d'avant les sous-tâches : ses étapes deviennent des sous-tâches sans responsable. */
@@ -958,13 +967,18 @@ export class Tableau extends DurableObject<EnvTableau> {
    *                              ou une échéance libre
    *     - Sous-tâche (à vous, 15/10) → en retrait sous sa carte : fait, à vous, Julien,
    *                              un prénom de la place, une date (15/10, 15/10/2026)
+   * Une tâche déjà présente dans la place (même titre) n'est pas recréée : elle est
+   * complétée de ses sous-tâches, sans doublon — coller deux fois le même plan n'ajoute rien.
    * Une ligne non comprise est signalée, jamais devinée.
    */
-  private importer(cl: Client, plan: string): { cartes: number; ignorees: string[] } {
+  private importer(cl: Client, plan: string): { cartes: number; completees: number; sousTaches: number; ignorees: string[] } {
     let chantier: Chantier | null = cl.chantiers[0] ?? null;
     let mois = "";
     let n = 0;
+    let ajoutees = 0;
     let derniere: Carte | null = null;
+    const existantes = this.cartes().filter((c) => c.client === cl.id);
+    const completees = new Set<string>();
     const ignorees: string[] = [];
     const signaler = (t: string) => {
       if (ignorees.length < 20) ignorees.push(t.slice(0, 120));
@@ -1001,7 +1015,11 @@ export class Tableau extends DurableObject<EnvTableau> {
           else if (dateDe(d)) x.date = dateDe(d);
           else signaler(`« ${d} » : ${ligne}`);
         }
-        if (derniere.st.length < 30) derniere.st.push(x);
+        if (derniere.st.some((k) => norme(k.t) === norme(x.t))) continue;
+        if (derniere.st.length < 30) {
+          derniere.st.push(x);
+          ajoutees++;
+        }
         this.ecrireCarte(derniere);
         continue;
       }
@@ -1024,6 +1042,15 @@ export class Tableau extends DurableObject<EnvTableau> {
       const tache = ligne.match(/^[-*•]\s+(.+?)(?:\s*\(([^)]*)\))?\s*$/);
       if (!tache) {
         signaler(ligne);
+        continue;
+      }
+      // Déjà là : on la complète, sans toucher à sa colonne, son échéance ni sa date.
+      const titre = norme(tache[1]);
+      const deja =
+        existantes.find((c) => norme(c.t) === titre && (!chantier || c.ch === chantier.id)) ?? existantes.find((c) => norme(c.t) === titre);
+      if (deja) {
+        derniere = deja;
+        completees.add(deja.id);
         continue;
       }
       const drapeaux = (tache[2] ?? "")
@@ -1057,6 +1084,6 @@ export class Tableau extends DurableObject<EnvTableau> {
       n++;
     }
     this.ecrireClient(cl);
-    return { cartes: n, ignorees };
+    return { cartes: n, completees: completees.size, sousTaches: ajoutees, ignorees };
   }
 }

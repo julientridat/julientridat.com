@@ -949,7 +949,7 @@
             if (retour) sections.traiter.push({ c: c });
             var items = [];
             if (!retour && (c.col === "encours" || (c.col === "prevu" && c.date))) items.push({ c: c, date: c.date || "" });
-            if (c.col !== "fait") (c.st || []).forEach(function (k) { if (!k.ok && k.qui === "Julien") items.push({ c: c, s: k, date: k.date || "" }); });
+            if (c.col !== "fait") (c.st || []).forEach(function (k) { if (!k.ok && k.qui === "Julien" && (k.date || c.col === "encours" || c.col === "vous")) items.push({ c: c, s: k, date: k.date || "" }); });
             items.forEach(function (it) {
               var d = it.date;
               (!d ? sections.sansDate : d < auj ? sections.retard : d === auj ? sections.auj : d <= dimanche ? sections.semaine : sections.plusTard).push(it);
@@ -1217,12 +1217,16 @@
           if (!julien() && ok) toast("Cochée — Julien le voit à l’instant.");
           return true;
         }
-        /* Les sous-tâches ouvertes confiées au client, de la plus proche à la plus lointaine. */
+        function dansJours(n) { var d = new Date(); d.setDate(d.getDate() + n); return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate()); }
+        /* Une sous-tâche est « du moment » si sa carte avance (en cours, chez le client), ou si
+           sa date tombe dans les deux semaines (ou est passée). Les autres attendent sur leur carte. */
+        function duMoment(c, x) { return c.col === "encours" || c.col === "vous" || (!!x.date && x.date <= dansJours(14)); }
+        /* Les sous-tâches ouvertes confiées au client, du moment, de la plus proche à la plus lointaine. */
         function tachesConfiees(cartes) {
           var out = [];
           cartes.forEach(function (c) {
             if (c.col === "fait" || c.col === "demandes") return;
-            (c.st || []).forEach(function (x) { if (!x.ok && coteClient(x.qui)) out.push({ c: c, s: x }); });
+            (c.st || []).forEach(function (x) { if (!x.ok && coteClient(x.qui) && duMoment(c, x)) out.push({ c: c, s: x }); });
           });
           return out.sort(function (a, b) { return (a.s.date || "9999") < (b.s.date || "9999") ? -1 : (a.s.date || "9999") > (b.s.date || "9999") ? 1 : 0; });
         }
@@ -2023,7 +2027,12 @@
         }
         function rapportImport(r) {
           if (!r) return "";
-          return r.cartes + (r.cartes > 1 ? " cartes importées" : " carte importée") + (r.ignorees && r.ignorees.length ? " — " + r.ignorees.length + " ligne(s) non comprise(s) : « " + r.ignorees[0] + " »" + (r.ignorees.length > 1 ? "…" : "") : ".");
+          var parts = [];
+          if (r.cartes || !r.completees) parts.push(r.cartes + (r.cartes > 1 ? " cartes importées" : " carte importée"));
+          if (r.completees) parts.push(r.completees + (r.completees > 1 ? " cartes complétées" : " carte complétée"));
+          if (r.sousTaches) parts.push(r.sousTaches + (r.sousTaches > 1 ? " sous-tâches ajoutées" : " sous-tâche ajoutée"));
+          else if (r.completees) parts.push("aucune sous-tâche nouvelle");
+          return parts.join(", ") + (r.ignorees && r.ignorees.length ? " — " + r.ignorees.length + " ligne(s) non comprise(s) : « " + r.ignorees[0] + " »" + (r.ignorees.length > 1 ? "…" : "") : ".");
         }
         function montrerLien(m) {
           S.filtre = m.client;
@@ -2097,7 +2106,8 @@
           sheet.appendChild(el("p", "lab", "Coller un plan"));
           var plan = el("textarea"); plan.rows = 5; plan.placeholder = FORMAT_PLAN;
           sheet.appendChild(plan);
-          var imp = bouton("Importer dans « Prévu »", "btn-ghost btn-sm", function () { if (plan.value.trim() && op({ type: "place.importer", id: cl.id, plan: plan.value })) plan.value = ""; });
+          sheet.appendChild(el("p", "aide", "Les nouvelles tâches arrivent dans « Prévu ». Une tâche déjà présente (même titre) n’est pas recréée : ses sous-tâches s’y ajoutent, sans doublon."));
+          var imp = bouton("Importer", "btn-ghost btn-sm", function () { if (plan.value.trim() && op({ type: "place.importer", id: cl.id, plan: plan.value })) plan.value = ""; });
           imp.style.marginTop = "8px";
           sheet.appendChild(imp);
 

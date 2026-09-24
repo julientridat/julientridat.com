@@ -23,6 +23,9 @@ tous les navigateurs ouverts. Rien d'autre à héberger, aucun compte à créer,
 « Nouvelle place » → nom, prénom du contact, dates de période, chantiers, et le plan collé
 (format : `# chantier`, `## mois`, `- tâche (fait | en cours | à vous | livrable | échéance)`,
 et, en retrait sous une tâche, ses sous-tâches : `  - sous-tâche (à vous | Julien | prénom, 15/10)`).
+Réglages de la place → « Coller un plan » fonctionne aussi après coup : une tâche déjà
+présente (même titre) n'est pas recréée, ses sous-tâches s'y ajoutent — sans doublon, on
+peut coller deux fois.
 Le tableau affiche alors **le lien de Sébastien** : copie-le, envoie-le par e-mail. C'est sa
 clé ; il l'ouvre une fois.
 
@@ -80,7 +83,8 @@ Dans une carte, côté Julien : un nom, un responsable (Julien, le contact, chaq
 un lien) et une date — ou les étapes type proposées d'après le titre (site : maquette,
 validation, V1…). La carte montre « ✓ 2/4 », « 1 au client », « sous-tâche en retard ».
 Une sous-tâche confiée au client apparaît dans son « Chez vous » (« Vos tâches ») et compte
-dans « … chez vous » ; c'est lui qui la coche, Julien le voit à l'instant. Il ne peut pas
+dans « … chez vous » quand elle est du moment — sa carte est en cours ou chez lui, ou sa
+date tombe dans les deux semaines (ou est passée) ; les autres attendent sur leur carte ; c'est lui qui la coche, Julien le voit à l'instant. Il ne peut pas
 cocher celles de Julien (refusé par le serveur). Les étapes d'avant sont devenues des
 sous-tâches, cases comprises.
 
