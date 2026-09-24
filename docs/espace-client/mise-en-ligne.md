@@ -31,6 +31,21 @@ clé ; il l'ouvre une fois.
 - Voir ce que voit Sébastien : « Voir comme Sébastien ». Ne pas ouvrir son lien dans ton
   propre navigateur (il remplacerait ta clé) — une fenêtre privée, si tu veux vraiment.
 
+## Tes vues : vue d'ensemble et « Ma semaine »
+
+En haut, pour Julien seulement : « Vue d'ensemble · Ma semaine · » puis une pastille par place.
+- **Vue d'ensemble** : une tuile par client — semaine x sur n, avancement, à traiter, en
+  cours, chez le client (cartes + tâches, et depuis combien de temps), prochaine échéance,
+  retards, messages non lus, dernière activité. Les clients qui te demandent quelque chose
+  passent en premier ; un clic ouvre son tableau.
+- **Ma semaine** : tout ce qui est à toi, tous clients confondus — ce que tes clients ont
+  fait (à traiter), puis en retard, aujourd'hui, cette semaine, plus tard, et ce qui est en
+  cours sans date. La case coche la sous-tâche ou passe la carte en « Fait ».
+- À l'ouverture : « Ma semaine » sur le téléphone ; le tableau du client s'il n'y en a
+  qu'un ; sinon la vue d'ensemble.
+- **Date précise d'une carte** : « Pour le » dans sa fiche (à côté du libellé libre
+  « Échéance »), ou `(15/10)` dans un plan collé. C'est elle qui range « Ma semaine ».
+
 ## Qui déplace quoi
 
 - **Julien** glisse toutes les cartes, d'une colonne à l'autre ou dans l'ordre d'une colonne —

@@ -59,6 +59,8 @@ interface Carte {
   desc: string;
   ch: string | null;
   echeance: string;
+  /** Date précise (AAAA-MM-JJ), à côté du libellé libre `echeance` : elle range « Ma semaine ». */
+  date?: string;
   livrable: boolean;
   lien: string;
   type: string;
@@ -174,6 +176,7 @@ function normaliser(c: Carte): Carte {
   if (!Array.isArray(c.st)) c.st = (c.jalons ?? []).map((t, i) => ({ id: "e" + i, t, ok: c.jok?.[i] === true, qui: "", date: "" }));
   delete c.jalons;
   delete c.jok;
+  if (typeof c.date !== "string") c.date = "";
   return c;
 }
 
@@ -545,6 +548,7 @@ export class Tableau extends DurableObject<EnvTableau> {
       desc: "",
       ch: null,
       echeance: "",
+      date: "",
       livrable: false,
       lien: "",
       type: "",
@@ -695,6 +699,7 @@ export class Tableau extends DurableObject<EnvTableau> {
           t: texte(op.t, 300, true),
           ch,
           echeance: texte(op.echeance, 60),
+          date: DATE_ISO.test(texte(op.date, 10)) ? texte(op.date, 10) : "",
           action: col === "vous" ? "repondre" : null,
           nouveau: col === "vous" ? "client" : null,
         });
@@ -710,6 +715,7 @@ export class Tableau extends DurableObject<EnvTableau> {
         if ("t" in ch) c.t = texte(ch.t, 300, true);
         if ("desc" in ch) c.desc = texte(ch.desc, 4000);
         if ("echeance" in ch) c.echeance = texte(ch.echeance, 60);
+        if ("date" in ch) c.date = DATE_ISO.test(texte(ch.date, 10)) ? texte(ch.date, 10) : "";
         if ("livrable" in ch) c.livrable = ch.livrable === true;
         if ("lien" in ch) c.lien = lienSur(ch.lien);
         if ("ch" in ch) c.ch = typeof ch.ch === "string" && cl?.chantiers.some((x) => x.id === ch.ch) ? ch.ch : null;
@@ -948,7 +954,8 @@ export class Tableau extends DurableObject<EnvTableau> {
    *   # Nom du chantier        → chantier (créé s'il n'existe pas)
    *   ## Octobre               → échéance des tâches qui suivent
    *   - Tâche (fait)           → une carte ; entre parenthèses, séparés par des virgules :
-   *                              fait, en cours, à vous, livrable, ou une échéance libre
+   *                              fait, en cours, à vous, livrable, une date (15/10),
+   *                              ou une échéance libre
    *     - Sous-tâche (à vous, 15/10) → en retrait sous sa carte : fait, à vous, Julien,
    *                              un prénom de la place, une date (15/10, 15/10/2026)
    * Une ligne non comprise est signalée, jamais devinée.
@@ -1026,18 +1033,21 @@ export class Tableau extends DurableObject<EnvTableau> {
       let col: Col = "prevu";
       let livrable = false;
       let echeance = mois;
+      let date = "";
       for (const d of drapeaux) {
         const x = d.toLowerCase();
         if (x === "fait") col = "fait";
         else if (x === "en cours") col = "encours";
         else if (x === "à vous" || x === "a vous") col = "vous";
         else if (x === "livrable") livrable = true;
+        else if (dateDe(d)) date = dateDe(d);
         else echeance = d.slice(0, 60);
       }
       const c = this.nouvelleCarte(cl.id, col, {
         t: tache[1].slice(0, 300),
         ch: chantier?.id ?? null,
         echeance,
+        date,
         livrable,
         action: col === "vous" ? (livrable ? "valider" : "repondre") : null,
         nouveau: col === "vous" ? "client" : null,
