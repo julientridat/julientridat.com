@@ -1213,7 +1213,7 @@
           if (!op({ type: "carte.cocher", id: c.id, st: x.id, ok: ok })) return false;
           x.ok = ok;
           rendre();
-          if (feuille.mode === "carte" && feuille.id === c.id) refaireCarte();
+          if (feuille.mode === "carte" && feuille.id === c.id) refaireFeuille();
           if (!julien() && ok) toast("Cochée — Julien le voit à l’instant.");
           return true;
         }
@@ -1257,7 +1257,7 @@
         function personnesDe(cl) {
           var noms = ["Julien"];
           function ajouter(n) { if (n && noms.indexOf(n) < 0) noms.push(n); }
-          if (cl) { ajouter(cl.contact); S.acces.forEach(function (a) { if (a.client === cl.id) ajouter(a.nom); }); }
+          if (cl) { ajouter(cl.contact); (cl.equipe || []).forEach(ajouter); S.acces.forEach(function (a) { if (a.client === cl.id) ajouter(a.nom); }); }
           return noms;
         }
 
@@ -1765,13 +1765,14 @@
             if (!c) { fermer(); return toast("Cette carte vient d’être retirée."); }
             // Un champ marqué data-garde (la nouvelle étape) survit au rendu ; les autres le suspendent.
             if (enSaisie && !actif.dataset.garde) return majCommentaires(c);
-            refaireCarte();
-          } else if (feuille.mode === "reglages" && !enSaisie) ouvrirReglages(feuille.id);
+            refaireFeuille();
+          } else if (feuille.mode === "reglages" && (!enSaisie || actif.dataset.garde)) refaireFeuille();
         }
-        function refaireCarte() {
+        function refaireFeuille() {
           var actif = document.activeElement;
           var garde = actif && sheet.contains(actif) && actif.dataset ? actif.dataset.garde : null, valeur = garde ? actif.value : "";
-          ouvrirCarte(feuille.id, feuille.arbitrage, true);
+          if (feuille.mode === "reglages") ouvrirReglages(feuille.id);
+          else ouvrirCarte(feuille.id, feuille.arbitrage, true);
           if (!garde) return;
           var g = sheet.querySelector('[data-garde="' + garde + '"]');
           if (g) { g.value = valeur; g.focus(); }
@@ -1840,7 +1841,7 @@
             var majSousTaches = function (liste) {
               if (!op({ type: "carte.maj", id: c.id, champs: { st: liste } })) return;
               (trouverCarte(c.id) || c).st = liste;
-              refaireCarte();
+              refaireFeuille();
               rendre();
             };
             var actuelles = function () { return ((trouverCarte(c.id) || c).st || []).map(function (k) { return { id: k.id, t: k.t, ok: k.ok, qui: k.qui, date: k.date }; }); };
@@ -2102,6 +2103,38 @@
           var ajout = saisie("text", "", function (v) { if (v.trim()) op({ type: "acces.creer", client: cl.id, nom: v }); }, "+ une personne (prénom), puis Entrée");
           ajout.style.marginTop = "8px";
           sheet.appendChild(ajout);
+
+          /* L'équipe : des prénoms qui portent des sous-tâches, sans lien. On repart toujours de
+             l'état reçu du serveur, pour que deux noms tapés à la suite s'ajoutent tous les deux. */
+          function equipeActuelle() { var c = clientParId(cl.id); return (c && c.equipe) || []; }
+          var equipe = equipeActuelle();
+          sheet.appendChild(el("p", "lab", "Équipe — sans lien"));
+          var eq = el("div", "personnes");
+          equipe.forEach(function (nom) {
+            var p = el("div", "personne");
+            p.appendChild(el("b", null, nom));
+            var n = 0;
+            S.cartes.forEach(function (c) { if (c.client === cl.id) (c.st || []).forEach(function (x) { if (x.qui === nom) n++; }); });
+            p.appendChild(el("small", null, nombre(n, "sous-tâche", "sous-tâches")));
+            var fin = el("div", "fin");
+            fin.appendChild(bouton("Retirer", "btn-ghost btn-sm btn-danger", function () {
+              if (n && !confirm("Retirer " + nom + " de l’équipe ? " + (n > 1 ? "Ses " + n + " sous-tâches restent, sans responsable." : "Sa sous-tâche reste, sans responsable."))) return;
+              maj({ equipe: equipeActuelle().filter(function (y) { return y !== nom; }) });
+            }));
+            p.appendChild(fin);
+            eq.appendChild(p);
+          });
+          sheet.appendChild(eq);
+          var ajoutEq = saisie("text", "", function (v) {
+            if (!v.trim()) return;
+            maj({ equipe: equipeActuelle().concat([v.trim()]) });
+            ajoutEq.value = "";
+          }, "+ un prénom, puis Entrée");
+          // Le champ reste actif pendant que la liste se met à jour : on enchaîne les prénoms.
+          ajoutEq.dataset.garde = "equipe";
+          ajoutEq.style.marginTop = "8px";
+          sheet.appendChild(ajoutEq);
+          sheet.appendChild(el("p", "aide", "Ils peuvent porter une sous-tâche sans ouvrir le tableau : " + (cl.contact || "le contact") + " voit et coche leurs tâches."));
 
           sheet.appendChild(el("p", "lab", "Coller un plan"));
           var plan = el("textarea"); plan.rows = 5; plan.placeholder = FORMAT_PLAN;
