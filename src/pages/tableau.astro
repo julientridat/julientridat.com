@@ -48,10 +48,10 @@
         --white: #fbfbfc;
         --ink: #111216;
         --ink-2: #43464e;
-        --ink-3: #7a7e88;
+        --ink-3: #60646d;
         --line: rgba(17, 18, 22, 0.1);
-        --violet: #6c4cf1;
-        --violet-wash: rgba(108, 76, 241, 0.1);
+        --violet: #6445ea;
+        --violet-wash: rgba(100, 69, 234, 0.1);
         --late: #b4321f;
         --c1: #df7e1f;
         --c2: #d6409f;
@@ -86,22 +86,22 @@
       .wordmark span { color: var(--ink-3); font-weight: 400; margin-left: 8px; }
       .live { display: inline-flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--ink-3); border: 1px solid var(--line); border-radius: 999px; padding: 3px 10px; white-space: nowrap; }
       .live i { width: 7px; height: 7px; border-radius: 50%; background: var(--ink-3); }
-      .live.on { color: var(--violet); border-color: rgba(108, 76, 241, 0.3); }
+      .live.on { color: var(--violet); border-color: rgba(100, 69, 234, 0.3); }
       .live.on i { background: var(--violet); animation: pouls 2.4s infinite; }
-      @keyframes pouls { 0% { box-shadow: 0 0 0 0 rgba(108, 76, 241, 0.35); } 70% { box-shadow: 0 0 0 6px rgba(108, 76, 241, 0); } 100% { box-shadow: 0 0 0 0 rgba(108, 76, 241, 0); } }
+      @keyframes pouls { 0% { box-shadow: 0 0 0 0 rgba(100, 69, 234, 0.35); } 70% { box-shadow: 0 0 0 6px rgba(100, 69, 234, 0); } 100% { box-shadow: 0 0 0 0 rgba(100, 69, 234, 0); } }
       .presence { font-size: 0.78rem; color: var(--violet); white-space: nowrap; }
       .filters { display: flex; gap: 6px; flex-wrap: wrap; }
       .pill { border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 5px 12px; font-size: 0.8rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
       .pill.on, .pill:hover { border-color: var(--violet); color: var(--violet); }
       .pill .pt { width: 6px; height: 6px; border-radius: 50%; background: var(--violet); }
-      .pill .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.66rem; padding: 0 6px; }
+      .pill .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.72rem; padding: 0 6px; }
       .pill.close { opacity: 0.55; }
       .right { margin-left: auto; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
       .btn { border: none; border-radius: 999px; background: var(--ink); color: var(--white); padding: 8px 16px; font-weight: 500; font-size: 0.84rem; transition: background 0.2s, transform 0.2s; }
       .btn:hover { background: var(--violet); transform: translateY(-1px); }
       .btn-ghost { background: var(--white); border: 1px solid var(--line); color: var(--ink-2); border-radius: 999px; padding: 6px 13px; font-size: 0.8rem; font-weight: 500; }
       .btn-ghost:hover { color: var(--violet); border-color: var(--violet); }
-      .btn-sm { padding: 5px 11px; font-size: 0.76rem; }
+      .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
       .btn-danger:hover { color: var(--late); border-color: var(--late); }
       .apercu-bar { background: var(--violet); color: var(--white); text-align: center; font-size: 0.8rem; padding: 6px 12px; }
       .apercu-bar button { background: none; border: none; color: var(--white); text-decoration: underline; margin-left: 8px; }
@@ -111,19 +111,19 @@
       .periode h1 { font-weight: 300; letter-spacing: -0.03em; color: var(--ink); font-size: clamp(1.35rem, 2.4vw, 1.9rem); }
       .periode .track { flex: 1; min-width: 160px; height: 3px; background: var(--line); border-radius: 999px; position: relative; top: -5px; }
       .periode .track i { position: absolute; left: 0; top: 0; height: 100%; background: var(--violet); border-radius: 999px; transition: width 1.2s cubic-bezier(0.2, 0.6, 0.2, 1); }
-      .periode .track b { position: absolute; top: 50%; width: 11px; height: 11px; border-radius: 50%; background: var(--violet); transform: translate(-50%, -50%); box-shadow: 0 0 0 4px rgba(108, 76, 241, 0.15); transition: left 1.2s cubic-bezier(0.2, 0.6, 0.2, 1); }
+      .periode .track b { position: absolute; top: 50%; width: 11px; height: 11px; border-radius: 50%; background: var(--violet); transform: translate(-50%, -50%); box-shadow: 0 0 0 4px rgba(100, 69, 234, 0.15); transition: left 1.2s cubic-bezier(0.2, 0.6, 0.2, 1); }
       .periode small { color: var(--ink-3); font-size: 0.8rem; }
 
       /* Le tableau */
       .board { max-width: 1480px; margin: 0 auto; padding: 16px 24px 104px; display: grid; grid-template-columns: repeat(5, minmax(230px, 1fr)); gap: 14px; overflow-x: auto; align-items: start; }
       .column { background: var(--col); border-radius: 16px; padding: 10px; min-height: 160px; transition: box-shadow 0.2s; }
       .column.over { box-shadow: inset 0 0 0 2px var(--violet); }
-      .column.vous { background: rgba(108, 76, 241, 0.07); }
+      .column.vous { background: rgba(100, 69, 234, 0.07); }
       .col-h { display: flex; align-items: baseline; gap: 8px; padding: 4px 6px 10px; }
       .col-h h2 { font-size: 0.74rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); }
       .column.vous .col-h h2 { color: var(--violet); }
       .col-h .n { font-size: 0.74rem; color: var(--ink-3); }
-      .col-h .hint { margin-left: auto; font-size: 0.72rem; color: var(--ink-3); }
+      .col-h .hint { margin-left: auto; font-size: 0.75rem; color: var(--ink-3); }
       .cards { display: grid; gap: 8px; min-height: 30px; position: relative; }
       .vide { font-size: 0.8rem; color: var(--ink-3); padding: 6px; }
       .card { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 10px 12px; cursor: pointer; box-shadow: 0 1px 2px rgba(24, 20, 60, 0.05); transition: transform 0.15s, box-shadow 0.15s; }
@@ -142,15 +142,15 @@
       body.glisse, body.glisse * { cursor: grabbing !important; }
       body.glisse .board { scroll-snap-type: none; }
       .column.interdite { opacity: 0.45; }
-      .column.cible { box-shadow: inset 0 0 0 1px rgba(108, 76, 241, 0.3); }
-      .column[data-depot] .cards::before { content: attr(data-depot); display: block; border: 2px dashed rgba(108, 76, 241, 0.5); border-radius: 12px; padding: 12px; text-align: center; color: var(--violet); font-size: 0.8rem; font-weight: 600; }
+      .column.cible { box-shadow: inset 0 0 0 1px rgba(100, 69, 234, 0.3); }
+      .column[data-depot] .cards::before { content: attr(data-depot); display: block; border: 2px dashed rgba(100, 69, 234, 0.5); border-radius: 12px; padding: 12px; text-align: center; color: var(--violet); font-size: 0.8rem; font-weight: 600; }
       .marque { position: absolute; left: 2px; right: 2px; height: 3px; border-radius: 3px; background: var(--violet); pointer-events: none; }
 
       /* Vue d'ensemble et « Ma semaine » (Julien) */
       .vue { max-width: 1480px; margin: 0 auto; padding: 18px 24px 104px; }
       .tuiles { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 14px; align-items: start; }
       .tuile { background: var(--white); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; display: grid; gap: 10px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s; }
-      .tuile:hover, .tuile:focus-visible { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(24, 20, 60, 0.1); border-color: rgba(108, 76, 241, 0.35); }
+      .tuile:hover, .tuile:focus-visible { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(24, 20, 60, 0.1); border-color: rgba(100, 69, 234, 0.35); }
       .tuile.urgente { border-top: 4px solid var(--late); }
       .tuile .t-h { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
       .tuile h2 { font-weight: 500; font-size: 1.2rem; letter-spacing: -0.01em; color: var(--ink); }
@@ -162,7 +162,7 @@
       .tuile .t-av b { color: var(--ink); font-weight: 600; }
       .t-chiffres { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
       .t-chiffres div { background: var(--paper); border-radius: 10px; padding: 8px 10px; }
-      .t-chiffres dt { font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; }
+      .t-chiffres dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; }
       .t-chiffres dd { font-size: 1.3rem; font-weight: 300; color: var(--ink); font-variant-numeric: tabular-nums; }
       .t-chiffres dd small { display: block; font-size: 0.72rem; color: var(--ink-3); font-weight: 400; }
       .t-chiffres .vous { background: var(--violet-wash); }
@@ -199,8 +199,10 @@
       .f-raz { background: none; border: none; color: var(--violet); font-size: 0.8rem; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
       .f-n { font-size: 0.78rem; color: var(--ink-3); }
       .card h3 { font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
+      .card h3 .card-t { all: unset; display: block; cursor: inherit; overflow-wrap: anywhere; }
+      .card h3 .card-t:focus-visible { outline: 2px solid var(--violet); outline-offset: 3px; border-radius: 4px; }
       .chips { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
-      .chip { display: inline-block; border-radius: 999px; padding: 1px 8px; font-size: 0.68rem; font-weight: 600; background: var(--paper); color: var(--ink-3); border: 1px solid var(--line); }
+      .chip { display: inline-block; border-radius: 999px; padding: 2px 8px; font-size: 0.75rem; font-weight: 600; background: var(--paper); color: var(--ink-3); border: 1px solid var(--line); }
       .chip.client { background: var(--white); color: var(--ink); border-color: rgba(17, 18, 22, 0.35); }
       .chip.vous { background: var(--violet-wash); color: var(--violet); border-color: transparent; }
       .chip.late { color: var(--late); border-color: rgba(180, 50, 31, 0.3); }
@@ -219,11 +221,12 @@
       .folded { margin-top: 10px; font-size: 0.76rem; color: var(--ink-3); padding: 0 6px; }
       .folded b { color: var(--ink-2); font-weight: 500; }
       .folded button { background: none; border: none; color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; font-size: 0.76rem; }
-      .divider { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); padding: 6px 6px 2px; }
+      .divider { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); padding: 6px 6px 2px; }
 
       /* Feuille : carte ouverte, dialogues */
       .back { position: fixed; inset: 0; background: rgba(17, 18, 22, 0.35); display: none; align-items: flex-start; justify-content: center; padding: 48px 16px; z-index: 30; overflow: auto; }
       .back.on { display: flex; }
+      .sheet:focus { outline: none; }
       .sheet { background: var(--white); border-radius: 22px; width: min(640px, 100%); padding: 24px 26px; border-top: 5px solid var(--mc, var(--violet)); }
       .sheet .kicker { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.14em; color: var(--violet); }
       .sheet h2 { font-weight: 500; color: var(--ink); font-size: 1.25rem; letter-spacing: -0.01em; margin-top: 4px; }
@@ -249,20 +252,33 @@
 
       /* Sous-tâches : sur la carte (sous-tableau), dans la fiche, dans « Chez vous » */
       .st-liste { list-style: none; display: grid; gap: 5px; margin-top: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
-      .st-liste li { display: flex; align-items: flex-start; gap: 7px; font-size: 0.8rem; color: var(--ink-2); line-height: 1.3; }
+      .st-liste li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.84rem; color: var(--ink-2); line-height: 1.3; }
       .st-liste li.ok .t { color: var(--ink-3); text-decoration: line-through; }
-      .st-liste input[type="checkbox"] { width: 15px; height: 15px; margin-top: 1px; accent-color: var(--violet); flex: none; cursor: pointer; }
-      .st-liste .coche-fixe { width: 15px; flex: none; text-align: center; color: var(--ink-3); font-size: 0.74rem; }
+      .st-liste input[type="checkbox"] { width: 18px; height: 18px; margin-top: 0; accent-color: var(--violet); flex: none; cursor: pointer; }
+      .st-liste .coche-fixe { width: 18px; flex: none; text-align: center; color: var(--ink-3); font-size: 0.74rem; }
       .st-liste .t { flex: 1; min-width: 0; }
-      .st-liste .meta { font-size: 0.7rem; color: var(--ink-3); white-space: nowrap; }
+      .st-liste .meta { font-size: 0.75rem; color: var(--ink-3); white-space: nowrap; }
       .st-liste .meta.client { color: var(--violet); font-weight: 600; }
       .st-liste .meta.retard { color: var(--late); font-weight: 600; }
-      .st-liste button.parent { background: none; border: none; padding: 0; color: var(--ink-3); font-size: 0.7rem; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
+      .st-liste button.parent { background: none; border: none; padding: 0; color: var(--ink-3); font-size: 0.76rem; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
       .sheet .st-liste { border-top: none; padding-top: 0; gap: 8px; }
       .sheet .st-liste li { font-size: 0.88rem; }
-      .confiees { background: var(--white); border: 1px dashed rgba(108, 76, 241, 0.4); border-radius: 12px; padding: 10px 12px; }
-      .confiees h4 { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--violet); font-weight: 600; }
-      .confiees .st-liste { border-top: none; padding-top: 0; gap: 9px; }
+      .confiees { background: var(--white); border: 1px dashed rgba(100, 69, 234, 0.4); border-radius: 12px; padding: 10px 12px; }
+      .confiees h4 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--violet); font-weight: 600; }
+      .confiees .st-liste { border-top: none; padding-top: 0; gap: 9px; margin-top: 5px; }
+      .confiees .conf-carte { display: block; margin-top: 12px; background: none; border: none; padding: 0; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+      .confiees .conf-carte:hover { color: var(--violet); text-decoration: underline; text-underline-offset: 2px; }
+      .mois-t { display: flex; align-items: center; gap: 7px; width: 100%; background: none; border: none; padding: 8px 4px 2px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-2); text-align: left; }
+      .mois-t::before { content: "▾"; font-size: 0.8rem; color: var(--ink-3); transition: transform 0.2s; }
+      .mois-t[aria-expanded="false"]::before { transform: rotate(-90deg); }
+      .mois-t:hover { color: var(--violet); }
+      .aide-client { max-width: 1480px; margin: 0 auto; padding: 14px 24px 0; }
+      .aide-client .boite { background: var(--white); border: 1px solid var(--line); border-left: 4px solid var(--violet); border-radius: 14px; padding: 14px 18px; display: grid; gap: 8px; max-width: 760px; }
+      .aide-client h2 { font-size: 0.95rem; font-weight: 600; color: var(--ink); }
+      .aide-client ul { padding-left: 18px; display: grid; gap: 4px; font-size: 0.88rem; }
+      .aide-client b { color: var(--ink); font-weight: 600; }
+      .aide-client .btn { justify-self: start; margin-top: 2px; }
+      .aide-btn { width: 32px; height: 32px; padding: 0 !important; display: inline-grid; place-items: center; font-weight: 600; }
       .st-ed { list-style: none; display: grid; gap: 8px; }
       .st-ed li { display: grid; grid-template-columns: 18px minmax(0, 1fr) 150px 140px 26px; gap: 8px; align-items: center; }
       .st-ed li.ok input[type="text"] { color: var(--ink-3); text-decoration: line-through; }
@@ -293,13 +309,13 @@
       .frise-in { position: relative; min-width: 640px; height: 122px; margin: 0 10px; }
       .frise .axe { position: absolute; left: 0; right: 0; top: 60px; height: 2px; background: var(--line); }
       .frise .duree { position: absolute; top: 59px; height: 4px; background: var(--col); border-radius: 999px; }
-      .frise .mois { position: absolute; top: 70px; height: 14px; padding-left: 4px; border-left: 1px solid var(--line); font-size: 0.66rem; color: var(--ink-3); white-space: nowrap; }
+      .frise .mois { position: absolute; top: 70px; height: 14px; padding-left: 4px; border-left: 1px solid var(--line); font-size: 0.7rem; color: var(--ink-3); white-space: nowrap; }
       .frise .auj { position: absolute; top: 44px; height: 34px; width: 2px; margin-left: -1px; background: var(--violet); }
-      .frise .auj span { position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); font-size: 0.62rem; font-weight: 600; color: var(--violet); white-space: nowrap; }
+      .frise .auj span { position: absolute; bottom: -15px; left: 50%; transform: translateX(-50%); font-size: 0.7rem; font-weight: 600; color: var(--violet); white-space: nowrap; }
       .frise .cle { position: absolute; top: 54px; width: 14px; height: 14px; margin-left: -7px; border-radius: 50%; background: var(--pc, var(--violet)); border: 3px solid var(--white); box-shadow: 0 0 0 1px var(--pc, var(--violet)); }
       .frise .cle.passee { opacity: 0.45; }
       .frise .etiq { position: absolute; font-size: 0.72rem; color: var(--ink); white-space: nowrap; line-height: 1.2; max-width: 170px; overflow: hidden; text-overflow: ellipsis; }
-      .frise .etiq small { display: block; color: var(--ink-3); font-size: 0.64rem; }
+      .frise .etiq small { display: block; color: var(--ink-3); font-size: 0.7rem; }
       .frise .etiq.haut { top: 12px; }
       .frise .etiq.bas { top: 88px; }
       .frise .pt { position: absolute; top: 57px; width: 8px; height: 8px; margin-left: -4px; border-radius: 50%; background: var(--ink-3); border: 2px solid var(--white); box-sizing: content-box; }
@@ -339,7 +355,7 @@
       .toast { position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(16px); background: var(--ink); color: var(--white); border-radius: 999px; padding: 9px 16px; font-size: 0.83rem; opacity: 0; transition: opacity 0.25s, transform 0.25s; z-index: 40; pointer-events: none; max-width: calc(100vw - 32px); }
       .toast.on { opacity: 1; transform: translateX(-50%) translateY(0); }
       /* La discussion */
-      .fab { position: fixed; right: 20px; bottom: 20px; z-index: 20; display: inline-flex; align-items: center; gap: 8px; background: var(--violet); color: var(--white); border: none; border-radius: 999px; padding: 12px 18px; font-weight: 500; font-size: 0.88rem; box-shadow: 0 10px 28px rgba(108, 76, 241, 0.35); transition: transform 0.2s; }
+      .fab { position: fixed; right: 20px; bottom: 20px; z-index: 20; display: inline-flex; align-items: center; gap: 8px; background: var(--violet); color: var(--white); border: none; border-radius: 999px; padding: 12px 18px; font-weight: 500; font-size: 0.88rem; box-shadow: 0 10px 28px rgba(100, 69, 234, 0.35); transition: transform 0.2s; }
       .fab:hover { transform: translateY(-2px); }
       .fab svg { width: 18px; height: 18px; flex: none; }
       .fab .badge { position: absolute; top: -6px; right: -4px; min-width: 21px; height: 21px; border-radius: 999px; background: var(--ink); color: var(--white); font-size: 0.7rem; font-weight: 600; display: grid; place-items: center; padding: 0 5px; border: 2px solid var(--paper); }
@@ -362,8 +378,8 @@
       .bulle.moi { align-self: flex-end; background: var(--violet); color: var(--white); border-radius: 14px 14px 4px 14px; }
       .bulle.moi.suite { border-radius: 14px; }
       .bulle .qui { display: block; font-size: 0.72rem; font-weight: 600; color: var(--violet); }
-      .bulle .h { float: right; margin: 7px 0 0 10px; font-size: 0.66rem; line-height: 1; color: var(--ink-3); white-space: nowrap; }
-      .bulle.moi .h { color: rgba(255, 255, 255, 0.7); }
+      .bulle .h { float: right; margin: 7px 0 0 10px; font-size: 0.7rem; line-height: 1; color: var(--ink-3); white-space: nowrap; }
+      .bulle.moi .h { color: rgba(255, 255, 255, 0.9); }
       .bulle .h .coche-lu { margin-left: 4px; font-weight: 700; letter-spacing: -0.2em; }
       .bulle .h .coche-lu.vu { color: var(--white); }
       .bulle a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
@@ -381,7 +397,7 @@
       .chat-fils button { flex: none; border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 4px 10px; font-size: 0.76rem; font-weight: 500; display: inline-flex; align-items: center; gap: 6px; }
       .chat-fils button.on { border-color: var(--violet); color: var(--violet); background: var(--violet-wash); }
       .chat-fils .sw { width: 8px; height: 8px; border-radius: 3px; }
-      .chat-fils .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.64rem; padding: 0 6px; }
+      .chat-fils .nb { background: var(--violet); color: var(--white); border-radius: 999px; font-size: 0.7rem; padding: 0 6px; }
       .conv { display: flex; align-items: center; gap: 10px; padding: 10px; border-radius: 12px; background: none; border: none; text-align: left; width: 100%; }
       .conv:hover { background: var(--white); }
       .conv .txt { flex: 1; min-width: 0; }
@@ -399,7 +415,8 @@
 
       @media (max-width: 700px) {
         .vue { padding: 14px 16px 104px; }
-        .filters { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; }
+        .filters { flex-wrap: nowrap; overflow-x: auto; max-width: 100%; scrollbar-width: none; order: 2; flex-basis: 100%; }
+        .top-in .right { order: 1; }
         .filters::-webkit-scrollbar { display: none; }
         .chat { inset: 0; width: auto; height: 100vh; height: 100dvh; border-radius: 0; border: none; }
         .chat-saisie { padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); }
@@ -415,16 +432,40 @@
       @media (pointer: coarse) {
         input, textarea { font-size: 16px !important; }
       }
+      .onglets { display: none; }
+      .menu { position: relative; }
+      .menu summary { list-style: none; cursor: pointer; border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 6px 14px; font-size: 0.8rem; font-weight: 500; }
+      .menu summary::-webkit-details-marker { display: none; }
+      .menu summary::after { content: " ▾"; color: var(--ink-3); }
+      .menu[open] summary { border-color: var(--violet); color: var(--violet); }
+      .menu-l { position: absolute; right: 0; top: calc(100% + 6px); z-index: 15; display: grid; gap: 6px; min-width: 230px; padding: 8px; background: var(--white); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 12px 30px rgba(24, 20, 60, 0.15); }
+      .menu-l button { text-align: left; }
+      .f-groupe.deborde, .onglets.deborde { -webkit-mask-image: linear-gradient(90deg, #000 82%, transparent); mask-image: linear-gradient(90deg, #000 82%, transparent); }
       @media (max-width: 900px) {
-        .board { display: flex; gap: 12px; scroll-snap-type: x mandatory; }
-        .column { flex: 0 0 84vw; scroll-snap-align: start; }
-        /* Côté client, sur téléphone : sa colonne d'abord, c'est la seule où il agit. */
-        .face-client .column.vous { order: -1; }
+        .board { display: block; padding: 12px 16px 104px; }
+        .board .column { display: none; }
+        .board .column.actif { display: block; }
+        .onglets:not([hidden]) { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; padding: 14px 16px 0; }
+        .onglets::-webkit-scrollbar { display: none; }
+        .onglet { flex: none; display: inline-flex; align-items: center; gap: 7px; min-height: 38px; border: 1px solid var(--line); background: var(--white); color: var(--ink-2); border-radius: 999px; padding: 6px 14px; font-size: 0.86rem; font-weight: 500; }
+        .onglet .nb { font-size: 0.78rem; color: var(--ink-3); font-variant-numeric: tabular-nums; }
+        .onglet.on { background: var(--ink); border-color: var(--ink); color: var(--white); }
+        .onglet.on .nb { color: rgba(255, 255, 255, 0.8); }
         .periode .track { flex-basis: 100%; order: 3; }
         .grille { grid-template-columns: 1fr; }
       }
+      @media (max-width: 560px) {
+        .top-in { padding: 10px 16px; gap: 8px 10px; }
+        .periode { padding: 14px 16px 0; }
+        .aide-client { padding: 12px 16px 0; }
+        /* « en direct » : le point suffit à l'écran ; le texte reste lu par les lecteurs d'écran. */
+        .live { padding: 7px; }
+        .live > span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+        .presence { display: none; }
+        .right .btn-ghost { padding: 5px 11px; font-size: 0.78rem; }
+      }
       @media (prefers-reduced-motion: reduce) {
-        .card, .btn, .toast, .periode .track i, .periode .track b, .bulle, .fab, .avance i, .pj-avance .jauge i { transition: none; animation: none; }
+        *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
         .live.on i { animation: none; }
       }
     </style>
@@ -454,7 +495,9 @@
       </div>
     </header>
 
+    <main id="contenu">
     <div class="periode" id="periode" hidden></div>
+    <section class="aide-client" id="aide-client" hidden aria-labelledby="aide-titre"></section>
     <section class="projet" id="projet" hidden aria-label="Le projet"></section>
 
     <div class="barre" id="barre" hidden>
@@ -468,9 +511,10 @@
       <button type="button" class="f-raz" id="f-raz" hidden>Tout afficher</button>
     </div>
 
+    <nav class="onglets" id="onglets" hidden aria-label="Colonnes du tableau"></nav>
     <section class="vue" id="vue" hidden></section>
 
-    <main class="board" id="board" hidden>
+    <div class="board" id="board" hidden>
       <section class="column" data-col="demandes">
         <div class="col-h"><h2>Demandes</h2><span class="n"></span><span class="hint">reçues</span></div>
         <div class="cards"></div>
@@ -496,6 +540,7 @@
         <div class="col-h"><h2>Fait</h2><span class="n"></span><span class="hint">le plus récent en tête</span></div>
         <div class="cards"></div>
       </section>
+    </div>
     </main>
 
     <button type="button" class="fab" id="fab" hidden aria-label="Discussion">
@@ -520,7 +565,7 @@
       </form>
     </aside>
 
-    <div class="back" id="back"><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+    <div class="back" id="back"><div class="sheet" id="sheet" role="dialog" aria-modal="true" tabindex="-1"></div></div>
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <script is:inline>
@@ -540,7 +585,7 @@
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
         var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
-          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {} };
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null };
         var tactile = window.matchMedia("(pointer: coarse)").matches;
         var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
@@ -748,9 +793,11 @@
           rendreFiltres();
           rendreOutils(cl);
           rendrePeriode(cl);
+          rendreAide();
           var vue = modeVue();
           $("vue").hidden = !vue;
           $("board").hidden = !!vue;
+          $("onglets").hidden = !!vue;
           if (vue) {
             $("projet").hidden = true;
             $("barre").hidden = true;
@@ -766,6 +813,12 @@
           document.title = (nouveaux ? "(" + nouveaux + ") " : "") + "Le tableau · Julien Tridat";
         }
 
+        function majDebord(g) {
+          if (!g.dataset.suivi) { g.dataset.suivi = "1"; g.addEventListener("scroll", function () { majDebord(g); }, { passive: true }); }
+          var deborde = g.scrollWidth > g.clientWidth + 2;
+          g.classList.toggle("deborde", deborde && g.scrollLeft + g.clientWidth < g.scrollWidth - 4);
+        }
+        window.addEventListener("resize", function () { ["f-ch", "f-mois", "onglets"].forEach(function (id) { var g = $(id); if (g) majDebord(g); }); });
         function rendreBarre(cl) {
           var visibles = cartesVisibles();
           $("barre").hidden = !visibles.length;
@@ -802,6 +855,7 @@
             b.addEventListener("click", function () { S.f.mois = S.f.mois === m ? null : m; rendre(); });
             fm.appendChild(b);
           });
+          ["f-ch", "f-mois"].forEach(function (id) { majDebord($(id)); });
           var actif = filtreBarre();
           $("f-raz").hidden = !actif;
           var base = S.f.ch ? visibles.filter(function (c) { return c.ch === S.f.ch; }) : visibles;
@@ -1013,18 +1067,73 @@
           return li;
         }
 
+        var etroit = window.matchMedia("(max-width: 700px)");
+        if (etroit.addEventListener) etroit.addEventListener("change", function () { if (S.recu) rendre(); });
         function rendreOutils(cl) {
           var o = $("outils");
           o.innerHTML = "";
           if (S.apercu) return;
-          if (tactile && !autonome) o.appendChild(bouton("Installer l’app", "btn-ghost", ouvrirInstallation));
-          if (!julien()) return;
-          if (cl) {
-            o.appendChild(bouton("Voir comme " + (cl.contact || "le client"), "btn-ghost", function () { S.apercu = true; S.filtre = cl.id; rendre(); }));
-            o.appendChild(bouton("Point de lundi", "btn-ghost", function () { ouvrirPoint(cl); }));
-            o.appendChild(bouton("Réglages de la place", "btn-ghost", function () { ouvrirReglages(cl.id); }));
+          var boutons = [];
+          if (tactile && !autonome) boutons.push(bouton("Installer l’app", "btn-ghost", ouvrirInstallation));
+          if (!julien()) {
+            var aide = bouton("?", "btn-ghost aide-btn", function () { S.aide = true; rendre(); window.scrollTo({ top: 0, behavior: "smooth" }); });
+            aide.setAttribute("aria-label", "Comment lire ce tableau");
+            aide.title = "Comment lire ce tableau";
+            boutons.concat([aide]).forEach(function (b) { o.appendChild(b); });
+            return;
           }
-          o.appendChild(bouton("Nouvelle place", "btn", ouvrirNouvellePlace));
+          if (cl) {
+            boutons.push(bouton("Voir comme " + (cl.contact || "le client"), "btn-ghost", function () { S.apercu = true; S.filtre = cl.id; rendre(); }));
+            boutons.push(bouton("Point de lundi", "btn-ghost", function () { ouvrirPoint(cl); }));
+            boutons.push(bouton("Réglages de la place", "btn-ghost", function () { ouvrirReglages(cl.id); }));
+          }
+          boutons.push(bouton("Nouvelle place", "btn", ouvrirNouvellePlace));
+          if (!etroit.matches) { boutons.forEach(function (b) { o.appendChild(b); }); return; }
+          // Sur téléphone, les actions de Julien tiennent dans un menu : l'en-tête, collé en haut, reste mince.
+          var menu = el("details", "menu");
+          menu.appendChild(el("summary", null, "Actions"));
+          var liste = el("div", "menu-l");
+          boutons.forEach(function (b) { b.addEventListener("click", function () { menu.open = false; }); liste.appendChild(b); });
+          menu.appendChild(liste);
+          o.appendChild(menu);
+        }
+
+        /* Côté client : comment lire le tableau, jusqu'à « Compris » (retenu dans ce navigateur). */
+        var AIDE_STOCK = "tableau.aide";
+        function aideVue() { try { return localStorage.getItem(AIDE_STOCK) === "1"; } catch (e) { return false; } }
+        function rendreAide() {
+          var z = $("aide-client");
+          var montrer = faceClient() && !modeVue() && (S.aide || !aideVue());
+          z.hidden = !montrer;
+          if (!montrer) return;
+          z.innerHTML = "";
+          var b = el("div", "boite");
+          var h = el("h2", null, "Comment lire ce tableau");
+          h.id = "aide-titre";
+          b.appendChild(h);
+          var ul = el("ul");
+          [
+            ["Chez vous", "ce qui attend votre réponse ou votre validation. « Répondre » renvoie la carte à Julien."],
+            ["Vos tâches", "ce qui est à faire de votre côté : cochez quand c’est fait, Julien le voit aussitôt."],
+            ["Prévu et En cours", "ce que Julien prépare, et ce sur quoi il travaille."],
+            ["Demandes", "un besoin, une idée ? Écrivez-le en trois lignes."],
+          ].forEach(function (l) {
+            var li = el("li");
+            li.appendChild(el("b", null, "« " + l[0] + " » : "));
+            li.appendChild(document.createTextNode(l[1]));
+            ul.appendChild(li);
+          });
+          var li = el("li");
+          li.appendChild(el("b", null, "Une question ? "));
+          li.appendChild(document.createTextNode("La discussion, en bas à droite."));
+          ul.appendChild(li);
+          b.appendChild(ul);
+          b.appendChild(bouton("Compris", "btn btn-sm", function () {
+            try { localStorage.setItem(AIDE_STOCK, "1"); } catch (e) {}
+            S.aide = false;
+            rendre();
+          }));
+          z.appendChild(b);
         }
 
         function rendrePeriode(cl) {
@@ -1078,6 +1187,7 @@
         function rendreColonnes(cl) {
           var fc = faceClient();
           var visibles = cartesAffichees();
+          var nombres = {};
           vuesCeRendu = {};
           document.querySelectorAll("[data-titre-vous]").forEach(function (h) { h.textContent = fc ? "Chez vous" : "Chez le client"; });
           document.querySelectorAll(".add.julien").forEach(function (a) { a.hidden = fc; });
@@ -1085,7 +1195,7 @@
             var col = inp.dataset.add;
             var bloque = !fc && !cl;
             inp.disabled = bloque || (fc && julien());
-            if (col === "demandes") inp.placeholder = bloque ? "Choisissez une place pour ajouter" : fc ? "+ Une demande — trois lignes suffisent" : "+ demande reçue par e-mail ou téléphone";
+            if (col === "demandes") inp.placeholder = bloque ? "Choisissez une place pour ajouter" : fc ? "+ Nouvelle demande" : "+ demande reçue par e-mail ou téléphone";
             else inp.placeholder = bloque ? "Choisissez une place pour ajouter" : col === "vous" ? "+ une question au client" : "+ carte";
           });
 
@@ -1096,6 +1206,7 @@
             if (name === "fait") liste.sort(function (a, b) { return (b.faitLe || 0) - (a.faitLe || 0); });
             else liste.sort(function (a, b) { return a.ordre - b.ordre; });
             colEl.querySelector(".n").textContent = liste.length;
+            nombres[name] = liste.length;
             if (name === "fait") {
               var recentes = liste.filter(function (c) { return c.faitLe && Date.now() - c.faitLe < 7 * JOUR; });
               var anciennes = liste.filter(function (c) { return !(c.faitLe && Date.now() - c.faitLe < 7 * JOUR); });
@@ -1105,17 +1216,29 @@
                 anciennes.slice(0, 12).forEach(function (c) { wrap.appendChild(carteEl(c)); });
                 if (anciennes.length > 12) wrap.appendChild(el("p", "vide", "et " + (anciennes.length - 12) + " plus anciennes."));
               }
-            } else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
+            } else if (name === "prevu" && fc && S.f.mois === null && liste.length > 6) rendreParMois(wrap, liste, cl);
+            else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
             var confiees = name === "vous" ? tachesConfiees(visibles) : [];
             if (confiees.length) {
+              // Les tâches, rangées sous leur carte : le titre de la carte une fois, pas sous chaque ligne.
               var box = el("div", "confiees");
               box.appendChild(el("h4", null, fc ? "Vos tâches" : "Tâches confiées au client"));
-              var ul = el("ul", "st-liste");
-              confiees.forEach(function (x) { ul.appendChild(ligneSousTache(x.c, x.s, true)); });
-              box.appendChild(ul);
+              var groupes = [];
+              confiees.forEach(function (x) {
+                var g = null;
+                for (var i = 0; i < groupes.length; i++) if (groupes[i].c.id === x.c.id) g = groupes[i];
+                if (!g) { g = { c: x.c, s: [] }; groupes.push(g); }
+                g.s.push(x.s);
+              });
+              groupes.forEach(function (g) {
+                box.appendChild(bouton(g.c.t, "conf-carte", function () { ouvrirCarte(g.c.id); }));
+                var ul = el("ul", "st-liste");
+                g.s.forEach(function (x) { ul.appendChild(ligneSousTache(g.c, x, "groupe")); });
+                box.appendChild(ul);
+              });
               wrap.appendChild(box);
             }
-            if (!liste.length && !confiees.length) wrap.appendChild(el("p", "vide", filtreActif() ? "—" : name === "vous" && fc ? "Rien ne vous attend." : "—"));
+            if (!liste.length && !confiees.length) wrap.appendChild(el("p", "vide", filtreActif() ? "Rien avec ce filtre." : name === "vous" && fc ? "Rien ne vous attend." : name === "fait" ? "Rien de terminé pour l’instant." : "Rien pour l’instant."));
 
             if (name === "demandes") {
               var fold = colEl.querySelector(".folded");
@@ -1134,12 +1257,59 @@
             }
           });
           dejaVues = vuesCeRendu;
+          rendreOnglets(fc, nombres);
+        }
+
+        /* Sur téléphone et tablette, une colonne à la fois : des onglets avec leur nombre, au lieu
+           d'un défilement de côté qui cachait les autres colonnes (et laissait un grand vide sous
+           la plus courte). Côté client, « Chez vous » d'abord : c'est là qu'il agit. */
+        var NOM_ONGLET = { demandes: "Demandes", prevu: "Prévu", encours: "En cours", fait: "Fait" };
+        function rendreOnglets(fc, nombres) {
+          var nav = $("onglets");
+          nav.innerHTML = "";
+          var ordre = fc ? ["vous", "demandes", "prevu", "encours", "fait"] : ["demandes", "prevu", "encours", "vous", "fait"];
+          var actif = S.colMobile && ordre.indexOf(S.colMobile) >= 0 ? S.colMobile : fc ? "vous" : "encours";
+          ordre.forEach(function (col) {
+            var b = el("button", "onglet" + (col === actif ? " on" : ""));
+            b.type = "button";
+            b.appendChild(document.createTextNode(col === "vous" ? (fc ? "Chez vous" : "Chez le client") : NOM_ONGLET[col]));
+            b.appendChild(el("span", "nb", String(nombres[col] || 0)));
+            b.setAttribute("aria-pressed", col === actif ? "true" : "false");
+            b.addEventListener("click", function () {
+              S.colMobile = col;
+              rendreOnglets(fc, nombres);
+              var y = nav.getBoundingClientRect().top - $("top").offsetHeight - 8;
+              if (y < 0) window.scrollBy({ top: y, behavior: "smooth" });
+            });
+            nav.appendChild(b);
+          });
+          document.querySelectorAll("#board .column").forEach(function (k) { k.classList.toggle("actif", k.dataset.col === actif); });
+          majDebord(nav);
         }
 
         function chip(txt, cls) { return el("span", "chip" + (cls ? " " + cls : ""), txt); }
 
+        /* Côté client, « Prévu » se lit par mois : les mois passés, le mois en cours et le suivant
+           ouverts, les autres repliés (un clic les ouvre). Julien garde sa liste d'un seul tenant. */
+        function rendreParMois(wrap, liste, cl) {
+          var debut = cl && cl.debut ? new Date(cl.debut + "T12:00:00").getMonth() : new Date().getMonth();
+          if (isNaN(debut)) debut = new Date().getMonth();
+          function rang(m) { return m < 0 ? 99 : (m - debut + 12) % 12; }
+          var maintenant = rang(new Date().getMonth());
+          var groupes = {};
+          liste.forEach(function (c) { var m = moisDe(c); (groupes[m] = groupes[m] || []).push(c); });
+          Object.keys(groupes).map(Number).sort(function (a, b) { return rang(a) - rang(b); }).forEach(function (m) {
+            var cartes = groupes[m];
+            var ouvert = S.moisOuverts[m] != null ? S.moisOuverts[m] : m < 0 || rang(m) <= maintenant + 1;
+            var t = bouton((m < 0 ? "Sans mois" : MOIS_AFFICHE[m]) + " · " + cartes.length, "mois-t", function () { S.moisOuverts[m] = !ouvert; rendre(); });
+            t.setAttribute("aria-expanded", ouvert ? "true" : "false");
+            wrap.appendChild(t);
+            if (ouvert) cartes.forEach(function (c) { wrap.appendChild(carteEl(c, { sansMois: m >= 0 })); });
+          });
+        }
+
         var dejaVues = {}, vuesCeRendu = {};
-        function carteEl(c) {
+        function carteEl(c, opts) {
           var fc = faceClient();
           var e = el("article", "card");
           var trace = c.id + ":" + c.col;
@@ -1147,14 +1317,20 @@
           vuesCeRendu[trace] = true;
           e.style.setProperty("--mc", couleur(c));
           e.dataset.id = c.id;
-          e.appendChild(el("h3", null, c.t));
+          var h3 = el("h3");
+          var titreCarte = el("button", "card-t", c.t);
+          titreCarte.type = "button";
+          h3.appendChild(titreCarte);
+          e.appendChild(h3);
           var chips = el("div", "chips");
-          if (c.nouveau === roleVue()) chips.appendChild(chip("nouveau", "neuf"));
+          var estNouveau = c.nouveau === roleVue();
+          if (estNouveau) chips.appendChild(chip("nouveau", "neuf"));
           if (!fc && S.filtre === "tous") { var cl = clientParId(c.client); if (cl) chips.appendChild(chip(cl.nom, "client")); }
           var ch = chantier(c);
-          if (ch) chips.appendChild(chip(ch.nom));
+          if (ch && !S.f.ch) chips.appendChild(chip(ch.nom));
           if (c.col === "demandes" && c.type) chips.appendChild(chip(c.type));
-          if (c.echeance) chips.appendChild(chip(c.echeance));
+          // Rangée sous l'en-tête de son mois, la carte ne répète pas « Octobre ».
+          if (c.echeance && !(opts && opts.sansMois && MOIS.indexOf(sansAccent(c.echeance).trim().toLowerCase()) >= 0)) chips.appendChild(chip(c.echeance));
           if (c.date) chips.appendChild(chip(dateCourte(c.date), c.col !== "fait" && c.date < aujourdhui() ? "late" : ""));
           if (c.livrable) chips.appendChild(chip("livrable"));
           var st = c.st || [];
@@ -1162,7 +1338,11 @@
           var aLui = c.col === "fait" ? 0 : st.filter(function (x) { return !x.ok && coteClient(x.qui); }).length;
           if (aLui) chips.appendChild(chip(aLui + (fc ? " à vous" : " au client"), "vous"));
           if (st.some(function (x) { return enRetard(c, x); })) chips.appendChild(chip("sous-tâche en retard", "late"));
-          if (c.col === "vous" && c.chezClientDepuis) { var j = jours(c.chezClientDepuis); chips.appendChild(chip(depuis(c.chezClientDepuis) + (j > 5 ? " — en retard" : ""), j > 5 ? "late" : "vous")); }
+          if (c.col === "vous" && c.chezClientDepuis) {
+            var j = jours(c.chezClientDepuis);
+            // « nouveau » dit déjà « arrivée aujourd'hui ».
+            if (!(estNouveau && j <= 0)) chips.appendChild(chip(depuis(c.chezClientDepuis) + (j > 5 ? " — en retard" : ""), j > 5 ? "late" : "vous"));
+          }
           if (c.statut) chips.appendChild(chip(c.statut, "ok"));
           if (c.com && c.com.length) chips.appendChild(chip(c.com.length + " comm."));
           e.appendChild(chips);
@@ -1230,6 +1410,7 @@
           });
           return out.sort(function (a, b) { return (a.s.date || "9999") < (b.s.date || "9999") ? -1 : (a.s.date || "9999") > (b.s.date || "9999") ? 1 : 0; });
         }
+        /* avecCarte : true = rappeler la carte sous la tâche ; "groupe" = la carte est déjà en titre au-dessus. */
         function ligneSousTache(c, x, avecCarte) {
           var li = el("li", x.ok ? "ok" : "");
           if (peutCocher(c, x)) {
@@ -1242,13 +1423,14 @@
             li.appendChild(cb);
           } else li.appendChild(el("span", "coche-fixe", x.ok ? "✓" : "○"));
           var t = el("span", "t", x.t);
-          if (avecCarte) {
+          if (avecCarte === true) {
             t.appendChild(el("br"));
             t.appendChild(bouton(c.t, "parent", function () { ouvrirCarte(c.id); }));
           }
           li.appendChild(t);
           var meta = [];
-          if (x.qui) meta.push(!julien() && S.me && x.qui === S.me.nom ? "vous" : x.qui);
+          var aMoi = !julien() && S.me && x.qui === S.me.nom;
+          if (x.qui && !(aMoi && avecCarte === "groupe")) meta.push(aMoi ? "vous" : x.qui);
           if (x.date) meta.push(dateCourte(x.date));
           if (meta.length) li.appendChild(el("span", "meta" + (enRetard(c, x) ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
           li.addEventListener("click", function (e) { e.stopPropagation(); });
@@ -1523,7 +1705,7 @@
           return c.action === "valider" ? ["fait", "encours"] : ["fait"];
         }
         function rangeable(col) { return julien() ? col !== "fait" : col === "demandes"; }
-        function interactif(t) { return !!(t.closest && t.closest("button, a, input, textarea, select, label, .zone")); }
+        function interactif(t) { return !!(t.closest && t.closest("button:not(.card-t), a, input, textarea, select, label, .zone")); }
 
         function preparerSouris(ev, c, noeud) {
           if (ev.button !== 0 || interactif(ev.target)) return;
@@ -1729,13 +1911,47 @@
 
         /* ————— Feuilles ————— */
         var back = $("back"), sheet = $("sheet");
+        var retourFocus = null;
         function ouvrirFeuille(mode, id, couleurBord) {
+          var dejaOuverte = back.classList.contains("on");
+          if (!dejaOuverte) {
+            var a = document.activeElement, carte = a && a.closest ? a.closest(".card") : null;
+            retourFocus = { noeud: a, carte: carte ? carte.dataset.id : null };
+          }
           feuille = { mode: mode, id: id || null };
           sheet.innerHTML = "";
           sheet.style.setProperty("--mc", couleurBord || "var(--violet)");
           back.classList.add("on");
+          // Une fois la fenêtre remplie : son nom (le titre), et le focus dedans si rien ne l'a pris.
+          queueMicrotask(function () {
+            var h = sheet.querySelector("h2"), t = sheet.querySelector("input.titre");
+            sheet.removeAttribute("aria-labelledby");
+            sheet.removeAttribute("aria-label");
+            if (h) { h.id = "feuille-titre"; sheet.setAttribute("aria-labelledby", "feuille-titre"); }
+            else sheet.setAttribute("aria-label", t ? t.value : "Fenêtre");
+            if (!dejaOuverte && !sheet.contains(document.activeElement)) sheet.focus({ preventScroll: true });
+          });
         }
-        function fermer() { feuille = { mode: null, id: null }; back.classList.remove("on"); sheet.innerHTML = ""; }
+        function fermer() {
+          feuille = { mode: null, id: null };
+          back.classList.remove("on");
+          sheet.innerHTML = "";
+          // Le focus revient là d'où l'on venait — sur la carte, même redessinée entre-temps.
+          var r = retourFocus;
+          retourFocus = null;
+          if (!r) return;
+          var cible = r.carte ? document.querySelector('.card[data-id="' + r.carte + '"] .card-t') : null;
+          if (!cible && r.noeud && document.contains(r.noeud)) cible = r.noeud;
+          if (cible && cible.focus) cible.focus({ preventScroll: true });
+        }
+        back.addEventListener("keydown", function (e) {
+          if (e.key !== "Tab") return;
+          var f = [].filter.call(sheet.querySelectorAll("button, a[href], input, select, textarea, [tabindex]:not([tabindex='-1'])"), function (x) { return !x.disabled && x.offsetParent !== null; });
+          if (!f.length) return;
+          var premier = f[0], dernier = f[f.length - 1];
+          if (e.shiftKey && (document.activeElement === premier || document.activeElement === sheet)) { e.preventDefault(); dernier.focus(); }
+          else if (!e.shiftKey && document.activeElement === dernier) { e.preventDefault(); premier.focus(); }
+        });
         back.addEventListener("click", function (e) { if (e.target === back) fermer(); });
         document.addEventListener("keydown", function (e) { if (e.key === "Escape" && back.classList.contains("on")) fermer(); });
         function pied(extra) {
@@ -1801,7 +2017,12 @@
             sheet.appendChild(m);
             if (c.desc) sheet.appendChild(el("p", "desc", c.desc));
             if (c.lien) { var a = el("a", "btn-ghost", "Ouvrir le document ↗"); a.href = c.lien; a.target = "_blank"; a.rel = "noopener noreferrer"; a.style.display = "inline-block"; a.style.marginTop = "12px"; a.style.textDecoration = "none"; sheet.appendChild(a); }
-            if (c.col === "vous") { var z = el("div"); z.style.marginTop = "14px"; z.appendChild(actionsClient(c, z)); sheet.appendChild(z); }
+            if (c.col === "vous") {
+              var z = el("div"); z.style.marginTop = "14px";
+              z.appendChild(actionsClient(c, z));
+              if (c.action !== "valider" && c.action !== "arbitrer") z.appendChild(el("p", "aide", "« Répondre » renvoie la carte à Julien avec votre réponse. Pour une simple question, un commentaire suffit : la carte reste chez vous."));
+              sheet.appendChild(z);
+            }
           } else {
             var titre = saisie("text", c.t, function (v) { if (v.trim()) op({ type: "carte.maj", id: c.id, champs: { t: v } }); });
             titre.className = "titre";
