@@ -196,6 +196,8 @@
       .f-q:focus-within { border-color: var(--violet); }
       .f-q svg { width: 14px; height: 14px; color: var(--ink-3); flex: none; }
       .f-q input { border: none; background: transparent; padding: 6px 0; font: inherit; font-size: 0.82rem; color: var(--ink); outline: none; width: 100%; }
+      .f-st::before { content: ""; width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid currentColor; flex: none; }
+      .f-st.on::before { background: var(--violet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.5l4.5-5' fill='none' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E") center / 10px no-repeat; border-color: var(--violet); }
       .f-raz { background: none; border: none; color: var(--violet); font-size: 0.8rem; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
       .f-n { font-size: 0.78rem; color: var(--ink-3); }
       .card h3 { font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
@@ -280,13 +282,17 @@
       .aide-client .btn { justify-self: start; margin-top: 2px; }
       .aide-btn { width: 32px; height: 32px; padding: 0 !important; display: inline-grid; place-items: center; font-weight: 600; }
       .st-ed { list-style: none; display: grid; gap: 8px; }
-      .st-ed li { display: grid; grid-template-columns: 18px minmax(0, 1fr) 150px 140px 26px; gap: 8px; align-items: center; }
+      .st-ed li { display: grid; grid-template-columns: 22px 18px minmax(0, 1fr) 150px 140px 26px; gap: 8px; align-items: center; border-radius: 10px; }
+      .st-poignee { width: 22px; height: 30px; padding: 0; border: none; background: none; color: var(--ink-3); font-size: 1.05rem; line-height: 1; cursor: grab; touch-action: none; border-radius: 6px; }
+      .st-poignee:hover { color: var(--violet); background: var(--violet-wash); }
+      .st-ed li.deplace { background: var(--white); box-shadow: 0 8px 24px rgba(24, 20, 60, 0.16); position: relative; z-index: 1; }
+      body.tri-st, body.tri-st * { cursor: grabbing !important; user-select: none; }
       .st-ed li.ok input[type="text"] { color: var(--ink-3); text-decoration: line-through; }
       .st-ed input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--violet); }
       .st-ed select { width: 100%; border: 1px solid var(--line); border-radius: 10px; background: var(--paper); padding: 7px 8px; font: inherit; font-size: 0.82rem; color: var(--ink); }
       @media (max-width: 640px) {
-        .st-ed li { grid-template-columns: 18px minmax(0, 1fr) 26px; }
-        .st-ed select, .st-ed input[type="date"] { grid-column: 2; }
+        .st-ed li { grid-template-columns: 22px 18px minmax(0, 1fr) 26px; }
+        .st-ed select, .st-ed input[type="date"] { grid-column: 3; }
       }
 
       /* Le sous-tableau d'un projet (chantier) */
@@ -503,6 +509,7 @@
     <div class="barre" id="barre" hidden>
       <div class="f-groupe" id="f-ch"></div>
       <div class="f-groupe" id="f-mois"></div>
+      <button type="button" class="pill f-st" id="f-st" aria-pressed="false" hidden>Sous-tâches</button>
       <label class="f-q">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="m11 11 3.5 3.5"></path></svg>
         <input type="search" id="f-q" placeholder="Chercher une carte" autocomplete="off" aria-label="Chercher une carte" />
@@ -585,7 +592,7 @@
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
         var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
-          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null };
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null };
         var tactile = window.matchMedia("(pointer: coarse)").matches;
         var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
@@ -610,7 +617,7 @@
         }
         function montrerAcces(message) {
           $("acces").hidden = false;
-          ["top", "periode", "projet", "barre", "vue", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
+          ["top", "periode", "aide-client", "projet", "barre", "onglets", "vue", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
           if (message) $("acces-texte").textContent = message;
           else if (autonome) $("acces-texte").textContent = "Collez ci-dessous le lien reçu par e-mail : l’app s’en souviendra.";
           $("reessayer").hidden = !S.cle;
@@ -856,6 +863,11 @@
             fm.appendChild(b);
           });
           ["f-ch", "f-mois"].forEach(function (id) { majDebord($(id)); });
+          var fst = $("f-st"), deplie = sousTachesDepliees();
+          fst.hidden = !!S.f.ch || !visibles.some(function (c) { return c.st && c.st.length; });
+          fst.classList.toggle("on", deplie);
+          fst.setAttribute("aria-pressed", deplie ? "true" : "false");
+          fst.title = deplie ? "Replier les sous-tâches" : "Afficher les sous-tâches sous chaque carte";
           var actif = filtreBarre();
           $("f-raz").hidden = !actif;
           var base = S.f.ch ? visibles.filter(function (c) { return c.ch === S.f.ch; }) : visibles;
@@ -868,6 +880,23 @@
         });
         $("f-q").addEventListener("keydown", function (e) { if (e.key === "Escape") { $("f-q").value = ""; S.f.q = ""; rendre(); } });
         $("f-raz").addEventListener("click", function () { S.f.mois = null; S.f.q = ""; $("f-q").value = ""; rendre(); });
+
+        /* Les sous-tâches dépliées sous chaque carte : un bouton, retenu dans ce navigateur.
+           Ouvertes d'emblée chez Julien, repliées chez le client (il a « Vos tâches »). */
+        var ST_STOCK = "tableau.sous-taches";
+        function sousTachesDepliees() {
+          if (S.f.ch) return true; // la vue d'un projet les montre toujours
+          if (S.stDeplie !== null) return S.stDeplie;
+          var v = null;
+          try { v = localStorage.getItem(ST_STOCK); } catch (e) {}
+          if (v === "1" || v === "0") return (S.stDeplie = v === "1");
+          return julien() && !S.apercu;
+        }
+        $("f-st").addEventListener("click", function () {
+          S.stDeplie = !sousTachesDepliees();
+          try { localStorage.setItem(ST_STOCK, S.stDeplie ? "1" : "0"); } catch (e) {}
+          rendre();
+        });
 
         function rendreFiltres() {
           var f = $("filtres");
@@ -1347,7 +1376,7 @@
           if (c.com && c.com.length) chips.appendChild(chip(c.com.length + " comm."));
           e.appendChild(chips);
           if (c.note) e.appendChild(el("p", "note", c.statut === "répondu" ? "« " + c.note + " »" : c.note));
-          if (S.f.ch && st.length) {
+          if (sousTachesDepliees() && st.length) {
             var liste = el("ul", "st-liste");
             st.forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
             e.appendChild(liste);
@@ -1972,8 +2001,9 @@
           return i;
         }
 
+        var triEnCours = false;
         function rafraichirFeuille() {
-          if (!feuille.mode) return;
+          if (!feuille.mode || triEnCours) return;
           var actif = document.activeElement;
           var enSaisie = !!(actif && sheet.contains(actif) && (actif.tagName === "TEXTAREA" || (actif.tagName === "INPUT" && /^(text|url|date|search)$/.test(actif.type))));
           if (feuille.mode === "carte") {
@@ -2067,10 +2097,71 @@
             };
             var actuelles = function () { return ((trouverCarte(c.id) || c).st || []).map(function (k) { return { id: k.id, t: k.t, ok: k.ok, qui: k.qui, date: k.date }; }); };
             var modifier = function (id, fn) { var l = actuelles(); for (var i = 0; i < l.length; i++) if (l[i].id === id) { fn(l, i); break; } majSousTaches(l); };
+            // Classer : l'ordre voulu (ids), appliqué à la liste à jour ; une sous-tâche ajoutée entre-temps reste en fin.
+            var reordonner = function (ids) {
+              var l = actuelles(), parId = {};
+              l.forEach(function (x) { parId[x.id] = x; });
+              var tri = ids.map(function (id) { return parId[id]; }).filter(Boolean);
+              l.forEach(function (x) { if (ids.indexOf(x.id) < 0) tri.push(x); });
+              if (tri.map(function (x) { return x.id; }).join() === l.map(function (x) { return x.id; }).join()) return;
+              majSousTaches(tri);
+            };
             var responsables = personnesDe(cl);
             var ed = el("ul", "st-ed");
             sts.forEach(function (k) {
               var li = el("li", k.ok ? "ok" : "");
+              li.dataset.id = k.id;
+              // La poignée : glisser (souris, doigt) ou flèches haut/bas au clavier.
+              var poignee = bouton("⠿", "st-poignee", function () {});
+              poignee.setAttribute("aria-label", "Déplacer « " + k.t + " » (flèches haut et bas)");
+              poignee.title = "Glisser pour changer l’ordre";
+              poignee.dataset.garde = "tri-" + k.id;
+              poignee.addEventListener("keydown", function (e) {
+                if (e.key !== "ArrowUp" && e.key !== "ArrowDown") return;
+                e.preventDefault();
+                var ids = [].map.call(ed.children, function (x) { return x.dataset.id; });
+                var i = ids.indexOf(k.id), j = i + (e.key === "ArrowUp" ? -1 : 1);
+                if (i < 0 || j < 0 || j >= ids.length) return;
+                ids.splice(i, 1);
+                ids.splice(j, 0, k.id);
+                reordonner(ids);
+              });
+              poignee.addEventListener("pointerdown", function (e) {
+                if (e.button !== 0) return;
+                e.preventDefault();
+                try { poignee.setPointerCapture(e.pointerId); } catch (x) {}
+                var avant = [].map.call(ed.children, function (x) { return x.dataset.id; }).join();
+                triEnCours = true;
+                li.classList.add("deplace");
+                document.body.classList.add("tri-st");
+                // On déplace les voisines, jamais la ligne tenue : la retirer de la page, même un
+                // instant, ferait perdre le glissement au navigateur.
+                function bouge(m) {
+                  var prec = li.previousElementSibling, suiv = li.nextElementSibling;
+                  if (prec && m.clientY < prec.getBoundingClientRect().top + prec.offsetHeight / 2) ed.insertBefore(prec, li.nextElementSibling);
+                  else if (suiv && m.clientY > suiv.getBoundingClientRect().top + suiv.offsetHeight / 2) ed.insertBefore(suiv, li);
+                  // Près du bord de l'écran, la fiche défile.
+                  if (m.clientY < 70) back.scrollTop -= 14;
+                  else if (m.clientY > window.innerHeight - 70) back.scrollTop += 14;
+                }
+                function fin() {
+                  if (!triEnCours) return;
+                  poignee.removeEventListener("pointermove", bouge);
+                  poignee.removeEventListener("pointerup", fin);
+                  poignee.removeEventListener("pointercancel", fin);
+                  poignee.removeEventListener("lostpointercapture", fin);
+                  li.classList.remove("deplace");
+                  document.body.classList.remove("tri-st");
+                  triEnCours = false;
+                  var ids = [].map.call(ed.children, function (x) { return x.dataset.id; });
+                  if (ids.join() !== avant) reordonner(ids);
+                }
+                poignee.addEventListener("pointermove", bouge);
+                poignee.addEventListener("pointerup", fin);
+                poignee.addEventListener("pointercancel", fin);
+                poignee.addEventListener("lostpointercapture", fin);
+              });
+              li.appendChild(poignee);
               var cb = el("input"); cb.type = "checkbox"; cb.checked = k.ok; cb.id = "st-ed-" + k.id; cb.setAttribute("aria-label", "Faite : " + k.t);
               cb.addEventListener("change", function () {
                 var vraie = (c.st || []).filter(function (x) { return x.id === k.id; })[0];
@@ -2095,7 +2186,7 @@
               ed.appendChild(li);
             });
             sheet.appendChild(ed);
-            if (sts.length) sheet.appendChild(el("p", "aide", "Confiée au client, une sous-tâche apparaît dans son « Chez vous » : c’est lui qui la coche."));
+            if (sts.length) sheet.appendChild(el("p", "aide", (sts.length > 1 ? "Glissez ⠿ pour les classer, de la plus importante à la moins importante. " : "") + "Confiée au client, une sous-tâche apparaît dans son « Chez vous » : c’est lui qui la coche."));
             var nouvelle = el("input"); nouvelle.type = "text"; nouvelle.id = "st-nouvelle"; nouvelle.placeholder = "+ une sous-tâche, puis Entrée"; nouvelle.dataset.garde = "etape";
             nouvelle.style.marginTop = "8px";
             nouvelle.addEventListener("keydown", function (e) {
