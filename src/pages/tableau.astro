@@ -882,7 +882,7 @@
         $("f-raz").addEventListener("click", function () { S.f.mois = null; S.f.q = ""; $("f-q").value = ""; rendre(); });
 
         /* Les sous-tâches dépliées sous chaque carte : un bouton, retenu dans ce navigateur.
-           Ouvertes d'emblée chez Julien, repliées chez le client (il a « Vos tâches »). */
+           Ouvertes d'emblée, chez Julien comme chez le client, qui coche les siennes sur la carte. */
         var ST_STOCK = "tableau.sous-taches";
         function sousTachesDepliees() {
           if (S.f.ch) return true; // la vue d'un projet les montre toujours
@@ -890,7 +890,7 @@
           var v = null;
           try { v = localStorage.getItem(ST_STOCK); } catch (e) {}
           if (v === "1" || v === "0") return (S.stDeplie = v === "1");
-          return julien() && !S.apercu;
+          return true;
         }
         $("f-st").addEventListener("click", function () {
           S.stDeplie = !sousTachesDepliees();
@@ -1442,13 +1442,20 @@
         /* avecCarte : true = rappeler la carte sous la tâche ; "groupe" = la carte est déjà en titre au-dessus. */
         function ligneSousTache(c, x, avecCarte) {
           var li = el("li", x.ok ? "ok" : "");
-          if (peutCocher(c, x)) {
+          var clApercu = S.apercu ? clientParId(c.client) : null;
+          var enApercu = !!clApercu && !clApercu.archive && coteClient(x.qui);
+          if (peutCocher(c, x) || enApercu) {
             var cb = el("input");
             cb.type = "checkbox";
             cb.checked = x.ok;
             cb.id = "st-" + c.id.slice(0, 8) + "-" + x.id + (avecCarte ? "-v" : "");
             cb.setAttribute("aria-label", (x.ok ? "Rouvrir : " : "Fait : ") + x.t);
-            cb.addEventListener("change", function () { if (!cocher(c, x, cb.checked)) cb.checked = !cb.checked; });
+            // Cocher ne doit pas ouvrir la carte ; un clic sur le texte, lui, l'ouvre.
+            cb.addEventListener("click", function (e) { e.stopPropagation(); });
+            cb.addEventListener("change", function () {
+              if (enApercu) { cb.checked = !cb.checked; return toast("Aperçu — c’est " + (clApercu.contact || "le client") + " qui coche ici."); }
+              if (!cocher(c, x, cb.checked)) cb.checked = !cb.checked;
+            });
             li.appendChild(cb);
           } else li.appendChild(el("span", "coche-fixe", x.ok ? "✓" : "○"));
           var t = el("span", "t", x.t);
@@ -1462,7 +1469,6 @@
           if (x.qui && !(aMoi && avecCarte === "groupe")) meta.push(aMoi ? "vous" : x.qui);
           if (x.date) meta.push(dateCourte(x.date));
           if (meta.length) li.appendChild(el("span", "meta" + (enRetard(c, x) ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
-          li.addEventListener("click", function (e) { e.stopPropagation(); });
           return li;
         }
         function personnesDe(cl) {
