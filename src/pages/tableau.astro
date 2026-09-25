@@ -196,6 +196,8 @@
       .f-q:focus-within { border-color: var(--violet); }
       .f-q svg { width: 14px; height: 14px; color: var(--ink-3); flex: none; }
       .f-q input { border: none; background: transparent; padding: 6px 0; font: inherit; font-size: 0.82rem; color: var(--ink); outline: none; width: 100%; }
+      .f-st::before { content: ""; width: 12px; height: 12px; border-radius: 3px; border: 1.5px solid currentColor; flex: none; }
+      .f-st.on::before { background: var(--violet) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2.5 6.2 5 8.5l4.5-5' fill='none' stroke='white' stroke-width='1.8'/%3E%3C/svg%3E") center / 10px no-repeat; border-color: var(--violet); }
       .f-raz { background: none; border: none; color: var(--violet); font-size: 0.8rem; font-weight: 500; text-decoration: underline; text-underline-offset: 2px; }
       .f-n { font-size: 0.78rem; color: var(--ink-3); }
       .card h3 { font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.35; }
@@ -503,6 +505,7 @@
     <div class="barre" id="barre" hidden>
       <div class="f-groupe" id="f-ch"></div>
       <div class="f-groupe" id="f-mois"></div>
+      <button type="button" class="pill f-st" id="f-st" aria-pressed="false" hidden>Sous-tâches</button>
       <label class="f-q">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="m11 11 3.5 3.5"></path></svg>
         <input type="search" id="f-q" placeholder="Chercher une carte" autocomplete="off" aria-label="Chercher une carte" />
@@ -585,7 +588,7 @@
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
         var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
-          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null };
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null };
         var tactile = window.matchMedia("(pointer: coarse)").matches;
         var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
@@ -856,6 +859,11 @@
             fm.appendChild(b);
           });
           ["f-ch", "f-mois"].forEach(function (id) { majDebord($(id)); });
+          var fst = $("f-st"), deplie = sousTachesDepliees();
+          fst.hidden = !!S.f.ch || !visibles.some(function (c) { return c.st && c.st.length; });
+          fst.classList.toggle("on", deplie);
+          fst.setAttribute("aria-pressed", deplie ? "true" : "false");
+          fst.title = deplie ? "Replier les sous-tâches" : "Afficher les sous-tâches sous chaque carte";
           var actif = filtreBarre();
           $("f-raz").hidden = !actif;
           var base = S.f.ch ? visibles.filter(function (c) { return c.ch === S.f.ch; }) : visibles;
@@ -868,6 +876,23 @@
         });
         $("f-q").addEventListener("keydown", function (e) { if (e.key === "Escape") { $("f-q").value = ""; S.f.q = ""; rendre(); } });
         $("f-raz").addEventListener("click", function () { S.f.mois = null; S.f.q = ""; $("f-q").value = ""; rendre(); });
+
+        /* Les sous-tâches dépliées sous chaque carte : un bouton, retenu dans ce navigateur.
+           Ouvertes d'emblée chez Julien, repliées chez le client (il a « Vos tâches »). */
+        var ST_STOCK = "tableau.sous-taches";
+        function sousTachesDepliees() {
+          if (S.f.ch) return true; // la vue d'un projet les montre toujours
+          if (S.stDeplie !== null) return S.stDeplie;
+          var v = null;
+          try { v = localStorage.getItem(ST_STOCK); } catch (e) {}
+          if (v === "1" || v === "0") return (S.stDeplie = v === "1");
+          return julien() && !S.apercu;
+        }
+        $("f-st").addEventListener("click", function () {
+          S.stDeplie = !sousTachesDepliees();
+          try { localStorage.setItem(ST_STOCK, S.stDeplie ? "1" : "0"); } catch (e) {}
+          rendre();
+        });
 
         function rendreFiltres() {
           var f = $("filtres");
@@ -1347,7 +1372,7 @@
           if (c.com && c.com.length) chips.appendChild(chip(c.com.length + " comm."));
           e.appendChild(chips);
           if (c.note) e.appendChild(el("p", "note", c.statut === "répondu" ? "« " + c.note + " »" : c.note));
-          if (S.f.ch && st.length) {
+          if (sousTachesDepliees() && st.length) {
             var liste = el("ul", "st-liste");
             st.forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
             e.appendChild(liste);
