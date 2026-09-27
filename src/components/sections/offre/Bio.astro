@@ -3,9 +3,12 @@
  * Qui je suis — deux temps, et rien d'autre : les grandes marques d'où
  * vient le métier, puis ce que j'en fais aujourd'hui pour les PME. La
  * version précédente mêlait le marketing et la formation (300 formés, une
- * cinquantaine d'organisations) : ce n'est pas l'offre vendue ici. Les
- * formations citées le sont comme références de marques, pas comme offre.
- * La rareté reste en chute — l'équivalent du « limited roster » de Designjoy.
+ * cinquantaine d'organisations) : ce n'est pas l'offre vendue ici.
+ *
+ * La bande de références est QUALIFIÉE : dix noms alignés sans statut
+ * invitaient au doute plutôt que de le lever. Chaque groupe porte le
+ * sien — employeur, marques accompagnées en agence, équipes formées,
+ * clients —, validé par Julien le 16/09/2026.
  *
  * Pas de lien vers /realisations : ce portfolio est entièrement orienté
  * formation, il ne prouve rien pour l'offre marketing.
@@ -15,16 +18,16 @@ import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
 
 const references = [
-  "Publicis",
-  "Heineken",
-  "L'Oréal",
-  "Dassault Systèmes",
-  "SNCF Fret",
-  "Lagardère Travel Retail",
-  "Groupe LEH",
-  "La Maison Neuve",
-  "Maison des Vins et des Spiritueux",
-  "Le Nouveau Bélier",
+  { statut: "Employeur", noms: ["Publicis"] },
+  { statut: "Marques accompagnées en agence", noms: ["Heineken", "L'Oréal"] },
+  {
+    statut: "Équipes formées",
+    noms: ["Dassault Systèmes", "SNCF Fret", "Lagardère Travel Retail"],
+  },
+  {
+    statut: "Clients",
+    noms: ["Groupe LEH", "La Maison Neuve", "Maison des Vins et des Spiritueux", "Le Nouveau Bélier"],
+  },
 ];
 ---
 
@@ -70,18 +73,23 @@ const references = [
   </div>
 
   <!-- Références en noms typographiés, pas en logos : aucun visuel de marque
-       à licencier, et le texte reste lisible par les moteurs. -->
+       à licencier, et le texte reste lisible par les moteurs. Groupées par
+       statut, plutôt qu'alignées sans distinction. -->
   <div data-reveal class="mx-auto mt-14 max-w-7xl border-t border-line pt-8 md:mt-16">
     <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Références</p>
-    <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 lg:gap-x-8">
-      {references.map((r, i) => (
-        <li class="flex items-center gap-6 lg:gap-8">
-          <span class="text-[clamp(1.2rem,2vw,1.7rem)] font-medium tracking-[-0.03em] text-ink-3 transition-colors hover:text-foreground">
-            {r}
-          </span>
-          {i < references.length - 1 && <span class="hidden text-lime/50 sm:inline">✦</span>}
-        </li>
+    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {references.map((groupe) => (
+        <div>
+          <p class="text-sm text-lime">{groupe.statut}</p>
+          <ul class="mt-2 space-y-1">
+            {groupe.noms.map((nom) => (
+              <li class="text-[clamp(1.05rem,1.6vw,1.3rem)] font-medium tracking-[-0.02em] text-ink-3 transition-colors hover:text-foreground">
+                {nom}
+              </li>
+            ))}
+          </ul>
+        </div>
       ))}
-    </ul>
+    </div>
   </div>
 </section>
