@@ -4,18 +4,17 @@
  * métier, les équipes formées, puis ce que j'en fais aujourd'hui pour les PME.
  *
  * La bande de références est QUALIFIÉE : chaque groupe porte son statut
- * (clients, équipes formées, en agence) plutôt que dix noms alignés sans
- * distinction, qui invitaient au doute.
+ * (équipes formées, en agence) plutôt que des noms alignés sans distinction,
+ * qui invitaient au doute.
+ *
+ * Aucun client n'est nommé (décision du 30/09/2026) : les preuves de l'accueil
+ * sont anonymisées, un nom ici les rendrait reconnaissables.
  */
 import { Image } from "astro:assets";
 import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
 
 const references = [
-  {
-    statut: "Clients",
-    noms: ["Groupe LEH", "La Maison Neuve", "Maison des Vins et des Spiritueux", "Le Nouveau Bélier"],
-  },
   {
     statut: "Équipes formées",
     noms: ["Dassault Systèmes", "SNCF Fret", "Lagardère Travel Retail"],
@@ -70,7 +69,7 @@ const references = [
        statut, plutôt qu'alignées sans distinction. -->
   <div data-reveal class="mx-auto mt-14 max-w-7xl border-t border-line pt-8 md:mt-16">
     <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Références</p>
-    <div class="mt-6 grid gap-6 sm:grid-cols-3">
+    <div class="mt-6 grid gap-6 sm:grid-cols-2">
       {references.map((groupe) => (
         <div>
           <p class="text-sm text-lime">{groupe.statut}</p>
