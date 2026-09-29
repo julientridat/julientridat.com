@@ -280,6 +280,9 @@
       .aide-client ul { padding-left: 18px; display: grid; gap: 4px; font-size: 0.88rem; }
       .aide-client b { color: var(--ink); font-weight: 600; }
       .aide-client .btn { justify-self: start; margin-top: 2px; }
+      .cloche svg { width: 16px; height: 16px; }
+      .sheet .notif-etat { margin-top: 12px; font-size: 0.92rem; color: var(--ink-2); }
+      .sheet .notif-etat.on { color: var(--violet); font-weight: 600; }
       .aide-btn { width: 32px; height: 32px; padding: 0 !important; display: inline-grid; place-items: center; font-weight: 600; }
       .st-ed { list-style: none; display: grid; gap: 8px; }
       .st-ed li { display: grid; grid-template-columns: 22px 18px minmax(0, 1fr) 150px 140px 26px; gap: 8px; align-items: center; border-radius: 10px; }
@@ -659,7 +662,8 @@
         }
 
         function recevoir(m) {
-          if (m.type === "session") { S.me = m.me; return; }
+          if (m.type === "session") { S.me = m.me; S.vapid = m.vapid || null; resynchroniserNotifs(); return; }
+          if (m.type === "notif") { if (feuille.mode === "notifs") ouvrirNotifs(); return; }
           if (m.type === "erreur") {
             if (m.code === "cle") {
               try { localStorage.removeItem(CLE_STOCK); } catch (x) {}
@@ -1109,7 +1113,12 @@
           if (S.apercu) return;
           var boutons = [];
           if (tactile && !autonome) boutons.push(bouton("Installer l’app", "btn-ghost", ouvrirInstallation));
+          var cloche = bouton("", "btn-ghost aide-btn cloche", ouvrirNotifs);
+          cloche.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"></path></svg>';
+          cloche.setAttribute("aria-label", "Notifications");
+          cloche.title = "Notifications";
           if (!julien()) {
+            o.appendChild(cloche);
             var aide = bouton("?", "btn-ghost aide-btn", function () { S.aide = true; rendre(); window.scrollTo({ top: 0, behavior: "smooth" }); });
             aide.setAttribute("aria-label", "Comment lire ce tableau");
             aide.title = "Comment lire ce tableau";
@@ -1122,6 +1131,7 @@
             boutons.push(bouton("Réglages de la place", "btn-ghost", function () { ouvrirReglages(cl.id); }));
           }
           boutons.push(bouton("Nouvelle place", "btn", ouvrirNouvellePlace));
+          o.appendChild(cloche);
           if (!etroit.matches) { boutons.forEach(function (b) { o.appendChild(b); }); return; }
           // Sur téléphone, les actions de Julien tiennent dans un menu : l'en-tête, collé en haut, reste mince.
           var menu = el("details", "menu");
@@ -2860,6 +2870,89 @@
         var invite = null;
         window.addEventListener("beforeinstallprompt", function (e) { e.preventDefault(); invite = e; });
         window.addEventListener("appinstalled", function () { invite = null; toast("Installé — le tableau est sur votre écran d’accueil."); });
+        /* ————— Notifications (public/tableau-sw.js, worker/notifications.ts) ————— */
+        function notifsPossibles() { return "serviceWorker" in navigator && "PushManager" in window && "Notification" in window && !!S.vapid; }
+        function octetsB64u(t) {
+          var b = atob(t.replace(/-/g, "+").replace(/_/g, "/") + "===".slice((t.length + 3) % 4)), o = new Uint8Array(b.length);
+          for (var i = 0; i < b.length; i++) o[i] = b.charCodeAt(i);
+          return o;
+        }
+        function abonnementActuel() {
+          if (!("serviceWorker" in navigator)) return Promise.resolve(null);
+          return navigator.serviceWorker.getRegistration("/tableau")
+            .then(function (reg) { return reg && reg.pushManager ? reg.pushManager.getSubscription() : null; })
+            .catch(function () { return null; });
+        }
+        /* À chaque connexion : l'appareil déjà abonné le redit au serveur (sans nouvelle notification). */
+        function resynchroniserNotifs() {
+          if (!notifsPossibles() || Notification.permission !== "granted") return;
+          abonnementActuel().then(function (sub) { if (sub) op({ type: "notif.abonner", sub: sub.toJSON() }); });
+        }
+        function activerNotifs() {
+          // La permission se demande dans le geste même (Safari l'exige).
+          Promise.resolve(Notification.requestPermission())
+            .then(function (p) {
+              if (p !== "granted") { toast("Notifications refusées : rien n’est activé."); return ouvrirNotifs(); }
+              return navigator.serviceWorker.register("/tableau-sw.js", { scope: "/tableau" })
+                .then(function () { return navigator.serviceWorker.ready; })
+                .then(function (reg) {
+                  return reg.pushManager.getSubscription().then(function (s) {
+                    return s || reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: octetsB64u(S.vapid) });
+                  });
+                })
+                .then(function (sub) {
+                  op({ type: "notif.abonner", sub: sub.toJSON() });
+                  toast("Activées : une première notification arrive.");
+                });
+            })
+            .catch(function () { toast("Activation impossible sur ce navigateur."); ouvrirNotifs(); });
+        }
+        function couperNotifs() {
+          abonnementActuel()
+            .then(function (sub) {
+              if (!sub) return;
+              op({ type: "notif.desabonner", endpoint: sub.endpoint });
+              return sub.unsubscribe();
+            })
+            .then(function () { toast("Coupées sur cet appareil."); ouvrirNotifs(); });
+        }
+        function ouvrirNotifs() {
+          ouvrirFeuille("notifs");
+          sheet.appendChild(el("p", "kicker", "Notifications"));
+          sheet.appendChild(el("h2", null, "Être prévenu, même tableau fermé"));
+          sheet.appendChild(el("p", "desc", julien()
+            ? "Sur cet appareil : quand un client répond, valide, écrit, fait une demande ou coche une tâche."
+            : "Sur cet appareil : quand Julien vous écrit, commente une carte, ou qu’une carte arrive chez vous."));
+          var etat = el("p", "notif-etat");
+          sheet.appendChild(etat);
+          var actions = el("div", "foot");
+          sheet.appendChild(actions);
+          function fin() { actions.appendChild(bouton("Fermer", "btn-ghost", fermer)); }
+          if (surIphone() && !autonome) {
+            etat.textContent = "Sur iPhone, les notifications passent par l’app : touchez « Installer l’app », ouvrez-la depuis l’écran d’accueil, puis revenez ici.";
+            actions.appendChild(bouton("Installer l’app", "btn", ouvrirInstallation));
+            return fin();
+          }
+          if (!notifsPossibles()) { etat.textContent = "Ce navigateur ne sait pas recevoir de notifications."; return fin(); }
+          if (Notification.permission === "denied") {
+            etat.textContent = "Les notifications sont bloquées pour ce site dans les réglages du navigateur : autorisez-les, puis revenez ici.";
+            return fin();
+          }
+          etat.textContent = "Vérification…";
+          abonnementActuel().then(function (sub) {
+            if (feuille.mode !== "notifs") return;
+            actions.innerHTML = "";
+            if (sub && Notification.permission === "granted") {
+              etat.textContent = "✓ Activées sur cet appareil.";
+              etat.classList.add("on");
+              actions.appendChild(bouton("Couper sur cet appareil", "btn-ghost btn-danger", couperNotifs));
+            } else {
+              etat.textContent = "Pas encore activées sur cet appareil. Chaque appareil s’active une fois (ordinateur, téléphone).";
+              actions.appendChild(bouton("Activer sur cet appareil", "btn", activerNotifs));
+            }
+            fin();
+          });
+        }
         function surIphone() { return /iPhone|iPad|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); }
         function ouvrirInstallation() {
           ouvrirFeuille("installer");

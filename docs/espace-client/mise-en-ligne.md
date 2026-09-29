@@ -108,6 +108,24 @@ deviennent cliquables. Côté Julien, avec plusieurs places, la liste des discus
 Chaque message part aussi vers les automatisations (événement `message`).
 Pour une nouvelle mission, le client passe par « Demandes » : le fil le lui rappelle.
 
+## Les notifications
+
+La cloche, en haut à droite : « Activer sur cet appareil ». Chaque appareil s'active une fois
+(ordinateur, téléphone) ; les notifications arrivent ensuite même tableau fermé.
+
+- **Toi** : quand un client écrit, répond, valide, demande un ajustement, tranche, fait une
+  demande, coche une tâche ou règle une carte.
+- **Le client** : quand tu lui écris, commentes une carte, envoies une carte « Chez vous »,
+  lui soumets un choix ou le relances.
+- Jamais l'auteur du geste lui-même ; les cases cochées à la suite se regroupent en une.
+- **iPhone** : les notifications passent par l'app installée sur l'écran d'accueil (iOS 16.4
+  ou plus) — « Installer l'app », l'ouvrir, puis la cloche.
+- Rien à poser chez Cloudflare : le tableau crée et garde lui-même sa paire de clés VAPID ;
+  le contenu est chiffré de bout en bout jusqu'à l'appareil (norme Web Push). Un lien
+  renouvelé ou un mot de passe changé coupe les notifications des appareils qui l'utilisaient ;
+  changer ta clé coupe les tiennes (réactive-les ensuite).
+- Couper : la cloche → « Couper sur cet appareil ».
+
 ## Sur le téléphone — et sur le Mac
 
 Le tableau s'installe comme une app : icône sur l'écran d'accueil, plein écran, aucun store.
@@ -186,6 +204,3 @@ l'automatisation vérifie l'expéditeur).
   (« Point de lundi » prépare le texte à copier).
 - Pas de pièces jointes : on colle le lien du fichier (Drive, Figma…) dans la carte ou la
   discussion.
-- Pas de notification sur le téléphone quand l'app est fermée : l'étape suivante (Web Push,
-  gratuit, deux secrets Cloudflare de plus). En attendant, l'événement `message` peut
-  déclencher un e-mail depuis n8n ou Make.
