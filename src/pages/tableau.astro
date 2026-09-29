@@ -1262,11 +1262,14 @@
               }
             } else if (name === "prevu" && fc && S.f.mois === null && liste.length > 6) rendreParMois(wrap, liste, cl);
             else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
-            var confiees = name === "vous" ? tachesConfiees(visibles) : [];
+            // Sous-tâches dépliées sur les cartes : celles des cartes « Chez vous » sont déjà juste
+            // au-dessus ; la liste ne garde que celles des autres colonnes (pas de doublon).
+            var deplie = sousTachesDepliees();
+            var confiees = name === "vous" ? tachesConfiees(visibles).filter(function (x) { return !(deplie && x.c.col === "vous"); }) : [];
             if (confiees.length) {
               // Les tâches, rangées sous leur carte : le titre de la carte une fois, pas sous chaque ligne.
               var box = el("div", "confiees");
-              box.appendChild(el("h4", null, fc ? "Vos tâches" : "Tâches confiées au client"));
+              box.appendChild(el("h4", null, fc ? (deplie ? "Vos autres tâches" : "Vos tâches") : deplie ? "Autres tâches confiées au client" : "Tâches confiées au client"));
               var groupes = [];
               confiees.forEach(function (x) {
                 var g = null;
