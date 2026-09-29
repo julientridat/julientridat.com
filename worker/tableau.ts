@@ -203,6 +203,19 @@ function normaliser(c: Carte): Carte {
   return c;
 }
 
+/** Un mot de passe tapé à la main : sans accents, sans majuscules, sans espaces ni tirets.
+ *  « Julien Tableau Sébastien » et « julientableausebastien » ouvrent le même tableau. */
+function simplifier(t: string): string {
+  return t.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]/g, "");
+}
+
+/* Essais de connexion ratés : au-delà, la connexion attend un quart d'heure. Plus serré si les
+   échecs se multiplient partout à la fois (quelqu'un essaie des mots de passe en masse). */
+const ESSAIS_PAR_IP = 10;
+const ESSAIS_SOUS_PRESSION = 3;
+const PRESSION_PAR_HEURE = 500;
+const QUART_D_HEURE = 15 * 60_000;
+
 function nouvelleCle(): string {
   const octets = crypto.getRandomValues(new Uint8Array(24));
   return btoa(String.fromCharCode(...octets)).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
@@ -264,6 +277,12 @@ export class Tableau extends DurableObject<EnvTableau> {
       this.sql.exec("DROP TABLE lus");
       this.sql.exec("INSERT INTO schema_version (v) VALUES (2)");
     }
+    if (v < 3) {
+      // v3 — les essais de connexion ratés, par connexion (IP), pour freiner qui devine.
+      this.sql.exec("CREATE TABLE IF NOT EXISTS echecs (ip TEXT NOT NULL, ts INTEGER NOT NULL)");
+      this.sql.exec("CREATE INDEX IF NOT EXISTS echecs_ip ON echecs (ip, ts)");
+      this.sql.exec("INSERT INTO schema_version (v) VALUES (3)");
+    }
   }
 
   async fetch(request: Request): Promise<Response> {
@@ -272,7 +291,9 @@ export class Tableau extends DurableObject<EnvTableau> {
     }
     const pair = new WebSocketPair();
     const [navigateur, serveur] = Object.values(pair);
-    this.ctx.acceptWebSocket(serveur);
+    // L'adresse de la connexion, pour compter les essais ratés (voir bonjour).
+    const ip = (request.headers.get("CF-Connecting-IP") || "locale").slice(0, 64);
+    this.ctx.acceptWebSocket(serveur, ["ip:" + ip]);
     return new Response(null, { status: 101, webSocket: navigateur });
   }
 
@@ -317,22 +338,42 @@ export class Tableau extends DurableObject<EnvTableau> {
 
   /* ————— Accès ————— */
 
+  private tropDEssais(ip: string, maintenant: number): boolean {
+    const partout = this.sql.exec<{ n: number }>("SELECT COUNT(*) AS n FROM echecs WHERE ts > ?", maintenant - 4 * QUART_D_HEURE).one().n;
+    const ici = this.sql.exec<{ n: number }>("SELECT COUNT(*) AS n FROM echecs WHERE ip = ? AND ts > ?", ip, maintenant - QUART_D_HEURE).one().n;
+    return ici >= (partout >= PRESSION_PAR_HEURE ? ESSAIS_SOUS_PRESSION : ESSAIS_PAR_IP);
+  }
+
   private async bonjour(ws: WebSocket, cle: unknown): Promise<void> {
+    const ip = this.ctx.getTags(ws).find((t) => t.startsWith("ip:"))?.slice(3) || "inconnue";
+    const maintenant = Date.now();
+    if (this.tropDEssais(ip, maintenant)) {
+      ws.send(JSON.stringify({ type: "erreur", code: "cle", message: "Trop d’essais depuis cette connexion. Réessayez dans un quart d’heure." }));
+      ws.close(4001, "cle");
+      return;
+    }
     let session: Session | null = null;
-    if (typeof cle === "string" && cle.length >= 16 && cle.length <= 200) {
+    if (typeof cle === "string" && cle.length >= 6 && cle.length <= 200) {
       const admin = this.env.TABLEAU_ADMIN_KEY;
-      if (admin && admin.length >= 16 && (await egal(cle, admin))) {
+      if (admin && admin.length >= 16 && cle.length >= 16 && (await egal(cle, admin))) {
         session = { role: "julien", nom: "Julien", client: null };
       } else {
-        const ligne = this.sql.exec<{ client: string; nom: string }>("SELECT client, nom FROM acces WHERE cle = ?", cle).toArray()[0];
+        // Le lien exact d'abord ; sinon le mot de passe tapé à la main, ramené à sa forme simple.
+        let ligne: { cle: string; client: string; nom: string } | undefined = this.sql
+          .exec<{ cle: string; client: string; nom: string }>("SELECT cle, client, nom FROM acces WHERE cle = ?", cle)
+          .toArray()[0];
+        const simple = simplifier(cle);
+        if (!ligne && simple.length >= 8) ligne = this.acces().find((a) => simplifier(a.cle) === simple);
         if (ligne && this.client(ligne.client)) {
-          session = { role: "client", nom: ligne.nom, client: ligne.client, cle };
-          this.sql.exec("UPDATE acces SET vu_le = ? WHERE cle = ?", Date.now(), cle);
+          session = { role: "client", nom: ligne.nom, client: ligne.client, cle: ligne.cle };
+          this.sql.exec("UPDATE acces SET vu_le = ? WHERE cle = ?", maintenant, ligne.cle);
         }
       }
     }
     if (!session) {
-      ws.send(JSON.stringify({ type: "erreur", code: "cle", message: "Ce lien n’ouvre pas de tableau — il a peut-être été renouvelé. Demandez le vôtre à Julien." }));
+      this.sql.exec("INSERT INTO echecs (ip, ts) VALUES (?, ?)", ip, maintenant);
+      this.sql.exec("DELETE FROM echecs WHERE ts < ?", maintenant - 96 * QUART_D_HEURE);
+      ws.send(JSON.stringify({ type: "erreur", code: "cle", message: "Ce mot de passe (ou ce lien) n’ouvre pas de tableau. Vérifiez-le, ou demandez-le à Julien." }));
       ws.close(4001, "cle");
       return;
     }
@@ -580,6 +621,17 @@ export class Tableau extends DurableObject<EnvTableau> {
       .toArray()
       .map((r) => ({ cle: r.cle, client: r.client, nom: r.nom, creeLe: r.cree_le, vuLe: r.vu_le }));
   }
+  /** Ferme les connexions ouvertes avec une clé qui ne vaut plus. */
+  private fermerSessions(cle: string, message: string): void {
+    for (const s of this.ctx.getWebSockets()) {
+      const sess = s.deserializeAttachment() as Session | null;
+      if (sess?.cle === cle) {
+        this.erreur(s, message, "cle");
+        s.close(4001, "cle");
+      }
+    }
+  }
+
   private creerAcces(client: string, nom: string): string {
     const cle = nouvelleCle();
     this.sql.exec("INSERT INTO acces (cle, client, nom, cree_le) VALUES (?, ?, ?, ?)", cle, client, nom, Date.now());
@@ -1022,14 +1074,25 @@ export class Tableau extends DurableObject<EnvTableau> {
         exigerJulien();
         const cle = texte(op.cle, 200, true);
         this.sql.exec("DELETE FROM acces WHERE cle = ?", cle);
-        for (const s of this.ctx.getWebSockets()) {
-          const sess = s.deserializeAttachment() as Session | null;
-          if (sess?.cle === cle) {
-            this.erreur(s, "Ce lien vient d’être renouvelé — demandez le nouveau à Julien.", "cle");
-            s.close(4001, "cle");
-          }
-        }
+        this.fermerSessions(cle, "Ce lien vient d’être renouvelé — demandez le nouveau à Julien.");
         return null;
+      }
+      case "acces.definir": {
+        // Julien choisit le mot de passe d'une personne (simple à retenir) ; l'ancien cesse de marcher.
+        exigerJulien();
+        const ancienne = texte(op.cle, 200, true);
+        const ligne = this.sql.exec<{ client: string; nom: string }>("SELECT client, nom FROM acces WHERE cle = ?", ancienne).toArray()[0];
+        if (!ligne) throw new Refus("Cette personne n’a plus de lien.");
+        const nouvelle = simplifier(texte(op.nouvelle, 100, true));
+        if (nouvelle.length < 8) throw new Refus("Huit lettres ou chiffres au moins.");
+        const admin = this.env.TABLEAU_ADMIN_KEY;
+        if ((admin && simplifier(admin) === nouvelle) || this.acces().some((a) => a.cle !== ancienne && simplifier(a.cle) === nouvelle)) {
+          throw new Refus("Ce mot de passe est déjà pris : choisissez-en un autre.");
+        }
+        this.sql.exec("UPDATE acces SET cle = ? WHERE cle = ?", nouvelle, ancienne);
+        if (nouvelle !== ancienne) this.fermerSessions(ancienne, "Votre mot de passe vient de changer — demandez le nouveau à Julien.");
+        this.journal(session, "acces", ligne.client, null, { nom: ligne.nom, changement: "mot de passe" });
+        return { type: "cree", client: ligne.client, cle: nouvelle, nom: ligne.nom, motDePasse: true };
       }
       case "export": {
         exigerJulien();

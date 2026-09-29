@@ -354,7 +354,9 @@
       .personne { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; font-size: 0.86rem; }
       .personne b { color: var(--ink); font-weight: 500; }
       .personne small { color: var(--ink-3); }
-      .personne .fin { margin-left: auto; display: flex; gap: 6px; }
+      .personne .fin { margin-left: auto; display: flex; gap: 6px; flex-wrap: wrap; }
+      .personne .mdp { flex-basis: 100%; display: flex; gap: 6px; flex-wrap: wrap; }
+      .personne .mdp input { flex: 1 1 220px; }
       .ch-ligne { display: flex; gap: 8px; align-items: center; margin-bottom: 6px; }
       .ch-ligne .sw { width: 22px; height: 22px; border-radius: 7px; border: none; flex: none; }
       .point-text { white-space: pre-wrap; font-size: 0.88rem; color: var(--ink-2); background: var(--paper); border-radius: 12px; padding: 14px; margin-top: 12px; }
@@ -479,14 +481,14 @@
   <body>
     <div class="acces" id="acces" hidden>
       <div class="acces-in">
-        <h1 id="acces-titre">Ce tableau s’ouvre avec <em>votre lien personnel</em>.</h1>
-        <p id="acces-texte">Julien vous l’a envoyé par e-mail. Ouvrez-le une fois : ce navigateur s’en souviendra.</p>
+        <h1 id="acces-titre">Ce tableau s’ouvre avec <em>votre mot de passe</em>.</h1>
+        <p id="acces-texte">Julien vous l’a donné. Tapez-le une fois : ce navigateur s’en souviendra. Un lien reçu par e-mail marche aussi.</p>
         <p><button class="btn" type="button" id="reessayer" hidden>Réessayer</button></p>
         <form class="coller" id="coller">
-          <input type="text" id="coller-lien" placeholder="Ou collez ici votre lien" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="Votre lien personnel" />
+          <input type="text" id="coller-lien" placeholder="Votre mot de passe" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Votre mot de passe, ou votre lien" />
           <button class="btn" type="submit">Ouvrir</button>
         </form>
-        <p class="petit">Pas de lien, ou il ne fonctionne plus&nbsp;? Écrivez à <a href="mailto:julien@julientridat.com">julien@julientridat.com</a>.</p>
+        <p class="petit">Oublié, ou il ne fonctionne plus&nbsp;? Écrivez à <a href="mailto:julien@julientridat.com">julien@julientridat.com</a>.</p>
       </div>
     </div>
 
@@ -619,7 +621,7 @@
           $("acces").hidden = false;
           ["top", "periode", "aide-client", "projet", "barre", "onglets", "vue", "board", "apercu-bar", "fab", "chat"].forEach(function (id) { $(id).hidden = true; });
           if (message) $("acces-texte").textContent = message;
-          else if (autonome) $("acces-texte").textContent = "Collez ci-dessous le lien reçu par e-mail : l’app s’en souviendra.";
+          else if (autonome) $("acces-texte").textContent = "Tapez votre mot de passe (ou collez le lien reçu par e-mail) : l’app s’en souviendra.";
           $("reessayer").hidden = !S.cle;
         }
         function connecter() {
@@ -659,7 +661,10 @@
         function recevoir(m) {
           if (m.type === "session") { S.me = m.me; return; }
           if (m.type === "erreur") {
-            if (m.code === "cle") return montrerAcces(m.message);
+            if (m.code === "cle") {
+              try { localStorage.removeItem(CLE_STOCK); } catch (x) {}
+              return montrerAcces(m.message);
+            }
             return toast(m.message);
           }
           if (m.type === "etat") {
@@ -2353,9 +2358,24 @@
           else if (r.completees) parts.push("aucune sous-tâche nouvelle");
           return parts.join(", ") + (r.ignorees && r.ignorees.length ? " — " + r.ignorees.length + " ligne(s) non comprise(s) : « " + r.ignorees[0] + " »" + (r.ignorees.length > 1 ? "…" : "") : ".");
         }
+        /* Un mot de passe choisi par Julien (lettres et chiffres), par opposition à un lien tiré au hasard. */
+        function motDePasseSimple(cle) { return /^[a-z0-9]{8,40}$/.test(cle || ""); }
         function montrerLien(m) {
           S.filtre = m.client;
           rendre();
+          if (motDePasseSimple(m.cle)) {
+            ouvrirFeuille("lien");
+            sheet.appendChild(el("p", "kicker", "Le mot de passe de " + m.nom));
+            sheet.appendChild(el("h2", null, m.cle));
+            sheet.appendChild(el("p", "desc", "À lui donner de vive voix ou par message. Il le tape une fois sur julientridat.com/tableau (majuscules, accents et espaces ne comptent pas) : son navigateur s’en souvient. Le lien direct marche aussi :"));
+            sheet.appendChild(el("div", "lien-cle", lienPour(m.cle)));
+            var fm = el("div", "foot");
+            fm.appendChild(bouton("Copier le mot de passe", "btn", function () { copier(m.cle, "Mot de passe copié."); }));
+            fm.appendChild(bouton("Copier le lien", "btn-ghost", function () { copier(lienPour(m.cle), "Lien copié."); }));
+            fm.appendChild(bouton("Fermer", "btn-ghost", fermer));
+            sheet.appendChild(fm);
+            return;
+          }
           ouvrirFeuille("lien");
           sheet.appendChild(el("p", "kicker", "Le lien de " + m.nom));
           sheet.appendChild(el("h2", null, "À envoyer à " + m.nom + ", par e-mail."));
@@ -2406,9 +2426,34 @@
           S.acces.filter(function (a) { return a.client === cl.id; }).forEach(function (a) {
             var p = el("div", "personne");
             p.appendChild(el("b", null, a.nom));
-            p.appendChild(el("small", null, a.vuLe ? "venu " + quand(a.vuLe) : "jamais venu"));
+            p.appendChild(el("small", null, (a.vuLe ? "venu " + quand(a.vuLe) : "jamais venu") + (motDePasseSimple(a.cle) ? " · mot de passe : " + a.cle : "")));
             var fin = el("div", "fin");
             fin.appendChild(bouton("Copier son lien", "btn-ghost btn-sm", function () { copier(lienPour(a.cle), "Lien de " + a.nom + " copié."); }));
+            fin.appendChild(bouton("Mot de passe", "btn-ghost btn-sm", function () {
+              if (p.querySelector(".mdp")) return p.querySelector(".mdp input").focus();
+              var f = el("form", "mdp");
+              var i = el("input");
+              i.type = "text";
+              i.value = motDePasseSimple(a.cle) ? a.cle : "";
+              i.placeholder = "Un mot de passe simple, 8 lettres au moins";
+              i.setAttribute("aria-label", "Mot de passe de " + a.nom);
+              i.setAttribute("autocapitalize", "off");
+              i.spellcheck = false;
+              var ok = el("button", "btn btn-sm", "Enregistrer");
+              ok.type = "submit";
+              f.appendChild(i);
+              f.appendChild(ok);
+              f.appendChild(bouton("Annuler", "btn-ghost btn-sm", function () { f.remove(); }));
+              f.addEventListener("submit", function (e) {
+                e.preventDefault();
+                var v = i.value.trim();
+                if (!v) return i.focus();
+                if (!confirm("Le lien actuel de " + a.nom + " cessera de marcher : " + a.nom + " entrera avec « " + v + " ». Continuer ?")) return;
+                op({ type: "acces.definir", cle: a.cle, nouvelle: v });
+              });
+              p.appendChild(f);
+              i.focus();
+            }));
             fin.appendChild(bouton("Renouveler", "btn-ghost btn-sm btn-danger", function () {
               if (!confirm("Renouveler le lien de " + a.nom + " ? L’ancien cesse de fonctionner tout de suite.")) return;
               op({ type: "acces.revoquer", cle: a.cle });
@@ -2839,9 +2884,10 @@
         }
         $("coller").addEventListener("submit", function (e) {
           e.preventDefault();
+          // Un lien collé, ou le mot de passe tapé (majuscules, accents et espaces ne comptent pas).
           var v = $("coller-lien").value.trim(), m = v.match(/cle=([^&\s#]+)/);
-          var k = m ? decodeURIComponent(m[1]) : /^[\w-]{16,200}$/.test(v) ? v : null;
-          if (!k) { $("acces-texte").textContent = "Ce n’est pas un lien de tableau : il ressemble à julientridat.com/tableau#cle=…"; return; }
+          var k = m ? decodeURIComponent(m[1]) : v.length >= 6 && v.length <= 200 ? v : null;
+          if (!k) { $("acces-texte").textContent = "Tapez votre mot de passe, ou collez le lien reçu de Julien."; return; }
           try { localStorage.setItem(CLE_STOCK, k); } catch (x) {}
           S.cle = k;
           $("coller-lien").value = "";

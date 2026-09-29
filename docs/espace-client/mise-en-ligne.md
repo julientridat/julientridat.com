@@ -30,6 +30,11 @@ Le tableau affiche alors **le lien de Sébastien** : copie-le, envoie-le par e-m
 clé ; il l'ouvre une fois.
 
 - Ajouter une personne chez le client (Laurent…) : Réglages de la place → « + une personne ».
+- **Un mot de passe simple** plutôt qu'un lien : Réglages → à côté de la personne, « Mot de
+  passe » → par exemple `julientableausebastien` → Enregistrer. Il le tape une fois sur
+  julientridat.com/tableau ; majuscules, accents et espaces ne comptent pas (« Julien Tableau
+  Sébastien » marche). Le lien direct (`/tableau#cle=julientableausebastien`) marche aussi ;
+  l'ancien lien cesse de marcher. Huit lettres ou chiffres au moins, un par personne.
 - Un lien a circulé : Réglages → « Renouveler » — l'ancien cesse de marcher à l'instant.
 - Voir ce que voit Sébastien : « Voir comme Sébastien ». Ne pas ouvrir son lien dans ton
   propre navigateur (il remplacerait ta clé) — une fenêtre privée, si tu veux vraiment.
@@ -158,6 +163,10 @@ pour lui ne récupérerait rien.
 - Le serveur ne livre à un client que ses propres cartes, et refuse tout geste réservé à
   Julien, même forgé à la main (vérifié).
 - `/tableau` n'est ni indexé, ni dans le plan du site, ni dans `llms.txt`.
+- Essais ratés : après 10 mots de passe ou liens refusés en un quart d'heure, une connexion
+  attend un quart d'heure (3 essais seulement si les échecs se multiplient partout à la fois).
+- Un mot de passe qui se devine (prénom, nom du client…) protège moins qu'un lien tiré au
+  hasard : le choix de Julien, en connaissance de cause. En cas de doute, « Renouveler ».
 
 ## Sauvegarde
 
