@@ -1,33 +1,26 @@
 ---
 /**
- * Qui je suis — deux temps, et rien d'autre : les grandes marques d'où
- * vient le métier, puis ce que j'en fais aujourd'hui pour les PME. La
- * version précédente mêlait le marketing et la formation (300 formés, une
- * cinquantaine d'organisations) : ce n'est pas l'offre vendue ici.
+ * Qui je suis — copy du 29/09/2026 : les grandes marques d'où vient le
+ * métier, les équipes formées, puis ce que j'en fais aujourd'hui pour les PME.
  *
- * La bande de références est QUALIFIÉE : dix noms alignés sans statut
- * invitaient au doute plutôt que de le lever. Chaque groupe porte le
- * sien — employeur, marques accompagnées en agence, équipes formées,
- * clients —, validé par Julien le 16/09/2026.
- *
- * Pas de lien vers /realisations : ce portfolio est entièrement orienté
- * formation, il ne prouve rien pour l'offre marketing.
+ * La bande de références est QUALIFIÉE : chaque groupe porte son statut
+ * (clients, équipes formées, en agence) plutôt que dix noms alignés sans
+ * distinction, qui invitaient au doute.
  */
 import { Image } from "astro:assets";
 import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
 
 const references = [
-  { statut: "Employeur", noms: ["Publicis"] },
-  { statut: "Marques accompagnées en agence", noms: ["Heineken", "L'Oréal"] },
-  {
-    statut: "Équipes formées",
-    noms: ["Dassault Systèmes", "SNCF Fret", "Lagardère Travel Retail"],
-  },
   {
     statut: "Clients",
     noms: ["Groupe LEH", "La Maison Neuve", "Maison des Vins et des Spiritueux", "Le Nouveau Bélier"],
   },
+  {
+    statut: "Équipes formées",
+    noms: ["Dassault Systèmes", "SNCF Fret", "Lagardère Travel Retail"],
+  },
+  { statut: "En agence", noms: ["Publicis", "Heineken", "L'Oréal"] },
 ];
 ---
 
@@ -37,7 +30,7 @@ const references = [
     <div data-reveal class="overflow-hidden rounded-3xl border border-line">
       <Image
         src={julien}
-        alt="Julien Tridat"
+        alt="Julien Tridat, direction marketing externalisée pour PME, Bordeaux"
         widths={[400, 600, 810]}
         sizes="(min-width: 768px) 35vw, 100vw"
         class="h-full w-full object-cover"
@@ -49,25 +42,25 @@ const references = [
       <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
         Julien Tridat.
         <br />
-        <em class="text-lime">Un marketeur qui construit ce qu'il conseille.</em>
+        <em class="text-lime">Le marketeur qui fabrique ce qu'il recommande.</em>
       </h2>
 
       <div class="mt-8 space-y-5 text-lg leading-relaxed text-ink-2">
         <p>
-          J'ai travaillé pour Publicis, auprès de marques comme Heineken et L'Oréal. J'ai formé les
-          équipes de Dassault&nbsp;Systèmes et de Lagardère&nbsp;Travel&nbsp;Retail.
+          J'ai travaillé chez Publicis, pour des marques comme Heineken et L'Oréal. J'ai formé plus
+          de 300&nbsp;dirigeants et cadres, notamment chez Dassault&nbsp;Systèmes, SNCF&nbsp;Fret et
+          Lagardère&nbsp;Travel&nbsp;Retail.
         </p>
         <p>
           <strong class="font-medium text-foreground">
-            Aujourd'hui, augmenté par l'IA, j'accompagne des PME dans leur stratégie de
-            croissance
-          </strong>{" "}
-          — je deviens leur direction marketing.
+            Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des
+            PME qui n'en ont pas.
+          </strong>
         </p>
       </div>
 
       <p class="mt-6 font-serif text-2xl italic leading-snug text-foreground">
-        Il n'y a que quatre places.
+        Je n'accompagne que six PME à la fois.
       </p>
     </div>
   </div>
@@ -77,7 +70,7 @@ const references = [
        statut, plutôt qu'alignées sans distinction. -->
   <div data-reveal class="mx-auto mt-14 max-w-7xl border-t border-line pt-8 md:mt-16">
     <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Références</p>
-    <div class="mt-6 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div class="mt-6 grid gap-6 sm:grid-cols-3">
       {references.map((groupe) => (
         <div>
           <p class="text-sm text-lime">{groupe.statut}</p>

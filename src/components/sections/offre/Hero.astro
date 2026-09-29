@@ -4,8 +4,8 @@
  *
  * L'image (src/assets/hero.jpg) et l'effet de profondeur viennent de la
  * première version du site : ils y étaient purement décoratifs. Ils sont
- * repris ici parce qu'ils illustrent désormais le H1 au pied de la lettre —
- * « je rejoins votre équipe » posé sur une équipe au travail.
+ * repris ici parce qu'ils illustrent l'offre au pied de la lettre —
+ * une direction marketing posée sur une équipe au travail.
  *
  * Deux plans qui se décalent à des vitesses différentes, c'est tout l'effet :
  *   • l'image recule peu (18/14 px) — c'est le plan lointain ;
@@ -96,46 +96,48 @@ import heroImg from "@/assets/hero.jpg";
     id="hero-texte"
     class="relative mx-auto flex w-full max-w-4xl flex-1 flex-col justify-center px-6 pb-[clamp(2.5rem,7vh,4.5rem)] pt-[clamp(5rem,11vh,9rem)] text-center md:px-12"
   >
-    {/* Pastille sombre floutée : posé nu sur la photo en 11 px violet clair,
-        le surtitre se perdait dans les zones claires de l'image. */}
-    <p class="mx-auto mb-6 w-fit rounded-2xl border border-white/15 bg-black/35 px-4 py-1.5 text-[12px] font-medium uppercase leading-relaxed tracking-[0.18em] text-white backdrop-blur-sm sm:rounded-full md:text-[13px]">
+    {/* SEO (copy du 29/09/2026) : le mot-clé « direction marketing
+        externalisée » est porté par le H1, qui est donc le surtitre. Le grand
+        titre devient un paragraphe d'accroche, sans changer d'aspect.
+        Pastille sombre floutée : posé nu sur la photo, le surtitre se perdait
+        dans les zones claires de l'image. */}
+    {/* Trop long pour une ligne : deux lignes à partir de sm (la localisation
+        à part), trois sur téléphone. */}
+    <h1 class="mx-auto mb-6 w-fit rounded-2xl border border-white/15 bg-black/35 px-4 py-1.5 text-[12px] font-medium uppercase leading-relaxed tracking-[0.18em] text-white backdrop-blur-sm md:text-[13px]">
       Direction marketing externalisée<span class="hidden sm:inline">&nbsp;·</span>
       <br class="sm:hidden" />
       PME de 10 à 30&nbsp;salariés
-    </p>
+      <br />
+      <span class="text-white/75">Bordeaux et à&nbsp;distance</span>
+    </h1>
 
-    <h1
+    <p
       class="mx-auto max-w-[20ch] text-[clamp(2.5rem,min(6vw,8.5vh),4.5rem)] font-medium leading-[1.05] tracking-[-0.03em] text-white"
     >
-      Je rejoins votre équipe.
+      Votre marketing avance chaque semaine.
       <br />
-      Pas votre <em class="text-violet-soft">liste de prestataires.</em>
-    </h1>
+      <em class="text-violet-soft">Sans recruter personne.</em>
+    </p>
 
     <p
       class="mx-auto mt-[clamp(1.5rem,3.5vh,2rem)] max-w-2xl text-lg leading-relaxed text-white/90 md:text-xl"
     >
-      Un mois pour remettre à plat ce que vous vendez et comment vous le dites. Puis chaque
-      semaine&nbsp;: le site, les supports de vos commerciaux, les relances, les publications.
+      Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous
+      vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, un livrable part à la date
+      prévue&nbsp;: site, supports commerciaux, relances, publications.
     </p>
 
     <div
       class="mt-[clamp(2rem,5vh,3rem)] flex flex-wrap items-center justify-center gap-4"
     >
-      {/* Le prix n'est plus dans le hero : le bouton secondaire y mène. Le
-          primaire ouvre le questionnaire, qui se conclut sur la réservation. */}
-      <CtaButton onDark ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
-      <a
-        href="#offres"
-        class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
-      >
-        Combien ça coûte&nbsp;?
-      </a>
+      {/* Un seul bouton sur toute la page. Il ouvre les huit questions
+          d'éligibilité, qui débouchent sur le calendrier. */}
+      <CtaButton onDark ouvre="diagnostic">Réserver 20&nbsp;minutes</CtaButton>
     </div>
 
-    {/* Ce qui rassure, là où Designjoy écrit « Pause or cancel anytime ». */}
     <p class="mt-6 text-sm text-white/80">
-      Sans engagement&nbsp;· Pause possible&nbsp;· Votre plan mis en œuvre chaque semaine
+      2&nbsp;500&nbsp;€&nbsp;HT par mois&nbsp;· Trois mois, puis mois par mois&nbsp;· Tout ce qui est
+      produit vous appartient
     </p>
   </div>
 </section>

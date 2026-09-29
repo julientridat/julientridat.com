@@ -3,7 +3,7 @@ export const SITE = {
   name: "Julien Tridat",
   title: "Julien Tridat — Direction marketing externalisée pour PME",
   description:
-    "Je rejoins votre équipe : un mois pour installer votre marketing, puis chaque semaine à vos côtés pour le faire tourner. 2 500 € par mois, sans engagement.",
+    "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis un livrable chaque semaine.",
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 

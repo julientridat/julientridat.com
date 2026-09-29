@@ -1,16 +1,16 @@
 ---
 /**
- * Comment ça marche — en deux temps, comme chez LEH.
+ * Comment ça marche — en deux temps (copy du 29/09/2026).
  *
- *   1. Le starter pack, le premier mois : quatre semaines presque toujours
- *      identiques d'un client à l'autre, chacune avec ce que le client reçoit.
- *   2. Ensuite, chaque semaine un livrable à date, tiré du plan d'action ;
- *      les demandes supplémentaires s'intercalent (J+1 à J+3). Aucune promesse
- *      de volume : c'est le plan qui porte la valeur, pas une file ouverte.
+ *   1. Le mois de démarrage : quatre semaines communes à tous les clients,
+ *      ajustées à chacun, avec ce que le client reçoit.
+ *   2. Ensuite, chaque semaine : le plan tient ses dates, les urgences
+ *      trouvent leur place (J+1 à J+3), et tout se voit dans le tableau de
+ *      bord partagé.
  *
- * La file animée montre ce second temps : des livrables du plan qui sortent
- * à leur date, et des demandes qui viennent s'intercaler. Décorative
- * (aria-hidden), figée sans JS ou en mouvement réduit.
+ * La file animée est la maquette de ce tableau : des livrables du plan qui
+ * sortent à leur date, des demandes qui s'intercalent. Figée sans JS ou en
+ * mouvement réduit ; décrite par un texte alternatif (role="img").
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 
@@ -19,40 +19,45 @@ const starterPack = [
     semaine: "S1",
     titre: "L'état des lieux",
     texte:
-      "Site, supports commerciaux, réseaux sociaux, fichier clients, chiffres de vente : je passe tout en revue et je rassemble vos contenus, logos, photos et accès.",
-    recu: "ce qui marche, ce qui manque, ce qui freine.",
+      "Je passe en revue votre site, vos supports commerciaux, vos réseaux sociaux, votre fichier clients et vos chiffres de vente. Au passage, je récupère tout ce qui servira ensuite : textes, logos, photos, codes d'accès.",
+    recu: "ce qui fonctionne, ce qui manque, ce qui bloque.",
   },
   {
     semaine: "S2",
     titre: "Le plan",
     texte:
-      "Le plan marketing sur douze mois — cibles, messages, canaux, calendrier —, les trois premiers mois détaillés. Nous validons ensemble le plan d'action des quatre semaines qui suivent.",
-    recu: "le plan, la feuille de route, les livrables semaine par semaine.",
+      "Où aller en douze mois : les cibles, les messages, les canaux et le calendrier. Les trois premiers mois sont détaillés, et nous validons ensemble les actions des quatre semaines suivantes.",
+    recu: "le plan, la feuille de route et le calendrier des livrables.",
   },
   {
     semaine: "S3",
     titre: "Les fondations",
-    texte: "Ce que vous vendez, à qui, et la phrase qui le dit. Votre identité remise au propre : logo, couleurs, typographies.",
-    recu: "une plateforme de marque d'une page et votre charte.",
+    texte:
+      "On fixe l'essentiel : votre offre, vos clients, et la phrase qui dit pourquoi vous plutôt qu'un concurrent. Puis votre identité visuelle, remise en cohérence : logo, couleurs, typographies.",
+    recu: "une page qui résume votre marque, et votre charte graphique.",
   },
   {
     semaine: "S4",
     titre: "Les outils",
-    texte: "Les gabarits prêts à l'emploi : devis, présentation commerciale, publications, e-mails.",
-    recu: "vos gabarits, et le premier livrable du plan.",
+    texte: "Vos modèles, prêts à remplir : devis, présentation commerciale, publications, e-mails.",
+    recu: "ces modèles, et la sortie du premier livrable du plan.",
   },
 ];
 
 const ensuite = [
   {
-    titre: "Chaque semaine, le plan avance.",
-    texte:
-      "Le plan d'action fixe ce qui sort et quand. Un point de 45 minutes chaque semaine pour le tenir.",
+    titre: "Le plan tient ses dates.",
+    texte: "Chaque livrable prévu sort le jour dit. On fait le point 45 minutes par semaine, pas davantage.",
   },
   {
-    titre: "Vos demandes s'intercalent.",
+    titre: "Vos urgences trouvent leur place.",
     texte:
-      "Une demande hors du plan est livrée de J+1 à J+3. Si elle décale ce qui était prévu, c'est vous qui arbitrez.",
+      "Ce qui n'était pas prévu est livré entre J+1 et J+3. Si cela repousse un livrable du plan, vous choisissez lequel.",
+  },
+  {
+    titre: "Vous voyez tout.",
+    texte:
+      "Un tableau de bord partagé, à votre nom : ce qui est prévu, en cours, livré, et ce qui attend votre réponse. Vous répondez directement sur la carte, et vos équipes y retrouvent leurs tâches.",
   },
 ];
 
@@ -91,19 +96,19 @@ const etiquette = {
       <div data-reveal>
         <Eyebrow>Comment ça marche</Eyebrow>
         <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
-          Un mois pour démarrer.
+          Un mois pour poser les bases.
           <br />
-          <em class="text-lime">Puis votre plan, mis en œuvre chaque semaine.</em>
+          <em class="text-lime">Puis un livrable à date, chaque semaine.</em>
         </h2>
       </div>
 
-      <!-- Temps 1 — le starter pack, en frise de quatre semaines. -->
+      <!-- Temps 1 — le mois de démarrage, en frise de quatre semaines. -->
       <div class="mt-12 md:mt-14">
         <div data-reveal class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <span class="rounded-full border border-lime/30 bg-lime/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-lime">
-            Mois 1 · Le starter pack
+            Mois 1 · Le mois de démarrage
           </span>
-          <span class="text-base text-ink-3">Presque le même pour tous : c'est ce qui le rend rapide.</span>
+          <span class="text-base text-ink-3">Un socle commun à tous mes clients, ajusté au vôtre&nbsp;: c'est ce qui permet d'aller vite.</span>
         </div>
 
         <div class="relative mt-8">
@@ -159,11 +164,12 @@ const etiquette = {
           </div>
           <div
             id="file"
-            aria-hidden="true"
+            role="img"
+            aria-label="Tableau de bord partagé : plan, demandes et livrables d'un client"
             class="rounded-3xl border border-line bg-card p-5 shadow-[0_40px_90px_-45px_rgba(17,18,22,0.45)] md:p-7"
           >
             <div class="flex items-center justify-between gap-4">
-              <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Votre plan · vos demandes</span>
+              <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Votre tableau de bord</span>
               <span class="text-sm text-ink-2">
                 <span id="file-compteur" class="font-serif text-3xl italic leading-none text-lime">12</span>
                 livrés

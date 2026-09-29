@@ -3,7 +3,7 @@ interface Props {
   variant?: "lime" | "outline" | "ghost";
   /** Bouton posé sur un fond sombre (hero photo/vidéo, .section-dark) : plein violet, jamais l'encre. */
   onDark?: boolean;
-  /** Ce que le bouton ouvre : la réservation (défaut) ou le questionnaire d'éligibilité. */
+  /** Ce que le bouton ouvre : la réservation directe (défaut), ou la réservation précédée des huit questions d'éligibilité (accueil). */
   ouvre?: "booking" | "diagnostic";
 }
 const { variant = "lime", onDark = false, ouvre = "booking" } = Astro.props;

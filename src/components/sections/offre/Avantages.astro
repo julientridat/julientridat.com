@@ -1,35 +1,38 @@
 ---
 /**
- * Pourquoi c'est mieux — six tuiles, chacune portée par un grand signe en
- * serif italique (le chiffre fait le relief, le texte confirme). La tuile
- * pleine est le plan : un dirigeant sans équipe marketing ne sait pas quoi
- * demander — c'est le plan de 12 semaines qui distingue l'offre d'une file
- * de demandes ouverte.
+ * La comparaison — copy du 29/09/2026. Le titre « Je rejoins votre équipe.
+ * Pas votre liste de prestataires. », qui était le H1 du hero, porte
+ * désormais cette section : c'est ici qu'il se démontre.
+ *
+ * Six tuiles, chacune portée par un grand signe en serif italique (le signe
+ * fait le relief, le texte confirme). La tuile pleine est le suivi en direct :
+ * le tableau de bord partagé est ce qui distingue l'offre d'une agence, où
+ * l'on ne voit que ce qu'on vous montre.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 
 const avantages = [
-  { signe: "1", titre: "Un seul interlocuteur", texte: "Celui qui pense la stratégie fabrique aussi." },
-  { signe: "+0 €", titre: "Un prix fixe", texte: "Le même chaque mois. Rien ne s'ajoute." },
-  { signe: "J+1", titre: "Demandes livrées vite", texte: "Hors du plan : de J+1 à J+3 selon la demande." },
-  { signe: "3 mois", titre: "Tout est planifié", texte: "Le plan fixe ce qui sort, et quand.", plein: true },
-  { signe: "pause", titre: "Pause possible", texte: "Vous ne consommez que les semaines utilisées. Le reste vous attend." },
-  { signe: "100 %", titre: "Tout est à vous", texte: "Contenus, charte, gabarits : tout ce qui est produit vous reste." },
+  { signe: "1", titre: "Un seul interlocuteur.", texte: "Celui qui conçoit votre stratégie la fabrique aussi." },
+  { signe: "+0 €", titre: "Un prix fixe.", texte: "Le même chaque mois, sans supplément." },
+  { signe: "J+1", titre: "Des demandes livrées vite.", texte: "Une urgence ? Elle est prête en un à trois jours." },
+  { signe: "En direct", titre: "Un suivi transparent.", texte: "Votre tableau de bord, mis à jour à chaque livrable.", plein: true },
+  { signe: "60 jours", titre: "Une pause possible.", texte: "Après trois mois, votre place vous attend jusqu'à soixante jours." },
+  { signe: "100 %", titre: "Tout vous appartient.", texte: "Vous repartez propriétaire de chaque contenu, de la charte et des modèles." },
 ];
 ---
 
 <section id="avantages" class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto max-w-7xl">
     <div data-reveal>
-      <Eyebrow>Pourquoi c'est mieux</Eyebrow>
+      <Eyebrow>La comparaison</Eyebrow>
       <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
-        Moins cher qu'un recrutement.
+        Je rejoins votre équipe.
         <br />
-        <em class="text-lime">Plus direct qu'une agence.</em>
+        <em class="text-lime">Pas votre liste de prestataires.</em>
       </h2>
       <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
-        Un responsable marketing coûte 55&nbsp;000&nbsp;€ par an, une agence 4&nbsp;000&nbsp;€ par
-        mois. Ici, vous parlez à celui qui fait le travail.
+        Un responsable marketing à temps plein coûte 55&nbsp;000&nbsp;€ par an. Une agence,
+        4&nbsp;000&nbsp;€ par mois. Ici, votre interlocuteur est celui qui produit.
       </p>
     </div>
 
@@ -44,24 +47,20 @@ const avantages = [
               : "border border-line bg-background hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)]"
           }`}
         >
-          {/* Deux signes n'existent pas dans le serif italique : la pause est
-              dessinée (deux barres), l'infini passe en sans-serif. */}
-          {a.signe === "pause" ? (
-            <span class="flex h-[clamp(3rem,5vw,4.25rem)] items-center gap-2.5" aria-hidden="true">
-              <i class="block h-[70%] w-3 rounded-full bg-lime"></i>
-              <i class="block h-[70%] w-3 rounded-full bg-lime"></i>
-            </span>
-          ) : (
-            <span
-              class={`leading-[0.9] tracking-tight ${
-                a.signe === "∞"
-                  ? "font-sans text-[clamp(3.6rem,6vw,5rem)] font-light"
-                  : "font-serif text-[clamp(3rem,5vw,4.25rem)] italic"
-              } ${a.plein ? "text-white" : "text-lime"}`}
-            >
-              {a.signe}
-            </span>
-          )}
+          <span
+            class={`flex items-center gap-3 font-serif text-[clamp(3rem,5vw,4.25rem)] italic leading-[0.9] tracking-tight ${
+              a.plein ? "text-white" : "text-lime"
+            }`}
+          >
+            {/* Le voyant du direct : il pulse, sauf en mouvement réduit. */}
+            {a.signe === "En direct" && (
+              <span class="relative inline-flex h-3.5 w-3.5 shrink-0" aria-hidden="true">
+                <span class="direct-halo absolute inset-0 rounded-full bg-white/60"></span>
+                <span class="relative h-3.5 w-3.5 rounded-full bg-white"></span>
+              </span>
+            )}
+            {a.signe}
+          </span>
           <h3 class={`mt-8 text-lg font-medium ${a.plein ? "text-white" : "text-foreground"}`}>{a.titre}</h3>
           <p class={`mt-1.5 text-base leading-relaxed ${a.plein ? "text-white/85" : "text-ink-2"}`}>{a.texte}</p>
         </li>
@@ -69,3 +68,24 @@ const avantages = [
     </ul>
   </div>
 </section>
+
+<style>
+  .direct-halo {
+    animation: pulse-direct 1.8s ease-out infinite;
+  }
+  @keyframes pulse-direct {
+    0% {
+      transform: scale(1);
+      opacity: 0.8;
+    }
+    100% {
+      transform: scale(2.6);
+      opacity: 0;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .direct-halo {
+      animation: none;
+    }
+  }
+</style>

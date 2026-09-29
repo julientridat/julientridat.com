@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { CONTACT_EMAIL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
+import { CONTACT_EMAIL, SCHEDULER_URL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
 
 const EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
 
@@ -116,14 +116,20 @@ const QUESTIONS: readonly Question[] = [
 const TOTAL = QUESTIONS.length;
 const emptyAnswers = (): string[] => QUESTIONS.map(() => "");
 
-type Status = "idle" | "sending" | "done" | "error";
+// "failed" : l'envoi a échoué, mais le calendrier s'ouvre quand même.
+type Status = "idle" | "sending" | "done" | "failed";
 
 /**
- * Questionnaire de diagnostic en 8 questions — îlot unique monté par BaseLayout.
- * S'ouvre au clic sur tout [data-open-diagnostic] (délégation d'événement :
- * les sections de page restent 100 % statiques).
- * Envoi : Web3Forms (email vers CONTACT_EMAIL), 8 clés de premier niveau ;
- * en cas d'échec, repli sur un mailto pré-rempli pour ne jamais être un cul-de-sac.
+ * Réservation de 20 minutes, précédée des 8 questions d'éligibilité — îlot
+ * unique monté par BaseLayout. S'ouvre au clic sur tout [data-open-diagnostic]
+ * (délégation d'événement : les sections de page restent 100 % statiques).
+ *
+ * Depuis la copy du 29/09/2026, l'accueil n'a plus qu'un bouton, « Réserver
+ * 20 minutes » : les questions ne sont plus un questionnaire à part, elles
+ * sont l'antichambre du calendrier. Envoi : Web3Forms (email vers
+ * CONTACT_EMAIL), 8 clés de premier niveau. Comme dans BookingDialog, l'envoi
+ * ne conditionne jamais le créneau : s'il échoue, le calendrier s'ouvre quand
+ * même, avec un lien mailto pré-rempli pour ne pas perdre les réponses.
  */
 export default function DiagnosticDialog() {
   const [open, setOpen] = useState(false);
@@ -136,6 +142,7 @@ export default function DiagnosticDialog() {
   const [botcheck, setBotcheck] = useState("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [status, setStatus] = useState<Status>("idle");
+  const [calendarLoaded, setCalendarLoaded] = useState(false);
 
   const triggerRef = useRef<HTMLElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
@@ -165,8 +172,9 @@ export default function DiagnosticDialog() {
   const close = useCallback(() => {
     setOpen(false);
     setErrors({});
-    // Après un envoi réussi, on repart d'un questionnaire vierge à la réouverture.
-    if (statusRef.current === "done") {
+    setCalendarLoaded(false);
+    // Une fois le calendrier atteint, on repart d'un questionnaire vierge à la réouverture.
+    if (statusRef.current === "done" || statusRef.current === "failed") {
       setStepIndex(0);
       setAnswers(emptyAnswers());
       setName("");
@@ -197,7 +205,8 @@ export default function DiagnosticDialog() {
 
   // À chaque changement d'étape (et à l'écran de confirmation), le focus passe
   // sur le bloc concerné : le lecteur d'écran annonce la nouvelle question.
-  const focusKey = status === "done" ? "done" : String(stepIndex);
+  const scheduling = status === "done" || status === "failed";
+  const focusKey = scheduling ? "schedule" : String(stepIndex);
   useEffect(() => {
     if (!open) {
       skipStepFocusRef.current = true;
@@ -229,7 +238,7 @@ export default function DiagnosticDialog() {
   const subject = () => {
     const who = name.trim() || "sans nom";
     const where = company.trim();
-    return where ? `Diagnostic — ${who} (${where})` : `Diagnostic — ${who}`;
+    return where ? `Réservation — ${who} (${where})` : `Réservation — ${who}`;
   };
 
   const mailtoHref = () => {
@@ -255,7 +264,7 @@ export default function DiagnosticDialog() {
     const payload: Record<string, string> = {
       access_key: WEB3FORMS_ACCESS_KEY,
       subject: subject(),
-      from_name: "Questionnaire diagnostic — julientridat.com",
+      from_name: "Réservation 20 minutes — julientridat.com",
       replyto: email.trim(),
       botcheck,
       Nom: name.trim(),
@@ -278,9 +287,9 @@ export default function DiagnosticDialog() {
         typeof data === "object" &&
         data !== null &&
         (data as { success?: unknown }).success === true;
-      setStatus(ok ? "done" : "error");
+      setStatus(ok ? "done" : "failed");
     } catch {
-      setStatus("error");
+      setStatus("failed");
     }
   };
 
@@ -305,7 +314,11 @@ export default function DiagnosticDialog() {
       aria-labelledby="diagnostic-title"
     >
       <div className="absolute inset-0 bg-foreground/60 backdrop-blur-sm" onClick={close} />
-      <div className="relative max-h-[92vh] w-[calc(100vw-1rem)] max-w-xl overflow-y-auto rounded-2xl border border-line bg-card shadow-2xl">
+      <div
+        className={`relative max-h-[92vh] w-[calc(100vw-1rem)] overflow-y-auto rounded-2xl border border-line bg-card shadow-2xl ${
+          scheduling ? "max-w-3xl" : "max-w-xl"
+        }`}
+      >
         <button
           ref={closeBtnRef}
           type="button"
@@ -316,29 +329,46 @@ export default function DiagnosticDialog() {
           ✕
         </button>
 
-        {status === "done" ? (
-          <div
-            ref={stepRef}
-            tabIndex={-1}
-            className="px-6 py-12 text-center outline-none sm:px-12 sm:py-16"
-          >
-            <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-lime/15 text-2xl text-lime">✓</div>
-            <h2 id="diagnostic-title" className="mt-5 text-2xl font-semibold tracking-tight text-foreground">
-              Réponses envoyées.
+        {scheduling ? (
+          <div ref={stepRef} tabIndex={-1} className="px-3 py-3 outline-none sm:px-5 sm:py-5">
+            <h2 id="diagnostic-title" className="px-3 pb-3 pt-2 pr-12 text-lg font-semibold tracking-tight text-foreground sm:text-xl">
+              Choisissez votre créneau de 20&nbsp;minutes
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-ink-2">
-              Merci {name.trim().split(" ")[0] ?? ""}. Je lis vos réponses moi-même et je reviens vers
-              vous, en général sous 24-48 h.
-            </p>
-            {/* data-open-booking : l'écouteur global de BookingDialog ouvre la
-                réservation pendant que ce questionnaire se ferme. */}
-            <button type="button" data-open-booking onClick={close} className="mt-8 cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90">
-              {"Réserver un appel, 20\u00a0minutes"}
-            </button>
+            {status === "failed" && (
+              <p className="px-3 pb-3 text-sm text-ink-2">
+                Vos réponses ne sont pas parties.{" "}
+                <a href={mailtoHref()} className="text-lime underline underline-offset-4">
+                  Envoyez-les par e-mail
+                </a>{" "}
+                (elles sont pré-remplies), puis réservez ci-dessous.
+              </p>
+            )}
+            <div className="relative overflow-hidden rounded-xl border border-line bg-white shadow-inner">
+              {!calendarLoaded && (
+                <div className="absolute inset-0 z-10 flex items-center justify-center bg-white">
+                  <div className="flex flex-col items-center gap-3">
+                    <div className="h-8 w-8 animate-spin rounded-full border-2 border-neutral-200 border-t-neutral-600" />
+                    <p className="text-xs text-neutral-500">Chargement du planning…</p>
+                  </div>
+                </div>
+              )}
+              <iframe
+                src={SCHEDULER_URL}
+                title="Réserver 20 minutes"
+                onLoad={() => setCalendarLoaded(true)}
+                className="block h-[min(74vh,700px)] w-full"
+                style={{ border: 0 }}
+              />
+            </div>
           </div>
         ) : question ? (
           <div ref={stepRef} tabIndex={-1} className="px-6 py-8 outline-none sm:px-10 sm:py-10">
-            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Diagnostic</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Réserver 20&nbsp;minutes</p>
+            {stepIndex === 0 && (
+              <p className="mt-2 text-sm text-ink-2">
+                Huit questions rapides, puis vous choisissez votre créneau.
+              </p>
+            )}
 
             <div className="mt-4 flex items-center gap-3">
               <div className="h-1 flex-1 overflow-hidden rounded-full bg-secondary">
@@ -434,7 +464,7 @@ export default function DiagnosticDialog() {
         ) : (
           <form onSubmit={handleSubmit} className="px-6 py-8 sm:px-10 sm:py-10">
             <div ref={stepRef} tabIndex={-1} className="outline-none">
-              <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Diagnostic</p>
+              <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Réserver 20&nbsp;minutes</p>
 
               <div className="mt-4 flex items-center gap-3">
                 <div className="h-1 flex-1 overflow-hidden rounded-full bg-secondary">
@@ -447,10 +477,10 @@ export default function DiagnosticDialog() {
                 id="diagnostic-title"
                 className="mt-5 text-xl font-semibold tracking-tight text-foreground sm:text-2xl"
               >
-                À qui j'envoie ma réponse ?
+                Qui vais-je appeler ?
               </h2>
               <p className="mt-2 text-sm text-ink-2">
-                Vos 8 réponses partent directement dans ma boîte mail. Je les lis moi-même.
+                Vos 8 réponses m'arrivent directement : je les lis avant notre échange.
               </p>
             </div>
 
@@ -508,22 +538,12 @@ export default function DiagnosticDialog() {
               style={{ display: "none" }}
             />
 
-            {status === "error" && (
-              <p className="mt-4 text-sm text-ink-2">
-                L'envoi automatique n'a pas fonctionné.{" "}
-                <a href={mailtoHref()} className="text-lime underline underline-offset-4">
-                  Cliquez ici pour m'écrire directement
-                </a>{" "}
-                (vos réponses sont déjà pré-remplies).
-              </p>
-            )}
-
             <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
               <button type="button" onClick={() => goTo(TOTAL - 1)} className={backCls}>
                 ← Retour
               </button>
               <button type="submit" disabled={status === "sending"} className={primaryCls}>
-                {status === "sending" ? "Envoi…" : "Envoyer mes réponses"}
+                {status === "sending" ? "Envoi…" : "Voir les créneaux"}
               </button>
             </div>
           </form>

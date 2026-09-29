@@ -1,43 +1,51 @@
 /**
- * Questions de la page d'accueil. Une seule source pour l'accordéon
- * (Faq.astro) et le balisage FAQPage (index.astro) : les deux copies
- * manuelles avaient fini par diverger.
+ * Questions de la page d'accueil (copy du 29/09/2026). Une seule source pour
+ * l'accordéon (Faq.astro) et le balisage FAQPage (index.astro) : les deux
+ * copies manuelles avaient fini par diverger.
  */
 export const FAQ_ACCUEIL = [
   {
-    q: "Que contient le starter pack ?",
-    r: "Le premier mois, compris dans les 2 500 €. Semaine 1, l'état des lieux : ce qui marche, ce qui manque, ce qui freine. Semaine 2, le plan marketing sur douze mois, les trois premiers détaillés, et le plan d'action validé ensemble. Semaine 3, votre positionnement et votre charte. Semaine 4, vos gabarits — et le premier livrable du plan sort. Vous gardez tout, même si vous vous arrêtez là.",
+    q: "Que contient le mois de démarrage ?",
+    r: "C'est le premier mois, compris dans les 2 500 €. Semaine 1, l'état des lieux : ce qui fonctionne, ce qui manque, ce qui bloque. Semaine 2, le plan sur douze mois, dont les trois premiers détaillés, et les actions du mois suivant validées ensemble. Semaine 3, votre positionnement et votre charte. Semaine 4, vos modèles, et le premier livrable du plan.",
   },
   {
-    q: "Et si j'ai une demande hors du plan ?",
-    r: "Elle s'intercale. Vous me l'envoyez, elle est livrée de J+1 à J+3 selon sa complexité. Si elle doit décaler un livrable prévu, c'est vous qui choisissez, au point de la semaine.",
+    q: "Pourquoi trois mois minimum ?",
+    r: "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Ensuite, chaque mois, vous décidez de continuer ou non.",
   },
   {
-    q: "Comment je fais une demande ?",
-    r: "Vos équipes m'écrivent en direct : pas de ticket, pas d'intermédiaire, pas de brief à rédiger. Chaque semaine, au point de 45 minutes, on fait le point sur le plan et sur vos demandes.",
+    q: "Et si j'ai une demande hors du plan ?",
+    r: "Elle trouve sa place dans la semaine. Selon sa complexité, elle est livrée entre J+1 et J+3. Si elle repousse un livrable prévu, nous en parlons au point hebdomadaire, et c'est vous qui tranchez.",
   },
   {
-    q: "Une seule personne pour tout ça, c'est tenable ?",
-    r: "C'est l'inverse. Une agence répartit le sujet entre plusieurs personnes qui ne se parlent pas toujours. Ici, la même personne qui pense la stratégie avec vous fabrique aussi les contenus et les supports — rien ne se perd dans la coordination.",
+    q: "Comment je fais une demande ?",
+    r: "Vos équipes la déposent dans votre tableau de bord ou me l'écrivent directement. Aucun formulaire, aucun intermédiaire, aucun cahier des charges. Le point hebdomadaire sert à arbitrer entre le plan et les demandes.",
   },
   {
-    q: "Et l'IA dans tout ça ?",
-    r: "C'est mon outil de production, pas le vôtre : c'est lui qui me permet de livrer de J+1 à J+3. Mes agents et mes méthodes restent chez moi ; vous gardez ce qu'ils produisent — contenus, supports, gabarits. Vous n'avez rien à installer ni à apprendre.",
+    q: "Une seule personne pour tout ça, c'est tenable ?",
+    r: "C'est même plus simple. Dans une agence, votre dossier passe de main en main, et chaque passage coûte de l'information. Ici, celui qui réfléchit à votre stratégie fabrique aussi vos contenus et vos supports. C'est aussi pour cela que je n'accompagne que six PME.",
   },
   {
-    q: "Comment marche la pause ?",
-    r: "Vous payez des semaines de travail, pas des mois de calendrier : un mois, c'est quatre semaines. Si vous n'avez besoin de moi que deux semaines, vous mettez en pause : les deux semaines restantes reprennent quand vous revenez, et votre place est gardée. Elles restent valables six mois. La pause est possible dès la fin du starter pack.",
+    q: "Et l'IA dans tout ça ?",
+    r: "Elle travaille pour moi, pas chez vous. C'est elle qui rend possibles les délais de J+1 à J+3. Mes agents et ma méthode restent dans mon atelier ; ce qu'ils produisent vous appartient. Rien à installer, rien à apprendre de votre côté.",
   },
   {
-    q: "Que se passe-t-il si j'arrête ?",
-    r: "Vous partez avec tout. Rien n'est retenu, rien n'est désactivé : ce qui a été produit — contenus, charte, gabarits, fichiers sources — est déjà chez vous. Vous perdez une seule chose : votre place parmi les quatre.",
+    q: "Comment marche la pause ?",
+    r: "Après les trois premiers mois, vous mettez en pause quand vous voulez, jusqu'à 60 jours. Le prélèvement s'arrête et votre place vous attend. Au-delà, elle revient à une autre PME : je n'en accompagne que six.",
   },
   {
-    q: "Le marketing est déjà le métier de quelqu'un chez moi ?",
-    r: "Alors mon offre ne vous servira pas. Elle répond à une absence : personne n'est chargé, chaque semaine, de faire avancer votre marketing.",
+    q: "Que se passe-t-il si j'arrête ?",
+    r: "Après les trois premiers mois, vous arrêtez à la fin de n'importe quel mois. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé.",
   },
   {
-    q: "Nous avons plus de 30 salariés ?",
-    r: "Sur devis. Le format est calibré jusqu'à trente salariés. Au-delà, le nombre de services et d'interlocuteurs change le périmètre — le forfait ne tiendrait pas, et je préfère le dire avant.",
+    q: "Comment je paie ?",
+    r: "Par prélèvement en début de mois, facture jointe. Votre comptabilité n'a rien à saisir ni à régler à la main.",
+  },
+  {
+    q: "Le marketing est déjà le métier de quelqu'un chez moi ?",
+    r: "Alors cette offre n'est pas pour vous. Elle comble un vide : personne, chez vous, n'est chargé de faire avancer le marketing chaque semaine.",
+  },
+  {
+    q: "Nous avons plus de 30 salariés ?",
+    r: "Sur devis. La formule est pensée jusqu'à trente salariés : au-delà, il y a plus de services, plus d'interlocuteurs, et un forfait unique ne suffirait plus. Je préfère vous le dire d'emblée.",
   },
 ];

@@ -1,0 +1,57 @@
+---
+/**
+ * Le problème — copy du 29/09/2026. Quatre symptômes que le dirigeant
+ * reconnaît chez lui, puis la chute qui les ramène à une seule cause :
+ * personne n'en a la charge chaque semaine.
+ *
+ * Aucun texte ajouté à ceux de la copy : le relief vient du numéro et du
+ * voyant éteint de chaque carte, pas d'un commentaire.
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const symptomes = [
+  "Le site n'a pas bougé depuis sa dernière refonte.",
+  "Chaque commercial refait sa présentation dans son coin.",
+  "Les devis partent, les relances ne suivent pas.",
+  "Les publications s'arrêtent à la première période chargée.",
+];
+---
+
+<section id="probleme" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
+  <div class="mx-auto max-w-7xl">
+    <div data-reveal>
+      <Eyebrow>Le problème</Eyebrow>
+      <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
+        Chez vous, le marketing
+        <br />
+        <em class="text-lime">n'est le métier de personne.</em>
+      </h2>
+    </div>
+
+    <ul class="mt-12 grid gap-4 sm:grid-cols-2">
+      {symptomes.map((s, i) => (
+        <li
+          data-reveal
+          style={`--reveal-delay: ${i * 80}ms`}
+          class="flex flex-col gap-8 rounded-3xl border border-line bg-card p-6 md:p-7"
+        >
+          <span class="flex items-center justify-between" aria-hidden="true">
+            <span class="font-serif text-[2.6rem] italic leading-[0.85] text-ink-3/70">
+              {String(i + 1).padStart(2, "0")}
+            </span>
+            <span class="h-2.5 w-2.5 rounded-full border border-ink-3/50"></span>
+          </span>
+          <p class="text-xl font-medium leading-snug text-foreground md:text-2xl">{s}</p>
+        </li>
+      ))}
+    </ul>
+
+    <p
+      data-reveal
+      class="mt-12 max-w-4xl font-serif text-[clamp(1.5rem,2.8vw,2.25rem)] italic leading-snug text-foreground md:mt-14"
+    >
+      Ce n'est ni une question d'outil ni une question de budget.
+      <span class="text-lime">Personne n'en a la charge chaque semaine&nbsp;: c'est cette place que je prends.</span>
+    </p>
+  </div>
+</section>

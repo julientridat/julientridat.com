@@ -1,8 +1,8 @@
 ---
 /**
- * Clôture sombre, en réponse au hero. Même parcours que le hero : le
- * questionnaire d'abord, l'appel ensuite — le questionnaire se termine
- * lui-même sur la réservation.
+ * Clôture sombre, en réponse au hero. Le même et unique bouton que partout
+ * sur la page : « Réserver 20 minutes », qui passe par les huit questions
+ * d'éligibilité avant le calendrier.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
@@ -26,18 +26,13 @@ import CtaButton from "@/components/CtaButton.astro";
     </h2>
 
     <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/75">
-      Huit questions pour savoir si c'est pour vous, puis un appel.
+      Vous me dites où en est votre marketing. Je vous dis si je peux le faire avancer chaque
+      semaine, et si la réponse est non, je vous le dis aussi.
     </p>
 
-    <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
-      <CtaButton onDark ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
-      <button
-        type="button"
-        data-open-booking
-        class="inline-flex cursor-pointer items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
-      >
-        Réserver un appel, 20&nbsp;minutes
-      </button>
+    <div class="mt-12 flex flex-col items-center gap-5">
+      <CtaButton onDark ouvre="diagnostic">Réserver 20&nbsp;minutes</CtaButton>
+      <p class="text-sm text-white/55">Six PME à la fois.</p>
     </div>
   </div>
 </section>

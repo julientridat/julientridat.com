@@ -1,0 +1,133 @@
+---
+/**
+ * Les preuves — copy du 29/09/2026. Deux niveaux :
+ *   • quatre systèmes déjà en service chez d'autres clients, chacun relié à
+ *     son étude de cas (chiffres vérifiés dans src/content/realisations) ;
+ *   • l'encadré « Quatre ans » : le client santé en reconduction mensuelle,
+ *     seule preuve de l'offre elle-même, sur la durée.
+ *
+ * Deux éléments de l'encadré attendent Julien avant d'être affichés — la copy
+ * les marque « à régler avant mise en ligne » :
+ *   • RESULTAT_CHIFFRE : le résultat obtenu (inscriptions, ventes ou
+ *     rendez-vous). Tant qu'il vaut null, rien ne s'affiche ;
+ *   • REFERENCE_JOIGNABLE : à passer à true une fois l'accord du client obtenu.
+ */
+import Eyebrow from "@/components/Eyebrow.astro";
+
+const RESULTAT_CHIFFRE: string | null = null;
+const REFERENCE_JOIGNABLE = false;
+
+const cas = [
+  {
+    qui: "Un réseau de clubs de fitness",
+    quoi: "cinq marques, une charte respectée sur chaque visuel, sans graphiste.",
+    href: "/realisations/design-system-franchise-fitness",
+  },
+  {
+    qui: "Un club d'affaires",
+    quoi: "49 dirigeants, un devis conforme en 30 secondes au lieu de 30 minutes.",
+    href: "/realisations/formation-club-affaires",
+  },
+  {
+    qui: "Une association",
+    quoi: "ses relances partent de son propre domaine, avec 537 contacts remis au propre.",
+    href: "/realisations/association-benevoles-autonome",
+  },
+  {
+    qui: "Une enseigne de 600 magasins",
+    quoi: "ses supports déclinés sans repasser par un prestataire.",
+    href: "/realisations/acculturation-enseigne-nationale",
+  },
+];
+
+const construit = [
+  "deux sites refondus ;",
+  "un fichier de 30 000 contacts nettoyé et relancé ;",
+  "un parcours de vente en ligne pour ses formations à distance ;",
+  "ses contenus LinkedIn et un livre blanc de 80 pages ;",
+  "un calendrier éditorial et un tableau de bord partagés ;",
+  "son dirigeant formé à l'IA, directement dans ses outils ;",
+  "une alternante en communication encadrée.",
+];
+---
+
+<section id="preuves" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
+  <div class="mx-auto max-w-7xl">
+    <div data-reveal>
+      <Eyebrow>Les preuves</Eyebrow>
+      <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
+        Ma façon de produire.
+        <br />
+        <em class="text-lime">Déjà en service ailleurs.</em>
+      </h2>
+      <p class="mt-6 max-w-2xl text-lg leading-relaxed text-ink-2">
+        L'IA est mon outil de production. Voici ce que mes systèmes tiennent déjà, chez d'autres
+        clients.
+      </p>
+    </div>
+
+    <div class="mt-12 grid gap-5 lg:grid-cols-[minmax(0,1fr)_minmax(0,1fr)] lg:items-start">
+      <div>
+        <ul class="grid gap-3">
+          {cas.map((c, i) => (
+            <li data-reveal style={`--reveal-delay: ${i * 70}ms`}>
+              <a
+                href={c.href}
+                class="group flex items-start justify-between gap-5 rounded-3xl border border-line bg-card p-6 transition duration-300 hover:-translate-y-0.5 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)]"
+              >
+                <p class="text-lg leading-relaxed text-ink-2">
+                  <strong class="font-medium text-foreground">{c.qui}&nbsp;:</strong> {c.quoi}
+                </p>
+                <span
+                  class="mt-1 shrink-0 text-lime transition-transform group-hover:translate-x-1"
+                  aria-hidden="true">→</span
+                >
+              </a>
+            </li>
+          ))}
+        </ul>
+        <a
+          data-reveal
+          href="/realisations"
+          class="mt-6 inline-flex items-center gap-2 text-base font-medium text-foreground underline decoration-lime/40 underline-offset-[6px] transition-colors hover:text-lime"
+        >
+          Tous les cas clients <span aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- L'encadré : la preuve de l'offre elle-même, dans la durée. -->
+      <aside
+        data-reveal
+        style="--reveal-delay: 150ms"
+        class="relative isolate overflow-hidden rounded-[1.75rem] bg-foreground p-8 text-white md:p-10"
+      >
+        <div
+          class="pointer-events-none absolute inset-0 -z-10"
+          style="background: radial-gradient(60% 50% at 90% 0%, rgba(108,76,241,0.35), transparent 70%);"
+        >
+        </div>
+        <h3 class="text-[clamp(1.9rem,3.4vw,2.75rem)] font-normal leading-[1.05] tracking-[-0.03em]">
+          Quatre ans. <em class="text-violet-soft">Un seul interlocuteur.</em>
+        </h3>
+        <p class="mt-5 text-base leading-relaxed text-white/75">
+          Un éditeur et organisme de formation du secteur santé, en reconduction mensuelle depuis
+          quatre ans. Ce que nous avons construit ensemble&nbsp;:
+        </p>
+        <ul class="mt-5 space-y-2.5 border-t border-white/10 pt-5">
+          {construit.map((c) => (
+            <li class="flex gap-3 text-base leading-relaxed text-white/85">
+              <span class="text-violet-soft" aria-hidden="true">✓</span>
+              {c}
+            </li>
+          ))}
+        </ul>
+        {RESULTAT_CHIFFRE && (
+          <p class="mt-6 font-serif text-2xl italic leading-snug text-white">{RESULTAT_CHIFFRE}</p>
+        )}
+        {REFERENCE_JOIGNABLE && (
+          <p class="mt-6 text-sm text-white/55">Référence joignable sur demande.</p>
+        )}
+      </aside>
+    </div>
+  </div>
+</section>

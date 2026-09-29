@@ -2,14 +2,12 @@
 /**
  * Le prix — seule section sombre au milieu de la page : c'est le moment de
  * la décision, il doit rompre avec le parcours clair (hero et clôture sont
- * les deux autres). Une carte, un montant — 2 500 € dès le premier mois,
- * décision de lancement de septembre 2026 —, six lignes incluses, et à côté
- * ce qui rassure : deux garanties, puis la seule preuve chiffrée du site
- * pour cette offre (le client santé, seule preuve encore vraie après le
- * retrait de « Mes clients » de l'accueil).
+ * les deux autres). Une carte, un montant, six lignes incluses ; à côté, les
+ * conditions (copy du 29/09/2026) : trois mois minimum, puis mois par mois,
+ * pause possible après trois mois jusqu'à 60 jours, prélèvement en début de
+ * mois. La preuve « Quatre ans » est passée dans la section Preuves.
  *
- * Aucune garantie de remboursement n'est écrite : il n'en existe pas. Ce qui
- * rassure ici est vrai — les livrables restent, la pause garde la place.
+ * Aucune garantie de remboursement n'est écrite : il n'en existe pas.
  *
  * `isolate` : sans stacking context, les halos en -z-10 passeraient derrière
  * le fond et disparaîtraient.
@@ -18,12 +16,12 @@ import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
 
 const inclus = [
-  "Starter pack : audit, plan sur 12 mois, positionnement, charte, gabarits",
-  "Votre plan mis en œuvre, un livrable à date chaque semaine",
-  "Demandes supplémentaires, livrées de J+1 à J+3",
-  "Un point de 45 minutes chaque semaine",
-  "Contenus et fichiers sources, à vous",
-  "Pause après le starter pack, arrêt à tout moment",
+  "Le mois de démarrage : état des lieux, plan sur douze mois, positionnement, charte, modèles",
+  "Votre plan mis en œuvre : un livrable à date chaque semaine",
+  "Vos demandes hors plan, livrées entre J+1 et J+3",
+  "Un point de 45 minutes chaque semaine",
+  "Votre tableau de bord partagé, en direct",
+  "Contenus et fichiers sources : à vous",
 ];
 ---
 
@@ -41,7 +39,8 @@ const inclus = [
     <div data-reveal>
       <Eyebrow onDark>Le prix</Eyebrow>
       <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]">
-        Une formule. <em class="text-violet-soft">Sans engagement.</em>
+        Une formule.<br class="sm:hidden" />
+        <em class="text-violet-soft">Un prix qui ne bouge pas.</em>
       </h2>
     </div>
 
@@ -60,7 +59,7 @@ const inclus = [
             <span class="font-serif text-[clamp(4.5rem,11vw,8.5rem)] italic leading-[0.82] tracking-tight text-white">
               2&nbsp;500&nbsp;€
             </span>
-            <span class="text-base text-white/60">HT / mois, starter pack compris</span>
+            <span class="text-base text-white/60">HT par mois, mois de démarrage compris</span>
           </div>
 
           <ul class="mt-10 grid gap-x-10 border-t border-white/10 pt-7 sm:grid-cols-2">
@@ -76,29 +75,23 @@ const inclus = [
 
       <div data-reveal style="--reveal-delay: 200ms" class="flex flex-col gap-5">
         <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
-          <h3 class="text-lg font-medium text-white">Vous gardez tout.</h3>
-          <p class="mt-1.5 text-base leading-relaxed text-white/70">
-            Si vous arrêtez après le premier mois, le positionnement, l'identité et le plan vous
-            restent.
-          </p>
-        </div>
-        <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
-          <h3 class="text-lg font-medium text-white">Pause possible.</h3>
-          <p class="mt-1.5 text-base leading-relaxed text-white/70">
-            Deux semaines de travail, puis rien pendant trois mois&nbsp;? Les deux semaines
-            restantes vous attendent, et votre place aussi.
-          </p>
-        </div>
-        <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
-          <h3 class="text-lg font-medium text-white">4 ans, sans contrat annuel.</h3>
-          <p class="mt-1.5 text-base leading-relaxed text-white/70">
-            Un éditeur et organisme de formation, secteur santé, en reconduction mensuelle depuis
-            quatre ans. Chaque mois, il décide de continuer, et chaque mois il continue.
-          </p>
+          <h3 class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">Conditions</h3>
+          <div class="mt-4 space-y-4 text-base leading-relaxed text-white/75">
+            <p>
+              <strong class="font-medium text-white">Trois mois minimum.</strong> Ensuite,
+              renouvelable chaque mois, sans engagement.
+            </p>
+            <p>
+              <strong class="font-medium text-white">Pause possible</strong> après les trois
+              premiers mois, jusqu'à 60&nbsp;jours&nbsp;: le prélèvement s'arrête, votre place vous
+              attend. Au-delà, elle revient à une autre PME.
+            </p>
+            <p>Prélèvement en début de mois.</p>
+          </div>
         </div>
         <div class="mt-auto flex flex-col items-start gap-4 pt-2">
-          <CtaButton onDark ouvre="diagnostic">Suis-je éligible&nbsp;?</CtaButton>
-          <p class="text-sm text-white/55">Au-delà de 30&nbsp;salariés&nbsp;: sur devis. Quatre places.</p>
+          <CtaButton onDark ouvre="diagnostic">Réserver 20&nbsp;minutes</CtaButton>
+          <p class="text-sm text-white/55">Au-delà de 30&nbsp;salariés&nbsp;: sur devis. Six PME à la fois.</p>
         </div>
       </div>
     </div>
