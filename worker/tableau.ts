@@ -150,7 +150,7 @@ interface Client {
 }
 
 const COLS: Col[] = ["demandes", "prevu", "encours", "vous", "fait", "mensuel"];
-const COULEURS = ["c1", "c2", "c3", "c4", "c5", "c6"];
+export const COULEURS = ["c1", "c2", "c3", "c4", "c5", "c6"];
 const MAX_CARTES = 3000;
 const MAX_MESSAGE = 64_000;
 const MAX_EVENEMENTS = 5000;
