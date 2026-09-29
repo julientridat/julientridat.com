@@ -265,6 +265,23 @@
       .st-liste button.parent { background: none; border: none; padding: 0; color: var(--ink-3); font-size: 0.76rem; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
       .sheet .st-liste { border-top: none; padding-top: 0; gap: 8px; }
       .sheet .st-liste li { font-size: 0.88rem; }
+      /* « Chez vous », côté client : la liste de choses à faire, une section par projet */
+      .todo { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 10px 12px 12px; }
+      .todo-h { display: flex; align-items: center; gap: 7px; font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-2); font-weight: 600; }
+      .todo-h .sw { width: 9px; height: 9px; border-radius: 3px; background: var(--mc, var(--c0)); flex: none; }
+      .todo-q { margin-top: 10px; padding-left: 10px; border-left: 3px solid var(--violet); }
+      .todo-h + .todo-q { margin-top: 8px; }
+      .todo-t { display: block; background: none; border: none; padding: 0; text-align: left; font-size: 0.9rem; font-weight: 500; color: var(--ink); line-height: 1.35; overflow-wrap: anywhere; }
+      .todo-t:hover { color: var(--violet); text-decoration: underline; text-underline-offset: 2px; }
+      .todo-m { margin-top: 3px; font-size: 0.76rem; color: var(--violet); font-weight: 600; }
+      .todo-m.retard { color: var(--late); }
+      .todo .acts { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+      .todo .zone { margin-top: 8px; display: grid; gap: 6px; justify-items: start; }
+      .todo .st-liste { border-top: none; padding-top: 0; gap: 9px; margin-top: 6px; }
+      .todo-q + .st-liste { padding-left: 13px; }
+      .todo .conf-carte { display: block; margin-top: 12px; background: none; border: none; padding: 0; text-align: left; font-size: 0.8rem; font-weight: 600; color: var(--ink); line-height: 1.3; }
+      .todo-h + .conf-carte { margin-top: 8px; }
+      .todo .conf-carte:hover { color: var(--violet); text-decoration: underline; text-underline-offset: 2px; }
       .confiees { background: var(--white); border: 1px dashed rgba(100, 69, 234, 0.4); border-radius: 12px; padding: 10px 12px; }
       .confiees h4 { font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--violet); font-weight: 600; }
       .confiees .st-liste { border-top: none; padding-top: 0; gap: 9px; margin-top: 5px; }
@@ -544,7 +561,7 @@
         <div class="add julien"><input type="text" data-add="encours" placeholder="+ carte" /></div>
       </section>
       <section class="column vous" data-col="vous">
-        <div class="col-h"><h2 data-titre-vous>Chez le client</h2><span class="n"></span><span class="hint">à régler</span></div>
+        <div class="col-h"><h2 data-titre-vous>Chez le client</h2><span class="n"></span><span class="hint" data-hint-vous>à régler</span></div>
         <div class="cards"></div>
         <div class="add julien"><input type="text" data-add="vous" placeholder="+ une question au client" /></div>
       </section>
@@ -597,7 +614,7 @@
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
         var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
-          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null };
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null, cocheesIci: {} };
         var tactile = window.matchMedia("(pointer: coarse)").matches;
         var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
@@ -1157,8 +1174,7 @@
           b.appendChild(h);
           var ul = el("ul");
           [
-            ["Chez vous", "ce qui attend votre réponse ou votre validation. « Répondre » renvoie la carte à Julien."],
-            ["Vos tâches", "ce qui est à faire de votre côté : cochez quand c’est fait, Julien le voit aussitôt."],
+            ["Chez vous", "votre liste, rangée par projet : répondez aux questions de Julien, cochez vos tâches quand c’est fait. Il le voit aussitôt."],
             ["Prévu et En cours", "ce que Julien prépare, et ce sur quoi il travaille."],
             ["Demandes", "un besoin, une idée ? Écrivez-le en trois lignes."],
           ].forEach(function (l) {
@@ -1234,6 +1250,7 @@
           var nombres = {};
           vuesCeRendu = {};
           document.querySelectorAll("[data-titre-vous]").forEach(function (h) { h.textContent = fc ? "Chez vous" : "Chez le client"; });
+          document.querySelectorAll("[data-hint-vous]").forEach(function (h) { h.textContent = fc ? "à faire" : "à régler"; });
           document.querySelectorAll(".add.julien").forEach(function (a) { a.hidden = fc; });
           document.querySelectorAll(".add input").forEach(function (inp) {
             var col = inp.dataset.add;
@@ -1248,7 +1265,16 @@
             wrap.innerHTML = "";
             var liste = visibles.filter(function (c) { return c.col === name; });
             if (name === "fait") liste.sort(function (a, b) { return (b.faitLe || 0) - (a.faitLe || 0); });
-            else liste.sort(function (a, b) { return a.ordre - b.ordre; });
+            else if (name === "demandes") liste.sort(function (a, b) { return a.ordre - b.ordre; });
+            else trierChrono(liste);
+            if (name === "vous" && fc) {
+              // Côté client, « Chez vous » n'est pas une colonne de cartes : c'est sa liste de choses à faire.
+              var n = rendreAFaire(wrap, visibles, cl);
+              colEl.querySelector(".n").textContent = n;
+              nombres[name] = n;
+              if (!n) wrap.appendChild(el("p", "vide", wrap.childElementCount ? "Tout est fait. Merci !" : filtreActif() ? "Rien avec ce filtre." : "Rien ne vous attend."));
+              return;
+            }
             colEl.querySelector(".n").textContent = liste.length;
             nombres[name] = liste.length;
             if (name === "fait") {
@@ -1260,16 +1286,16 @@
                 anciennes.slice(0, 12).forEach(function (c) { wrap.appendChild(carteEl(c)); });
                 if (anciennes.length > 12) wrap.appendChild(el("p", "vide", "et " + (anciennes.length - 12) + " plus anciennes."));
               }
-            } else if (name === "prevu" && fc && S.f.mois === null && liste.length > 6) rendreParMois(wrap, liste, cl);
+            } else if (name === "prevu" && !filtreBarre() && liste.length > 6) rendreParMois(wrap, liste, cl);
             else liste.forEach(function (c) { wrap.appendChild(carteEl(c)); });
-            // Sous-tâches dépliées sur les cartes : celles des cartes « Chez vous » sont déjà juste
-            // au-dessus ; la liste ne garde que celles des autres colonnes (pas de doublon).
+            // Chez Julien, sous les cartes « Chez le client » : les tâches confiées au client dans les
+            // autres colonnes (celles des cartes du dessus y sont déjà, dépliées : pas de doublon).
             var deplie = sousTachesDepliees();
             var confiees = name === "vous" ? tachesConfiees(visibles).filter(function (x) { return !(deplie && x.c.col === "vous"); }) : [];
             if (confiees.length) {
               // Les tâches, rangées sous leur carte : le titre de la carte une fois, pas sous chaque ligne.
               var box = el("div", "confiees");
-              box.appendChild(el("h4", null, fc ? (deplie ? "Vos autres tâches" : "Vos tâches") : deplie ? "Autres tâches confiées au client" : "Tâches confiées au client"));
+              box.appendChild(el("h4", null, deplie ? "Autres tâches confiées au client" : "Tâches confiées au client"));
               var groupes = [];
               confiees.forEach(function (x) {
                 var g = null;
@@ -1336,8 +1362,85 @@
 
         function chip(txt, cls) { return el("span", "chip" + (cls ? " " + cls : ""), txt); }
 
-        /* Côté client, « Prévu » se lit par mois : les mois passés, le mois en cours et le suivant
-           ouverts, les autres repliés (un clic les ouvre). Julien garde sa liste d'un seul tenant. */
+        /* Les colonnes de travail (Prévu, En cours, Chez le client) se lisent dans l'ordre du
+           calendrier : la date de la carte, sinon le mois de son échéance (en fin de mois, l'année
+           tirée du début de la période), puis les cartes sans date. À date égale, l'ordre de Julien. */
+        function cleChrono(c) {
+          if (c.date) return c.date;
+          if (/\b(urgent|urgence|asap|au plus vite|immediat)/.test(sansAccent(c.echeance))) return "0000"; // l'urgent passe devant
+          var m = moisDe(c);
+          if (m < 0) return "9999";
+          var cl = clientParId(c.client);
+          var base = cl && cl.debut ? new Date(cl.debut + "T12:00:00") : new Date();
+          if (isNaN(base)) base = new Date();
+          return base.getFullYear() + (m < base.getMonth() ? 1 : 0) + "-" + deux(m + 1) + "-32";
+        }
+        function trierChrono(liste) {
+          return liste.sort(function (a, b) { var ka = cleChrono(a), kb = cleChrono(b); return ka < kb ? -1 : ka > kb ? 1 : a.ordre - b.ordre; });
+        }
+
+        /* « Chez vous », côté client : une liste de choses à faire, rangée par projet. D'abord les
+           questions de Julien (avec leur bouton), puis les tâches confiées, à cocher, sous le titre
+           de leur carte. Rien d'autre : ni étiquettes, ni doublon. Renvoie le nombre de choses à faire. */
+        function rendreAFaire(wrap, visibles, cl) {
+          var groupes = [], parProjet = {};
+          function place(c) {
+            var ch = chantier(c), k = ch ? ch.id : "";
+            if (!parProjet[k]) { parProjet[k] = { ch: ch, cartes: [], parCarte: {} }; groupes.push(parProjet[k]); }
+            var g = parProjet[k];
+            if (!g.parCarte[c.id]) { g.parCarte[c.id] = { c: c, s: [] }; g.cartes.push(g.parCarte[c.id]); }
+            return g.parCarte[c.id];
+          }
+          trierChrono(visibles.filter(function (c) { return c.col === "vous"; })).forEach(place);
+          // Les tâches du moment, et celles cochées ici (barrées, jusqu'au prochain chargement).
+          var taches = [];
+          visibles.forEach(function (c) {
+            if (c.col === "fait" || c.col === "demandes") return;
+            (c.st || []).forEach(function (x) { if (coteClient(x.qui) && (x.ok ? S.cocheesIci[c.id + ":" + x.id] : duMoment(c, x))) taches.push({ c: c, s: x }); });
+          });
+          taches.sort(function (a, b) { return (a.s.date || "9999") < (b.s.date || "9999") ? -1 : (a.s.date || "9999") > (b.s.date || "9999") ? 1 : 0; });
+          taches.forEach(function (x) { place(x.c).s.push(x.s); });
+          var rang = (cl ? cl.chantiers : []).map(function (x) { return x.id; });
+          function r(g) { var i = g.ch ? rang.indexOf(g.ch.id) : -1; return i < 0 ? 99 : i; }
+          groupes.sort(function (a, b) { return r(a) - r(b); });
+          var n = 0;
+          groupes.forEach(function (g) {
+            var sec = el("section", "todo");
+            sec.style.setProperty("--mc", "var(--" + (g.ch ? g.ch.couleur : "c0") + ")");
+            if (!S.f.ch && (g.ch || groupes.length > 1)) {
+              var h = el("h4", "todo-h");
+              h.appendChild(el("span", "sw"));
+              h.appendChild(document.createTextNode(g.ch ? g.ch.nom : "Autres"));
+              sec.appendChild(h);
+            }
+            g.cartes.forEach(function (k) {
+              var c = k.c;
+              if (c.col === "vous") {
+                n++;
+                var q = el("div", "todo-q");
+                q.appendChild(bouton(c.t, "todo-t", function () { ouvrirCarte(c.id); }));
+                var info = [c.action === "valider" ? "À valider" : c.action === "arbitrer" ? "À trancher" : "Julien attend votre réponse"];
+                if (c.date) info.push("pour le " + dateCourte(c.date));
+                var j = c.chezClientDepuis ? jours(c.chezClientDepuis) : 0;
+                if (j > 5) info.push("depuis " + j + " jours");
+                if (c.nouveau === "client") info.unshift("Nouveau");
+                q.appendChild(el("p", "todo-m" + (j > 5 || (c.date && c.date < aujourdhui()) ? " retard" : ""), info.join(" · ")));
+                q.appendChild(actionsClient(c, q));
+                sec.appendChild(q);
+              } else sec.appendChild(bouton(c.t, "conf-carte", function () { ouvrirCarte(c.id); }));
+              if (k.s.length) {
+                var ul = el("ul", "st-liste");
+                k.s.forEach(function (x) { if (!x.ok) n++; ul.appendChild(ligneSousTache(c, x, "groupe")); });
+                sec.appendChild(ul);
+              }
+            });
+            wrap.appendChild(sec);
+          });
+          return n;
+        }
+
+        /* « Prévu » se lit par mois : les mois passés, le mois en cours et le suivant ouverts, les
+           autres repliés (un clic les ouvre). */
         function rendreParMois(wrap, liste, cl) {
           var debut = cl && cl.debut ? new Date(cl.debut + "T12:00:00").getMonth() : new Date().getMonth();
           if (isNaN(debut)) debut = new Date().getMonth();
@@ -1439,6 +1542,7 @@
         function cocher(c, x, ok) {
           if (!op({ type: "carte.cocher", id: c.id, st: x.id, ok: ok })) return false;
           x.ok = ok;
+          if (ok) S.cocheesIci[c.id + ":" + x.id] = true; // reste barrée dans « Chez vous » : on peut se reprendre
           rendre();
           if (feuille.mode === "carte" && feuille.id === c.id) refaireFeuille();
           if (!julien() && ok) toast("Cochée — Julien le voit à l’instant.");
@@ -1757,7 +1861,8 @@
           if (c.col === "demandes") return ["demandes"];
           return c.action === "valider" ? ["fait", "encours"] : ["fait"];
         }
-        function rangeable(col) { return julien() ? col !== "fait" : col === "demandes"; }
+        /* Seules les demandes se classent à la main : les autres colonnes suivent le calendrier. */
+        function rangeable(col) { return col === "demandes"; }
         function interactif(t) { return !!(t.closest && t.closest("button:not(.card-t), a, input, textarea, select, label, .zone")); }
 
         function preparerSouris(ev, c, noeud) {

@@ -15,7 +15,7 @@ import { WebStandardStreamableHTTPServerTransport } from "@modelcontextprotocol/
 import { CfWorkerJsonSchemaValidator } from "@modelcontextprotocol/sdk/validation/cfworker";
 import { z } from "zod";
 import type { EnvAutorisation, PropsClaude } from "./autorisation";
-import { empreinteCle, type Carte, type Client, type EnvTableau, type EtatMcp, type SousTache, type Tableau } from "./tableau";
+import { COULEURS, empreinteCle, type Carte, type Client, type EnvTableau, type EtatMcp, type SousTache, type Tableau } from "./tableau";
 
 type EnvMcp = EnvTableau & EnvAutorisation;
 type Stub = DurableObjectStub<Tableau>;
@@ -512,23 +512,54 @@ function creerServeur(stub: Stub): McpServer {
   );
 
   outil(
+    "creer_projet",
+    {
+      title: "Créer un projet",
+      description:
+        "Ajoute un projet (un chantier) à une place : il apparaît pour le client, avec son sous-tableau et son fil. Huit projets au plus par place. Pour y ranger des cartes : modifier_carte avec projet.",
+      inputSchema: { place: z.string(), nom: z.string().min(1).max(60), objectif: z.string().max(400).optional() },
+      annotations: ecriture,
+    },
+    async (a: { place: string; nom: string; objectif?: string }) => {
+      const etat = await lire();
+      const cl = trouverPlace(etat, a.place);
+      const nom = a.nom.trim();
+      const deja = cl.chantiers.find((k) => norme(k.nom) === norme(nom));
+      if (deja) throw new Erreur(`${cl.nom} a déjà un projet « ${deja.nom} » [${deja.id}].`);
+      if (cl.chantiers.length >= 8) throw new Erreur(`Huit projets au plus : ${cl.nom} en a déjà ${cl.chantiers.length}.`);
+      const prises = cl.chantiers.map((k) => k.couleur);
+      const couleur = COULEURS.find((c) => !prises.includes(c)) ?? COULEURS[cl.chantiers.length % COULEURS.length];
+      const id = crypto.randomUUID().slice(0, 8);
+      await geste({ type: "place.maj", id: cl.id, champs: { chantiers: [...cl.chantiers.map((k) => ({ id: k.id, nom: k.nom, couleur: k.couleur })), { id, nom, couleur }] } });
+      if (a.objectif) await geste({ type: "chantier.maj", client: cl.id, ch: id, champs: { objectif: a.objectif } });
+      return `Projet « ${nom} » [${id}] créé dans ${cl.nom}.`;
+    },
+  );
+
+  outil(
     "modifier_projet",
     {
       title: "Modifier un projet",
-      description: "L’objectif d’un projet (une phrase, lue par le client) et ses dates clés, affichées sur sa frise. dates_cles remplace la liste ; ajouter_dates_cles la complète.",
+      description:
+        "Le nom d’un projet, son objectif (une phrase, lue par le client) et ses dates clés, affichées sur sa frise. Renommer garde les cartes, l’objectif, les dates et le fil. dates_cles remplace la liste ; ajouter_dates_cles la complète.",
       inputSchema: {
         place: z.string(),
         projet: z.string(),
+        nom: z.string().min(1).max(60).optional(),
         objectif: z.string().max(400).optional(),
         dates_cles: z.array(z.object({ titre: z.string().min(1).max(120), date: z.string().regex(DATE) })).max(24).optional(),
         ajouter_dates_cles: z.array(z.object({ titre: z.string().min(1).max(120), date: z.string().regex(DATE) })).max(24).optional(),
       },
       annotations: ecriture,
     },
-    async (a: { place: string; projet: string; objectif?: string; dates_cles?: Array<{ titre: string; date: string }>; ajouter_dates_cles?: Array<{ titre: string; date: string }> }) => {
+    async (a: { place: string; projet: string; nom?: string; objectif?: string; dates_cles?: Array<{ titre: string; date: string }>; ajouter_dates_cles?: Array<{ titre: string; date: string }> }) => {
       const etat = await lire();
       const cl = trouverPlace(etat, a.place);
       const x = trouverProjet(cl, a.projet);
+      const nom = a.nom?.trim();
+      const renomme = !!nom && nom !== x.nom;
+      if (renomme && cl.chantiers.some((k) => k.id !== x.id && norme(k.nom) === norme(nom))) throw new Erreur(`${cl.nom} a déjà un projet « ${nom} ».`);
+      if (renomme) await geste({ type: "place.maj", id: cl.id, champs: { chantiers: cl.chantiers.map((k) => ({ id: k.id, nom: k.id === x.id ? nom : k.nom, couleur: k.couleur })) } });
       const champs: Record<string, unknown> = {};
       if (a.objectif !== undefined) champs.objectif = a.objectif;
       if (a.dates_cles || a.ajouter_dates_cles) {
@@ -536,9 +567,12 @@ function creerServeur(stub: Stub): McpServer {
         const nouvelles = [...(a.dates_cles ?? []), ...(a.ajouter_dates_cles ?? [])].map((d) => ({ id: crypto.randomUUID().slice(0, 8), t: d.titre, date: d.date }));
         champs.dates = [...base, ...nouvelles.filter((n) => !base.some((b) => norme(b.t) === norme(n.t) && b.date === n.date))];
       }
-      if (!Object.keys(champs).length) throw new Erreur("Rien à modifier.");
-      await geste({ type: "chantier.maj", client: cl.id, ch: x.id, champs });
-      return `Projet « ${x.nom} » (${cl.nom}) mis à jour (${Object.keys(champs).join(", ")}).`;
+      if (!Object.keys(champs).length && !renomme) throw new Erreur("Rien à modifier.");
+      if (Object.keys(champs).length) await geste({ type: "chantier.maj", client: cl.id, ch: x.id, champs });
+      const faits = [...(renomme ? ["nom"] : []), ...Object.keys(champs)];
+      return renomme
+        ? `Projet « ${x.nom} » renommé « ${nom} » (${cl.nom}) ; mis à jour : ${faits.join(", ")}.`
+        : `Projet « ${x.nom} » (${cl.nom}) mis à jour (${faits.join(", ")}).`;
     },
   );
 
