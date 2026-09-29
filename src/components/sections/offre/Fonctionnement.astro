@@ -176,15 +176,15 @@ const etiquette = {
               </span>
             </div>
 
-            <ul id="file-liste" class="relative mt-5 h-[18.5rem] overflow-hidden md:h-[19.5rem]">
+            <ul id="file-liste" class="relative mt-5 h-[21rem] overflow-hidden sm:h-[18.5rem] md:h-[19.5rem]">
               {fileInitiale.map((l, i) => (
                 <li class="file-ligne mb-2.5 rounded-2xl border border-line bg-background px-4 py-3.5">
-                  <div class="flex items-center justify-between gap-3">
-                    <span class="flex min-w-0 items-center gap-2">
-                      <span class={`file-etiquette shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em] ${etiquette[l.type as "plan" | "demande"]}`}>
+                  <div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
+                    <span class="flex min-w-0 items-start gap-2 sm:items-center">
+                      <span class={`file-etiquette mt-0.5 shrink-0 rounded-md sm:mt-0 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em] ${etiquette[l.type as "plan" | "demande"]}`}>
                         {l.type === "plan" ? "Plan" : "Demande"}
                       </span>
-                      <span class="min-w-0 truncate text-sm font-medium text-foreground sm:text-[15px]">{l.titre}</span>
+                      <span class="min-w-0 text-sm font-medium sm:truncate text-foreground sm:text-[15px]">{l.titre}</span>
                     </span>
                     <span class={`file-badge shrink-0 whitespace-nowrap rounded-full px-3 py-1 text-xs font-medium ${i === 0 ? badge.cours : badge.attente}`}>
                       {i === 0 ? "En cours" : `En attente · ${i}`}
@@ -288,7 +288,7 @@ const etiquette = {
     demande: "bg-violet-soft/25 text-lime",
   };
   const BASE_ETIQUETTE =
-    "file-etiquette shrink-0 rounded-md px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em]";
+    "file-etiquette mt-0.5 shrink-0 rounded-md sm:mt-0 px-1.5 py-0.5 text-[10px] font-medium uppercase tracking-[0.08em]";
 
   if (liste && compteur && !reduit) {
     let prochain = 0;
@@ -326,7 +326,7 @@ const etiquette = {
     const nouvelleLigne = (l: Ligne) => {
       const li = document.createElement("li");
       li.className = "file-ligne mb-2.5 rounded-2xl border border-line bg-background px-4 py-3.5";
-      li.innerHTML = `<div class="flex items-center justify-between gap-3"><span class="flex min-w-0 items-center gap-2"><span class="${BASE_ETIQUETTE} ${ETIQUETTE[l.type]}"></span><span class="min-w-0 truncate text-sm font-medium text-foreground sm:text-[15px]"></span></span><span class="${BASE_BADGE} ${CLS_ATTENTE}"></span></div><div class="mt-2.5 hidden h-1 overflow-hidden rounded-full bg-line"><div class="file-barre h-full w-0 rounded-full bg-lime"></div></div>`;
+      li.innerHTML = `<div class="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:justify-between sm:gap-3"><span class="flex min-w-0 items-start gap-2 sm:items-center"><span class="${BASE_ETIQUETTE} ${ETIQUETTE[l.type]}"></span><span class="min-w-0 text-sm font-medium sm:truncate text-foreground sm:text-[15px]"></span></span><span class="${BASE_BADGE} ${CLS_ATTENTE}"></span></div><div class="mt-2.5 hidden h-1 overflow-hidden rounded-full bg-line"><div class="file-barre h-full w-0 rounded-full bg-lime"></div></div>`;
       const spans = li.querySelectorAll("span");
       spans[1].textContent = l.type === "plan" ? "Plan" : "Demande";
       spans[2].textContent = l.titre;

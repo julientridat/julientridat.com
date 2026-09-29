@@ -86,7 +86,7 @@ const AGENTS = [
           <span class="hidden sm:inline">Julien Tridat</span>
         </a>
       </div>
-      <ol id="xp-progression" class="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/35 sm:gap-3 sm:text-[11px]" aria-label="Progression du parcours">
+      <ol id="xp-progression" class="flex items-center gap-2 text-[10px] uppercase tracking-[0.18em] text-white/55 sm:gap-3 sm:text-[11px]" aria-label="Progression du parcours">
         {["votre agence", "cartographie", "vos agents"].map((etape, i) => (
           <li class="flex items-center gap-2" data-pas={i}>
             <span class="xp-pas-point inline-block h-1.5 w-1.5 rounded-full bg-white/25 transition-colors"></span>
@@ -142,7 +142,7 @@ const AGENTS = [
                 maxlength="300"
                 inputmode="url"
                 placeholder="votre-agence.fr"
-                class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 text-[15px] text-white placeholder:text-white/35 outline-none backdrop-blur-sm transition-colors focus:border-lime"
+                class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 text-[15px] text-white placeholder:text-white/50 outline-none backdrop-blur-sm transition-colors focus:border-lime"
                 autocomplete="url"
                 autocapitalize="off"
                 spellcheck="false"
@@ -276,7 +276,7 @@ const AGENTS = [
               maxlength="300"
               inputmode="url"
               placeholder="site-de-votre-client.fr"
-              class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime"
+              class="w-full rounded-full border border-lime/40 bg-black/40 px-5 py-3.5 text-[15px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-lime"
               autocomplete="url" autocapitalize="off" spellcheck="false"
             />
             <button type="submit" id="xp-essai-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3.5 text-[15px] font-medium text-white transition-colors hover:bg-lime/90 disabled:cursor-wait disabled:opacity-50">
@@ -291,7 +291,7 @@ const AGENTS = [
                 <span id="xp-essai-statut" class="text-[11px] text-white/50">en attente d'une URL</span>
               </div>
               <div id="xp-essai-console" class="mt-4 space-y-2 text-[13px] leading-relaxed text-white/55">
-                <p class="text-white/35">Donnez l'URL d'un client, l'agent lit son site et produit.</p>
+                <p class="text-white/55">Donnez l'URL d'un client, l'agent lit son site et produit.</p>
               </div>
             </div>
 
@@ -332,7 +332,7 @@ const AGENTS = [
           <!-- Le stepper : 4 étapes -->
           <ol id="xp-stepper" class="mt-8 flex flex-wrap gap-2 text-[11px]">
             {["Étude de marché", "Cible — ICP", "Problématiques (IBM)", "Axes & ton"].map((s, i) => (
-              <li class="xp-step flex items-center gap-2 rounded-full border border-white/12 px-3 py-1.5 text-white/45" data-step={i}>
+              <li class="xp-step flex items-center gap-2 rounded-full border border-white/12 px-3 py-1.5 text-white/60" data-step={i}>
                 <span class="xp-step-num grid h-5 w-5 place-items-center rounded-full border border-white/20 text-[10px]">{i + 1}</span>
                 <span>{s}</span>
               </li>
@@ -358,7 +358,7 @@ const AGENTS = [
               </div>
             </div>
             <div>
-              <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Ses contraintes <span class="normal-case tracking-normal text-white/35">(2 max, optionnel)</span></div>
+              <div class="text-[11px] uppercase tracking-[0.18em] text-white/50">Ses contraintes <span class="normal-case tracking-normal text-white/55">(2 max, optionnel)</span></div>
               <div id="xp-choix-contrainte" class="mt-2.5 flex flex-wrap gap-2" aria-label="Contraintes">
                 {["Budget serré", "Délai court", "Marque premium", "Cible jeune", "Marché B2B", "Forte concurrence"].map((s) => (
                   <button type="button" class="xp-opt" data-choix="contrainte" data-valeur={s} aria-pressed="false">{s}</button>
@@ -370,7 +370,7 @@ const AGENTS = [
                 id="xp-projet-url"
                 type="text" maxlength="300" inputmode="url"
                 placeholder="site du client (optionnel) — pour nourrir l'étude"
-                class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
+                class="w-full rounded-full border border-white/15 bg-black/30 px-5 py-3 text-[15px] text-white placeholder:text-white/50 outline-none transition-colors focus:border-lime/60"
                 autocomplete="url" autocapitalize="off" spellcheck="false"
               />
               <button type="submit" id="xp-projet-go" class="shrink-0 cursor-pointer rounded-full bg-lime px-6 py-3 text-[15px] font-medium text-white transition-colors hover:bg-lime/90 disabled:cursor-not-allowed disabled:opacity-40" disabled>
@@ -378,13 +378,13 @@ const AGENTS = [
               </button>
             </div>
             <details class="group">
-              <summary class="cursor-pointer list-none text-[13px] text-white/45 underline-offset-4 hover:text-lime hover:underline">J'ai déjà un brief écrit — le coller</summary>
+              <summary class="cursor-pointer list-none text-[13px] text-white/60 underline-offset-4 hover:text-lime hover:underline">J'ai déjà un brief écrit — le coller</summary>
               <textarea
                 id="xp-projet-brief"
                 rows="5"
                 maxlength="6000"
                 placeholder="Collez ici le brief de votre client : activité, demande, objectifs, contraintes, budget…"
-                class="mt-3 w-full resize-y rounded-2xl border border-white/15 bg-black/30 px-5 py-4 text-[15px] leading-relaxed text-white placeholder:text-white/35 outline-none transition-colors focus:border-lime/60"
+                class="mt-3 w-full resize-y rounded-2xl border border-white/15 bg-black/30 px-5 py-4 text-[15px] leading-relaxed text-white placeholder:text-white/50 outline-none transition-colors focus:border-lime/60"
               ></textarea>
             </details>
           </form>
@@ -930,7 +930,7 @@ const AGENTS = [
         $("xp-essai-titre").textContent = cfg.titre;
         ($("xp-essai-url") as HTMLInputElement).value = "";
         $("xp-essai-texte").innerHTML = `<p class="text-[15px] leading-relaxed text-white/55">Lancez l'agent : le livrable se construit ici, bloc par bloc.</p>`;
-        $("xp-essai-console").innerHTML = `<p class="text-white/35">Donnez l'URL d'un client, l'agent lit son site et produit.</p>`;
+        $("xp-essai-console").innerHTML = `<p class="text-white/55">Donnez l'URL d'un client, l'agent lit son site et produit.</p>`;
         $("xp-essai-statut").textContent = "en attente d'une URL";
         $("xp-essai-suite").classList.add("hidden");
         $("xp-essai-rebonds").classList.add("hidden");
@@ -943,7 +943,7 @@ const AGENTS = [
 
     function ligneEssai(texte: string) {
       const c = $("xp-essai-console");
-      if (c.firstElementChild?.classList.contains("text-white/35")) c.innerHTML = "";
+      if (c.firstElementChild?.classList.contains("text-white/55")) c.innerHTML = "";
       const p = document.createElement("p");
       p.className = "xp-slide-in";
       p.innerHTML = `<span class="text-lime">•</span> ${texte}`;

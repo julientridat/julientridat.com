@@ -53,7 +53,7 @@
   --lime: #6C4CF1;          /* violet — accent */
   --ink: #111216;
   --ink-2: #43464E;         /* ink-soft */
-  --ink-3: #7A7E88;         /* muted */
+  --ink-3: #5F636C;         /* muted — 5,4:1 sur le papier (#7A7E88 ne faisait que 3,6:1) */
   --line: rgba(17, 18, 22, 0.10);
 
   --card: #FBFBFC;          /* white — surfaces élevées, nav, cartes */
