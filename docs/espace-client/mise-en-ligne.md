@@ -30,6 +30,11 @@ Le tableau affiche alors **le lien de Sébastien** : copie-le, envoie-le par e-m
 clé ; il l'ouvre une fois.
 
 - Ajouter une personne chez le client (Laurent…) : Réglages de la place → « + une personne ».
+- **Un mot de passe simple** plutôt qu'un lien : Réglages → à côté de la personne, « Mot de
+  passe » → par exemple `julientableausebastien` → Enregistrer. Il le tape une fois sur
+  julientridat.com/tableau ; majuscules, accents et espaces ne comptent pas (« Julien Tableau
+  Sébastien » marche). Le lien direct (`/tableau#cle=julientableausebastien`) marche aussi ;
+  l'ancien lien cesse de marcher. Huit lettres ou chiffres au moins, un par personne.
 - Un lien a circulé : Réglages → « Renouveler » — l'ancien cesse de marcher à l'instant.
 - Voir ce que voit Sébastien : « Voir comme Sébastien ». Ne pas ouvrir son lien dans ton
   propre navigateur (il remplacerait ta clé) — une fenêtre privée, si tu veux vraiment.
@@ -103,6 +108,24 @@ deviennent cliquables. Côté Julien, avec plusieurs places, la liste des discus
 Chaque message part aussi vers les automatisations (événement `message`).
 Pour une nouvelle mission, le client passe par « Demandes » : le fil le lui rappelle.
 
+## Les notifications
+
+La cloche, en haut à droite : « Activer sur cet appareil ». Chaque appareil s'active une fois
+(ordinateur, téléphone) ; les notifications arrivent ensuite même tableau fermé.
+
+- **Toi** : quand un client écrit, répond, valide, demande un ajustement, tranche, fait une
+  demande, coche une tâche ou règle une carte.
+- **Le client** : quand tu lui écris, commentes une carte, envoies une carte « Chez vous »,
+  lui soumets un choix ou le relances.
+- Jamais l'auteur du geste lui-même ; les cases cochées à la suite se regroupent en une.
+- **iPhone** : les notifications passent par l'app installée sur l'écran d'accueil (iOS 16.4
+  ou plus) — « Installer l'app », l'ouvrir, puis la cloche.
+- Rien à poser chez Cloudflare : le tableau crée et garde lui-même sa paire de clés VAPID ;
+  le contenu est chiffré de bout en bout jusqu'à l'appareil (norme Web Push). Un lien
+  renouvelé ou un mot de passe changé coupe les notifications des appareils qui l'utilisaient ;
+  changer ta clé coupe les tiennes (réactive-les ensuite).
+- Couper : la cloche → « Couper sur cet appareil ».
+
 ## Sur le téléphone — et sur le Mac
 
 Le tableau s'installe comme une app : icône sur l'écran d'accueil, plein écran, aucun store.
@@ -158,6 +181,10 @@ pour lui ne récupérerait rien.
 - Le serveur ne livre à un client que ses propres cartes, et refuse tout geste réservé à
   Julien, même forgé à la main (vérifié).
 - `/tableau` n'est ni indexé, ni dans le plan du site, ni dans `llms.txt`.
+- Essais ratés : après 10 mots de passe ou liens refusés en un quart d'heure, une connexion
+  attend un quart d'heure (3 essais seulement si les échecs se multiplient partout à la fois).
+- Un mot de passe qui se devine (prénom, nom du client…) protège moins qu'un lien tiré au
+  hasard : le choix de Julien, en connaissance de cause. En cas de doute, « Renouveler ».
 
 ## Sauvegarde
 
@@ -177,6 +204,3 @@ l'automatisation vérifie l'expéditeur).
   (« Point de lundi » prépare le texte à copier).
 - Pas de pièces jointes : on colle le lien du fichier (Drive, Figma…) dans la carte ou la
   discussion.
-- Pas de notification sur le téléphone quand l'app est fermée : l'étape suivante (Web Push,
-  gratuit, deux secrets Cloudflare de plus). En attendant, l'événement `message` peut
-  déclencher un e-mail depuis n8n ou Make.
