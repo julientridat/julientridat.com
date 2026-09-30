@@ -3,7 +3,8 @@ title: "Un groupe immobilier perçu comme constructeur qui se présente enfin co
 client: "Groupe immobilier multi-enseignes"
 secteur: "Immobilier"
 typeEntreprise: "Groupe immobilier multi-enseignes"
-annee: 2026
+annee: 2024
+periode: "2023-2024"
 role: "Direction marketing externalisée pendant un an"
 stack: ["Positionnement", "Création de marques", "Sites de vente", "Supports de vente", "Contenus", "Formation des équipes"]
 besoin: "produire"

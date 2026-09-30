@@ -75,7 +75,7 @@ const jsonLd = [
             ["Secteur", d.secteur],
             ["Type d'entreprise", d.typeEntreprise ?? d.client],
             ["Effectif", d.effectif],
-            ["Année", String(d.annee)],
+            [d.periode ? "Période" : "Année", d.periode ?? String(d.annee)],
           ].filter(([, v]) => v).map(([k, v]) => (
             <div>
               <dt class="text-[10px] uppercase tracking-[0.22em] text-ink-3">{k}</dt>
