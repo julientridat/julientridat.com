@@ -6,6 +6,10 @@
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
+import { accueil } from "@/lib/contenu";
+import { enLigne } from "@/lib/texte";
+
+const t = accueil.cloture;
 ---
 
 <section
@@ -19,20 +23,20 @@ import CtaButton from "@/components/CtaButton.astro";
   </div>
 
   <div class="mx-auto max-w-4xl text-center">
-    <Eyebrow onDark>Prochaine étape</Eyebrow>
+    <Eyebrow onDark>{t.surtitre}</Eyebrow>
 
     <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
-      Vingt minutes. <em class="text-violet-soft">Pas une de plus.</em>
+      {t.titre} <em class="text-violet-soft">{t.titreAccent}</em>
     </h2>
 
-    <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/75">
-      Vous me dites où en est votre marketing. Je vous dis si je peux le faire avancer chaque
-      semaine, et si la réponse est non, je vous le dis aussi.
-    </p>
+    <p
+      class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/75"
+      set:html={enLigne(t.texte, { fort: "font-medium text-white", accent: "text-violet-soft" })}
+    />
 
     <div class="mt-12 flex flex-col items-center gap-5">
-      <CtaButton onDark ouvre="diagnostic">Réserver 20&nbsp;minutes</CtaButton>
-      <p class="text-sm text-white/55">Six PME à la fois.</p>
+      <CtaButton onDark ouvre="diagnostic">{accueil.bouton}</CtaButton>
+      <p class="text-sm text-white/55">{t.mention}</p>
     </div>
   </div>
 </section>

@@ -13,53 +13,12 @@
  * mouvement réduit ; décrite par un texte alternatif (role="img").
  */
 import Eyebrow from "@/components/Eyebrow.astro";
+import { accueil } from "@/lib/contenu";
 
-const starterPack = [
-  {
-    semaine: "S1",
-    titre: "L'état des lieux",
-    texte:
-      "Je passe en revue votre site, vos supports commerciaux, vos réseaux sociaux, votre fichier clients et vos chiffres de vente. Au passage, je récupère tout ce qui servira ensuite : textes, logos, photos, codes d'accès.",
-    recu: "ce qui fonctionne, ce qui manque, ce qui bloque.",
-  },
-  {
-    semaine: "S2",
-    titre: "Le plan",
-    texte:
-      "Où aller en douze mois : les cibles, les messages, les canaux et le calendrier. Les trois premiers mois sont détaillés, et nous validons ensemble les actions des quatre semaines suivantes.",
-    recu: "le plan, la feuille de route et le calendrier des livrables.",
-  },
-  {
-    semaine: "S3",
-    titre: "Les fondations",
-    texte:
-      "On fixe l'essentiel : votre offre, vos clients, et la phrase qui dit pourquoi vous plutôt qu'un concurrent. Puis votre identité visuelle, remise en cohérence : logo, couleurs, typographies.",
-    recu: "une page qui résume votre marque, et votre charte graphique.",
-  },
-  {
-    semaine: "S4",
-    titre: "Les outils",
-    texte: "Vos modèles, prêts à remplir : devis, présentation commerciale, publications, e-mails.",
-    recu: "ces modèles, et la sortie du premier livrable du plan.",
-  },
-];
+const t = accueil.fonctionnement;
 
-const ensuite = [
-  {
-    titre: "Le plan tient ses dates.",
-    texte: "Chaque livrable prévu sort le jour dit. On fait le point 45 minutes par semaine, pas davantage.",
-  },
-  {
-    titre: "Vos urgences trouvent leur place.",
-    texte:
-      "Ce qui n'était pas prévu est livré entre J+1 et J+3. Si cela repousse un livrable du plan, vous choisissez lequel.",
-  },
-  {
-    titre: "Vous voyez tout.",
-    texte:
-      "Un tableau de bord partagé, à votre nom : ce qui est prévu, en cours, livré, et ce qui attend votre réponse. Vous répondez directement sur la carte, et vos équipes y retrouvent leurs tâches.",
-  },
-];
+const starterPack = t.semaines;
+const ensuite = t.ensuite;
 
 // État initial de la file, identique à ce que le script affiche au démarrage.
 const fileInitiale = [
@@ -69,16 +28,7 @@ const fileInitiale = [
   { type: "plan", titre: "Étude de 5 concurrents" },
 ];
 
-const livrables = [
-  "Site",
-  "Supports de vente",
-  "Devis et présentations",
-  "Relances",
-  "Publications",
-  "Identité",
-  "Plan marketing",
-  "Campagnes",
-];
+const livrables = t.livrables;
 
 const badge = {
   attente: "border border-line text-ink-3",
@@ -94,11 +44,11 @@ const etiquette = {
   <div class="px-6 md:px-12">
     <div class="mx-auto max-w-7xl">
       <div data-reveal>
-        <Eyebrow>Comment ça marche</Eyebrow>
+        <Eyebrow>{t.surtitre}</Eyebrow>
         <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
-          Un mois pour poser les bases.
+          {t.titre}
           <br />
-          <em class="text-lime">Puis un livrable à date, chaque semaine.</em>
+          <em class="text-lime">{t.titreAccent}</em>
         </h2>
       </div>
 
@@ -106,9 +56,9 @@ const etiquette = {
       <div class="mt-12 md:mt-14">
         <div data-reveal class="flex flex-wrap items-baseline gap-x-4 gap-y-1">
           <span class="rounded-full border border-lime/30 bg-lime/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-lime">
-            Mois 1 · Le mois de démarrage
+            {t.demarrageEtiquette}
           </span>
-          <span class="text-base text-ink-3">Un socle commun à tous mes clients, ajusté au vôtre&nbsp;: c'est ce qui permet d'aller vite.</span>
+          <span class="text-base text-ink-3">{t.demarrageIntro}</span>
         </div>
 
         <div class="relative mt-8">
@@ -139,7 +89,7 @@ const etiquette = {
       <div class="mt-16 grid gap-12 md:mt-20 lg:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] lg:items-center lg:gap-16">
         <div data-reveal>
           <span class="rounded-full border border-lime/30 bg-lime/[0.06] px-3.5 py-1.5 text-[11px] uppercase tracking-[0.22em] text-lime">
-            Ensuite · Chaque semaine
+            {t.ensuiteEtiquette}
           </span>
           <ol class="mt-8 space-y-7">
             {ensuite.map((e, i) => (

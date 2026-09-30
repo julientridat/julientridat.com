@@ -4,23 +4,27 @@
  * questions se lit d'un coup d'œil, et chacun ouvre celle qui le concerne.
  *
  * <details>/<summary> natifs : pas de JS, le contenu reste indexable et
- * accessible au clavier. Les questions viennent de src/lib/faqAccueil.ts,
- * partagé avec le balisage FAQPage de index.astro.
+ * accessible au clavier. Les questions se modifient dans /admin
+ * (src/contenu/accueil.json), partagé avec le balisage FAQPage de index.astro.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
-import { FAQ_ACCUEIL as questions } from "@/lib/faqAccueil";
+import { accueil } from "@/lib/contenu";
+import { enLigne } from "@/lib/texte";
+
+const t = accueil.faq;
+const questions = t.questions;
 ---
 
 <section id="faq" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto max-w-7xl">
-    <Eyebrow>Questions</Eyebrow>
+    <Eyebrow>{t.surtitre}</Eyebrow>
 
     <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
       <h2
         data-reveal
         class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground md:sticky md:top-24 md:self-start"
       >
-        Ce que vous alliez <em class="text-lime">me demander.</em>
+        {t.titre} <em class="text-lime">{t.titreAccent}</em>
       </h2>
 
       <div data-reveal style="--reveal-delay: 100ms">
@@ -30,7 +34,10 @@ import { FAQ_ACCUEIL as questions } from "@/lib/faqAccueil";
               <span>{item.q}</span>
               <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
             </summary>
-            <p class="pb-5 text-lg leading-relaxed text-ink-2">{item.r}</p>
+            <p
+              class="pb-5 text-lg leading-relaxed text-ink-2"
+              set:html={enLigne(item.r, { fort: "font-medium text-foreground", accent: "text-lime", lien: "underline decoration-lime/40 underline-offset-4 hover:text-lime" })}
+            />
           </details>
         ))}
       </div>

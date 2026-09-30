@@ -14,6 +14,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
 import { autoriser, pageConnecteur, type EnvAutorisation } from "./autorisation";
 import { redirectionCanonique } from "./canonique";
+import { servirCms, type EnvCms } from "./cms";
 import { servirMcp } from "./mcp";
 import type { EnvTableau } from "./tableau";
 
@@ -21,7 +22,7 @@ import type { EnvTableau } from "./tableau";
 // exports nommés du module principal (déclarée dans wrangler.jsonc).
 export { Tableau } from "./tableau";
 
-interface Env extends EnvTableau, EnvAutorisation {
+interface Env extends EnvTableau, EnvAutorisation, EnvCms {
   ASSETS: Fetcher;
   AI?: Ai;
   ANTHROPIC_API_KEY?: string;
@@ -1092,6 +1093,8 @@ const site = {
       );
     }
     if (url.pathname === "/authorize") return autoriser(request, env);
+    // Connexion GitHub de l'outil d'édition /admin (worker/cms.ts).
+    if (url.pathname === "/cms/auth" || url.pathname === "/cms/callback") return servirCms(request, env);
     return env.ASSETS.fetch(request);
   },
 } satisfies ExportedHandler<Env>;
