@@ -25,13 +25,13 @@ import Footer from "@/components/Footer.astro";
 import Reveal from "@/components/Reveal.astro";
 import { SITE } from "@/lib/site";
 import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
+import { accueilBrut } from "@/lib/contenu";
 
 // Mot-clé principal : « direction marketing externalisée », dans le title,
 // la description, le H1 (surtitre du hero) et le sous-titre. Title et
 // description sont repris tels quels en og: et twitter: par BaseLayout.
-const title = "Direction marketing externalisée pour PME, Bordeaux | Julien Tridat";
-const description =
-  "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis un livrable chaque semaine.";
+// Modifiables dans /admin (src/contenu/accueil.json, bloc seo).
+const { title, description } = accueilBrut.seo;
 
 const jsonLd = [
   {

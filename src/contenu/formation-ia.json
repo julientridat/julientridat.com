@@ -1,0 +1,337 @@
+{
+  "seo": {
+    "title": "Formation à l'IA générative | Julien Tridat",
+    "description": "Formation IA générative en intra ou pour organismes de formation. Plus de 300 dirigeants et cadres formés. Dès 790 € HT la demi-journée, OPCO possible."
+  },
+  "bouton": "Réserver 20 minutes",
+  "hero": {
+    "surtitre": "Formation IA générative",
+    "surtitreSuite": "Entreprises et organismes de formation",
+    "titre1": "Je forme à l'IA générative",
+    "titre2": "depuis trois ans.",
+    "titreAccent1": "Des comités de direction",
+    "titreAccent2": "aux équipes de terrain.",
+    "chapo": "Pour les entreprises qui forment leurs équipes, et les organismes qui cherchent un formateur. Plus de 300 dirigeants et cadres formés.",
+    "lienDossier": "Voir le dossier remis",
+    "mention": "Dès 790 € HT la demi-journée · Financement OPCO possible · Dossier complet à chaque session"
+  },
+  "aiguillage": {
+    "surtitre": "Deux façons d'arriver ici",
+    "titre": "Vous formez vos équipes,",
+    "titreAccent": "ou vous cherchez qui les formera ?",
+    "entreprise": {
+      "etiquette": "Vous êtes une entreprise",
+      "titre": "Une formation intra, construite sur vos métiers.",
+      "texte": "La convention est portée par un organisme certifié Qualiopi : financement OPCO possible, et vous n'avez pas à le chercher.",
+      "bouton": "Décrire votre besoin"
+    },
+    "organisme": {
+      "etiquette": "Vous êtes un organisme de formation",
+      "titre": "J'interviens sous votre certification.",
+      "texte": "Vous portez la convention et la relation client. Je conçois, j'anime, et je vous rends le dossier complet. C'est déjà le cas avec trois organismes.",
+      "lien": "Voir le cadre"
+    }
+  },
+  "deroule": {
+    "surtitre": "Comment ça se passe",
+    "titre": "Un programme sous 48 heures.",
+    "titreAccent": "Un dossier complet après.",
+    "etapes": [
+      {
+        "moment": "Avant",
+        "texte": "Questionnaire de positionnement, puis un programme construit sur vos métiers et vos dossiers.",
+        "recu": "un programme daté, prêt à entrer dans la convention."
+      },
+      {
+        "moment": "Le jour J",
+        "texte": "J'anime en présentiel, en classe virtuelle ou en mixte, sur vos vrais cas.",
+        "recu": "les supports de séance et les livrets par outil."
+      },
+      {
+        "moment": "Après",
+        "texte": "Quiz de fin, questionnaires de satisfaction, attestations.",
+        "recu": "le dossier complet."
+      }
+    ],
+    "dossierTitre": "Le dossier de la session",
+    "dossier": [
+      "CV formateur à jour",
+      "Programme daté",
+      "Questionnaire de positionnement",
+      "Supports de séance",
+      "Feuilles d'émargement",
+      "Quiz de fin et résultats",
+      "Questionnaires de satisfaction",
+      "Attestations"
+    ],
+    "dossierMention": "Remis à chaque session",
+    "dossierStatut": "Dossier complet"
+  },
+  "public": {
+    "surtitre": "Qui j'ai formé",
+    "titre": "Quel public voulez-vous",
+    "titreAccent": "me confier ?",
+    "chiffres": [
+      {
+        "signe": "300+",
+        "titre": "dirigeants et cadres formés",
+        "plein": true
+      },
+      {
+        "signe": "50",
+        "titre": "organisations",
+        "plein": false
+      },
+      {
+        "signe": "10",
+        "titre": "secteurs",
+        "plein": false
+      }
+    ],
+    "intro": "Cherchez votre public : il y a de bonnes chances que je l'aie déjà eu en face de moi.",
+    "axes": [
+      {
+        "onglet": "Par taille",
+        "question": "Quelle taille d'organisation ?",
+        "items": [
+          {
+            "titre": "Groupes internationaux",
+            "texte": "Équipes siège d'un groupe de travel retail, enseigne de plus de 600 points de vente, environnements verrouillés par la direction informatique et licences hétérogènes."
+          },
+          {
+            "titre": "ETI et grands comptes",
+            "texte": "Dassault Systèmes, SNCF Fret, un réseau de conseil de plusieurs centaines d'experts."
+          },
+          {
+            "titre": "PME et agences",
+            "texte": "Agences de communication et de création, cabinets de conseil, maisons de vin et de spiritueux, franchises."
+          },
+          {
+            "titre": "TPE et indépendants",
+            "texte": "Artisans, professions libérales, commerces, dirigeants sans service informatique ni service marketing derrière eux."
+          }
+        ]
+      },
+      {
+        "onglet": "Par niveau",
+        "question": "Quel niveau dans l'organisation ?",
+        "items": [
+          {
+            "titre": "Comités de direction",
+            "texte": "Sessions stratégiques avec le dirigeant, cadrage de la gouvernance, arbitrage des priorités. Et des keynotes devant des comités et des clubs de dirigeants."
+          },
+          {
+            "titre": "Encadrement et chefs de projet",
+            "texte": "Où l'IA entre dans le processus, qui devient propriétaire de quoi, et ce qu'on décide de ne pas automatiser."
+          },
+          {
+            "titre": "Équipes opérationnelles",
+            "texte": "Celles qui produisent tous les jours — sur leurs propres dossiers, leurs propres fichiers, leurs propres contraintes d'outil."
+          }
+        ]
+      },
+      {
+        "onglet": "Par métier",
+        "question": "Quel métier dans la salle ?",
+        "items": [
+          {
+            "titre": "Marketing et communication",
+            "texte": "Contenus, déclinaison de supports à l'échelle d'un réseau, brief de création, plan éditorial, charte maison encodée dans l'assistant."
+          },
+          {
+            "titre": "Commercial et développement",
+            "texte": "Propositions, argumentaires, relances, prospection personnalisée, veille marché."
+          },
+          {
+            "titre": "Administration et fonctions support",
+            "texte": "Comptes-rendus, courriers, synthèses, suivi de dossiers, pilotage de projet."
+          },
+          {
+            "titre": "Direction et stratégie",
+            "texte": "Feuille de route, règles d'usage internes, visibilité de la marque dans les réponses des IA."
+          },
+          {
+            "titre": "Métiers en secteur réglementé",
+            "texte": "Sourcing restreint aux autorités de référence, validation humaine préservée, périmètre autorisé par la direction informatique."
+          }
+        ]
+      },
+      {
+        "onglet": "Par secteur",
+        "question": "Quel secteur ?",
+        "items": [
+          {
+            "titre": "Agences de communication et de création",
+            "texte": ""
+          },
+          {
+            "titre": "Vin et spiritueux",
+            "texte": ""
+          },
+          {
+            "titre": "Santé et communication médicale",
+            "texte": ""
+          },
+          {
+            "titre": "Retail et réseaux de points de vente",
+            "texte": ""
+          },
+          {
+            "titre": "BTP",
+            "texte": ""
+          },
+          {
+            "titre": "Industrie",
+            "texte": ""
+          },
+          {
+            "titre": "Transport et logistique",
+            "texte": ""
+          },
+          {
+            "titre": "Conseil et formation professionnelle",
+            "texte": ""
+          },
+          {
+            "titre": "Immobilier",
+            "texte": ""
+          },
+          {
+            "titre": "Banque et finance",
+            "texte": ""
+          },
+          {
+            "titre": "Associations et réseaux d'affaires",
+            "texte": ""
+          }
+        ]
+      }
+    ]
+  },
+  "supports": {
+    "surtitre": "Les supports",
+    "titre": "Je conçois mes supports.",
+    "titreAccent": "Les voici.",
+    "artefacts": [
+      {
+        "titre": "Un support de formation",
+        "texte": "Le support « IA & Texte » d'une mission en agence santé, en défilement plutôt qu'en diapositives mortes.",
+        "lien": "/demos/deck-formation/",
+        "lienTexte": "Parcourir le support"
+      },
+      {
+        "titre": "Un support de grand groupe",
+        "texte": "Le support d'un parcours déployé par vagues auprès des équipes siège d'un groupe international.",
+        "lien": "/demos/support-groupe-retail.html",
+        "lienTexte": "Dérouler le support"
+      },
+      {
+        "titre": "Un guide d'autonomie",
+        "texte": "Six niveaux de progression sur un outil de gestion de projet : à chaque palier, la commande, le résultat attendu, le piège à éviter.",
+        "lien": "/demos/guide-claude-clickup.html",
+        "lienTexte": "Parcourir le guide"
+      }
+    ],
+    "verbatims": [
+      {
+        "citation": "Julien a parfaitement préparé son intervention, ce qui lui a permis d'adapter son accompagnement aux besoins spécifiques de chacun. Une grande aide pour notre équipe.",
+        "auteur": "Chrystelle T., directrice clientèle"
+      },
+      {
+        "citation": "La formation m'a permis de comprendre comment structurer mes prompts et affiner mes besoins grâce à une approche méthodique et pratique.",
+        "auteur": "Véronique T., directrice conseil"
+      },
+      {
+        "citation": "L'accompagnement était très concret et orienté vers des solutions pratiques. J'ai particulièrement apprécié la création d'assistants IA personnalisés avec ChatGPT.",
+        "auteur": "Séverine G., chargée de développement"
+      },
+      {
+        "citation": "Julien a su adapter le programme à notre métier tout en apportant des exemples concrets et des cas pratiques pertinents. Une approche dynamique et captivante.",
+        "auteur": "Daphné G., consultante"
+      },
+      {
+        "citation": "Julien est passionné et cela se ressent. Il a su répéter et reprendre chaque point de manière patiente et positive. Une formation enrichissante et pleine d'énergie.",
+        "auteur": "Elsa M., responsable administrative"
+      },
+      {
+        "citation": "Un accompagnement orienté sur les spécificités de nos métiers, parfaitement ajusté à nos besoins.",
+        "auteur": "Aurélie M., consultante"
+      }
+    ],
+    "referencesTitre": "Références",
+    "references": [
+      "Dassault Systèmes",
+      "SNCF Fret",
+      "Lagardère Travel Retail",
+      "Le Nouveau Bélier",
+      "Maison Chapoutier",
+      "Zorba Group",
+      "WeThePeople",
+      "Cogefi",
+      "Bordeaux Négoce",
+      "Maison des Vins et des Spiritueux",
+      "Asqua BTP",
+      "Qwertys"
+    ]
+  },
+  "cadre": {
+    "surtitre": "Le cadre et le prix",
+    "titre": "Ce qu'il vous faut",
+    "titreAccent": "pour me référencer.",
+    "pastilles": [
+      "Qualiopi via l'organisme qui porte la convention",
+      "Bordeaux, Nouvelle-Aquitaine, national",
+      "Présentiel, classe virtuelle, mixte",
+      "De la demi-journée au parcours par vagues",
+      "ChatGPT · Claude · Copilot · Gemini · Perplexity · NotebookLM"
+    ],
+    "pieces": "Pièces de référencement",
+    "piecesSuite": "transmises sur demande, sous 24 h.",
+    "prixEtiquette": "La demi-journée, à partir de",
+    "montant": "790 €",
+    "montantDetail": "HT",
+    "prixTexte": "Le tarif dépend du format, du volume et de l'ingénierie. Financement OPCO possible en intra."
+  },
+  "faq": {
+    "surtitre": "Questions",
+    "titre": "Ce que vous alliez",
+    "titreAccent": "me demander.",
+    "questions": [
+      {
+        "q": "Vous êtes certifié Qualiopi ?",
+        "r": "Pas en propre. J'interviens sous la certification de l'organisme qui porte la convention — c'est déjà le cas avec trois organismes certifiés. Pour une entreprise, c'est un organisme partenaire qui la porte : vous n'avez pas à le chercher."
+      },
+      {
+        "q": "Comment marche le financement OPCO ?",
+        "r": "La convention est portée par un organisme certifié Qualiopi, ce qui rend la formation éligible à une prise en charge par votre OPCO. Le montant dépend de votre OPCO et de votre entreprise."
+      },
+      {
+        "q": "Quelles durées, quels formats ?",
+        "r": "De la demi-journée d'acculturation au parcours déployé par vagues. En présentiel intra, en classe virtuelle, ou en mixte avec suivi à distance. Bordeaux et Nouvelle-Aquitaine, national, et à distance partout."
+      },
+      {
+        "q": "Sur quels outils ?",
+        "r": "ChatGPT, Claude, Copilot, Gemini, Perplexity, NotebookLM — et l'outil déjà déployé chez vous ou chez votre client, s'il y en a un."
+      },
+      {
+        "q": "Vous pouvez construire notre offre de formation IA ?",
+        "r": "Oui. Vous voulez ouvrir l'IA à votre catalogue sans savoir par quel segment commencer : on mesure, on score les cibles, on écrit les programmes, et vous gardez la méthode pour ouvrir les suivants."
+      },
+      {
+        "q": "Vous intervenez sur des événements ?",
+        "r": "Petits-déjeuners prescripteurs, salons, clubs clients. Je construis un livrable réel devant la salle plutôt que d'exposer le potentiel de l'IA."
+      },
+      {
+        "q": "Vous faites aussi du marketing et de l'intégration IA ?",
+        "r": "Ce sont deux autres offres. Marketing IA : je deviens le service marketing d'une PME, avec un livrable chaque semaine. Intégration IA : j'installe des agents dans les outils d'une entreprise, en huit semaines."
+      }
+    ]
+  },
+  "cloture": {
+    "surtitre": "Prochaine étape",
+    "titre": "Une session à remplir ?",
+    "titreAccent": "Parlons-en vingt minutes.",
+    "texte": "Dites-moi le public, la durée et le contexte : je vous renvoie un programme ajusté sous quarante-huit heures.",
+    "boutonMessage": "Envoyer un message"
+  }
+}

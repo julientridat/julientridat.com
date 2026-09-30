@@ -14,15 +14,12 @@
  */
 import Eyebrow from "@/components/Eyebrow.astro";
 import CtaButton from "@/components/CtaButton.astro";
+import { accueil } from "@/lib/contenu";
+import { enLigne } from "@/lib/texte";
 
-const inclus = [
-  "Le mois de démarrage : état des lieux, plan sur douze mois, positionnement, charte, modèles",
-  "Votre plan mis en œuvre : un livrable à date chaque semaine",
-  "Vos demandes hors plan, livrées entre J+1 et J+3",
-  "Un point de 45 minutes chaque semaine",
-  "Votre tableau de bord partagé, en direct",
-  "Contenus et fichiers sources : à vous",
-];
+const t = accueil.prix;
+const inclus = t.inclus;
+
 ---
 
 <section
@@ -37,10 +34,10 @@ const inclus = [
 
   <div class="mx-auto max-w-7xl">
     <div data-reveal>
-      <Eyebrow onDark>Le prix</Eyebrow>
+      <Eyebrow onDark>{t.surtitre}</Eyebrow>
       <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]">
-        Une formule.<br class="sm:hidden" />
-        <em class="text-violet-soft">Un prix qui ne bouge pas.</em>
+        {t.titre}<br class="sm:hidden" />
+        <em class="text-violet-soft">{t.titreAccent}</em>
       </h2>
     </div>
 
@@ -53,13 +50,13 @@ const inclus = [
       >
         <div class="h-full rounded-[calc(1.75rem-1px)] bg-[#17151f] p-8 md:p-11">
           <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">
-            Chaque mois, dès le premier
+            {t.etiquette}
           </div>
           <div class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2">
             <span class="font-serif text-[clamp(4.5rem,11vw,8.5rem)] italic leading-[0.82] tracking-tight text-white">
-              2&nbsp;500&nbsp;€
+              {t.montant}
             </span>
-            <span class="text-base text-white/60">HT par mois, mois de démarrage compris</span>
+            <span class="text-base text-white/60">{t.montantDetail}</span>
           </div>
 
           <ul class="mt-10 grid gap-x-10 border-t border-white/10 pt-7 sm:grid-cols-2">
@@ -75,23 +72,16 @@ const inclus = [
 
       <div data-reveal style="--reveal-delay: 200ms" class="flex flex-col gap-5">
         <div class="rounded-3xl border border-white/10 bg-white/[0.04] p-7 backdrop-blur-sm">
-          <h3 class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">Conditions</h3>
+          <h3 class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">{t.conditionsTitre}</h3>
           <div class="mt-4 space-y-4 text-base leading-relaxed text-white/75">
-            <p>
-              <strong class="font-medium text-white">Trois mois minimum.</strong> Ensuite,
-              renouvelable chaque mois, sans engagement.
-            </p>
-            <p>
-              <strong class="font-medium text-white">Pause possible</strong> après les trois
-              premiers mois, jusqu'à 60&nbsp;jours&nbsp;: le prélèvement s'arrête, votre place vous
-              attend. Au-delà, elle revient à une autre PME.
-            </p>
-            <p>Prélèvement en début de mois.</p>
+            {t.conditions.map((c) => (
+              <p set:html={enLigne(c, { fort: "font-medium text-white", accent: "text-violet-soft" })} />
+            ))}
           </div>
         </div>
         <div class="mt-auto flex flex-col items-start gap-4 pt-2">
-          <CtaButton onDark ouvre="diagnostic">Réserver 20&nbsp;minutes</CtaButton>
-          <p class="text-sm text-white/55">Au-delà de 30&nbsp;salariés&nbsp;: sur devis. Six PME à la fois.</p>
+          <CtaButton onDark ouvre="diagnostic">{accueil.bouton}</CtaButton>
+          <p class="text-sm text-white/55">{t.mention}</p>
         </div>
       </div>
     </div>

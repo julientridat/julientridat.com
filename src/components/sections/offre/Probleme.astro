@@ -8,23 +8,20 @@
  * voyant éteint de chaque carte, pas d'un commentaire.
  */
 import Eyebrow from "@/components/Eyebrow.astro";
+import { accueil } from "@/lib/contenu";
 
-const symptomes = [
-  "Le site n'a pas bougé depuis sa dernière refonte.",
-  "Chaque commercial refait sa présentation dans son coin.",
-  "Les devis partent, les relances ne suivent pas.",
-  "Les publications s'arrêtent à la première période chargée.",
-];
+const t = accueil.probleme;
+const symptomes = t.symptomes;
 ---
 
 <section id="probleme" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
   <div class="mx-auto max-w-7xl">
     <div data-reveal>
-      <Eyebrow>Le problème</Eyebrow>
+      <Eyebrow>{t.surtitre}</Eyebrow>
       <h2 class="text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em] text-foreground">
-        Chez vous, le marketing
+        {t.titre}
         <br />
-        <em class="text-lime">n'est le métier de personne.</em>
+        <em class="text-lime">{t.titreAccent}</em>
       </h2>
     </div>
 
@@ -50,8 +47,8 @@ const symptomes = [
       data-reveal
       class="mt-12 max-w-4xl font-serif text-[clamp(1.5rem,2.8vw,2.25rem)] italic leading-snug text-foreground md:mt-14"
     >
-      Ce n'est ni une question d'outil ni une question de budget.
-      <span class="text-lime">Personne n'en a la charge chaque semaine&nbsp;: c'est cette place que je prends.</span>
+      {t.chute}
+      <span class="text-lime">{t.chuteAccent}</span>
     </p>
   </div>
 </section>

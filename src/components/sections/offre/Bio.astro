@@ -13,14 +13,11 @@
 import { Image } from "astro:assets";
 import Eyebrow from "@/components/Eyebrow.astro";
 import julien from "@/assets/julien.jpg";
+import { accueil } from "@/lib/contenu";
+import { enLigne } from "@/lib/texte";
 
-const references = [
-  {
-    statut: "Équipes formées",
-    noms: ["Dassault Systèmes", "SNCF Fret", "Lagardère Travel Retail"],
-  },
-  { statut: "En agence", noms: ["Publicis", "Heineken", "L'Oréal"] },
-];
+const t = accueil.bio;
+const references = t.references;
 ---
 
 <section id="about" class="border-t border-line px-6 py-14 md:px-12 md:py-20">
@@ -29,7 +26,7 @@ const references = [
     <div data-reveal class="overflow-hidden rounded-3xl border border-line">
       <Image
         src={julien}
-        alt="Julien Tridat, direction marketing externalisée pour PME, Bordeaux"
+        alt={t.photoAlt}
         widths={[400, 600, 810]}
         sizes="(min-width: 768px) 35vw, 100vw"
         class="h-full w-full object-cover"
@@ -37,29 +34,21 @@ const references = [
     </div>
 
     <div data-reveal style="--reveal-delay: 120ms">
-      <Eyebrow>Qui je suis</Eyebrow>
+      <Eyebrow>{t.surtitre}</Eyebrow>
       <h2 class="text-[clamp(2rem,4.5vw,3.5rem)] font-normal leading-[1.05] tracking-[-0.03em] text-foreground">
-        Julien Tridat.
+        {t.titre}
         <br />
-        <em class="text-lime">Le marketeur qui fabrique ce qu'il recommande.</em>
+        <em class="text-lime">{t.titreAccent}</em>
       </h2>
 
       <div class="mt-8 space-y-5 text-lg leading-relaxed text-ink-2">
-        <p>
-          J'ai travaillé chez Publicis, pour des marques comme Heineken et L'Oréal. J'ai formé plus
-          de 300&nbsp;dirigeants et cadres, notamment chez Dassault&nbsp;Systèmes, SNCF&nbsp;Fret et
-          Lagardère&nbsp;Travel&nbsp;Retail.
-        </p>
-        <p>
-          <strong class="font-medium text-foreground">
-            Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des
-            PME qui n'en ont pas.
-          </strong>
-        </p>
+        {t.paragraphes.map((p) => (
+          <p set:html={enLigne(p, { fort: "font-medium text-foreground", accent: "text-lime" })} />
+        ))}
       </div>
 
       <p class="mt-6 font-serif text-2xl italic leading-snug text-foreground">
-        Je n'accompagne que six PME à la fois.
+        {t.phrase}
       </p>
     </div>
   </div>
@@ -68,7 +57,7 @@ const references = [
        à licencier, et le texte reste lisible par les moteurs. Groupées par
        statut, plutôt qu'alignées sans distinction. -->
   <div data-reveal class="mx-auto mt-14 max-w-7xl border-t border-line pt-8 md:mt-16">
-    <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Références</p>
+    <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{t.referencesTitre}</p>
     <div class="mt-6 grid gap-6 sm:grid-cols-2">
       {references.map((groupe) => (
         <div>

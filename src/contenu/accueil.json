@@ -1,0 +1,287 @@
+{
+  "seo": {
+    "title": "Direction marketing externalisée pour PME, Bordeaux | Julien Tridat",
+    "description": "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis un livrable chaque semaine."
+  },
+  "bouton": "Réserver 20 minutes",
+  "hero": {
+    "surtitre": "Direction marketing externalisée",
+    "cible": "PME de 10 à 30 salariés",
+    "lieu": "Bordeaux et à distance",
+    "accroche": "Votre marketing avance chaque semaine.",
+    "accrocheAccent": "Sans recruter personne.",
+    "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, un livrable part à la date prévue : site, supports commerciaux, relances, publications.",
+    "mention": "2 500 € HT par mois · Trois mois, puis mois par mois · Tout ce qui est produit vous appartient"
+  },
+  "probleme": {
+    "surtitre": "Le problème",
+    "titre": "Chez vous, le marketing",
+    "titreAccent": "n'est le métier de personne.",
+    "symptomes": [
+      "Le site n'a pas bougé depuis sa dernière refonte.",
+      "Chaque commercial refait sa présentation dans son coin.",
+      "Les devis partent, les relances ne suivent pas.",
+      "Les publications s'arrêtent à la première période chargée."
+    ],
+    "chute": "Ce n'est ni une question d'outil ni une question de budget.",
+    "chuteAccent": "Personne n'en a la charge chaque semaine : c'est cette place que je prends."
+  },
+  "fonctionnement": {
+    "surtitre": "Comment ça marche",
+    "titre": "Un mois pour poser les bases.",
+    "titreAccent": "Puis un livrable à date, chaque semaine.",
+    "demarrageEtiquette": "Mois 1 · Le mois de démarrage",
+    "demarrageIntro": "Un socle commun à tous mes clients, ajusté au vôtre : c'est ce qui permet d'aller vite.",
+    "semaines": [
+      {
+        "semaine": "S1",
+        "titre": "L'état des lieux",
+        "texte": "Je passe en revue votre site, vos supports commerciaux, vos réseaux sociaux, votre fichier clients et vos chiffres de vente. Au passage, je récupère tout ce qui servira ensuite : textes, logos, photos, codes d'accès.",
+        "recu": "ce qui fonctionne, ce qui manque, ce qui bloque."
+      },
+      {
+        "semaine": "S2",
+        "titre": "Le plan",
+        "texte": "Où aller en douze mois : les cibles, les messages, les canaux et le calendrier. Les trois premiers mois sont détaillés, et nous validons ensemble les actions des quatre semaines suivantes.",
+        "recu": "le plan, la feuille de route et le calendrier des livrables."
+      },
+      {
+        "semaine": "S3",
+        "titre": "Les fondations",
+        "texte": "On fixe l'essentiel : votre offre, vos clients, et la phrase qui dit pourquoi vous plutôt qu'un concurrent. Puis votre identité visuelle, remise en cohérence : logo, couleurs, typographies.",
+        "recu": "une page qui résume votre marque, et votre charte graphique."
+      },
+      {
+        "semaine": "S4",
+        "titre": "Les outils",
+        "texte": "Vos modèles, prêts à remplir : devis, présentation commerciale, publications, e-mails.",
+        "recu": "ces modèles, et la sortie du premier livrable du plan."
+      }
+    ],
+    "ensuiteEtiquette": "Ensuite · Chaque semaine",
+    "ensuite": [
+      {
+        "titre": "Le plan tient ses dates.",
+        "texte": "Chaque livrable prévu sort le jour dit. On fait le point 45 minutes par semaine, pas davantage."
+      },
+      {
+        "titre": "Vos urgences trouvent leur place.",
+        "texte": "Ce qui n'était pas prévu est livré entre J+1 et J+3. Si cela repousse un livrable du plan, vous choisissez lequel."
+      },
+      {
+        "titre": "Vous voyez tout.",
+        "texte": "Un tableau de bord partagé, à votre nom : ce qui est prévu, en cours, livré, et ce qui attend votre réponse. Vous répondez directement sur la carte, et vos équipes y retrouvent leurs tâches."
+      }
+    ],
+    "livrables": [
+      "Site",
+      "Supports de vente",
+      "Devis et présentations",
+      "Relances",
+      "Publications",
+      "Identité",
+      "Plan marketing",
+      "Campagnes"
+    ]
+  },
+  "comparaison": {
+    "surtitre": "La comparaison",
+    "titre": "Je rejoins votre équipe.",
+    "titreAccent": "Pas votre liste de prestataires.",
+    "intro": "Un responsable marketing à temps plein coûte 55 000 € par an. Une agence, 4 000 € par mois. Ici, votre interlocuteur est celui qui produit.",
+    "tuiles": [
+      {
+        "signe": "1",
+        "titre": "Un seul interlocuteur.",
+        "texte": "Celui qui conçoit votre stratégie la fabrique aussi.",
+        "plein": false
+      },
+      {
+        "signe": "+0 €",
+        "titre": "Un prix fixe.",
+        "texte": "Le même chaque mois, sans supplément.",
+        "plein": false
+      },
+      {
+        "signe": "J+1",
+        "titre": "Des demandes livrées vite.",
+        "texte": "Une urgence ? Elle est prête en un à trois jours.",
+        "plein": false
+      },
+      {
+        "signe": "En direct",
+        "titre": "Un suivi transparent.",
+        "texte": "Votre tableau de bord, mis à jour à chaque livrable.",
+        "plein": true
+      },
+      {
+        "signe": "60 jours",
+        "titre": "Une pause possible.",
+        "texte": "Après trois mois, votre place vous attend jusqu'à soixante jours.",
+        "plein": false
+      },
+      {
+        "signe": "100 %",
+        "titre": "Tout vous appartient.",
+        "texte": "Vous repartez propriétaire de chaque contenu, de la charte et des modèles.",
+        "plein": false
+      }
+    ]
+  },
+  "preuves": {
+    "surtitre": "Les preuves",
+    "titre": "Ma façon de produire.",
+    "titreAccent": "Déjà en service ailleurs.",
+    "intro": "L'IA est mon outil de production. Voici ce que mes systèmes tiennent déjà, chez d'autres clients.",
+    "cas": [
+      {
+        "qui": "Un réseau de clubs de fitness",
+        "quoi": "cinq marques, une charte respectée sur chaque visuel, sans graphiste.",
+        "lien": "/realisations/design-system-franchise-fitness"
+      },
+      {
+        "qui": "Un club d'affaires",
+        "quoi": "49 dirigeants, un devis conforme en 30 secondes au lieu de 30 minutes.",
+        "lien": "/realisations/formation-club-affaires"
+      },
+      {
+        "qui": "Une association",
+        "quoi": "ses relances partent de son propre domaine, avec 537 contacts remis au propre.",
+        "lien": "/realisations/association-benevoles-autonome"
+      },
+      {
+        "qui": "Une enseigne de 600 magasins",
+        "quoi": "ses supports déclinés sans repasser par un prestataire.",
+        "lien": "/realisations/acculturation-enseigne-nationale"
+      }
+    ],
+    "lienTous": "Tous les cas clients",
+    "encadre": {
+      "titre": "Quatre ans.",
+      "titreAccent": "Un seul interlocuteur.",
+      "intro": "Un éditeur et organisme de formation du secteur santé, en reconduction mensuelle depuis quatre ans. Ce que nous avons construit ensemble :",
+      "liste": [
+        "deux sites refondus ;",
+        "un fichier de 30 000 contacts nettoyé et relancé ;",
+        "un parcours de vente en ligne pour ses formations à distance ;",
+        "ses contenus LinkedIn et un livre blanc de 60 pages ;",
+        "un calendrier éditorial et un tableau de bord partagés ;",
+        "son dirigeant formé à l'IA, directement dans ses outils ;",
+        "une alternante en communication encadrée."
+      ],
+      "resultat": "",
+      "referenceJoignable": false
+    }
+  },
+  "bio": {
+    "surtitre": "Qui je suis",
+    "titre": "Julien Tridat.",
+    "titreAccent": "Le marketeur qui fabrique ce qu'il recommande.",
+    "photoAlt": "Julien Tridat, direction marketing externalisée pour PME, Bordeaux",
+    "paragraphes": [
+      "J'ai travaillé chez Publicis, pour des marques comme Heineken et L'Oréal. J'ai formé plus de 300 dirigeants et cadres, notamment chez Dassault Systèmes, SNCF Fret et Lagardère Travel Retail.",
+      "**Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des PME qui n'en ont pas.**"
+    ],
+    "phrase": "Je n'accompagne que six PME à la fois.",
+    "referencesTitre": "Références",
+    "references": [
+      {
+        "statut": "Équipes formées",
+        "noms": [
+          "Dassault Systèmes",
+          "SNCF Fret",
+          "Lagardère Travel Retail"
+        ]
+      },
+      {
+        "statut": "En agence",
+        "noms": [
+          "Publicis",
+          "Heineken",
+          "L'Oréal"
+        ]
+      }
+    ]
+  },
+  "prix": {
+    "surtitre": "Le prix",
+    "titre": "Une formule.",
+    "titreAccent": "Un prix qui ne bouge pas.",
+    "etiquette": "Chaque mois, dès le premier",
+    "montant": "2 500 €",
+    "montantDetail": "HT par mois, mois de démarrage compris",
+    "inclus": [
+      "Le mois de démarrage : état des lieux, plan sur douze mois, positionnement, charte, modèles",
+      "Votre plan mis en œuvre : un livrable à date chaque semaine",
+      "Vos demandes hors plan, livrées entre J+1 et J+3",
+      "Un point de 45 minutes chaque semaine",
+      "Votre tableau de bord partagé, en direct",
+      "Contenus et fichiers sources : à vous"
+    ],
+    "conditionsTitre": "Conditions",
+    "conditions": [
+      "**Trois mois minimum.** Ensuite, renouvelable chaque mois, sans engagement.",
+      "**Pause possible** après les trois premiers mois, jusqu'à 60 jours : le prélèvement s'arrête, votre place vous attend. Au-delà, elle revient à une autre PME.",
+      "Prélèvement en début de mois."
+    ],
+    "mention": "Au-delà de 30 salariés : sur devis. Six PME à la fois."
+  },
+  "faq": {
+    "surtitre": "Questions",
+    "titre": "Ce que vous alliez",
+    "titreAccent": "me demander.",
+    "questions": [
+      {
+        "q": "Que contient le mois de démarrage ?",
+        "r": "C'est le premier mois, compris dans les 2 500 €. Semaine 1, l'état des lieux : ce qui fonctionne, ce qui manque, ce qui bloque. Semaine 2, le plan sur douze mois, dont les trois premiers détaillés, et les actions du mois suivant validées ensemble. Semaine 3, votre positionnement et votre charte. Semaine 4, vos modèles, et le premier livrable du plan."
+      },
+      {
+        "q": "Pourquoi trois mois minimum ?",
+        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Ensuite, chaque mois, vous décidez de continuer ou non."
+      },
+      {
+        "q": "Et si j'ai une demande hors du plan ?",
+        "r": "Elle trouve sa place dans la semaine. Selon sa complexité, elle est livrée entre J+1 et J+3. Si elle repousse un livrable prévu, nous en parlons au point hebdomadaire, et c'est vous qui tranchez."
+      },
+      {
+        "q": "Comment je fais une demande ?",
+        "r": "Vos équipes la déposent dans votre tableau de bord ou me l'écrivent directement. Aucun formulaire, aucun intermédiaire, aucun cahier des charges. Le point hebdomadaire sert à arbitrer entre le plan et les demandes."
+      },
+      {
+        "q": "Une seule personne pour tout ça, c'est tenable ?",
+        "r": "C'est même plus simple. Dans une agence, votre dossier passe de main en main, et chaque passage coûte de l'information. Ici, celui qui réfléchit à votre stratégie fabrique aussi vos contenus et vos supports. C'est aussi pour cela que je n'accompagne que six PME."
+      },
+      {
+        "q": "Et l'IA dans tout ça ?",
+        "r": "Elle travaille pour moi, pas chez vous. C'est elle qui rend possibles les délais de J+1 à J+3. Mes agents et ma méthode restent dans mon atelier ; ce qu'ils produisent vous appartient. Rien à installer, rien à apprendre de votre côté."
+      },
+      {
+        "q": "Comment marche la pause ?",
+        "r": "Après les trois premiers mois, vous mettez en pause quand vous voulez, jusqu'à 60 jours. Le prélèvement s'arrête et votre place vous attend. Au-delà, elle revient à une autre PME : je n'en accompagne que six."
+      },
+      {
+        "q": "Que se passe-t-il si j'arrête ?",
+        "r": "Après les trois premiers mois, vous arrêtez à la fin de n'importe quel mois. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
+      },
+      {
+        "q": "Comment je paie ?",
+        "r": "Par prélèvement en début de mois, facture jointe. Votre comptabilité n'a rien à saisir ni à régler à la main."
+      },
+      {
+        "q": "Le marketing est déjà le métier de quelqu'un chez moi ?",
+        "r": "Alors cette offre n'est pas pour vous. Elle comble un vide : personne, chez vous, n'est chargé de faire avancer le marketing chaque semaine."
+      },
+      {
+        "q": "Nous avons plus de 30 salariés ?",
+        "r": "Sur devis. La formule est pensée jusqu'à trente salariés : au-delà, il y a plus de services, plus d'interlocuteurs, et un forfait unique ne suffirait plus. Je préfère vous le dire d'emblée."
+      }
+    ]
+  },
+  "cloture": {
+    "surtitre": "Prochaine étape",
+    "titre": "Vingt minutes.",
+    "titreAccent": "Pas une de plus.",
+    "texte": "Vous me dites où en est votre marketing. Je vous dis si je peux le faire avancer chaque semaine, et si la réponse est non, je vous le dis aussi.",
+    "mention": "Six PME à la fois."
+  }
+}
