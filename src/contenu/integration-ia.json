@@ -1,0 +1,207 @@
+{
+  "seo": {
+    "title": "Intégration de l'IA en entreprise | Julien Tridat",
+    "description": "Pas une démo de plus : des agents installés sur vos comptes, construits avec vos équipes, encore en service six mois après. Audit 1 500 €, un pôle 6 000 €."
+  },
+  "bouton": "Réserver 20 minutes",
+  "hero": {
+    "surtitre": "Intégration IA · PME et ETI",
+    "titre": "Pas une démo de plus.",
+    "titreAccent": "Des agents qui travaillent chez vous.",
+    "chapo": "Installés sur vos comptes, construits avec vos équipes, encore en service six mois après mon départ.",
+    "lienPrix": "Combien ça coûte ?",
+    "mention": "Prix ferme · 8 semaines · Financement OPCO possible",
+    "agentEtiquette": "Agent · sur vos comptes",
+    "agents": [
+      "Réponses aux appels d'offres",
+      "Comptes rendus clients",
+      "Relances des devis"
+    ],
+    "agentsChute": "…et toujours là après mon départ."
+  },
+  "pourQui": {
+    "surtitre": "Pour qui",
+    "titre": "Des démos,",
+    "titreAccent": "vous en avez vu.",
+    "symptomes": [
+      "Une démonstration bluffante en réunion. Rien dans la production le lendemain.",
+      "Chacun a ouvert son compte dans son coin. Personne ne sait ce qui y circule.",
+      "Des licences pour toute l'équipe. Deux personnes s'en servent."
+    ],
+    "chute": "Le problème n'est pas l'outil. C'est que personne ne l'a installé.",
+    "exclusion": "**Ce n'est pas pour vous si** vous voulez tester (une démo, ça se trouve gratuitement), s'il n'y a pas de décideur, ou si vous cherchez une sensibilisation.",
+    "limite": "J'en mène deux à la fois, pas six."
+  },
+  "fonctionnement": {
+    "surtitre": "Comment ça marche",
+    "titre": "De la démo à la production.",
+    "titreAccent": "En huit semaines.",
+    "phases": [
+      {
+        "semaines": "S1-2",
+        "titre": "J'écoute.",
+        "texte": "Avec ceux qui font le travail : où passe le temps, où ça coince. Trois tâches chronométrées.",
+        "recu": "le relevé de départ."
+      },
+      {
+        "semaines": "S3-4",
+        "titre": "On construit.",
+        "texte": "Avec vos équipes, d'abord sur la tâche qui leur pèse le plus.",
+        "recu": "les premiers agents et la règle d'usage écrite."
+      },
+      {
+        "semaines": "S5-6",
+        "titre": "En production.",
+        "texte": "Un vrai dossier, vos équipes jugent, on corrige, puis l'agent entre dans le travail quotidien.",
+        "recu": "des agents en service, sur vos comptes."
+      },
+      {
+        "semaines": "S7-8",
+        "titre": "Sans moi.",
+        "texte": "Vos équipes s'en servent et les modifient seules. Même relevé qu'en S1.",
+        "recu": "le mode d'emploi et l'écart avant/après, signé."
+      }
+    ],
+    "agentsEtiquette": "Vos agents"
+  },
+  "difference": {
+    "surtitre": "Ce qui tient",
+    "titre": "Ce qui sépare un agent",
+    "titreAccent": "d'une démo.",
+    "tuiles": [
+      {
+        "signe": "100 %",
+        "titre": "Sur vos comptes",
+        "texte": "Pas sur les miens.",
+        "plein": false
+      },
+      {
+        "signe": "1",
+        "titre": "Une tâche, toujours la même",
+        "texte": "Faite de la même façon, à chaque fois.",
+        "plein": false
+      },
+      {
+        "signe": "6 mois",
+        "titre": "Encore en service après mon départ",
+        "texte": "C'est le seul critère qui compte.",
+        "plein": true
+      },
+      {
+        "signe": "3",
+        "titre": "Trois tâches chronométrées",
+        "texte": "Avant, puis huit semaines après.",
+        "plein": false
+      },
+      {
+        "signe": "+0 €",
+        "titre": "Ce qui déborde ne se refacture pas",
+        "texte": "Un agent qui sert au pôle voisin, c'est du rab.",
+        "plein": false
+      },
+      {
+        "signe": "OPCO",
+        "titre": "Le volet formation se finance",
+        "texte": "Jusqu'à 1 800 € par société et par an.",
+        "plein": false
+      }
+    ]
+  },
+  "prix": {
+    "surtitre": "Le prix",
+    "titre": "Un prix ferme.",
+    "titreAccent": "Pas un devis qui grossit.",
+    "unite": "HT",
+    "audit": {
+      "etiquette": "D'abord · L'audit",
+      "montant": "1 500 €",
+      "texte": "Avant d'installer quoi que ce soit : frictions cartographiées, cas d'usage classés, feuille de route.",
+      "note": "Déduit si l'intégration démarre dans les 30 jours."
+    },
+    "badge": "Le plus fréquent",
+    "offres": [
+      {
+        "nom": "Une équipe",
+        "montant": "6 000 €",
+        "duree": "4 à 6 semaines",
+        "texte": "Le pôle qui produit le plus de documents, ses agents en service et ses gens autonomes.",
+        "avant": false
+      },
+      {
+        "nom": "Deux à trois pôles",
+        "montant": "12 000 €",
+        "duree": "6 à 8 semaines",
+        "texte": "Commerce, gestion, administratif — ou les trois qui vous ralentissent le plus.",
+        "avant": true
+      }
+    ],
+    "mention": "Au-delà de trois pôles : sur devis. Le dossier OPCO, c'est moi qui le monte."
+  },
+  "production": {
+    "surtitre": "Déjà en production",
+    "titre": "Six missions.",
+    "titreAccent": "Ce qui tourne encore aujourd'hui.",
+    "etat": "En service",
+    "cas": [
+      {
+        "client": "Agence créative, ~40 personnes",
+        "ligne": "Quatre agents, deux pôles outillés, les dossiers d'un annonceur ne croisent jamais ceux d'un autre.",
+        "lien": "/realisations/agents-agence-creative"
+      },
+      {
+        "client": "Agence santé, 16 personnes",
+        "ligne": "Trois assistants qui tournent après mon départ, validation médicale préservée.",
+        "lien": "/realisations/formation-ia-agence-sante"
+      },
+      {
+        "client": "Conseil et formation",
+        "ligne": "Les agents et les guides restent : l'organisme produit sans dépendre du consultant.",
+        "lien": "/realisations/transformation-ia-organisme-formation"
+      }
+    ],
+    "lienCas": "Voir le cas",
+    "lienTous": "Toutes les missions",
+    "lienAgences": "Vous êtes une agence ? Une page parle votre métier"
+  },
+  "faq": {
+    "surtitre": "Questions",
+    "titre": "Ce que vous alliez",
+    "titreAccent": "me demander.",
+    "questions": [
+      {
+        "q": "Des agents autonomes qui font tout, vous faites ça ?",
+        "r": "Non. Un agent à qui on confie une chaîne entière dérive : il tient trois semaines en démonstration et lâche en production, au moment précis où plus personne ne le surveille. Ce que j'installe fait une chose, toujours la même, et de la même façon. Vos équipes gardent la main sur l'enchaînement. C'est moins spectaculaire en réunion. C'est ce qui tient."
+      },
+      {
+        "q": "Et quand vous partez ?",
+        "r": "Tout est sur vos comptes, le mode d'emploi est écrit, les équipes ont été formées sur leurs propres dossiers. C'est le seul critère qui compte : ce qui tourne encore six mois après."
+      },
+      {
+        "q": "On a déjà des licences. Ça sert à quoi de plus ?",
+        "r": "Une licence donne l'accès, pas l'usage. Ce que j'installe, c'est ce qui se passe entre l'outil et le travail réel : sur quoi il est branché, ce qu'il sait de votre métier, et qui sait s'en servir."
+      },
+      {
+        "q": "Nos données peuvent-elles sortir ?",
+        "r": "C'est la question à poser, et peu la posent. Avant le premier agent, on écrit ensemble la règle : quels dossiers ont le droit d'y passer, lesquels n'y passeront jamais, et sur quels comptes."
+      },
+      {
+        "q": "Combien d'agents pour 6 000 € ?",
+        "r": "Autant que le pôle en demande, et pas un de plus. Ce qui fixe le prix, c'est le périmètre et la durée — pas le nombre. Un agent qui rédige vos propositions vaut trois qui reformatent des e-mails."
+      },
+      {
+        "q": "Et si le relevé de fin ne montre rien ?",
+        "r": "Il est écrit quand même, et je vous le dis en face. Je préfère un client qui sait où l'IA ne lui sert à rien qu'un client qui continue de payer des licences au cas où."
+      },
+      {
+        "q": "Vous faites aussi du marketing. C'est la même chose ?",
+        "r": "Non. Ici, les agents sont installés chez vous et vos équipes s'en servent. Dans la direction marketing, l'IA reste mon outil de production : vous recevez ce qu'elle produit, pas les agents."
+      }
+    ]
+  },
+  "cloture": {
+    "surtitre": "Prochaine étape",
+    "titre": "Vingt minutes.",
+    "titreAccent": "Pas une démo.",
+    "texte": "Vous me décrivez ce que vos équipes produisent et où ça coince. Je vous dis si un agent y tiendrait en production — et si la réponse est non, je vous le dis aussi."
+  }
+}

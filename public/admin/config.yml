@@ -229,3 +229,351 @@ collections:
               - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
               - { name: texte, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
               - { name: mention, label: Petite ligne sous le bouton, widget: string }
+
+      - name: formation-ia
+        label: Formation IA
+        file: src/contenu/formation-ia.json
+        format: json
+        fields:
+          - name: seo
+            label: Référencement (Google)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Titre de l'onglet et de Google, widget: string, hint: "Autour de 60 caractères au plus." }
+              - { name: description, label: Description Google, widget: text, hint: "Autour de 155 caractères au plus." }
+          - { name: bouton, label: "Texte du bouton « Réserver » (partout sur la page)", widget: string }
+
+          - name: hero
+            label: 1. Haut de page
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, label: Surtitre (titre pour Google), widget: string }
+              - { name: surtitreSuite, label: "Surtitre — suite (cachée sur téléphone)", widget: string }
+              - { name: titre1, label: "Grand titre — ligne 1, début", widget: string, hint: "Titre calé ligne par ligne : deux lignes sur ordinateur, quatre sur téléphone. Garder des longueurs proches." }
+              - { name: titre2, label: "Grand titre — ligne 1, fin", widget: string }
+              - { name: titreAccent1, label: "Grand titre — ligne 2 en couleur, début", widget: string }
+              - { name: titreAccent2, label: "Grand titre — ligne 2 en couleur, fin", widget: string }
+              - { name: chapo, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: lienDossier, label: "Second bouton (vers « Comment ça se passe »)", widget: string }
+              - { name: mention, label: Petite ligne sous les boutons, widget: string }
+
+          - name: aiguillage
+            label: 2. Deux façons d'arriver
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: entreprise
+                label: Carte de couleur — entreprise
+                widget: object
+                fields:
+                  - { name: etiquette, label: Petite ligne en capitales, widget: string }
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+                  - { name: bouton, label: "Bouton (ouvre le formulaire de message)", widget: string }
+              - name: organisme
+                label: Carte claire — organisme de formation
+                widget: object
+                fields:
+                  - { name: etiquette, label: Petite ligne en capitales, widget: string }
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+                  - { name: lien, label: "Bouton (descend vers « Le cadre et le prix »)", widget: string }
+
+          - name: deroule
+            label: 3. Comment ça se passe
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: etapes
+                label: Les étapes numérotées
+                widget: list
+                summary: "{{fields.moment}}"
+                fields:
+                  - { name: moment, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text }
+                  - { name: recu, label: "Suite de « Vous recevez : »", widget: string }
+              - { name: dossierTitre, label: "Titre de l'encadré du dossier", widget: string }
+              - name: dossier
+                label: "Les pièces du dossier (cochées une à une par l'animation)"
+                widget: list
+                field: { name: piece, label: Pièce, widget: string }
+              - { name: dossierMention, label: "Petite ligne en bas de l'encadré", widget: string }
+              - { name: dossierStatut, label: Pastille finale, widget: string }
+
+          - name: public
+            label: 4. Qui j'ai formé
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: chiffres
+                label: Les chiffres
+                widget: list
+                summary: "{{fields.signe}} — {{fields.titre}}"
+                fields:
+                  - { name: signe, label: Grand chiffre, widget: string, hint: "Ex. 300+" }
+                  - { name: titre, label: Texte, widget: string }
+                  - { name: plein, label: "Tuile mise en avant (fond de couleur)", widget: boolean, default: false }
+              - { name: intro, label: Phrase au-dessus des onglets, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - name: axes
+                label: Les onglets (taille, niveau, métier, secteur)
+                widget: list
+                summary: "{{fields.onglet}}"
+                fields:
+                  - { name: onglet, label: Texte de l'onglet, widget: string }
+                  - { name: question, label: Question affichée en capitales, widget: string }
+                  - name: items
+                    label: Éléments
+                    widget: list
+                    summary: "{{fields.titre}}"
+                    fields:
+                      - { name: titre, label: Titre, widget: string }
+                      - { name: texte, label: Texte, widget: text, required: false, hint: "Laisser vide dans tout l'onglet pour un affichage en simples étiquettes (comme « Par secteur »)." }
+
+          - name: supports
+            label: 5. Les supports
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: artefacts
+                label: Les supports en lien
+                widget: list
+                summary: "{{fields.titre}}"
+                fields:
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text }
+                  - { name: lien, label: Adresse du support, widget: string, hint: "Ex. /demos/deck-formation/" }
+                  - { name: lienTexte, label: Texte du lien, widget: string }
+              - name: verbatims
+                label: Les avis de participants
+                widget: list
+                summary: "{{fields.auteur}}"
+                fields:
+                  - { name: citation, label: Citation, widget: text }
+                  - { name: auteur, label: "Auteur (prénom, initiale, fonction)", widget: string }
+              - { name: referencesTitre, label: Titre des références, widget: string }
+              - name: references
+                label: Références
+                widget: list
+                field: { name: reference, label: Nom, widget: string }
+
+          - name: cadre
+            label: 6. Le cadre et le prix
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: pastilles
+                label: Les pastilles
+                widget: list
+                field: { name: pastille, label: Pastille, widget: string }
+              - { name: pieces, label: "Pièces sur demande — début de phrase", widget: string, hint: "Suivi de la liste des pièces administratives encore manquantes, entre parenthèses." }
+              - { name: piecesSuite, label: "Pièces sur demande — fin de phrase", widget: string }
+              - { name: prixEtiquette, label: Étiquette au-dessus du prix, widget: string }
+              - { name: montant, label: Montant, widget: string }
+              - { name: montantDetail, label: Précision à côté du montant, widget: string }
+              - { name: prixTexte, label: Texte sous le prix, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+
+          - name: faq
+            label: 7. Questions
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: questions
+                label: Questions
+                widget: list
+                summary: "{{fields.q}}"
+                fields:
+                  - { name: q, label: Question, widget: string }
+                  - { name: r, label: Réponse, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+
+          - name: cloture
+            label: 8. Clôture
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - { name: texte, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: boutonMessage, label: "Second bouton (ouvre le formulaire de message)", widget: string }
+
+      - name: integration-ia
+        label: Intégration IA
+        file: src/contenu/integration-ia.json
+        format: json
+        fields:
+          - name: seo
+            label: Référencement (Google)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Titre de l'onglet et de Google, widget: string, hint: "Autour de 60 caractères au plus." }
+              - { name: description, label: Description Google, widget: text, hint: "Autour de 155 caractères au plus." }
+          - { name: bouton, label: Texte du bouton (partout sur la page), widget: string }
+
+          - name: hero
+            label: 1. Haut de page
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, label: "Surtitre (petite pastille au-dessus du titre)", widget: string }
+              - { name: titre, label: Grand titre — première phrase, widget: string }
+              - { name: titreAccent, label: Grand titre — phrase en couleur, widget: string }
+              - { name: chapo, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: lienPrix, label: "Texte du second bouton (vers le prix)", widget: string }
+              - { name: mention, label: Petite ligne sous les boutons, widget: string }
+              - { name: agentEtiquette, label: "Illustration — petite ligne au-dessus de chaque agent", widget: string }
+              - name: agents
+                label: "Illustration — les agents (repris dans la frise « Comment ça marche »)"
+                widget: list
+                field: { name: agent, label: Agent, widget: string }
+              - { name: agentsChute, label: "Illustration — phrase sous les agents (en italique)", widget: string }
+
+          - name: pourQui
+            label: 2. Pour qui
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: symptomes
+                label: Les cartes numérotées
+                widget: list
+                field: { name: symptome, label: Carte, widget: string }
+              - { name: chute, label: "Phrase en grand, en couleur (à gauche)", widget: string }
+              - { name: exclusion, label: "Encadré — pour qui ce n'est pas", widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: limite, label: "Encadré — phrase finale (en italique)", widget: string }
+
+          - name: fonctionnement
+            label: 3. Comment ça marche
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: phases
+                label: Les étapes de la frise
+                widget: list
+                summary: "{{fields.semaines}} — {{fields.titre}}"
+                fields:
+                  - { name: semaines, label: Pastille, widget: string, hint: "Ex. S1-2" }
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text }
+                  - { name: recu, label: "Suite de « Vous recevez : »", widget: string }
+              - { name: agentsEtiquette, label: "Étiquette devant les agents (sous la frise)", widget: string }
+
+          - name: difference
+            label: 4. Ce qui sépare un agent d'une démo
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: tuiles
+                label: Les tuiles
+                widget: list
+                summary: "{{fields.signe}} — {{fields.titre}}"
+                fields:
+                  - { name: signe, label: Grand signe, widget: string, hint: "Ex. 100 %, 6 mois, OPCO" }
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: string }
+                  - { name: plein, label: "Tuile mise en avant (fond de couleur)", widget: boolean, default: false }
+
+          - name: prix
+            label: 5. Le prix
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - { name: unite, label: "Mention à côté de chaque montant", widget: string, hint: "Ex. HT" }
+              - name: audit
+                label: La carte de l'audit
+                widget: object
+                fields:
+                  - { name: etiquette, label: Étiquette au-dessus du prix, widget: string }
+                  - { name: montant, label: Montant, widget: string }
+                  - { name: texte, label: Texte, widget: text }
+                  - { name: note, label: Petite ligne en bas de la carte, widget: string }
+              - { name: badge, label: "Étiquette de la carte mise en avant", widget: string }
+              - name: offres
+                label: Les cartes de l'intégration
+                widget: list
+                summary: "{{fields.nom}} — {{fields.montant}}"
+                fields:
+                  - { name: nom, label: Nom, widget: string }
+                  - { name: montant, label: Montant, widget: string }
+                  - { name: duree, label: Durée, widget: string }
+                  - { name: texte, label: Texte, widget: text }
+                  - { name: avant, label: "Carte mise en avant (bordure de couleur et étiquette)", widget: boolean, default: false }
+              - { name: mention, label: Petite ligne à côté du bouton, widget: string }
+
+          - name: production
+            label: 6. Déjà en production
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - { name: etat, label: Pastille en haut de chaque carte, widget: string }
+              - name: cas
+                label: Les cas clients
+                widget: list
+                summary: "{{fields.client}}"
+                fields:
+                  - { name: client, label: Client, widget: string }
+                  - { name: ligne, label: Texte, widget: text }
+                  - { name: lien, label: Lien vers l'étude de cas, widget: string, hint: "Ex. /realisations/agents-agence-creative" }
+              - { name: lienCas, label: Texte du lien en bas de chaque carte, widget: string }
+              - { name: lienTous, label: Texte du lien vers toutes les missions, widget: string }
+              - { name: lienAgences, label: Texte du lien vers la page agences, widget: string }
+
+          - name: faq
+            label: 7. Questions
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - name: questions
+                label: Questions
+                widget: list
+                summary: "{{fields.q}}"
+                fields:
+                  - { name: q, label: Question, widget: string }
+                  - { name: r, label: Réponse, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+
+          - name: cloture
+            label: 8. Clôture
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, widget: string, label: Surtitre, hint: "Petit texte en capitales au-dessus du titre." }
+              - { name: titre, widget: string, label: "Titre — première phrase" }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
+              - { name: texte, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }

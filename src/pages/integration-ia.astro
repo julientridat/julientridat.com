@@ -19,6 +19,8 @@
  * Bpifrance n'est pas mentionné : l'agrément Diag Data IA est déposé, pas
  * obtenu. Aucun chiffre de résultat : le relevé avant/après est montré dans
  * sa forme, jamais avec des valeurs.
+ *
+ * TEXTES. Ils se modifient dans /admin (src/contenu/integration-ia.json).
  */
 import BaseLayout from "@/layouts/BaseLayout.astro";
 import Nav from "@/components/Nav.astro";
@@ -27,132 +29,26 @@ import CtaButton from "@/components/CtaButton.astro";
 import Footer from "@/components/Footer.astro";
 import Reveal from "@/components/Reveal.astro";
 import { SITE } from "@/lib/site";
+import integrationJson from "@/contenu/integration-ia.json";
+import { preparer, enLigne, brut } from "@/lib/texte";
 
-const title = "Intégration de l'IA en entreprise | Julien Tridat";
-const description =
-  "Pas une démo de plus : des agents installés sur vos comptes, construits avec vos équipes, encore en service six mois après. Audit 1 500 €, un pôle 6 000 €.";
+// Textes : src/contenu/integration-ia.json, modifiable dans /admin. Le brut
+// (sans typographie) sert au title, à la description et au JSON-LD.
+const c = preparer(integrationJson);
+const { title, description } = integrationJson.seo;
 
-const symptomes = [
-  "Une démonstration bluffante en réunion. Rien dans la production le lendemain.",
-  "Chacun a ouvert son compte dans son coin. Personne ne sait ce qui y circule.",
-  "Des licences pour toute l'équipe. Deux personnes s'en servent.",
-];
-
-const phases = [
-  {
-    semaines: "S1-2",
-    titre: "J'écoute.",
-    texte:
-      "Avec ceux qui font le travail : où passe le temps, où ça coince. Trois tâches chronométrées.",
-    recu: "le relevé de départ.",
-  },
-  {
-    semaines: "S3-4",
-    titre: "On construit.",
-    texte: "Avec vos équipes, d'abord sur la tâche qui leur pèse le plus.",
-    recu: "les premiers agents et la règle d'usage écrite.",
-  },
-  {
-    semaines: "S5-6",
-    titre: "En production.",
-    texte:
-      "Un vrai dossier, vos équipes jugent, on corrige, puis l'agent entre dans le travail quotidien.",
-    recu: "des agents en service, sur vos comptes.",
-  },
-  {
-    semaines: "S7-8",
-    titre: "Sans moi.",
-    texte: "Vos équipes s'en servent et les modifient seules. Même relevé qu'en S1.",
-    recu: "le mode d'emploi et l'écart avant/après, signé.",
-  },
-];
+const symptomes = c.pourQui.symptomes;
+const phases = c.fonctionnement.phases;
 
 // Agents d'illustration de la frise : ils passent de « Démo » à « En service »
-// quand la frise atteint S5-6. Décoratifs.
-const agentsIllustration = [
-  "Réponses aux appels d'offres",
-  "Comptes rendus clients",
-  "Relances des devis",
-];
+// quand la frise atteint S5-6. Décoratifs. Les états « Démo » / « En service »
+// restent dans le code : le script de la frise les réécrit.
+const agentsIllustration = c.hero.agents;
 
-const tuiles = [
-  { signe: "100 %", titre: "Sur vos comptes", texte: "Pas sur les miens." },
-  { signe: "1", titre: "Une tâche, toujours la même", texte: "Faite de la même façon, à chaque fois." },
-  {
-    signe: "6 mois",
-    titre: "Encore en service après mon départ",
-    texte: "C'est le seul critère qui compte.",
-    plein: true,
-  },
-  { signe: "3", titre: "Trois tâches chronométrées", texte: "Avant, puis huit semaines après." },
-  { signe: "+0 €", titre: "Ce qui déborde ne se refacture pas", texte: "Un agent qui sert au pôle voisin, c'est du rab." },
-  { signe: "OPCO", titre: "Le volet formation se finance", texte: "Jusqu'à 1 800 € par société et par an." },
-];
-
-const offres = [
-  {
-    nom: "Une équipe",
-    montant: "6 000 €",
-    duree: "4 à 6 semaines",
-    texte: "Le pôle qui produit le plus de documents, ses agents en service et ses gens autonomes.",
-  },
-  {
-    nom: "Deux à trois pôles",
-    montant: "12 000 €",
-    duree: "6 à 8 semaines",
-    texte: "Commerce, gestion, administratif — ou les trois qui vous ralentissent le plus.",
-    avant: true,
-  },
-];
-
-const cas = [
-  {
-    client: "Agence créative, ~40 personnes",
-    ligne: "Quatre agents, deux pôles outillés, les dossiers d'un annonceur ne croisent jamais ceux d'un autre.",
-    url: "/realisations/agents-agence-creative",
-  },
-  {
-    client: "Agence santé, 16 personnes",
-    ligne: "Trois assistants qui tournent après mon départ, validation médicale préservée.",
-    url: "/realisations/formation-ia-agence-sante",
-  },
-  {
-    client: "Conseil et formation",
-    ligne: "Les agents et les guides restent : l'organisme produit sans dépendre du consultant.",
-    url: "/realisations/transformation-ia-organisme-formation",
-  },
-];
-
-const questions = [
-  {
-    q: "Des agents autonomes qui font tout, vous faites ça ?",
-    r: "Non. Un agent à qui on confie une chaîne entière dérive : il tient trois semaines en démonstration et lâche en production, au moment précis où plus personne ne le surveille. Ce que j'installe fait une chose, toujours la même, et de la même façon. Vos équipes gardent la main sur l'enchaînement. C'est moins spectaculaire en réunion. C'est ce qui tient.",
-  },
-  {
-    q: "Et quand vous partez ?",
-    r: "Tout est sur vos comptes, le mode d'emploi est écrit, les équipes ont été formées sur leurs propres dossiers. C'est le seul critère qui compte : ce qui tourne encore six mois après.",
-  },
-  {
-    q: "On a déjà des licences. Ça sert à quoi de plus ?",
-    r: "Une licence donne l'accès, pas l'usage. Ce que j'installe, c'est ce qui se passe entre l'outil et le travail réel : sur quoi il est branché, ce qu'il sait de votre métier, et qui sait s'en servir.",
-  },
-  {
-    q: "Nos données peuvent-elles sortir ?",
-    r: "C'est la question à poser, et peu la posent. Avant le premier agent, on écrit ensemble la règle : quels dossiers ont le droit d'y passer, lesquels n'y passeront jamais, et sur quels comptes.",
-  },
-  {
-    q: "Combien d'agents pour 6 000 € ?",
-    r: "Autant que le pôle en demande, et pas un de plus. Ce qui fixe le prix, c'est le périmètre et la durée — pas le nombre. Un agent qui rédige vos propositions vaut trois qui reformatent des e-mails.",
-  },
-  {
-    q: "Et si le relevé de fin ne montre rien ?",
-    r: "Il est écrit quand même, et je vous le dis en face. Je préfère un client qui sait où l'IA ne lui sert à rien qu'un client qui continue de payer des licences au cas où.",
-  },
-  {
-    q: "Vous faites aussi du marketing. C'est la même chose ?",
-    r: "Non. Ici, les agents sont installés chez vous et vos équipes s'en servent. Dans la direction marketing, l'IA reste mon outil de production : vous recevez ce qu'elle produit, pas les agents.",
-  },
-];
+const tuiles = c.difference.tuiles;
+const offres = c.prix.offres;
+const cas = c.production.cas;
+const questions = c.faq.questions;
 
 const jsonLd = [
   {
@@ -195,10 +91,10 @@ const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: questions.map((item) => ({
+    mainEntity: integrationJson.faq.questions.map((item) => ({
       "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.r },
+      name: brut(item.q),
+      acceptedAnswer: { "@type": "Answer", text: brut(item.r) },
     })),
   },
 ];
@@ -229,28 +125,28 @@ const pastille =
       <div class="mx-auto grid max-w-7xl gap-14 px-6 pb-20 pt-36 md:px-12 md:pb-24 md:pt-44 lg:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)] lg:items-center lg:gap-10">
         <div>
           <p class="mb-7 w-fit rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-white md:text-[13px]">
-            Intégration IA&nbsp;· PME et ETI
+            {c.hero.surtitre}
           </p>
           <h1 class="text-[clamp(2.4rem,5.4vw,4.4rem)] font-medium leading-[1.02] tracking-[-0.035em] lg:text-[clamp(2.6rem,4.1vw,4rem)]">
-            <span class="block text-balance">Pas une démo de plus.</span>
+            <span class="block text-balance">{c.hero.titre}</span>
             {/* Blocs équilibrés : sinon « plus. » (mobile) et « vous. » (desktop) tombaient seuls sur leur ligne. */}
-            <em class="block text-balance font-normal text-violet-soft">Des agents qui travaillent chez vous.</em>
+            <em class="block text-balance font-normal text-violet-soft">{c.hero.titreAccent}</em>
           </h1>
-          <p class="mt-7 max-w-xl text-lg leading-relaxed text-white/85 md:text-xl">
-            Installés sur vos comptes, construits avec vos équipes, encore en service six mois
-            après mon départ.
-          </p>
+          <p
+            class="mt-7 max-w-xl text-lg leading-relaxed text-white/85 md:text-xl"
+            set:html={enLigne(c.hero.chapo, { fort: "font-medium text-white", accent: "text-violet-soft" })}
+          />
           <div class="mt-10 flex flex-wrap items-center gap-4">
-            <CtaButton onDark>Réserver 20&nbsp;minutes</CtaButton>
+            <CtaButton onDark>{c.bouton}</CtaButton>
             <a
               href="#prix"
               class="inline-flex items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
             >
-              Combien ça coûte&nbsp;?
+              {c.hero.lienPrix}
             </a>
           </div>
           <p class="mt-6 text-sm text-white/70">
-            Prix ferme&nbsp;· 8&nbsp;semaines&nbsp;· Financement OPCO possible
+            {c.hero.mention}
           </p>
         </div>
 
@@ -261,7 +157,7 @@ const pastille =
               style={`margin-left: ${i * 1.25}rem; animation-delay: ${i * 0.9}s`}
             >
               <div class="min-w-0">
-                <div class="text-[10px] uppercase tracking-[0.18em] text-white/50">Agent · sur vos comptes</div>
+                <div class="text-[10px] uppercase tracking-[0.18em] text-white/50">{c.hero.agentEtiquette}</div>
                 <div class="mt-1 truncate text-[15px] font-medium text-white">{a}</div>
               </div>
               <span class="flex shrink-0 items-center gap-2 rounded-full bg-lime/20 px-3 py-1 text-xs font-medium text-violet-soft">
@@ -270,7 +166,7 @@ const pastille =
               </span>
             </div>
           ))}
-          <p class="mt-5 text-right font-serif text-lg italic text-white/65">…et toujours là après mon départ.</p>
+          <p class="mt-5 text-right font-serif text-lg italic text-white/65">{c.hero.agentsChute}</p>
         </div>
       </div>
     </section>
@@ -279,9 +175,9 @@ const pastille =
     <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
         <div data-reveal>
-          <Eyebrow>Pour qui</Eyebrow>
+          <Eyebrow>{c.pourQui.surtitre}</Eyebrow>
           <h2 class={h2}>
-            Des démos, <em class="text-lime">vous en avez vu.</em>
+            {c.pourQui.titre} <em class="text-lime">{c.pourQui.titreAccent}</em>
           </h2>
         </div>
 
@@ -302,15 +198,14 @@ const pastille =
 
         <div class="mt-12 grid gap-8 lg:grid-cols-2 lg:items-center">
           <p data-reveal class="border-l-2 border-lime pl-6 font-serif text-[clamp(1.6rem,3vw,2.3rem)] italic leading-snug text-lime">
-            Le problème n'est pas l'outil. C'est que personne ne l'a installé.
+            {c.pourQui.chute}
           </p>
           <div data-reveal style="--reveal-delay: 120ms" class="rounded-3xl border border-line p-7">
-            <p class="text-lg leading-relaxed text-ink-2">
-              <strong class="font-medium text-foreground">Ce n'est pas pour vous si</strong> vous voulez
-              tester (une démo, ça se trouve gratuitement), s'il n'y a pas de décideur, ou si vous
-              cherchez une sensibilisation.
-            </p>
-            <p class="mt-4 font-serif text-xl italic text-foreground">J'en mène deux à la fois, pas six.</p>
+            <p
+              class="text-lg leading-relaxed text-ink-2"
+              set:html={enLigne(c.pourQui.exclusion, { fort: "font-medium text-foreground", accent: "text-lime" })}
+            />
+            <p class="mt-4 font-serif text-xl italic text-foreground">{c.pourQui.limite}</p>
           </div>
         </div>
       </div>
@@ -323,11 +218,11 @@ const pastille =
     <section id="comment" class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
         <div data-reveal>
-          <Eyebrow>Comment ça marche</Eyebrow>
+          <Eyebrow>{c.fonctionnement.surtitre}</Eyebrow>
           <h2 class={h2}>
-            De la démo à la production.
+            {c.fonctionnement.titre}
             <br />
-            <em class="text-lime">En huit semaines.</em>
+            <em class="text-lime">{c.fonctionnement.titreAccent}</em>
           </h2>
         </div>
 
@@ -357,7 +252,7 @@ const pastille =
           </ol>
 
           <div data-reveal class="mt-8 flex flex-wrap items-center gap-3" aria-hidden="true">
-            <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">Vos agents</span>
+            <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.fonctionnement.agentsEtiquette}</span>
             {agentsIllustration.map((a) => (
               <span class="frise-agent flex items-center gap-2 rounded-full border border-line bg-background px-3.5 py-1.5 text-sm text-ink-2 transition-all duration-500">
                 {a}
@@ -373,11 +268,11 @@ const pastille =
     <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
         <div data-reveal>
-          <Eyebrow>Ce qui tient</Eyebrow>
+          <Eyebrow>{c.difference.surtitre}</Eyebrow>
           <h2 class={h2}>
-            Ce qui sépare un agent
+            {c.difference.titre}
             <br />
-            <em class="text-lime">d'une démo.</em>
+            <em class="text-lime">{c.difference.titreAccent}</em>
           </h2>
         </div>
 
@@ -412,25 +307,22 @@ const pastille =
       </div>
       <div class="mx-auto max-w-7xl">
         <div data-reveal>
-          <Eyebrow onDark>Le prix</Eyebrow>
+          <Eyebrow onDark>{c.prix.surtitre}</Eyebrow>
           <h2 class={h2}>
-            Un prix ferme. <em class="text-violet-soft">Pas un devis qui grossit.</em>
+            {c.prix.titre} <em class="text-violet-soft">{c.prix.titreAccent}</em>
           </h2>
         </div>
 
         <div class="mt-12 grid items-stretch gap-5 lg:grid-cols-3">
           <div data-reveal class="flex flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm">
-            <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">D'abord · L'audit</div>
+            <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">{c.prix.audit.etiquette}</div>
             <div class="mt-4 flex items-baseline gap-2">
-              <span class="font-serif text-[clamp(3rem,5vw,4rem)] italic leading-[0.85] tracking-tight">1&nbsp;500&nbsp;€</span>
-              <span class="text-sm text-white/55">HT</span>
+              <span class="font-serif text-[clamp(3rem,5vw,4rem)] italic leading-[0.85] tracking-tight">{c.prix.audit.montant}</span>
+              <span class="text-sm text-white/55">{c.prix.unite}</span>
             </div>
-            <p class="mt-6 flex-1 text-base leading-relaxed text-white/75">
-              Avant d'installer quoi que ce soit&nbsp;: frictions cartographiées, cas d'usage classés,
-              feuille de route.
-            </p>
+            <p class="mt-6 flex-1 text-base leading-relaxed text-white/75">{c.prix.audit.texte}</p>
             <p class="mt-6 border-t border-white/10 pt-5 text-sm text-white/60">
-              Déduit si l'intégration démarre dans les 30&nbsp;jours.
+              {c.prix.audit.note}
             </p>
           </div>
 
@@ -442,13 +334,13 @@ const pastille =
                 class="relative rounded-[1.75rem] bg-gradient-to-br from-violet-soft/70 via-lime/60 to-lime/10 p-px shadow-[0_40px_120px_-40px_rgba(108,76,241,0.75)]"
               >
                 <span class="absolute -top-3 left-8 rounded-full bg-lime px-3.5 py-1 text-[11px] font-medium uppercase tracking-[0.22em] text-white">
-                  Le plus fréquent
+                  {c.prix.badge}
                 </span>
                 <div class="flex h-full flex-col rounded-[calc(1.75rem-1px)] bg-[#17151f] p-8">
                   <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">{o.nom}</div>
                   <div class="mt-4 flex items-baseline gap-2">
-                    <span class="font-serif text-[clamp(3rem,5vw,4rem)] italic leading-[0.85] tracking-tight" set:html={o.montant} />
-                    <span class="text-sm text-white/55">HT</span>
+                    <span class="font-serif text-[clamp(3rem,5vw,4rem)] italic leading-[0.85] tracking-tight">{o.montant}</span>
+                    <span class="text-sm text-white/55">{c.prix.unite}</span>
                   </div>
                   <div class="mt-2 text-base text-white/70">{o.duree}</div>
                   <p class="mt-6 flex-1 border-t border-white/10 pt-5 text-base leading-relaxed text-white/80">{o.texte}</p>
@@ -462,8 +354,8 @@ const pastille =
               >
                 <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">{o.nom}</div>
                 <div class="mt-4 flex items-baseline gap-2">
-                  <span class="font-serif text-[clamp(3rem,5vw,4rem)] italic leading-[0.85] tracking-tight" set:html={o.montant} />
-                  <span class="text-sm text-white/55">HT</span>
+                  <span class="font-serif text-[clamp(3rem,5vw,4rem)] italic leading-[0.85] tracking-tight">{o.montant}</span>
+                  <span class="text-sm text-white/55">{c.prix.unite}</span>
                 </div>
                 <div class="mt-2 text-base text-white/70">{o.duree}</div>
                 <p class="mt-6 flex-1 border-t border-white/10 pt-5 text-base leading-relaxed text-white/75">{o.texte}</p>
@@ -473,9 +365,9 @@ const pastille =
         </div>
 
         <div data-reveal class="mt-10 flex flex-wrap items-center gap-x-8 gap-y-4">
-          <CtaButton onDark>Réserver 20&nbsp;minutes</CtaButton>
+          <CtaButton onDark>{c.bouton}</CtaButton>
           <p class="text-sm text-white/60">
-            Au-delà de trois pôles&nbsp;: sur devis. Le dossier OPCO, c'est moi qui le monte.
+            {c.prix.mention}
           </p>
         </div>
       </div>
@@ -485,37 +377,37 @@ const pastille =
     <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
         <div data-reveal>
-          <Eyebrow>Déjà en production</Eyebrow>
+          <Eyebrow>{c.production.surtitre}</Eyebrow>
           <h2 class={h2}>
-            Six missions. <em class="text-lime">Ce qui tourne encore aujourd'hui.</em>
+            {c.production.titre} <em class="text-lime">{c.production.titreAccent}</em>
           </h2>
         </div>
 
         <div class="mt-12 grid gap-4 md:grid-cols-3">
-          {cas.map((c, i) => (
+          {cas.map((m, i) => (
             <a
               data-reveal
               style={`--reveal-delay: ${i * 80}ms`}
-              href={c.url}
+              href={m.lien}
               class="group flex flex-col rounded-3xl border border-line bg-card p-7 transition duration-300 hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)]"
             >
               <span class="flex w-fit items-center gap-2 rounded-full bg-lime/10 px-3 py-1 text-xs font-medium text-lime">
                 <span class="h-1.5 w-1.5 rounded-full bg-lime"></span>
-                En service
+                {c.production.etat}
               </span>
-              <h3 class="mt-5 text-lg font-medium text-foreground">{c.client}</h3>
-              <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{c.ligne}</p>
-              <span class="mt-6 text-sm text-ink-3 transition-colors group-hover:text-lime">Voir le cas ↗</span>
+              <h3 class="mt-5 text-lg font-medium text-foreground">{m.client}</h3>
+              <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{m.ligne}</p>
+              <span class="mt-6 text-sm text-ink-3 transition-colors group-hover:text-lime">{c.production.lienCas} ↗</span>
             </a>
           ))}
         </div>
 
         <div data-reveal class="mt-8 flex flex-wrap gap-x-10 gap-y-3 text-base">
           <a href="/realisations" class="group inline-flex items-center gap-2 text-lime">
-            Toutes les missions <span class="transition-transform group-hover:translate-x-1">→</span>
+            {c.production.lienTous} <span class="transition-transform group-hover:translate-x-1">→</span>
           </a>
           <a href="/agences" class="group inline-flex items-center gap-2 text-ink-2 hover:text-lime">
-            Vous êtes une agence&nbsp;? Une page parle votre métier
+            {c.production.lienAgences}
             <span class="transition-transform group-hover:translate-x-1">→</span>
           </a>
         </div>
@@ -525,10 +417,10 @@ const pastille =
     {/* --------------------------------------------------------------- 7 · Questions */}
     <section id="faq" class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
       <div class="mx-auto max-w-7xl">
-        <Eyebrow>Questions</Eyebrow>
+        <Eyebrow>{c.faq.surtitre}</Eyebrow>
         <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
           <h2 data-reveal class={`${h2} md:sticky md:top-24 md:self-start`}>
-            Ce que vous alliez <em class="text-lime">me demander.</em>
+            {c.faq.titre} <em class="text-lime">{c.faq.titreAccent}</em>
           </h2>
           <div data-reveal style="--reveal-delay: 100ms">
             {questions.map((item, i) => (
@@ -537,7 +429,10 @@ const pastille =
                   <span>{item.q}</span>
                   <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
                 </summary>
-                <p class="pb-5 text-lg leading-relaxed text-ink-2">{item.r}</p>
+                <p
+                  class="pb-5 text-lg leading-relaxed text-ink-2"
+                  set:html={enLigne(item.r, { fort: "font-medium text-foreground", accent: "text-lime", lien: "underline decoration-lime/40 underline-offset-4 hover:text-lime" })}
+                />
               </details>
             ))}
           </div>
@@ -553,16 +448,16 @@ const pastille =
       >
       </div>
       <div class="mx-auto max-w-4xl text-center">
-        <Eyebrow onDark>Prochaine étape</Eyebrow>
+        <Eyebrow onDark>{c.cloture.surtitre}</Eyebrow>
         <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
-          Vingt minutes. <em class="text-violet-soft">Pas une démo.</em>
+          {c.cloture.titre} <em class="text-violet-soft">{c.cloture.titreAccent}</em>
         </h2>
-        <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/80">
-          Vous me décrivez ce que vos équipes produisent et où ça coince. Je vous dis si un agent y
-          tiendrait en production — et si la réponse est non, je vous le dis aussi.
-        </p>
+        <p
+          class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/80"
+          set:html={enLigne(c.cloture.texte, { fort: "font-medium text-white", accent: "text-violet-soft" })}
+        />
         <div class="mt-12 flex justify-center">
-          <CtaButton onDark>Réserver 20&nbsp;minutes</CtaButton>
+          <CtaButton onDark>{c.bouton}</CtaButton>
         </div>
       </div>
     </section>
