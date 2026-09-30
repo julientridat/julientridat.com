@@ -5,10 +5,10 @@ secteur: "Formation professionnelle"
 typeEntreprise: "Organisme de conseil et formation"
 effectif: "Réseau de 350 experts"
 annee: 2026
-role: "Intégration IA de bout en bout : diagnostic, dirigeant, équipes, outillage"
-stack: ["Session stratégique dirigeant", "Formation équipes", "Visibilité sur les IA", "Guides d'autonomie"]
+role: "Intégration IA de bout en bout, puis marketing : diagnostic, dirigeant, équipes, outillage, positionnement et nouvelles offres"
+stack: ["Session stratégique dirigeant", "Formation équipes", "Visibilité sur les IA", "Guides d'autonomie", "Positionnement", "Nouvelles offres"]
 besoin: "cadrer"
-enjeu: "Un organisme établi, un suivi administratif chronophage, une génération de contacts en chute après une mise à jour Google — et l'envie de passer à l'IA sans improviser."
+enjeu: "Une équipe surbookée, un métier que l'IA transforme, un suivi administratif chronophage, une génération de contacts en chute après une mise à jour Google — et l'envie de passer à l'IA sans improviser."
 transformation: "Le dirigeant cadre, les équipes pratiquent au quotidien, les assistants et les guides restent : l'organisme produit désormais avec l'IA sans dépendre du consultant."
 pitch: "Une capacité IA installée du sommet à la base : dirigeant cadré, équipes en production, assistants et guides d'autonomie qui tournent après mon départ."
 resultats:
@@ -24,10 +24,17 @@ visuel:
 demo:
   url: "/demos/guide-claude-clickup.html"
   label: "Parcourir le guide réel (anonymisé)"
+livrables:
+  - "Le dirigeant formé à l'IA"
+  - "L'IA intégrée dans les process de l'organisme"
+  - "Une stratégie marketing et un positionnement"
+  - "Le rebranding de ses livrables"
+  - "Plusieurs offres en ligne"
+  - "Une extension vers la prestation de conseil"
 published: true
 sortOrder: 7
-pointDepart: "Un organisme de conseil et formation établi — plus de dix ans d'activité, plusieurs centaines d'experts — veut passer à l'IA sans improviser. Le déclencheur : des frictions précises. Suivi administratif qui pèse, génération de contacts en chute après une mise à jour de Google, allers-retours d'e-mails avec les formateurs. Le manque n'est pas un outil, c'est une capacité à produire avec l'IA."
-bilan: "La transformation est ancrée dans le bon ordre : dirigeant cadré et validé ambassadeur IA, équipes en pratique quotidienne sur leurs propres outils, guides et assistants qui restent après le départ. L'organisme sait désormais produire avec l'IA sans dépendre d'un prestataire — ce que la mission flash ne permet jamais."
+pointDepart: "Un organisme de conseil et formation établi — plus de dix ans d'activité, plusieurs centaines d'experts — est surbooké, et son métier change avec l'IA : il doit se transformer, sans improviser. Le déclencheur : des frictions précises. Suivi administratif qui pèse, génération de contacts en chute après une mise à jour de Google, allers-retours d'e-mails avec les formateurs. Le manque n'est pas un outil, c'est une capacité à produire avec l'IA."
+bilan: "La transformation est ancrée dans le bon ordre : dirigeant cadré et validé ambassadeur IA, équipes en pratique quotidienne sur leurs propres outils, guides et assistants qui restent après le départ. L'organisme sait désormais produire avec l'IA sans dépendre d'un prestataire — ce que la mission flash ne permet jamais. Côté marketing, l'organisme a un positionnement clarifié, plusieurs offres en ligne, et s'étend vers la prestation de conseil."
 methode:
   - etape: "Observer"
     detail: "Un entretien de fond transforme les frictions relevées en un accompagnement chiffré, découpé en phases."
