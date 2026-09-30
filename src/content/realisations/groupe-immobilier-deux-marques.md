@@ -17,7 +17,7 @@ methode:
   - etape: "Lancer les sites"
     detail: "Un site de vente pour chaque marque."
   - etape: "Outiller la vente"
-    detail: "Plaquettes et supports de vente, un guide commercial et une offre freemium."
+    detail: "Plaquettes et supports de vente, un guide commercial, et un guide d'achat de maison neuve offert sur l'un des sites."
   - etape: "Produire et transmettre"
     detail: "Les contenus du blog et de Facebook, puis les équipes formées."
 livrables:
@@ -25,7 +25,7 @@ livrables:
   - "Deux sites de vente, un par marque"
   - "Plaquettes et supports de vente"
   - "Un guide commercial"
-  - "Une offre freemium"
+  - "Un guide d'achat de maison neuve, offert sur l'un des deux sites"
   - "Les contenus du blog et de Facebook"
   - "Les équipes formées"
 resultats:
