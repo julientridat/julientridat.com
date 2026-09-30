@@ -7,11 +7,11 @@
   "hero": {
     "surtitre": "Direction marketing externalisée",
     "cible": "PME de 10 à 30 salariés",
-    "lieu": "Bordeaux et à distance",
+    "lieu": "Bordeaux et Métropole",
     "accroche": "Votre marketing avance chaque semaine.",
     "accrocheAccent": "Sans recruter personne.",
     "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, un livrable part à la date prévue : site, supports commerciaux, relances, publications.",
-    "mention": "2 500 € HT par mois · Trois mois, puis mois par mois · Tout ce qui est produit vous appartient"
+    "mention": "2 500 € HT par mois · Renouvellement chaque mois · Sans engagement"
   },
   "probleme": {
     "surtitre": "Le problème",
@@ -29,7 +29,7 @@
   "fonctionnement": {
     "surtitre": "Comment ça marche",
     "titre": "Un mois pour poser les bases.",
-    "titreAccent": "Puis un livrable à date, chaque semaine.",
+    "titreAccent": "Puis vos livrables, chaque semaine.",
     "demarrageEtiquette": "Mois 1 · Le mois de démarrage",
     "demarrageIntro": "Un socle commun à tous mes clients, ajusté au vôtre : c'est ce qui permet d'aller vite.",
     "semaines": [
@@ -135,24 +135,24 @@
     "intro": "L'IA est mon outil de production. Voici ce que mes systèmes tiennent déjà, chez d'autres clients.",
     "cas": [
       {
-        "qui": "Un réseau de clubs de fitness",
-        "quoi": "cinq marques, une charte respectée sur chaque visuel, sans graphiste.",
-        "lien": "/realisations/design-system-franchise-fitness"
+        "qui": "Un éditeur national leader de son secteur",
+        "quoi": "Stratégie globale, 2 refontes de site, activation d'un CRM, campagnes d'emailing, création de contenus et de produits digitaux",
+        "lien": "/editeur"
       },
       {
-        "qui": "Un club d'affaires",
-        "quoi": "49 dirigeants, un devis conforme en 30 secondes au lieu de 30 minutes.",
-        "lien": "/realisations/formation-club-affaires"
+        "qui": "Un groupe immobilier multi-enseignes",
+        "quoi": "Création de 2 marques, 2 sites de ventes, plaquettes et supports de ventes, freemium, création de contenus",
+        "lien": "/immobilier"
       },
       {
-        "qui": "Une association",
-        "quoi": "ses relances partent de son propre domaine, avec 537 contacts remis au propre.",
-        "lien": "/realisations/association-benevoles-autonome"
+        "qui": "Un organisme de formation en pleine expension",
+        "quoi": "Formation IA du gérant, intégration de l'IA dans les process, stratégie marketing et positionnement, rebranding des livrables, création de nouvelles offres",
+        "lien": "/centre-formation"
       },
       {
-        "qui": "Une enseigne de 600 magasins",
-        "quoi": "ses supports déclinés sans repasser par un prestataire.",
-        "lien": "/realisations/acculturation-enseigne-nationale"
+        "qui": "Un courtier en assurance surbooké",
+        "quoi": "Création d'agents d'évaluations des contrats d'assurance, automatisation du suivi administratif, formation des équipes",
+        "lien": "courtier-assurance"
       }
     ],
     "lienTous": "Tous les cas clients",
