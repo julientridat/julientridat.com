@@ -152,6 +152,22 @@ const jsonLd = [
       </section>
     )}
 
+    {d.livrables.length > 0 && (
+      <section class="border-t border-line bg-card px-6 py-10 md:px-12 md:py-12">
+        <div class="mx-auto max-w-4xl">
+          <Eyebrow>Ce qui a été livré</Eyebrow>
+          <ul class="grid gap-x-10 sm:grid-cols-2">
+            {d.livrables.map((l) => (
+              <li class="flex gap-3 border-t border-line py-3 text-base leading-relaxed text-ink-2">
+                <span class="text-lime" aria-hidden="true">✓</span>
+                {l}
+              </li>
+            ))}
+          </ul>
+        </div>
+      </section>
+    )}
+
     {d.assistants.length > 0 && (
       <section class="border-t border-line bg-card px-6 py-10 md:px-12 md:py-12">
         <div class="mx-auto max-w-4xl">

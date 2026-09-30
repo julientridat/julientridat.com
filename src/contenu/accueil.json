@@ -137,22 +137,22 @@
       {
         "qui": "Un éditeur national leader de son secteur",
         "quoi": "Stratégie globale, 2 refontes de site, activation d'un CRM, campagnes d'emailing, création de contenus et de produits digitaux",
-        "lien": "/editeur"
+        "lien": "/realisations/editeur-sante-marketing-externalise"
       },
       {
         "qui": "Un groupe immobilier multi-enseignes",
         "quoi": "Création de 2 marques, 2 sites de ventes, plaquettes et supports de ventes, freemium, création de contenus",
-        "lien": "/immobilier"
+        "lien": "/realisations/groupe-immobilier-deux-marques"
       },
       {
-        "qui": "Un organisme de formation en pleine expension",
+        "qui": "Un organisme de formation en pleine expansion",
         "quoi": "Formation IA du gérant, intégration de l'IA dans les process, stratégie marketing et positionnement, rebranding des livrables, création de nouvelles offres",
-        "lien": "/centre-formation"
+        "lien": "/realisations/organisme-formation-expansion"
       },
       {
         "qui": "Un courtier en assurance surbooké",
         "quoi": "Création d'agents d'évaluations des contrats d'assurance, automatisation du suivi administratif, formation des équipes",
-        "lien": "courtier-assurance"
+        "lien": "/realisations/courtier-assurance-btp"
       }
     ],
     "lienTous": "Tous les cas clients",

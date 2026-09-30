@@ -46,6 +46,8 @@ const realisations = defineCollection({
       .default([]),
     /** Résumé en 1-2 phrases — utilisé sur les cartes, le llms.txt et la meta description. */
     pitch: z.string(),
+    /** Ce qui a été livré (missions marketing) — rendu en liste cochée. */
+    livrables: z.array(z.string()).default([]),
     resultats: z
       .array(z.object({ chiffre: z.string(), label: z.string() }))
       .default([]),
