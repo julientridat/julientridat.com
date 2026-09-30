@@ -53,7 +53,7 @@ export const GET: APIRoute = async () => {
     "",
     ...realisations.map(
       (r) =>
-        `- [${r.data.title}](${SITE.url}/realisations/${r.id}) : ${r.data.transformation ?? r.data.pitch} (${r.data.client}, ${r.data.annee})`,
+        `- [${r.data.title}](${SITE.url}/realisations/${r.id}) : ${r.data.transformation ?? r.data.pitch} (${r.data.client}, ${r.data.periode ?? r.data.annee})`,
     ),
     "",
     "## Notes (écrits d'analyse)",
