@@ -11,7 +11,7 @@
     "accroche": "Votre marketing avance chaque semaine.",
     "accrocheAccent": "Sans recruter personne.",
     "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, un livrable part à la date prévue : site, supports commerciaux, relances, publications.",
-    "mention": "2 500 € HT par mois · 30 jours d'essai · Tout ce qui est produit vous appartient"
+    "mention": "2 500 € HT par mois · Ou un projet de 30 jours, sans engagement · Tout ce qui est produit vous appartient"
   },
   "probleme": {
     "surtitre": "Le problème",
@@ -116,8 +116,8 @@
       },
       {
         "signe": "30 jours",
-        "titre": "Un essai, comme pour un recrutement.",
-        "texte": "À la fin du premier mois, vous arrêtez si ça ne vous convient pas.",
+        "titre": "Un projet pour me tester.",
+        "texte": "Une campagne, un événement, un site : livré en 30 jours, sans engagement.",
         "plein": false
       },
       {
@@ -180,7 +180,8 @@
     "photoAlt": "Julien Tridat, direction marketing externalisée pour PME, Bordeaux",
     "paragraphes": [
       "J'ai travaillé chez Publicis, pour des marques comme Heineken et L'Oréal. J'ai formé plus de 300 dirigeants et cadres, notamment chez Dassault Systèmes, SNCF Fret et Lagardère Travel Retail.",
-      "**Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des PME qui n'en ont pas.**"
+      "**Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des PME qui n'en ont pas.**",
+      "Je deviens aussi le bras droit stratégique du dirigeant, et j'accompagne la transformation IA de son entreprise : lui d'abord, puis ses commerciaux et ses équipes administratives."
     ],
     "phrase": "Je n'accompagne que six PME à la fois.",
     "referencesTitre": "Références",
@@ -215,16 +216,17 @@
       "Votre plan mis en œuvre : un livrable à date chaque semaine",
       "Vos demandes hors plan, livrées entre J+1 et J+3",
       "Un point de 45 minutes chaque semaine",
+      "Vous, dirigeant, formé à l'IA en priorité",
       "Votre tableau de bord partagé, en direct",
       "Contenus et fichiers sources : à vous"
     ],
     "conditionsTitre": "Conditions",
     "conditions": [
-      "**Trois mois d'engagement, avec 30 jours d'essai.** À la fin du premier mois, vous arrêtez si ça ne vous convient pas : le mois est payé, ce qui a été produit vous reste.",
-      "**Ensuite, sans engagement.** Vous arrêtez quand vous voulez, vous reprenez quand vous voulez, pour un mois ou plus. Pas d'abonnement à faire tourner douze mois sur douze.",
+      "**Commencez par un projet de 30 jours.** 2 500 € HT, sans engagement : une campagne, un événement, un projet d'édition, un site à créer. La meilleure façon de me tester avant de me confier votre marketing.",
+      "**L'abonnement : trois mois d'engagement.** Ensuite, vous arrêtez quand vous voulez, vous reprenez quand vous voulez, pour un mois ou plus. Pas d'abonnement à faire tourner douze mois sur douze.",
       "Prélèvement en début de mois."
     ],
-    "mention": "Au-delà de 50 salariés : sur devis. Six PME à la fois."
+    "mention": "Formation IA des équipes en option. Au-delà de 50 salariés : sur devis. Six PME à la fois."
   },
   "faq": {
     "surtitre": "Questions",
@@ -237,7 +239,11 @@
       },
       {
         "q": "Pourquoi trois mois d'engagement ?",
-        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Les 30 premiers jours valent période d'essai : si ça ne vous convient pas, vous arrêtez à la fin du premier mois. Après trois mois, vous décidez chaque mois."
+        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Si vous voulez me tester avant, commencez par un projet de 30 jours, sans engagement. Après trois mois d'abonnement, vous décidez chaque mois."
+      },
+      {
+        "q": "Je peux vous tester avant de m'engager ?",
+        "r": "Oui : confiez-moi un projet de 30 jours. Une campagne, un événement, un projet d'édition, un site à créer : 2 500 € HT, sans engagement, livré en 30 jours. Si vous continuez ensuite, l'abonnement commence par le mois de démarrage."
       },
       {
         "q": "Et si j'ai une demande hors du plan ?",
@@ -253,7 +259,7 @@
       },
       {
         "q": "Et l'IA dans tout ça ?",
-        "r": "Elle travaille pour moi, pas chez vous. C'est elle qui rend possibles les délais de J+1 à J+3. Mes agents et ma méthode restent dans mon atelier ; ce qu'ils produisent vous appartient. Rien à installer, rien à apprendre de votre côté."
+        "r": "Elle est mon outil de production : c'est elle qui rend possibles les délais de J+1 à J+3, et mes agents restent dans mon atelier. Mais j'accompagne aussi votre propre passage à l'IA. Je vous forme en priorité, vous, le dirigeant : c'est compris dans l'abonnement. Vos commerciaux et vos équipes administratives suivent ensuite, en option."
       },
       {
         "q": "Je peux arrêter puis reprendre ?",
@@ -261,7 +267,7 @@
       },
       {
         "q": "Que se passe-t-il si j'arrête ?",
-        "r": "Vous arrêtez à la fin des 30 jours d'essai, ou à la fin de n'importe quel mois après les trois premiers. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
+        "r": "Après les trois premiers mois, vous arrêtez à la fin de n'importe quel mois. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
       },
       {
         "q": "Comment je paie ?",
