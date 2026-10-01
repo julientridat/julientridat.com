@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Direction marketing externalisée pour PME, Bordeaux | Julien Tridat",
-    "description": "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis un livrable chaque semaine."
+    "description": "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis vos livrables à date, chaque semaine."
   },
   "bouton": "Réserver 20 minutes",
   "hero": {
@@ -10,8 +10,8 @@
     "lieu": "Bordeaux et Métropole",
     "accroche": "Votre marketing avance chaque semaine.",
     "accrocheAccent": "Sans recruter personne.",
-    "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, un livrable part à la date prévue : site, supports commerciaux, relances, publications.",
-    "mention": "2 500 € HT par mois · Ou un projet de 30 jours, sans engagement · Tout ce qui est produit vous appartient"
+    "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, les livrables prévus partent à date : site, supports commerciaux, relances, publications.",
+    "mention": "2 500 € HT par mois · 30 jours d'essai · Tout ce qui est produit vous appartient"
   },
   "probleme": {
     "surtitre": "Le problème",
@@ -116,8 +116,8 @@
       },
       {
         "signe": "30 jours",
-        "titre": "Un projet pour me tester.",
-        "texte": "Une campagne, un événement, un site : livré en 30 jours, sans engagement.",
+        "titre": "Un essai, comme pour un recrutement.",
+        "texte": "À la fin du premier mois, vous arrêtez si ça ne vous convient pas.",
         "plein": false
       },
       {
@@ -213,7 +213,7 @@
     "montantDetail": "HT par mois, mois de démarrage compris",
     "inclus": [
       "Le mois de démarrage : état des lieux, plan sur douze mois, positionnement, charte, modèles",
-      "Votre plan mis en œuvre : un livrable à date chaque semaine",
+      "Votre plan mis en œuvre : chaque semaine, les livrables prévus, à date",
       "Vos demandes hors plan, livrées entre J+1 et J+3",
       "Un point de 45 minutes chaque semaine",
       "Vous, dirigeant, formé à l'IA en priorité",
@@ -222,8 +222,9 @@
     ],
     "conditionsTitre": "Conditions",
     "conditions": [
-      "**Commencez par un projet de 30 jours.** 2 500 € HT, sans engagement : une campagne, un événement, un projet d'édition, un site à créer. La meilleure façon de me tester avant de me confier votre marketing.",
-      "**L'abonnement : trois mois d'engagement.** Ensuite, vous arrêtez quand vous voulez, vous reprenez quand vous voulez, pour un mois ou plus. Pas d'abonnement à faire tourner douze mois sur douze.",
+      "**Trois mois d'engagement, avec 30 jours d'essai.** À la fin du premier mois, vous arrêtez si ça ne vous convient pas : le mois est payé, ce qui a été produit vous reste.",
+      "**Ensuite, sans engagement.** Vous arrêtez quand vous voulez, vous reprenez quand vous voulez, pour un mois ou plus. Pas d'abonnement à faire tourner douze mois sur douze.",
+      "**Vous ne savez pas par où commencer ?** On part d'un projet que vous avez en tête : une campagne, un événement, un projet d'édition, un site à créer.",
       "Prélèvement en début de mois."
     ],
     "mention": "Formation IA des équipes en option. Au-delà de 50 salariés : sur devis. Six PME à la fois."
@@ -239,11 +240,11 @@
       },
       {
         "q": "Pourquoi trois mois d'engagement ?",
-        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Si vous voulez me tester avant, commencez par un projet de 30 jours, sans engagement. Après trois mois d'abonnement, vous décidez chaque mois."
+        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Les 30 premiers jours valent période d'essai : si ça ne vous convient pas, vous arrêtez à la fin du premier mois. Après trois mois, vous décidez chaque mois."
       },
       {
-        "q": "Je peux vous tester avant de m'engager ?",
-        "r": "Oui : confiez-moi un projet de 30 jours. Une campagne, un événement, un projet d'édition, un site à créer : 2 500 € HT, sans engagement, livré en 30 jours. Si vous continuez ensuite, l'abonnement commence par le mois de démarrage."
+        "q": "Je ne sais pas par où commencer ?",
+        "r": "Vous ne voyez pas encore tout ce que je peux faire pour vous : c'est normal. Si vous avez un projet en tête, une campagne, un événement, un projet d'édition, un site à créer, on commence par lui. Les 30 premiers jours valent période d'essai."
       },
       {
         "q": "Et si j'ai une demande hors du plan ?",
@@ -267,7 +268,7 @@
       },
       {
         "q": "Que se passe-t-il si j'arrête ?",
-        "r": "Après les trois premiers mois, vous arrêtez à la fin de n'importe quel mois. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
+        "r": "Vous arrêtez à la fin des 30 jours d'essai, ou à la fin de n'importe quel mois après les trois premiers. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
       },
       {
         "q": "Comment je paie ?",
