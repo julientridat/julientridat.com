@@ -1,17 +1,17 @@
 {
   "seo": {
     "title": "Direction marketing externalisée pour PME, Bordeaux | Julien Tridat",
-    "description": "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis un livrable chaque semaine."
+    "description": "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis vos livrables à date, chaque semaine."
   },
   "bouton": "Réserver 20 minutes",
   "hero": {
     "surtitre": "Direction marketing externalisée",
-    "cible": "PME de 10 à 30 salariés",
+    "cible": "PME de 10 à 50 salariés",
     "lieu": "Bordeaux et Métropole",
     "accroche": "Votre marketing avance chaque semaine.",
     "accrocheAccent": "Sans recruter personne.",
-    "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, un livrable part à la date prévue : site, supports commerciaux, relances, publications.",
-    "mention": "2 500 € HT par mois · Renouvellement chaque mois · Sans engagement"
+    "chapo": "Je deviens la direction marketing de votre PME. Le premier mois, on clarifie ce que vous vendez, à qui, et la façon de le dire. Ensuite, chaque semaine, les livrables prévus partent à date : site, supports commerciaux, relances, publications.",
+    "mention": "2 500 € HT par mois · 30 jours d'essai · Tout ce qui est produit vous appartient"
   },
   "probleme": {
     "surtitre": "Le problème",
@@ -115,9 +115,9 @@
         "plein": true
       },
       {
-        "signe": "60 jours",
-        "titre": "Une pause possible.",
-        "texte": "Après trois mois, votre place vous attend jusqu'à soixante jours.",
+        "signe": "30 jours",
+        "titre": "Un essai, comme pour un recrutement.",
+        "texte": "À la fin du premier mois, vous arrêtez si ça ne vous convient pas.",
         "plein": false
       },
       {
@@ -167,7 +167,7 @@
         "ses contenus LinkedIn et un livre blanc de 60 pages ;",
         "un calendrier éditorial et un tableau de bord partagés ;",
         "son dirigeant formé à l'IA, directement dans ses outils ;",
-        "une alternante en communication encadrée."
+        "une alternante en communication encadrée, puis relayée par mon système à la fin de son alternance."
       ],
       "resultat": "",
       "referenceJoignable": false
@@ -180,7 +180,8 @@
     "photoAlt": "Julien Tridat, direction marketing externalisée pour PME, Bordeaux",
     "paragraphes": [
       "J'ai travaillé chez Publicis, pour des marques comme Heineken et L'Oréal. J'ai formé plus de 300 dirigeants et cadres, notamment chez Dassault Systèmes, SNCF Fret et Lagardère Travel Retail.",
-      "**Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des PME qui n'en ont pas.**"
+      "**Aujourd'hui, avec l'IA pour outil de production, je deviens la direction marketing des PME qui n'en ont pas.**",
+      "Je deviens aussi le bras droit stratégique du dirigeant, et j'accompagne la transformation IA de son entreprise : lui d'abord, puis ses commerciaux et ses équipes administratives."
     ],
     "phrase": "Je n'accompagne que six PME à la fois.",
     "referencesTitre": "Références",
@@ -212,19 +213,21 @@
     "montantDetail": "HT par mois, mois de démarrage compris",
     "inclus": [
       "Le mois de démarrage : état des lieux, plan sur douze mois, positionnement, charte, modèles",
-      "Votre plan mis en œuvre : un livrable à date chaque semaine",
+      "Votre plan mis en œuvre : chaque semaine, les livrables prévus, à date",
       "Vos demandes hors plan, livrées entre J+1 et J+3",
       "Un point de 45 minutes chaque semaine",
+      "Vous, dirigeant, formé à l'IA en priorité",
       "Votre tableau de bord partagé, en direct",
       "Contenus et fichiers sources : à vous"
     ],
     "conditionsTitre": "Conditions",
     "conditions": [
-      "**Trois mois minimum.** Ensuite, renouvelable chaque mois, sans engagement.",
-      "**Pause possible** après les trois premiers mois, jusqu'à 60 jours : le prélèvement s'arrête, votre place vous attend. Au-delà, elle revient à une autre PME.",
+      "**Trois mois d'engagement, avec 30 jours d'essai.** À la fin du premier mois, vous arrêtez si ça ne vous convient pas : le mois est payé, ce qui a été produit vous reste.",
+      "**Ensuite, sans engagement.** Vous arrêtez quand vous voulez, vous reprenez quand vous voulez, pour un mois ou plus. Pas d'abonnement à faire tourner douze mois sur douze.",
+      "**Vous ne savez pas par où commencer ?** On part d'un projet que vous avez en tête : une campagne, un événement, un projet d'édition, un site à créer.",
       "Prélèvement en début de mois."
     ],
-    "mention": "Au-delà de 30 salariés : sur devis. Six PME à la fois."
+    "mention": "Formation IA des équipes en option. Au-delà de 50 salariés : sur devis. Six PME à la fois."
   },
   "faq": {
     "surtitre": "Questions",
@@ -236,8 +239,12 @@
         "r": "C'est le premier mois, compris dans les 2 500 €. Semaine 1, l'état des lieux : ce qui fonctionne, ce qui manque, ce qui bloque. Semaine 2, le plan sur douze mois, dont les trois premiers détaillés, et les actions du mois suivant validées ensemble. Semaine 3, votre positionnement et votre charte. Semaine 4, vos modèles, et le premier livrable du plan."
       },
       {
-        "q": "Pourquoi trois mois minimum ?",
-        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Ensuite, chaque mois, vous décidez de continuer ou non."
+        "q": "Pourquoi trois mois d'engagement ?",
+        "r": "Parce que le premier mois est celui où je travaille le plus, et qu'il faut ce temps pour que le plan commence à produire. Les 30 premiers jours valent période d'essai : si ça ne vous convient pas, vous arrêtez à la fin du premier mois. Après trois mois, vous décidez chaque mois."
+      },
+      {
+        "q": "Je ne sais pas par où commencer ?",
+        "r": "Vous ne voyez pas encore tout ce que je peux faire pour vous : c'est normal. Si vous avez un projet en tête, une campagne, un événement, un projet d'édition, un site à créer, on commence par lui. Les 30 premiers jours valent période d'essai."
       },
       {
         "q": "Et si j'ai une demande hors du plan ?",
@@ -253,27 +260,31 @@
       },
       {
         "q": "Et l'IA dans tout ça ?",
-        "r": "Elle travaille pour moi, pas chez vous. C'est elle qui rend possibles les délais de J+1 à J+3. Mes agents et ma méthode restent dans mon atelier ; ce qu'ils produisent vous appartient. Rien à installer, rien à apprendre de votre côté."
+        "r": "Elle est mon outil de production : c'est elle qui rend possibles les délais de J+1 à J+3, et mes agents restent dans mon atelier. Mais j'accompagne aussi votre propre passage à l'IA. Je vous forme en priorité, vous, le dirigeant : c'est compris dans l'abonnement. Vos commerciaux et vos équipes administratives suivent ensuite, en option."
       },
       {
-        "q": "Comment marche la pause ?",
-        "r": "Après les trois premiers mois, vous mettez en pause quand vous voulez, jusqu'à 60 jours. Le prélèvement s'arrête et votre place vous attend. Au-delà, elle revient à une autre PME : je n'en accompagne que six."
+        "q": "Je peux arrêter puis reprendre ?",
+        "r": "Oui. Après les trois premiers mois, vous arrêtez quand vous voulez et vous reprenez quand vous voulez, pour un mois ou plus. Le prélèvement s'arrête pendant la pause. Pas d'abonnement à faire tourner douze mois sur douze."
       },
       {
         "q": "Que se passe-t-il si j'arrête ?",
-        "r": "Après les trois premiers mois, vous arrêtez à la fin de n'importe quel mois. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
+        "r": "Vous arrêtez à la fin des 30 jours d'essai, ou à la fin de n'importe quel mois après les trois premiers. Vous partez avec tout : contenus, charte, modèles, fichiers sources. Rien n'est retenu, rien n'est coupé."
       },
       {
         "q": "Comment je paie ?",
         "r": "Par prélèvement en début de mois, facture jointe. Votre comptabilité n'a rien à saisir ni à régler à la main."
       },
       {
+        "q": "Nous recrutons un alternant ou un community manager : vous pouvez l'encadrer ?",
+        "r": "Oui. J'encadre les alternants, les community managers et les profils juniors : je fixe le cap, ils exécutent, je relis. Chez un éditeur du secteur santé, j'ai encadré une alternante en communication ; à la fin de son alternance, mon système a pris le relais et délivre ce qu'elle produisait à mi-temps."
+      },
+      {
         "q": "Le marketing est déjà le métier de quelqu'un chez moi ?",
         "r": "Alors cette offre n'est pas pour vous. Elle comble un vide : personne, chez vous, n'est chargé de faire avancer le marketing chaque semaine."
       },
       {
-        "q": "Nous avons plus de 30 salariés ?",
-        "r": "Sur devis. La formule est pensée jusqu'à trente salariés : au-delà, il y a plus de services, plus d'interlocuteurs, et un forfait unique ne suffirait plus. Je préfère vous le dire d'emblée."
+        "q": "Nous avons plus de 50 salariés ?",
+        "r": "Sur devis. La formule est pensée jusqu'à cinquante salariés : au-delà, il y a plus de services, plus d'interlocuteurs, et un forfait unique ne suffirait plus. Je préfère vous le dire d'emblée."
       }
     ]
   },

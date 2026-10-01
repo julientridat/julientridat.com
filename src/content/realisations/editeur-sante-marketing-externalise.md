@@ -30,7 +30,7 @@ livrables:
   - "Produits digitaux, dont un parcours de vente en ligne pour les formations à distance"
   - "Un calendrier éditorial et un tableau de bord partagés"
   - "Le dirigeant formé à l'IA, directement dans ses outils"
-  - "Une alternante en communication encadrée"
+  - "Une alternante en communication encadrée, puis relayée par mon système à la fin de son alternance"
 resultats:
   - chiffre: "2 % → 20 %"
     label: "de taux d'ouverture des e-mails"
@@ -38,7 +38,7 @@ resultats:
     label: "de reconduction mensuelle"
   - chiffre: "30 000"
     label: "contacts remis au propre et relancés"
-bilan: "Quatre ans plus tard, l'accompagnement est toujours reconduit chaque mois. Les e-mails sont passés de 2 % à 20 % d'ouverture, les deux sites ont été refondus et référencés, et le marketing avance sur un calendrier partagé avec l'équipe."
+bilan: "Quatre ans plus tard, l'accompagnement est toujours reconduit chaque mois. Les e-mails sont passés de 2 % à 20 % d'ouverture, les deux sites ont été refondus et référencés, et le marketing avance sur un calendrier partagé avec l'équipe. À la fin de l'alternance, mon système a pris le relais de l'alternante : il délivre ce qu'elle produisait à mi-temps."
 published: true
 sortOrder: 1
 ---
