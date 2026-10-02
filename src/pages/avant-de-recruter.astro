@@ -1,0 +1,230 @@
+---
+/**
+ * Avant de recruter — page d'arrivée de l'ICP 2 (la PME qui recrute un chargé
+ * de communication, décision du 01/10/2026) et des recherches « recruter un
+ * chargé de communication ». Hors du menu : on y arrive par les messages de
+ * prospection, Google, la FAQ de l'accueil et le pied de page.
+ *
+ * Le cœur est l'évaluateur (src/components/react/Evaluateur.tsx) : la fiche de
+ * poste découpée en tâches, le coût réel du poste, les prix des livrables chez
+ * des prestataires (sourcés), le coût d'un recrutement qui échoue.
+ *
+ * Les textes se modifient dans /admin (src/contenu/avant-de-recruter.json),
+ * y compris les verdicts et les prix de chaque famille de livrables.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Eyebrow from "@/components/Eyebrow.astro";
+import CtaButton from "@/components/CtaButton.astro";
+import Footer from "@/components/Footer.astro";
+import Reveal from "@/components/Reveal.astro";
+import Evaluateur, { type Famille } from "@/components/react/Evaluateur";
+import { SITE } from "@/lib/site";
+import contenuJson from "@/contenu/avant-de-recruter.json";
+import { preparer, enLigne, brut } from "@/lib/texte";
+
+const c = preparer(contenuJson);
+const { title, description } = contenuJson.seo;
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    name: title,
+    description,
+    url: `${SITE.url}/avant-de-recruter`,
+    about: { "@id": `${SITE.url}/#service` },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: c.faq.questions.map((item) => ({
+      "@type": "Question",
+      name: brut(item.q),
+      acceptedAnswer: { "@type": "Answer", text: brut(item.r) },
+    })),
+  },
+];
+
+const h2 = "text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]";
+---
+
+<BaseLayout title={title} description={description} canonical={`${SITE.url}/avant-de-recruter`} jsonLd={jsonLd}>
+  <main class="bg-background text-foreground">
+    {/* 1 · Hero */}
+    <section class="relative isolate overflow-hidden bg-foreground text-white">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(45% 60% at 78% 45%, rgba(108,76,241,0.30), transparent 70%), radial-gradient(40% 50% at 10% 0%, rgba(185,166,255,0.10), transparent 70%);"
+      >
+      </div>
+      <Nav onDark />
+      <div class="mx-auto max-w-5xl px-6 pb-20 pt-36 md:px-12 md:pb-24 md:pt-44">
+        <p class="mb-7 w-fit rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-white md:text-[13px]">
+          {c.hero.surtitre}
+        </p>
+        <h1 class="text-[clamp(2.4rem,5.4vw,4.4rem)] font-medium leading-[1.02] tracking-[-0.035em]">
+          <span class="block text-balance">{c.hero.titre}</span>
+          <em class="block font-normal text-violet-soft">{c.hero.titreAccent}</em>
+        </h1>
+        <p
+          class="mt-7 max-w-2xl text-lg leading-relaxed text-white/85 md:text-xl"
+          set:html={enLigne(c.hero.chapo, { fort: "font-medium text-white", accent: "text-violet-soft" })}
+        />
+        <a
+          href="#evaluateur"
+          class="mt-10 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3.5 text-[15px] font-medium text-foreground transition-colors hover:bg-violet-soft"
+        >
+          {c.hero.lien} <span aria-hidden="true">↓</span>
+        </a>
+      </div>
+    </section>
+
+    {/* 2 · L'évaluateur */}
+    <section id="evaluateur" class="scroll-mt-20 border-t border-line px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-5xl">
+        <div data-reveal>
+          <Eyebrow>{c.evaluateur.surtitre}</Eyebrow>
+          <h2 class={h2}>
+            {c.evaluateur.titre}
+            <br />
+            <em class="text-lime">{c.evaluateur.titreAccent}</em>
+          </h2>
+          <p
+            class="mt-6 max-w-2xl text-[15px] leading-relaxed text-ink-3"
+            set:html={enLigne(c.evaluateur.intro, { fort: "font-medium text-foreground", accent: "text-lime" })}
+          />
+        </div>
+        <div class="mt-10">
+          <Evaluateur client:visible familles={c.familles as Famille[]} bouton={c.bouton} />
+        </div>
+      </div>
+    </section>
+
+    {/* 3 · Le vrai coût d'un recrutement */}
+    <section class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-7xl">
+        <div data-reveal>
+          <Eyebrow>{c.pourquoi.surtitre}</Eyebrow>
+          <h2 class={h2}>
+            {c.pourquoi.titre}
+            <br />
+            <em class="text-lime">{c.pourquoi.titreAccent}</em>
+          </h2>
+        </div>
+        <ol class="mt-12 grid gap-4 md:grid-cols-3">
+          {c.pourquoi.points.map((p, i) => (
+            <li data-reveal style={`--reveal-delay: ${i * 80}ms`} class="rounded-3xl border border-line bg-background p-6 md:p-7">
+              <span class="font-serif text-[2.6rem] italic leading-[0.85] text-lime" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+              <h3 class="mt-6 text-xl font-medium text-foreground">{p.titre}</h3>
+              <p class="mt-2 text-base leading-relaxed text-ink-2" set:html={enLigne(p.texte, { fort: "font-medium text-foreground", accent: "text-lime" })} />
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    {/* 4 · Le bras droit */}
+    <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-5xl" data-reveal>
+        <Eyebrow>{c.brasDroit.surtitre}</Eyebrow>
+        <h2 class={h2}>
+          {c.brasDroit.titre}
+          <br />
+          <em class="text-lime">{c.brasDroit.titreAccent}</em>
+        </h2>
+        <p class="mt-8 max-w-3xl text-xl leading-relaxed text-ink-2" set:html={enLigne(c.brasDroit.texte, { fort: "font-medium text-foreground", accent: "text-lime" })} />
+      </div>
+    </section>
+
+    {/* 5 · La souplesse */}
+    <section class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20">
+      <div class="pointer-events-none absolute inset-0 -z-10" style="background: radial-gradient(45% 55% at 30% 55%, rgba(108,76,241,0.28), transparent 70%);"></div>
+      <div class="mx-auto max-w-7xl">
+        <div data-reveal>
+          <Eyebrow onDark>{c.souplesse.surtitre}</Eyebrow>
+          <h2 class={h2}>
+            {c.souplesse.titre}
+            <br />
+            <em class="text-violet-soft">{c.souplesse.titreAccent}</em>
+          </h2>
+        </div>
+        <ul class="mt-12 grid gap-4 md:grid-cols-2">
+          {c.souplesse.points.map((p, i) => (
+            <li data-reveal style={`--reveal-delay: ${i * 70}ms`} class="flex gap-3 rounded-3xl border border-white/10 bg-white/[0.04] p-6 text-base leading-relaxed text-white/80">
+              <span class="text-violet-soft" aria-hidden="true">✓</span>
+              <span set:html={enLigne(p, { fort: "font-medium text-white", accent: "text-violet-soft" })} />
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    {/* 6 · Vous recrutez quand même */}
+    <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-5xl" data-reveal>
+        <Eyebrow>{c.encadrement.surtitre}</Eyebrow>
+        <h2 class={h2}>
+          {c.encadrement.titre}
+          <br />
+          <em class="text-lime">{c.encadrement.titreAccent}</em>
+        </h2>
+        <p
+          class="mt-8 max-w-3xl text-xl leading-relaxed text-ink-2"
+          set:html={enLigne(c.encadrement.texte, { fort: "font-medium text-foreground", accent: "text-lime", lien: "text-foreground underline decoration-lime/40 underline-offset-[6px] hover:text-lime" })}
+        />
+      </div>
+    </section>
+
+    {/* 7 · Questions */}
+    <section id="faq" class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
+      <div class="mx-auto max-w-7xl">
+        <Eyebrow>{c.faq.surtitre}</Eyebrow>
+        <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
+          <h2 data-reveal class={`${h2} md:sticky md:top-24 md:self-start`}>
+            {c.faq.titre} <em class="text-lime">{c.faq.titreAccent}</em>
+          </h2>
+          <div data-reveal style="--reveal-delay: 100ms">
+            {c.faq.questions.map((item, i) => (
+              <details class={`border-t border-line ${i === c.faq.questions.length - 1 ? "border-b" : ""}`}>
+                <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 text-lg font-medium text-foreground transition-colors hover:text-lime md:text-xl">
+                  <span>{item.q}</span>
+                  <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
+                </summary>
+                <p
+                  class="pb-5 text-lg leading-relaxed text-ink-2"
+                  set:html={enLigne(item.r, { fort: "font-medium text-foreground", accent: "text-lime", lien: "underline decoration-lime/40 underline-offset-4 hover:text-lime" })}
+                />
+              </details>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {/* 8 · Clôture */}
+    <section id="contact" class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20">
+      <div class="pointer-events-none absolute inset-0 -z-10" style="background: radial-gradient(58% 90% at 50% 115%, rgba(108,76,241,0.22), transparent 70%);"></div>
+      <div class="mx-auto max-w-4xl text-center">
+        <Eyebrow onDark>{c.cloture.surtitre}</Eyebrow>
+        <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
+          {c.cloture.titre} <em class="text-violet-soft">{c.cloture.titreAccent}</em>
+        </h2>
+        <p class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/80" set:html={enLigne(c.cloture.texte, { fort: "font-medium text-white", accent: "text-violet-soft" })} />
+        <div class="mt-12 flex justify-center">
+          <CtaButton onDark ouvre="diagnostic">{c.bouton}</CtaButton>
+        </div>
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+  <Reveal />
+</BaseLayout>
+
+<style>
+  summary::-webkit-details-marker { display: none; }
+  summary::marker { content: ""; }
+  .faq-marqueur::after { content: "+"; }
+  details[open] .faq-marqueur::after { content: "–"; }
+</style>

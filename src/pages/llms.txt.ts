@@ -67,6 +67,7 @@ export const GET: APIRoute = async () => {
     "## Pages",
     "",
     `- [Accueil](${SITE.url}/) : l'offre, son fonctionnement en deux temps, les prix`,
+    `- [Avant de recruter](${SITE.url}/avant-de-recruter) : pour une PME qui recrute un chargé de communication, un évaluateur de fiche de poste (coût employeur réel, prix des livrables chez des prestataires, coût d'un recrutement qui échoue)`,
     `- [Cas clients](${SITE.url}/realisations) : le registre des transformations`,
     `- [Intégration IA](${SITE.url}/integration-ia) : audit des frictions (1 500 € HT) puis installation d'agents dans les outils existants, pôle par pôle — une équipe 6 000 € HT sur 4 à 6 semaines, deux à trois pôles 12 000 € HT sur 6 à 8 semaines, devis au-delà. Écart avant/après relevé sur trois tâches à huit semaines, par ceux qui les font. Volet formation éligible à une prise en charge OPCO.`,
     `- [IA opérationnelle en agence](${SITE.url}/agences) : verticale de l'offre d'intégration, pour les agences de communication, marketing, brand content et media de 5 à 150 personnes — outils connectés, process refondus, trois à dix agents sur mesure en production, en 60 jours.`,

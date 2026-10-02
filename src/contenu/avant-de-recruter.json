@@ -1,0 +1,261 @@
+{
+  "seo": {
+    "title": "Recruter un chargé de communication ? Comparez avant | Julien Tridat",
+    "description": "Déposez votre fiche de poste : coût réel du poste, prix des livrables achetés à des prestataires, et ce qu'un abonnement de direction marketing livre à la place."
+  },
+  "bouton": "Réserver 20 minutes",
+  "hero": {
+    "surtitre": "PME de 10 à 50 salariés · Bordeaux et à distance",
+    "titre": "Avant de recruter un chargé de communication,",
+    "titreAccent": "comparez.",
+    "chapo": "Vous cherchez un sénior polyvalent avec un budget de junior. Déposez votre fiche de poste, ou répondez à quelques questions : je vous montre ce que le poste coûte vraiment, ce que ses livrables coûteraient achetés à des prestataires, et ce que je livre à la place, chaque semaine.",
+    "lien": "Évaluer ma fiche de poste"
+  },
+  "evaluateur": {
+    "surtitre": "L'évaluateur",
+    "titre": "Votre fiche de poste,",
+    "titreAccent": "tâche par tâche.",
+    "intro": "Votre fiche est analysée puis oubliée : elle n'est conservée que si vous réservez un rendez-vous, et dans ce cas elle m'est transmise avec votre demande."
+  },
+  "familles": [
+    {
+      "id": "strategie",
+      "nom": "Stratégie et plan marketing",
+      "verdict": "inclus",
+      "livraison": "Le plan sur douze mois au mois de démarrage, puis tenu chaque semaine.",
+      "prixBas": 587,
+      "prixHaut": 744,
+      "unite": "jour",
+      "prixLibelle": "consultant marketing (587 €) ou en stratégie (744 €), freelance",
+      "source": "Baromètre Malt 2026",
+      "sourceUrl": "https://www.malt.fr/t/barometre-tarifs/marketing/consultant-marketing"
+    },
+    {
+      "id": "site",
+      "nom": "Site internet",
+      "verdict": "inclus",
+      "livraison": "Créé ou refondu dans mes livraisons de la semaine, puis tenu à jour.",
+      "prixBas": 2000,
+      "prixHaut": 8000,
+      "unite": "ponctuel",
+      "prixLibelle": "site vitrine créé par une agence (médiane 3 500 €, 380 projets)",
+      "source": "La Fabrique du Net, janvier 2026",
+      "sourceUrl": "https://www.lafabriquedunet.fr/agences/pages/agences-site-internet/tarifs"
+    },
+    {
+      "id": "contenus",
+      "nom": "Contenus web et blog",
+      "verdict": "inclus",
+      "livraison": "Articles, pages et newsletters éditoriales, au rythme du plan.",
+      "prixBas": 373,
+      "prixHaut": 373,
+      "unite": "jour",
+      "prixLibelle": "rédacteur web freelance, taux journalier moyen",
+      "source": "Baromètre Malt 2026",
+      "sourceUrl": "https://www.malt.fr/t/barometre-tarifs/communication/redacteur-web"
+    },
+    {
+      "id": "reseaux",
+      "nom": "Réseaux sociaux",
+      "verdict": "inclus",
+      "livraison": "Publications préparées et programmées chaque semaine.",
+      "prixBas": 900,
+      "prixHaut": 1500,
+      "unite": "mois",
+      "prixLibelle": "community management externalisé, 2 à 3 réseaux",
+      "source": "La Fabrique du Net, juillet 2026",
+      "sourceUrl": "https://www.lafabriquedunet.fr/agences/tendances/tarif-community-manager-couts-et-prestations-types"
+    },
+    {
+      "id": "emailing",
+      "nom": "E-mailing et relances",
+      "verdict": "inclus",
+      "livraison": "Campagnes et relances conçues, envoyées et suivies.",
+      "prixBas": 300,
+      "prixHaut": 500,
+      "unite": "campagne",
+      "prixLibelle": "campagne d'e-mailing conçue par un freelance",
+      "source": "La Fabrique du Net, juillet 2026",
+      "sourceUrl": "https://www.lafabriquedunet.fr/logiciels/tendances/quel-est-le-cout-dune-campagne-emailing-postes-de-cout-ordres-de-grandeur"
+    },
+    {
+      "id": "supports",
+      "nom": "Supports commerciaux",
+      "verdict": "inclus",
+      "livraison": "Plaquettes, présentations, devis : vos modèles, puis chaque déclinaison.",
+      "prixBas": 402,
+      "prixHaut": 402,
+      "unite": "jour",
+      "prixLibelle": "graphiste freelance, taux journalier moyen",
+      "source": "Baromètre Malt 2026",
+      "sourceUrl": "https://www.malt.fr/t/barometre-tarifs/web-graphic-design/graphiste"
+    },
+    {
+      "id": "identite",
+      "nom": "Identité visuelle",
+      "verdict": "inclus",
+      "livraison": "Votre charte remise en cohérence au mois de démarrage.",
+      "prixBas": 5000,
+      "prixHaut": 15000,
+      "unite": "ponctuel",
+      "prixLibelle": "logo et identité par une agence (médiane PME 10 000 €)",
+      "source": "La Fabrique du Net, février 2026",
+      "sourceUrl": "https://www.lafabriquedunet.fr/agences/pages/agences-branding/tarifs"
+    },
+    {
+      "id": "publicite",
+      "nom": "Publicité en ligne",
+      "verdict": "inclus",
+      "livraison": "Campagnes Google et Meta préparées et suivies, budget publicitaire en plus.",
+      "prixBas": 1700,
+      "prixHaut": 2700,
+      "unite": "mois",
+      "prixLibelle": "gestion de campagnes par une agence, hors budget publicitaire",
+      "source": "La Fabrique du Net, janvier 2026",
+      "sourceUrl": "https://www.lafabriquedunet.fr/agences/pages/agences-sea/tarifs"
+    },
+    {
+      "id": "evenement",
+      "nom": "Événements",
+      "verdict": "partiel",
+      "livraison": "La communication de l'événement est incluse ; la logistique sur place ne l'est pas.",
+      "prixBas": 5000,
+      "prixHaut": 10000,
+      "unite": "ponctuel",
+      "prixLibelle": "honoraires d'agence pour un événement léger, hors lieu et traiteur",
+      "source": "La Fabrique du Net, janvier 2026",
+      "sourceUrl": "https://www.lafabriquedunet.fr/agences/pages/agences-evenementiel/tarifs"
+    },
+    {
+      "id": "relations_presse",
+      "nom": "Relations presse et partenaires",
+      "verdict": "inclus",
+      "livraison": "Communiqués, dossiers de presse et prises de contact préparés.",
+      "prixBas": 531,
+      "prixHaut": 531,
+      "unite": "jour",
+      "prixLibelle": "consultant en communication freelance, taux journalier moyen",
+      "source": "Baromètre Malt 2026",
+      "sourceUrl": "https://www.malt.fr/t/barometre-tarifs/communication/consultant-en-communication"
+    },
+    {
+      "id": "photo_video",
+      "nom": "Photo et vidéo",
+      "verdict": "partiel",
+      "livraison": "Visuels et montages inclus ; les tournages sur place ne le sont pas.",
+      "prixBas": null,
+      "prixHaut": null,
+      "unite": "ponctuel",
+      "prixLibelle": "",
+      "source": "",
+      "sourceUrl": ""
+    },
+    {
+      "id": "crm",
+      "nom": "CRM et fichier clients",
+      "verdict": "inclus",
+      "livraison": "Fichier remis au propre, relances branchées, tableau de bord partagé.",
+      "prixBas": null,
+      "prixHaut": null,
+      "unite": "ponctuel",
+      "prixLibelle": "",
+      "source": "",
+      "sourceUrl": ""
+    },
+    {
+      "id": "formation",
+      "nom": "Formation et accompagnement des équipes",
+      "verdict": "option",
+      "livraison": "Vous, dirigeant, êtes formé à l'IA en priorité, c'est compris. Vos équipes : en option.",
+      "prixBas": 1500,
+      "prixHaut": 2000,
+      "unite": "jour",
+      "prixLibelle": "formation IA en intra, par jour et par groupe",
+      "source": "Relevé de catalogues d'organismes, août 2026",
+      "sourceUrl": "https://tensoria.fr/blog/prix-formation-ia-entreprise"
+    },
+    {
+      "id": "hors_marketing",
+      "nom": "Tâches hors marketing",
+      "verdict": "hors",
+      "livraison": "Accueil, secrétariat, logistique : ce n'est pas mon métier, et je préfère vous le dire.",
+      "prixBas": null,
+      "prixHaut": null,
+      "unite": "ponctuel",
+      "prixLibelle": "",
+      "source": "",
+      "sourceUrl": ""
+    }
+  ],
+  "pourquoi": {
+    "surtitre": "Le vrai coût d'un recrutement",
+    "titre": "Un sénior polyvalent,",
+    "titreAccent": "avec un budget de junior.",
+    "points": [
+      {
+        "titre": "Des semaines à recruter.",
+        "texte": "Pour un poste de cadre, un recrutement prend en moyenne 12 semaines (Apec, 2026). Pendant ce temps, votre marketing attend."
+      },
+      {
+        "titre": "Une période d'essai à ne pas rater.",
+        "texte": "Un CDI d'employé a deux mois d'essai, renouvelables une fois si votre convention le prévoit. Une alternance, 45 jours en entreprise : après, on ne revient plus en arrière."
+      },
+      {
+        "titre": "Quelqu'un pour l'encadrer.",
+        "texte": "Un junior exécute. Il lui faut un cap, des relectures, des arbitrages : ce temps-là, c'est le vôtre."
+      }
+    ]
+  },
+  "brasDroit": {
+    "surtitre": "Ce que vous recrutez vraiment",
+    "titre": "Je deviens le bras droit",
+    "titreAccent": "stratégique du dirigeant.",
+    "texte": "Celui qui conçoit votre stratégie produit aussi vos livrables : chaque semaine, ceux que prévoit la mission, à date, avec un point régulier. Et j'accompagne votre passage à l'IA : je vous forme en priorité, vous, le dirigeant ; vos commerciaux et vos équipes administratives suivent, en option."
+  },
+  "souplesse": {
+    "surtitre": "Sans vous enfermer",
+    "titre": "Plus souple",
+    "titreAccent": "qu'un contrat de travail.",
+    "points": [
+      "**30 jours d'essai.** À la fin du premier mois, vous arrêtez si ça ne vous convient pas.",
+      "**Après trois mois, vous arrêtez et reprenez quand vous voulez,** pour un mois ou plus.",
+      "**Pas d'abonnement à faire tourner douze mois sur douze.** Une fois dans le système, vous revenez pour un mois quand vous en avez besoin.",
+      "**Vous ne savez pas par où commencer ?** On part d'un projet que vous avez en tête : une campagne, un événement, un site."
+    ]
+  },
+  "encadrement": {
+    "surtitre": "Vous recrutez quand même ?",
+    "titre": "J'encadre votre alternant,",
+    "titreAccent": "votre community manager.",
+    "texte": "Je fixe le cap, ils exécutent, je relis. Chez un éditeur du secteur santé, j'ai encadré une alternante en communication ; à la fin de son alternance, mon système a pris le relais et délivre ce qu'elle produisait à mi-temps. [Lire l'étude de cas](/realisations/editeur-sante-marketing-externalise)"
+  },
+  "faq": {
+    "surtitre": "Questions",
+    "titre": "Ce que vous alliez",
+    "titreAccent": "me demander.",
+    "questions": [
+      {
+        "q": "Une alternance coûte moins cher, non ?",
+        "r": "Oui, nettement : souvent moins de 1 000 € par mois, aides déduites. Mais vous recrutez un junior, présent une partie du temps, qu'il faut encadrer, et dont le contrat ne se rompt plus librement après 45 jours en entreprise. Si vous la recrutez quand même, je peux l'encadrer."
+      },
+      {
+        "q": "Mon annonce est en ligne depuis des semaines. Il est trop tard ?",
+        "r": "Non : c'est même le bon moment pour comparer. Vous pouvez démarrer le mois prochain, avec 30 jours d'essai."
+      },
+      {
+        "q": "Que devient ma fiche de poste ?",
+        "r": "Elle est analysée puis oubliée. Elle n'est conservée que si vous réservez un rendez-vous : elle m'est alors transmise avec votre demande, et sert à préparer notre échange."
+      },
+      {
+        "q": "D'où viennent les chiffres ?",
+        "r": "Le coût employeur est calculé avec les règles Urssaf 2026, y compris la réduction de cotisations sur les bas salaires, sans le versement mobilité : le coût réel est donc un peu plus élevé. Les prix des prestataires viennent du baromètre Malt 2026 et des budgets publiés par La Fabrique du Net ; chaque source est citée à côté de son chiffre."
+      }
+    ]
+  },
+  "cloture": {
+    "surtitre": "Prochaine étape",
+    "titre": "Vingt minutes.",
+    "titreAccent": "Avant de signer quoi que ce soit.",
+    "texte": "Vous me montrez votre fiche de poste. Je vous dis ce que je peux livrer à la place, et si la réponse est non, je vous le dis aussi."
+  }
+}

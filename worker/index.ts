@@ -15,6 +15,7 @@ import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
 import { autoriser, pageConnecteur, type EnvAutorisation } from "./autorisation";
 import { redirectionCanonique } from "./canonique";
 import { servirCms, type EnvCms } from "./cms";
+import { analyserFiche } from "./evaluateur";
 import { servirMcp } from "./mcp";
 import type { EnvTableau } from "./tableau";
 
@@ -1066,6 +1067,35 @@ async function handleExperience(request: Request, env: Env): Promise<Response> {
   return response;
 }
 
+/** /avant-de-recruter : découpe une fiche de poste en tâches (worker/evaluateur.ts). */
+const MAX_FICHE_CHARS = 30_000;
+const MAX_PDF_BASE64 = 6_000_000; // ~4,5 Mo de PDF
+async function handleEvaluerPoste(request: Request, env: Env): Promise<Response> {
+  if (request.method === "GET") return Response.json({ ok: !!env.ANTHROPIC_API_KEY });
+  if (request.method !== "POST") return new Response("Méthode non autorisée", { status: 405 });
+  if (!allowedOrigin(request)) return new Response("Origine refusée", { status: 403 });
+  if (!env.ANTHROPIC_API_KEY) return Response.json({ erreur: "indisponible" }, { status: 503 });
+  if (await rateLimited(request)) return Response.json({ erreur: "trop" }, { status: 429 });
+  const raw = await request.text();
+  if (raw.length > MAX_PDF_BASE64 + 1000) return Response.json({ erreur: "trop-long" }, { status: 413 });
+  let texte = "";
+  let pdf = "";
+  try {
+    const corps = JSON.parse(raw) as { texte?: unknown; pdf?: unknown };
+    texte = String(corps.texte ?? "").trim();
+    pdf = typeof corps.pdf === "string" && /^[A-Za-z0-9+/=]+$/.test(corps.pdf) ? corps.pdf : "";
+  } catch {
+    return Response.json({ erreur: "format" }, { status: 400 });
+  }
+  if (!pdf && texte.length < 80) return Response.json({ erreur: "trop-court" }, { status: 400 });
+  try {
+    const analyse = await analyserFiche(env, pdf ? { pdf } : { texte: texte.slice(0, MAX_FICHE_CHARS) });
+    return Response.json({ analyse }, { headers: { "Cache-Control": "no-store" } });
+  } catch {
+    return Response.json({ erreur: "illisible" }, { status: 502 });
+  }
+}
+
 /** Le tableau client : toutes les places vivent dans un seul Durable Object. */
 function handleTableau(request: Request, env: Env): Response | Promise<Response> {
   if (!env.TABLEAU) return new Response("Tableau non configuré.", { status: 503 });
@@ -1093,6 +1123,7 @@ const site = {
       );
     }
     if (url.pathname === "/authorize") return autoriser(request, env);
+    if (url.pathname === "/api/evaluer-poste") return handleEvaluerPoste(request, env);
     // Connexion GitHub de l'outil d'édition /admin (worker/cms.ts).
     if (url.pathname === "/cms/auth" || url.pathname === "/cms/callback") return servirCms(request, env);
     return env.ASSETS.fetch(request);
