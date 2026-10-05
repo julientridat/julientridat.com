@@ -723,6 +723,18 @@ collections:
               - { name: titreApresAccent, label: "Grand titre — ligne 3, après l'italique", widget: string, hint: "Commence par la ponctuation, ex. « , pas en deux ans. »" }
               - { name: chapo, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
               - { name: mention, label: Petite ligne à côté du bouton, widget: string }
+          - name: references
+            label: 1 bis. Agences accompagnées (noms cités)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titre, label: Titre du bandeau, widget: string }
+              - name: noms
+                label: Les agences
+                widget: list
+                hint: "Noms cités tels quels. Les études de cas, plus bas, restent anonymes : ne les rattachez à aucune carte."
+                field: { name: nom, label: Agence, widget: string }
+              - { name: note, label: Petite mention sous la liste, widget: string, required: false }
           - name: constat
             label: 2. Le constat
             widget: object

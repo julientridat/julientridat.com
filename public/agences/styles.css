@@ -562,6 +562,46 @@ button.btn { border: 0; font-family: inherit; cursor: pointer; }
   padding: 0.5rem 1.05rem;
 }
 
+/* Références : les agences accompagnées, en noms typographiés (pas de logos à
+   licencier, et le texte reste lisible par les moteurs). Les cas, eux, sont
+   anonymes. */
+.refs {
+  background: var(--white);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 2.2rem 0 2.4rem;
+}
+.refs-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1rem;
+}
+.refs-label {
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--violet);
+}
+.refs ul {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.9rem;
+}
+.refs li {
+  font-size: clamp(1.02rem, 1.5vw, 1.22rem);
+  font-weight: 500;
+  letter-spacing: -0.015em;
+  color: var(--ink-soft);
+  white-space: nowrap;
+}
+.refs-note { font-size: 0.85rem; color: var(--ink-soft); }
+@media (min-width: 900px) {
+  .refs-grid { grid-template-columns: 13rem minmax(0, 1fr); column-gap: 2.5rem; align-items: baseline; }
+  .refs-note { grid-column: 2; }
+}
+
 /* Timeline */
 
 .timeline {

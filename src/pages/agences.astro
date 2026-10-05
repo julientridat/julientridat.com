@@ -121,6 +121,20 @@ const jsonLd = [
       </div>
     </section>
 
+    {/* ===================================================== RÉFÉRENCES
+        Les agences accompagnées, nommées (accord de Julien du 05/10/2026).
+        Les cas présentés plus bas restent anonymes : aucun nom n'y est
+        rattaché à une carte. */}
+    <section class="refs" aria-labelledby="refs-titre">
+      <div class="container refs-grid">
+        <p class="refs-label" id="refs-titre">{c.references.titre}</p>
+        <ul>
+          {c.references.noms.map((n) => <li>{n}</li>)}
+        </ul>
+        {c.references.note && <p class="refs-note">{c.references.note}</p>}
+      </div>
+    </section>
+
     {/* ==================================================== 01 LE CONSTAT */}
     <section class="section" id="constat">
       <div class="container narrow">
