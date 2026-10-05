@@ -247,9 +247,17 @@ par le serveur sinon) ; les tâches de l'équipe, c'est Julien qui les coche.
 sinon la fin du mois de sa carte), modifiable d'un clic sur la carte ; chaque coche garde son
 jour ; la période d'une carte se déduit de ses sous-tâches et remplace l'échéance affichée.
 
-**Reste à faire (lot 3, côté Julien)** — la vue Planning (une barre par carte, un point par
-sous-tâche, aujourd'hui marqué), le filtre par mois sur la période des cartes, l'avancement par
-mois et par chantier, « Ma semaine » tirée des dates des sous-tâches.
+**Côté Julien (lot 3)** — dans une place, « Colonnes / Planning » (le choix est retenu) :
+- **le Planning** : une ligne par carte, une barre de sa première à sa dernière sous-tâche, un point
+  par sous-tâche (plein : fait ; cerclé de violet : chez le client ; rouge : en retard), aujourd'hui
+  marqué, toute la période ; les filtres de la barre choisissent les cartes ; un clic ouvre la carte ;
+- dessous, **l'avancement par mois et par chantier** (ce qui était daté dans le mois, et ce qui en
+  est fait), le mois en cours surligné ; la tuile de la vue d'ensemble et le panneau d'un projet
+  disent « Octobre : 6 sur 64 · période : 7 sur 109 » plutôt qu'un pourcentage sur l'année ;
+- **le filtre par mois suit la période** : une carte apparaît dans chaque mois qu'elle couvre, ses
+  sous-tâches du mois devant, les autres repliées ; le tri des colonnes suit le début de la période ;
+- **Ma semaine** : « Ce que vous attendez des clients » (leurs questions, leurs tâches de la
+  semaine) ; « plus tard » se limite aux deux semaines suivantes, le reste est au planning.
 
 ## La console — l'interface de Julien
 
