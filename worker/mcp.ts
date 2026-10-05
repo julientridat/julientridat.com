@@ -415,7 +415,7 @@ function creerServeur(stub: Stub): McpServer {
     {
       title: "Ajouter des sous-tâches",
       description:
-        "Ajoute des sous-tâches à une carte, sans doublon (même titre ignoré). Responsable : « Julien », ou un prénom de la place (voir lire_place) ; une sous-tâche confiée au client apparaît dans son « Chez vous » quand elle est du moment.",
+        "Ajoute des sous-tâches à une carte, sans doublon. Une sous-tâche du même titre n’est pas recréée : la date ou le responsable donnés la mettent à jour. Responsable : « Julien », ou un prénom de la place (voir lire_place) ; une sous-tâche confiée au client apparaît dans son « Chez vous » quand elle est du moment.",
       inputSchema: {
         carte: z.string(),
         sous_taches: z
@@ -430,15 +430,24 @@ function creerServeur(stub: Stub): McpServer {
       const { c, cl } = trouverCarte(etat, a.carte);
       const liste = c.st.map((k) => ({ ...k }));
       let ajoutees = 0;
+      let majs = 0;
       for (const s of a.sous_taches) {
-        if (liste.some((k) => norme(k.t) === norme(s.titre))) continue;
-        const qui = s.responsable ? responsable(etat, cl, s.responsable) : "";
-        liste.push({ id: crypto.randomUUID().slice(0, 8), t: s.titre, ok: false, qui, date: s.date ?? "" });
+        const qui = s.responsable ? responsable(etat, cl, s.responsable) : undefined;
+        const deja = liste.find((k) => norme(k.t) === norme(s.titre));
+        if (deja) {
+          // Même titre : rien n'est recréé ; une date ou un responsable donnés la mettent à jour.
+          const avant = deja.date + "|" + deja.qui;
+          if (s.date) deja.date = s.date;
+          if (qui !== undefined) deja.qui = qui;
+          if (deja.date + "|" + deja.qui !== avant) majs++;
+          continue;
+        }
+        liste.push({ id: crypto.randomUUID().slice(0, 8), t: s.titre, ok: false, qui: qui ?? "", date: s.date ?? "" });
         ajoutees++;
       }
-      if (!ajoutees) return `Aucune sous-tâche nouvelle : « ${c.t} » les a déjà.`;
+      if (!ajoutees && !majs) return `Rien de nouveau : « ${c.t} » a déjà ces sous-tâches, avec ces dates.`;
       await geste({ type: "carte.maj", id: c.id, champs: { st: liste } });
-      return `${ajoutees} sous-tâche(s) ajoutée(s) à « ${c.t} » (${cl.nom}).`;
+      return `« ${c.t} » (${cl.nom}) : ${ajoutees} sous-tâche(s) ajoutée(s), ${majs} mise(s) à jour.`;
     },
   );
 
