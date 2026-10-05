@@ -223,6 +223,34 @@ statut, « Chez le client » est une `actions_client`.
 « process » avec sa frise animée) et la console à trois écrans, ou seulement la console ?
 La maquette permet de comparer les deux faces au même endroit.
 
+## Octobre 2026 — la page du client et les dates (refonte de la lisibilité)
+
+Retours de Julien sur LEH (5 octobre) : côté client, « foutraque » — les tâches à cocher
+dispersées dans toutes les colonnes, le fait et le reste à faire peu lisibles, une carte rangée
+dans un seul mois alors que ses sous-tâches courent sur plusieurs. Maquette validée le même jour
+(artefact « Refonte du tableau LEH »), puis trois lots.
+
+**Ce que voit le client** — plus de colonnes. Trois blocs et une frise :
+1. **Fait par Julien**, ces sept derniers jours (glissants : un lundi matin n'est pas vide),
+   par chantier, livrables avec leur lien ;
+2. **À faire par vous**, cette semaine : les questions de Julien (Répondre, Valider, trancher),
+   puis ses tâches à cocher ; celles de son équipe se lisent, avec le prénom, sans case ;
+3. **Ce qui attend Julien**, cette semaine, jour par jour ;
+4. **la frise du mois** : chaque carte de sa première à sa dernière sous-tâche, ses tâches en
+   violet, un mois à la fois (flèches), dans les bornes de la période.
+Il garde la demande en une ligne et la discussion. Il n'agit que sur ce qui le concerne.
+
+**Règle de coche** — chez le client, chacun ne coche que ce qui lui est confié à lui (refusé
+par le serveur sinon) ; les tâches de l'équipe, c'est Julien qui les coche.
+
+**Les dates** — chaque sous-tâche a sa date (reprise d'octobre 2026 : la date de la carte,
+sinon la fin du mois de sa carte), modifiable d'un clic sur la carte ; chaque coche garde son
+jour ; la période d'une carte se déduit de ses sous-tâches et remplace l'échéance affichée.
+
+**Reste à faire (lot 3, côté Julien)** — la vue Planning (une barre par carte, un point par
+sous-tâche, aujourd'hui marqué), le filtre par mois sur la période des cartes, l'avancement par
+mois et par chantier, « Ma semaine » tirée des dates des sous-tâches.
+
 ## La console — l'interface de Julien
 
 Maquette cliquable : [`console.html`](console.html) — trois écrans (En cours, Le point, La place), état simulé au lundi 12 octobre, gestes fonctionnels. Spécification issue d'un panel de trois approches (miroir éditable, bannette, rituel du lundi) jugées par trois lentilles (Julien, le client, l'architecte) — « Le Lundi » retenue à l'unanimité, greffée des meilleures idées des deux autres.
