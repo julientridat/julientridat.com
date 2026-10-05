@@ -89,13 +89,14 @@ personne qui a un lien) et une date — ou les étapes type proposées d'après 
 validation, V1…). La carte montre « ✓ 2/4 », « 1 au client », « sous-tâche en retard ».
 Une sous-tâche confiée au client apparaît dans son « Chez vous » (« Vos tâches ») et compte
 dans « … chez vous » quand elle est du moment — sa carte est en cours ou chez lui, ou sa
-date tombe dans les deux semaines (ou est passée) ; les autres attendent sur leur carte ; c'est lui qui la coche, Julien le voit à l'instant. Il ne peut pas
-cocher celles de Julien (refusé par le serveur). Les étapes d'avant sont devenues des
+date tombe dans les deux semaines (ou est passée) ; les autres attendent sur leur carte. Chacun ne
+coche que les tâches qui lui sont confiées à lui, Julien le voit à l'instant : ni celles de Julien,
+ni celles d'un collègue (refusé par le serveur). Les étapes d'avant sont devenues des
 sous-tâches, cases comprises.
 
 **L'équipe du client** (Réglages de la place → « Équipe — sans lien ») : des prénoms qui
-portent des sous-tâches sans ouvrir le tableau. Le contact voit leurs tâches dans « Vos
-tâches », avec le prénom, et les coche pour eux. Retirer un nom laisse ses sous-tâches en
+portent des sous-tâches sans ouvrir le tableau. Le contact voit leurs tâches dans « Chez vous »,
+avec le prénom, sans pouvoir les cocher : c'est Julien qui les coche. Retirer un nom laisse ses sous-tâches en
 place, sans responsable. Dans un plan collé : `- Sous-tâche (Magali, 15/10)`. Depuis Claude :
 « ajoute Magali à l'équipe LEH ».
 
@@ -160,14 +161,18 @@ tableaux ouverts et porte la mention `via: claude` dans le journal (export, webh
 3. Dans une conversation, active « Le tableau » dans le menu des outils.
 
 **Ce que Claude fait seul** : consulter (places, cartes, projets, Ma semaine, discussion) ;
-créer et modifier des cartes, ajouter et cocher des sous-tâches, commenter, coller un plan
-(qui complète les cartes existantes), fixer l'objectif et les dates clés d'un projet.
+créer et modifier des cartes ; ajouter, cocher et modifier des sous-tâches (réattribuer,
+changer la date ou le titre) ; commenter ; coller un plan (qui complète les cartes
+existantes) ; créer un projet, le renommer, fixer son objectif et ses dates clés.
 
 **Ce qu'il ne fait que si tu le lui demandes** : écrire au client (message dans la
-discussion) ou envoyer une carte « Chez le client ». Tout ce qui est dans une place reste
-visible du client : ses consignes le lui rappellent.
+discussion), envoyer une carte « Chez le client », supprimer une sous-tâche. Tout ce qui est
+dans une place reste visible du client : ses consignes le lui rappellent.
 
-**Ce qu'il ne fait pas** : supprimer quoi que ce soit, voir les liens et les clés d'accès.
+**Ce qu'il ne fait pas** : supprimer une carte ou un projet, voir les liens et les clés d'accès.
+
+Après une mise à jour du connecteur, une conversation déjà ouverte garde l'ancienne liste
+d'outils : ouvre une nouvelle conversation pour avoir les nouveaux.
 
 **Retirer l'accès** : changer `TABLEAU_ADMIN_KEY` (secret Cloudflare) coupe tout accès
 accordé à Claude — il faudra reconnecter le connecteur, et rouvrir le tableau avec le

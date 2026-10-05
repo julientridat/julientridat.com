@@ -106,6 +106,8 @@ interface SousTache {
   qui: string;
   /** AAAA-MM-JJ, ou vide. */
   date: string;
+  /** Quand elle a été cochée (ms) : « fait par Julien ces sept derniers jours ». */
+  fait?: number;
 }
 
 // Un type (et non une interface) : les lignes SQL typées exigent une signature indexable.
@@ -198,6 +200,31 @@ const norme = (t: string) =>
     .trim()
     .toLowerCase();
 const DATE_ISO = /^\d{4}-\d{2}-\d{2}$/;
+const MOIS_NOMS = ["janvier", "fevrier", "mars", "avril", "mai", "juin", "juillet", "aout", "septembre", "octobre", "novembre", "decembre"];
+
+/** Le dernier jour d'un mois (mois de 0 à 11), en AAAA-MM-JJ. */
+function finDeMois(annee: number, mois: number): string {
+  const d = new Date(Date.UTC(annee, mois + 1, 0));
+  return d.toISOString().slice(0, 10);
+}
+
+/**
+ * La date que prend une sous-tâche sans date : celle de sa carte, sinon la fin du mois de sa carte
+ * (le mois nommé dans son échéance ; l'année, celle du début de la période ou la suivante), sinon
+ * la fin du mois en cours.
+ */
+export function dateParDefaut(c: { date?: string; echeance: string }, cl: { debut: string } | undefined, aujourdhui: Date): string {
+  if (c.date && DATE_ISO.test(c.date)) return c.date;
+  const e = c.echeance
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase();
+  const m = MOIS_NOMS.findIndex((nom) => new RegExp("\\b" + nom + "\\b").test(e));
+  if (m < 0) return finDeMois(aujourdhui.getUTCFullYear(), aujourdhui.getUTCMonth());
+  const base = cl && DATE_ISO.test(cl.debut) ? new Date(cl.debut + "T12:00:00Z") : aujourdhui;
+  const annee = base.getUTCFullYear() + (m < base.getUTCMonth() ? 1 : 0);
+  return finDeMois(annee, m);
+}
 
 /** Une carte d'avant les sous-tâches : ses étapes deviennent des sous-tâches sans responsable. */
 function normaliser(c: Carte): Carte {
@@ -294,6 +321,55 @@ export class Tableau extends DurableObject<EnvTableau> {
       // … et les réglages du tableau lui-même (la paire de clés VAPID).
       this.sql.exec("CREATE TABLE IF NOT EXISTS reglages (cle TEXT PRIMARY KEY, valeur TEXT NOT NULL)");
       this.sql.exec("INSERT INTO schema_version (v) VALUES (3)");
+    }
+    if (v < 4) {
+      this.reprendreDates();
+      this.sql.exec("INSERT INTO schema_version (v) VALUES (4)");
+    }
+  }
+
+  /**
+   * v4 — chaque sous-tâche a une date, et chaque coche son jour.
+   * - Une sous-tâche sans date prend la date de sa carte, sinon la fin du mois de sa carte (son
+   *   échéance, l'année tirée du début de la période), sinon la fin du mois en cours. Les
+   *   demandes, le point mensuel et ce qui est fait ne sont pas touchés. Modifiable ensuite.
+   * - Une sous-tâche déjà cochée retrouve son jour de coche dans le journal, quand il y est.
+   */
+  private reprendreDates(): void {
+    const coches = new Map<string, number>();
+    for (const r of this.sql.exec<{ ts: number; carte: string | null; detail: string | null }>("SELECT ts, carte, detail FROM evenements WHERE type = 'sous-tache' ORDER BY id").toArray()) {
+      if (!r.carte || !r.detail) continue;
+      try {
+        const d = JSON.parse(r.detail) as { sousTache?: string; faite?: boolean };
+        if (!d.sousTache) continue;
+        const k = r.carte + "\u0000" + norme(d.sousTache);
+        if (d.faite) coches.set(k, r.ts);
+        else coches.delete(k);
+      } catch {
+        /* une ligne illisible ne bloque pas la reprise */
+      }
+    }
+    const clients = new Map(this.clients().map((c) => [c.id, c]));
+    const aujourdhui = new Date();
+    for (const c of this.cartes()) {
+      if (!c.st.length) continue;
+      const garder = c.col === "demandes" || c.col === "mensuel" || c.col === "fait";
+      const defaut = dateParDefaut(c, clients.get(c.client), aujourdhui);
+      let change = false;
+      for (const x of c.st) {
+        if (!x.date && !garder) {
+          x.date = defaut;
+          change = true;
+        }
+        if (x.ok && !x.fait) {
+          const ts = coches.get(c.id + "\u0000" + norme(x.t));
+          if (ts) {
+            x.fait = ts;
+            change = true;
+          }
+        }
+      }
+      if (change) this.sql.exec("UPDATE cartes SET data = ? WHERE id = ?", JSON.stringify(c), c.id);
     }
   }
 
@@ -967,7 +1043,13 @@ export class Tableau extends DurableObject<EnvTableau> {
         if ("livrable" in ch) c.livrable = ch.livrable === true;
         if ("lien" in ch) c.lien = lienSur(ch.lien);
         if ("ch" in ch) c.ch = typeof ch.ch === "string" && cl?.chantiers.some((x) => x.id === ch.ch) ? ch.ch : null;
-        if ("st" in ch && cl) c.st = this.sousTaches(ch.st, cl);
+        if ("st" in ch && cl) {
+          const avant = new Map(c.st.map((x) => [x.id, x]));
+          c.st = this.sousTaches(ch.st, cl).map((x) => {
+            const a = avant.get(x.id);
+            return x.ok ? { ...x, fait: a?.ok ? a.fait : Date.now() } : x;
+          });
+        }
         if ("action" in ch) c.action = ch.action === "valider" || ch.action === "repondre" || ch.action === "arbitrer" ? ch.action : null;
         if ("a" in ch) c.a = texte(ch.a, 160);
         if ("b" in ch) c.b = texte(ch.b, 160);
@@ -1016,16 +1098,20 @@ export class Tableau extends DurableObject<EnvTableau> {
         return null;
       }
       case "carte.cocher": {
-        // Julien coche tout ; le client, ce qui est confié à quelqu'un de chez lui.
+        // Julien coche tout ; une personne de chez le client, seulement ce qui lui est confié à elle.
         const c = carteVisible(op.id);
         const x = c.st.find((k) => k.id === op.st);
         if (!x) throw new Refus("Cette sous-tâche n’existe plus.");
         if (!julien) {
           this.placeActive(c.client);
           if (!x.qui || x.qui === "Julien") throw new Refus("Cette sous-tâche est du côté de Julien.");
+          if (norme(x.qui) !== norme(session.nom)) throw new Refus(`Cette tâche est confiée à ${x.qui} : vous ne cochez que les vôtres.`);
           c.nouveau = "julien";
         }
-        x.ok = op.ok === true;
+        const ok = op.ok === true;
+        if (ok && !x.ok) x.fait = Date.now();
+        if (!ok) delete x.fait;
+        x.ok = ok;
         this.ecrireCarte(c);
         this.journal(session, "sous-tache", c.client, c, { sousTache: x.t, faite: x.ok, qui: x.qui });
         return null;

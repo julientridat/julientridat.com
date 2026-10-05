@@ -32,11 +32,11 @@ const ORDRE = ["demandes", "prevu", "encours", "vous", "fait", "mensuel"];
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const INSTRUCTIONS = `Le tableau de Julien Tridat (julientridat.com/tableau), partagé en direct avec ses clients.
-Une « place » par client. Dans une place : des cartes en colonnes — Demandes, Prévu, En cours, Chez le client (« vous » : le client doit répondre ou valider), Fait, Point mensuel — ; des projets (les chantiers) avec objectif, dates clés et fil de discussion ; des sous-tâches sur les cartes, avec un responsable (« Julien » ou un prénom de la place : le contact, son équipe, les personnes qui ont un lien) et une date. L'équipe du client n'ouvre pas le tableau : le contact voit et coche ses tâches.
+Une « place » par client. Dans une place : des cartes en colonnes — Demandes, Prévu, En cours, Chez le client (« vous » : le client doit répondre ou valider), Fait, Point mensuel — ; des projets (les chantiers) avec objectif, dates clés et fil de discussion ; des sous-tâches sur les cartes, avec un responsable (« Julien » ou un prénom de la place : le contact, son équipe, les personnes qui ont un lien) et une date. L'équipe du client n'ouvre pas le tableau : le contact voit ses tâches, sans pouvoir les cocher. Chez le client, chacun ne coche que ce qui lui est confié ; le reste, c'est Julien qui le coche (cocher_sous_tache).
 Règles :
 - Tout ce qui est dans une place est visible du client.
 - Écrire au client — envoyer_message, commenter_carte, deplacer_carte vers « vous », creer_carte en colonne « vous » — seulement si Julien l'a demandé explicitement dans la conversation. Sinon, proposer le texte et attendre son accord.
-- Rien ne se supprime par ce connecteur : pour retirer une carte, le dire à Julien.
+- Rien ne se supprime par ce connecteur, sauf une sous-tâche (supprimer_sous_tache), et seulement si Julien l’a demandé explicitement. Pour retirer une carte, le dire à Julien.
 - Lire la place (lire_place) avant de créer, pour éviter les doublons ; désigner les cartes par leur id.
 - Dates au format AAAA-MM-JJ. Français soigné, ton direct, pas de chiffre inventé.`;
 
@@ -117,6 +117,23 @@ function trouverProjet(cl: Client, projet: string): Client["chantiers"][number] 
   if (!x) throw new Erreur(`Projet introuvable dans ${cl.nom} : « ${projet} ». Projets : ${cl.chantiers.map((k) => k.nom).join(", ") || "aucun"}.`);
   return x;
 }
+/** « Julien », un prénom de la place, ou « client » / « vous » pour le contact. */
+function responsable(etat: EtatMcp, cl: Client, nom: string): string {
+  const noms = personnes(etat, cl);
+  const r = norme(nom);
+  const qui = noms.find((n) => norme(n) === r) ?? (["client", "a vous", "vous"].includes(r) ? cl.contact : "");
+  if (!qui) throw new Erreur(`Responsable inconnu : « ${nom} ». Possibles dans ${cl.nom} : ${noms.join(", ")}.`);
+  return qui;
+}
+/** Une sous-tâche désignée par son id, son titre exact, ou un bout de titre sans ambiguïté. */
+function trouverSousTache(c: Carte, ref: string): SousTache {
+  const cherche = norme(ref);
+  const partielles = cherche ? c.st.filter((x) => norme(x.t).includes(cherche)) : [];
+  const k = c.st.find((x) => x.id === ref) ?? c.st.find((x) => norme(x.t) === cherche) ?? (partielles.length === 1 ? partielles[0] : undefined);
+  if (!k && partielles.length > 1) throw new Erreur(`Plusieurs sous-tâches correspondent à « ${ref} » : ${partielles.map((x) => `[${x.id}] ${x.t}`).join(" ; ")}.`);
+  if (!k) throw new Erreur(`Sous-tâche introuvable sur « ${c.t} » : « ${ref} ». Sous-tâches : ${c.st.map((x) => `[${x.id}] ${x.t}`).join(" ; ") || "aucune"}.`);
+  return k;
+}
 function trouverCarte(etat: EtatMcp, id: string): { c: Carte; cl: Client } {
   const t = id.trim();
   const c = etat.cartes.find((k) => k.id === t) ?? (t.length >= 6 ? etat.cartes.filter((k) => k.id.startsWith(t)) : []).find((_, i, a) => a.length === 1);
@@ -140,8 +157,10 @@ function ligneCarte(c: Carte, cl: Client, auj: string, avecSousTaches = true): s
   let s = `- [${c.id}] ${c.t}${infos.length ? " — " + infos.join(" · ") : ""}`;
   if (c.desc) s += `\n    ${c.desc.replace(/\s+/g, " ").slice(0, 300)}`;
   if (avecSousTaches)
-    for (const k of c.st)
-      s += `\n    ${k.ok ? "✓" : "○"} [${k.id}] ${k.t}${k.qui || k.date ? " — " + [k.qui, k.date ? dateFr(k.date) + (!k.ok && k.date < auj && c.col !== "fait" ? " (en retard)" : "") : ""].filter(Boolean).join(" · ") : ""}`;
+    for (const k of c.st) {
+      const quoi = [k.qui, k.date ? dateFr(k.date) + (!k.ok && k.date < auj && c.col !== "fait" ? " (en retard)" : "") : "", k.ok && k.fait ? "cochée le " + dateFr(new Date(k.fait).toISOString().slice(0, 10)) : ""].filter(Boolean);
+      s += `\n    ${k.ok ? "✓" : "○"} [${k.id}] ${k.t}${quoi.length ? " — " + quoi.join(" · ") : ""}`;
+    }
   return s;
 }
 
@@ -409,17 +428,11 @@ function creerServeur(stub: Stub): McpServer {
     async (a: { carte: string; sous_taches: Array<{ titre: string; responsable?: string; date?: string }> }) => {
       const etat = await lire();
       const { c, cl } = trouverCarte(etat, a.carte);
-      const noms = personnes(etat, cl);
       const liste = c.st.map((k) => ({ ...k }));
       let ajoutees = 0;
       for (const s of a.sous_taches) {
         if (liste.some((k) => norme(k.t) === norme(s.titre))) continue;
-        let qui = "";
-        if (s.responsable) {
-          const r = norme(s.responsable);
-          qui = noms.find((n) => norme(n) === r) ?? (["client", "a vous", "vous"].includes(r) ? cl.contact : "");
-          if (!qui) throw new Erreur(`Responsable inconnu : « ${s.responsable} ». Possibles dans ${cl.nom} : ${noms.join(", ")}.`);
-        }
+        const qui = s.responsable ? responsable(etat, cl, s.responsable) : "";
         liste.push({ id: crypto.randomUUID().slice(0, 8), t: s.titre, ok: false, qui, date: s.date ?? "" });
         ajoutees++;
       }
@@ -440,14 +453,67 @@ function creerServeur(stub: Stub): McpServer {
     async (a: { carte: string; sous_tache: string; faite?: boolean }) => {
       const etat = await lire();
       const { c } = trouverCarte(etat, a.carte);
-      const cherche = norme(a.sous_tache);
-      const partielles = cherche ? c.st.filter((x) => norme(x.t).includes(cherche)) : [];
-      const k = c.st.find((x) => x.id === a.sous_tache) ?? c.st.find((x) => norme(x.t) === cherche) ?? (partielles.length === 1 ? partielles[0] : undefined);
-      if (!k && partielles.length > 1) throw new Erreur(`Plusieurs sous-tâches correspondent : ${partielles.map((x) => `[${x.id}] ${x.t}`).join(" ; ")}.`);
-      if (!k) throw new Erreur(`Sous-tâche introuvable sur « ${c.t} ». Sous-tâches : ${c.st.map((x) => `[${x.id}] ${x.t}`).join(" ; ") || "aucune"}.`);
+      const k = trouverSousTache(c, a.sous_tache);
       const faite = a.faite ?? true;
       await geste({ type: "carte.cocher", id: c.id, st: k.id, ok: faite });
       return `« ${k.t} » : ${faite ? "faite" : "rouverte"}.`;
+    },
+  );
+
+  outil(
+    "modifier_sous_tache",
+    {
+      title: "Modifier une sous-tâche",
+      description:
+        "Réattribue une sous-tâche (responsable : « Julien », un prénom de la place, ou \"\" pour personne), change sa date (\"\" l’efface) ou son titre. La sous-tâche se désigne par son id ou son titre. Confiée au client, elle apparaît dans son « Chez vous » quand elle est du moment.",
+      inputSchema: {
+        carte: z.string(),
+        sous_tache: z.string(),
+        responsable: z.string().max(60).optional(),
+        date: z.union([z.string().regex(DATE, "Format AAAA-MM-JJ"), z.literal("")]).optional(),
+        titre: z.string().min(1).max(200).optional(),
+      },
+      annotations: ecriture,
+    },
+    async (a: { carte: string; sous_tache: string; responsable?: string; date?: string; titre?: string }) => {
+      const etat = await lire();
+      const { c, cl } = trouverCarte(etat, a.carte);
+      const k = trouverSousTache(c, a.sous_tache);
+      const champs: Partial<SousTache> = {};
+      if (a.responsable !== undefined) champs.qui = a.responsable.trim() ? responsable(etat, cl, a.responsable) : "";
+      if (a.date !== undefined) champs.date = a.date;
+      if (a.titre !== undefined) {
+        const t = a.titre.trim();
+        if (c.st.some((x) => x.id !== k.id && norme(x.t) === norme(t))) throw new Erreur(`« ${c.t} » a déjà une sous-tâche « ${t} ».`);
+        champs.t = t;
+      }
+      if (!Object.keys(champs).length) throw new Erreur("Rien à modifier : responsable, date ou titre.");
+      await geste({ type: "carte.maj", id: c.id, champs: { st: c.st.map((x) => (x.id === k.id ? { ...x, ...champs } : x)) } });
+      const dit = [
+        champs.t !== undefined ? `titre « ${champs.t} »` : "",
+        champs.qui !== undefined ? `responsable : ${champs.qui || "personne"}` : "",
+        champs.date !== undefined ? `date : ${champs.date ? dateFr(champs.date) : "aucune"}` : "",
+      ].filter(Boolean);
+      return `« ${k.t} » (${c.t}) : ${dit.join(", ")}.`;
+    },
+  );
+
+  outil(
+    "supprimer_sous_tache",
+    {
+      title: "Supprimer des sous-tâches",
+      description:
+        "Supprime une ou plusieurs sous-tâches d’une carte (par id ou titre). Définitif, et visible du client : seulement si Julien l’a demandé explicitement. La carte, elle, ne se supprime pas ici.",
+      inputSchema: { carte: z.string(), sous_taches: z.array(z.string().min(1)).min(1).max(30) },
+      annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    async (a: { carte: string; sous_taches: string[] }) => {
+      const etat = await lire();
+      const { c, cl } = trouverCarte(etat, a.carte);
+      const retirees = a.sous_taches.map((r) => trouverSousTache(c, r)).filter((k, i, t) => t.findIndex((x) => x.id === k.id) === i);
+      const ids = new Set(retirees.map((k) => k.id));
+      await geste({ type: "carte.maj", id: c.id, champs: { st: c.st.filter((x) => !ids.has(x.id)) } });
+      return `${retirees.length} sous-tâche(s) supprimée(s) de « ${c.t} » (${cl.nom}) : ${retirees.map((k) => k.t).join(" ; ")}.`;
     },
   );
 
@@ -494,7 +560,7 @@ function creerServeur(stub: Stub): McpServer {
     {
       title: "Ajouter des personnes à l’équipe d’une place",
       description:
-        "Ajoute des prénoms à l’équipe du client : ils peuvent ensuite porter des sous-tâches (responsable), sans lien ni accès au tableau ; le contact voit et coche leurs tâches. Les noms déjà présents sont ignorés. Pour en retirer, le dire à Julien (Réglages de la place).",
+        "Ajoute des prénoms à l’équipe du client : ils peuvent ensuite porter des sous-tâches (responsable), sans lien ni accès au tableau ; le contact voit leurs tâches, et c’est Julien qui les coche. Les noms déjà présents sont ignorés. Pour en retirer, le dire à Julien (Réglages de la place).",
       inputSchema: { place: z.string(), noms: z.array(z.string().min(1).max(60)).min(1).max(20) },
       annotations: ecriture,
     },
