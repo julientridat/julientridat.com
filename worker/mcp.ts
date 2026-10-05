@@ -157,8 +157,10 @@ function ligneCarte(c: Carte, cl: Client, auj: string, avecSousTaches = true): s
   let s = `- [${c.id}] ${c.t}${infos.length ? " — " + infos.join(" · ") : ""}`;
   if (c.desc) s += `\n    ${c.desc.replace(/\s+/g, " ").slice(0, 300)}`;
   if (avecSousTaches)
-    for (const k of c.st)
-      s += `\n    ${k.ok ? "✓" : "○"} [${k.id}] ${k.t}${k.qui || k.date ? " — " + [k.qui, k.date ? dateFr(k.date) + (!k.ok && k.date < auj && c.col !== "fait" ? " (en retard)" : "") : ""].filter(Boolean).join(" · ") : ""}`;
+    for (const k of c.st) {
+      const quoi = [k.qui, k.date ? dateFr(k.date) + (!k.ok && k.date < auj && c.col !== "fait" ? " (en retard)" : "") : "", k.ok && k.fait ? "cochée le " + dateFr(new Date(k.fait).toISOString().slice(0, 10)) : ""].filter(Boolean);
+      s += `\n    ${k.ok ? "✓" : "○"} [${k.id}] ${k.t}${quoi.length ? " — " + quoi.join(" · ") : ""}`;
+    }
   return s;
 }
 

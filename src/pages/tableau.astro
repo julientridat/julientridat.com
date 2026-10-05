@@ -262,6 +262,11 @@
       .st-liste .meta { font-size: 0.75rem; color: var(--ink-3); white-space: nowrap; }
       .st-liste .meta.client { color: var(--violet); font-weight: 600; }
       .st-liste .meta.retard { color: var(--late); font-weight: 600; }
+      .st-liste .st-date { width: auto; flex: none; border: 1px solid transparent; background: transparent; border-radius: 999px; padding: 0 4px; font-size: 0.75rem; color: var(--ink-3); cursor: pointer; font-variant-numeric: tabular-nums; }
+      .st-liste .st-date:hover, .st-liste .st-date:focus { border-color: var(--line); background: var(--white); color: var(--ink); outline: none; }
+      .st-liste .st-date:focus-visible { outline: 2px solid var(--violet); outline-offset: 1px; }
+      .st-liste .st-date.retard { color: var(--late); font-weight: 600; }
+      .st-liste .st-date.vide { color: var(--ink-3); opacity: 0.7; }
       .st-liste button.parent { background: none; border: none; padding: 0; color: var(--ink-3); font-size: 0.76rem; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
       .sheet .st-liste { border-top: none; padding-top: 0; gap: 8px; }
       .sheet .st-liste li { font-size: 0.88rem; }
@@ -724,7 +729,7 @@
            que l'autre côté vient de bouger une carte : le rendu attend la fin de la saisie. */
         function saisieEnCours() {
           var a = document.activeElement;
-          return !!(a && a.closest && (a.closest("#board .zone") || (a.closest("#projet") && /^(INPUT|TEXTAREA)$/.test(a.tagName))));
+          return !!(a && a.closest && (a.closest("#board .zone") || a.closest("#board .st-date") || (a.closest("#projet") && /^(INPUT|TEXTAREA)$/.test(a.tagName))));
         }
         ["board", "projet"].forEach(function (id) {
           $(id).addEventListener("focusout", function () {
@@ -1479,9 +1484,14 @@
           var ch = chantier(c);
           if (ch && !S.f.ch) chips.appendChild(chip(ch.nom));
           if (c.col === "demandes" && c.type) chips.appendChild(chip(c.type));
-          // Rangée sous l'en-tête de son mois, la carte ne répète pas « Octobre ».
-          if (c.echeance && !(opts && opts.sansMois && MOIS.indexOf(sansAccent(c.echeance).trim().toLowerCase()) >= 0)) chips.appendChild(chip(c.echeance));
-          if (c.date) chips.appendChild(chip(dateCourte(c.date), c.col !== "fait" && c.date < aujourdhui() ? "late" : ""));
+          // Sous-tâches datées : la période de la carte dit tout (« 6 oct. → 9 nov. »). Sinon, son échéance
+          // — rangée sous l'en-tête de son mois, la carte ne répète pas « Octobre » — et sa date.
+          var per = periode(c);
+          if (per) { var pc = chip(textePeriode(per), "periode"); pc.title = "Période, d’après les dates des sous-tâches"; chips.appendChild(pc); }
+          else {
+            if (c.echeance && !(opts && opts.sansMois && MOIS.indexOf(sansAccent(c.echeance).trim().toLowerCase()) >= 0)) chips.appendChild(chip(c.echeance));
+            if (c.date) chips.appendChild(chip(dateCourte(c.date), c.col !== "fait" && c.date < aujourdhui() ? "late" : ""));
+          }
           if (c.livrable) chips.appendChild(chip("livrable"));
           var st = c.st || [];
           if (st.length) { var faites = st.filter(function (x) { return x.ok; }).length; chips.appendChild(chip("✓ " + faites + "/" + st.length, faites === st.length ? "fini" : "etapes")); }
@@ -1526,6 +1536,22 @@
           return e;
         }
         /* ————— Sous-tâches ————— */
+        /* La période d'une carte : de la première à la dernière date de ses sous-tâches (null sans date). */
+        function periode(c) {
+          var ds = (c.st || []).map(function (x) { return x.date; }).filter(Boolean).sort();
+          return ds.length ? { debut: ds[0], fin: ds[ds.length - 1] } : null;
+        }
+        function textePeriode(p) { return p.debut === p.fin ? dateCourte(p.debut) : dateCourte(p.debut) + " → " + dateCourte(p.fin); }
+        /* Julien change la date d'une sous-tâche sans ouvrir la carte. */
+        function dater(c, x, v) {
+          var vraie = trouverCarte(c.id) || c;
+          var liste = (vraie.st || []).map(function (k) { return { id: k.id, t: k.t, ok: k.ok, qui: k.qui, date: k.id === x.id ? v : k.date }; });
+          if (!op({ type: "carte.maj", id: c.id, champs: { st: liste } })) return false;
+          (vraie.st || []).forEach(function (k) { if (k.id === x.id) k.date = v; });
+          rendre();
+          if (feuille.mode === "carte" && feuille.id === c.id) refaireFeuille();
+          return true;
+        }
         function coteClient(qui) { return !!qui && qui !== "Julien"; }
         function deux(n) { return (n < 10 ? "0" : "") + n; }
         function aujourdhui() { var d = new Date(); return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate()); }
@@ -1590,9 +1616,22 @@
           li.appendChild(t);
           var meta = [];
           var aMoi = !julien() && S.me && x.qui === S.me.nom;
+          var dateModifiable = julien() && !S.apercu;
           if (x.qui && !(aMoi && avecCarte === "groupe")) meta.push(aMoi ? "vous" : x.qui);
-          if (x.date) meta.push(dateCourte(x.date));
-          if (meta.length) li.appendChild(el("span", "meta" + (enRetard(c, x) ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
+          if (x.date && !dateModifiable) meta.push(dateCourte(x.date));
+          if (meta.length) li.appendChild(el("span", "meta" + (enRetard(c, x) && !dateModifiable ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
+          if (dateModifiable) {
+            var d = el("input", "st-date" + (enRetard(c, x) ? " retard" : "") + (x.date ? "" : " vide"));
+            d.type = "date";
+            d.value = x.date || "";
+            d.id = "st-d-" + c.id.slice(0, 8) + "-" + x.id + (avecCarte ? "-v" : "");
+            d.dataset.garde = "date-" + x.id;
+            d.setAttribute("aria-label", "Date de « " + x.t + " »");
+            d.title = "Changer la date";
+            d.addEventListener("click", function (e) { e.stopPropagation(); });
+            d.addEventListener("change", function () { if (d.value !== (x.date || "")) dater(c, x, d.value); });
+            li.appendChild(d);
+          }
           return li;
         }
         function personnesDe(cl) {
@@ -2238,6 +2277,8 @@
               majSousTaches(tri);
             };
             var responsables = personnesDe(cl);
+            var perF = periode(trouverCarte(c.id) || c);
+            if (perF) sheet.appendChild(el("p", "aide", perF.debut === perF.fin ? "Toutes les sous-tâches tombent le " + dateLongue(perF.debut) + "." : "Période : du " + dateLongue(perF.debut) + " au " + dateLongue(perF.fin) + ", d’après les dates des sous-tâches."));
             var ed = el("ul", "st-ed");
             sts.forEach(function (k) {
               var li = el("li", k.ok ? "ok" : "");
