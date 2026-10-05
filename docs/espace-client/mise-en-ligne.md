@@ -160,14 +160,18 @@ tableaux ouverts et porte la mention `via: claude` dans le journal (export, webh
 3. Dans une conversation, active « Le tableau » dans le menu des outils.
 
 **Ce que Claude fait seul** : consulter (places, cartes, projets, Ma semaine, discussion) ;
-créer et modifier des cartes, ajouter et cocher des sous-tâches, commenter, coller un plan
-(qui complète les cartes existantes), fixer l'objectif et les dates clés d'un projet.
+créer et modifier des cartes ; ajouter, cocher et modifier des sous-tâches (réattribuer,
+changer la date ou le titre) ; commenter ; coller un plan (qui complète les cartes
+existantes) ; créer un projet, le renommer, fixer son objectif et ses dates clés.
 
 **Ce qu'il ne fait que si tu le lui demandes** : écrire au client (message dans la
-discussion) ou envoyer une carte « Chez le client ». Tout ce qui est dans une place reste
-visible du client : ses consignes le lui rappellent.
+discussion), envoyer une carte « Chez le client », supprimer une sous-tâche. Tout ce qui est
+dans une place reste visible du client : ses consignes le lui rappellent.
 
-**Ce qu'il ne fait pas** : supprimer quoi que ce soit, voir les liens et les clés d'accès.
+**Ce qu'il ne fait pas** : supprimer une carte ou un projet, voir les liens et les clés d'accès.
+
+Après une mise à jour du connecteur, une conversation déjà ouverte garde l'ancienne liste
+d'outils : ouvre une nouvelle conversation pour avoir les nouveaux.
 
 **Retirer l'accès** : changer `TABLEAU_ADMIN_KEY` (secret Cloudflare) coupe tout accès
 accordé à Claude — il faudra reconnecter le connecteur, et rouvrir le tableau avec le
