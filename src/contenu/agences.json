@@ -14,6 +14,27 @@
     "chapo": "Outils connectés, process refondus, agents IA sur mesure en production. Votre agence produit plus vite, à marge supérieure — **sans recruter**.",
     "mention": "Diagnostic IA gratuit"
   },
+  "references": {
+    "titre": "Agences accompagnées",
+    "noms": [
+      "Leherpeur",
+      "Le Nouveau Bélier",
+      "CreaFirst",
+      "NotchUp",
+      "Mouton Noir",
+      "Agence L&A",
+      "Zorba Group",
+      "MCI",
+      "FK Agency",
+      "Du Bruit au Balcon",
+      "Dialogue Conseil",
+      "Jim",
+      "Co-Influence",
+      "Codha",
+      "Superbien"
+    ],
+    "note": "Les études de cas, elles, restent anonymes."
+  },
   "constat": {
     "surtitre": "01 — Le constat",
     "titre": "Vos marges se font manger par du travail que personne ne facture.",
