@@ -89,13 +89,14 @@ personne qui a un lien) et une date — ou les étapes type proposées d'après 
 validation, V1…). La carte montre « ✓ 2/4 », « 1 au client », « sous-tâche en retard ».
 Une sous-tâche confiée au client apparaît dans son « Chez vous » (« Vos tâches ») et compte
 dans « … chez vous » quand elle est du moment — sa carte est en cours ou chez lui, ou sa
-date tombe dans les deux semaines (ou est passée) ; les autres attendent sur leur carte ; c'est lui qui la coche, Julien le voit à l'instant. Il ne peut pas
-cocher celles de Julien (refusé par le serveur). Les étapes d'avant sont devenues des
+date tombe dans les deux semaines (ou est passée) ; les autres attendent sur leur carte. Chacun ne
+coche que les tâches qui lui sont confiées à lui, Julien le voit à l'instant : ni celles de Julien,
+ni celles d'un collègue (refusé par le serveur). Les étapes d'avant sont devenues des
 sous-tâches, cases comprises.
 
 **L'équipe du client** (Réglages de la place → « Équipe — sans lien ») : des prénoms qui
-portent des sous-tâches sans ouvrir le tableau. Le contact voit leurs tâches dans « Vos
-tâches », avec le prénom, et les coche pour eux. Retirer un nom laisse ses sous-tâches en
+portent des sous-tâches sans ouvrir le tableau. Le contact voit leurs tâches dans « Chez vous »,
+avec le prénom, sans pouvoir les cocher : c'est Julien qui les coche. Retirer un nom laisse ses sous-tâches en
 place, sans responsable. Dans un plan collé : `- Sous-tâche (Magali, 15/10)`. Depuis Claude :
 « ajoute Magali à l'équipe LEH ».
 

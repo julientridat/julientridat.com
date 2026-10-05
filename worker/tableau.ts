@@ -1016,13 +1016,14 @@ export class Tableau extends DurableObject<EnvTableau> {
         return null;
       }
       case "carte.cocher": {
-        // Julien coche tout ; le client, ce qui est confié à quelqu'un de chez lui.
+        // Julien coche tout ; une personne de chez le client, seulement ce qui lui est confié à elle.
         const c = carteVisible(op.id);
         const x = c.st.find((k) => k.id === op.st);
         if (!x) throw new Refus("Cette sous-tâche n’existe plus.");
         if (!julien) {
           this.placeActive(c.client);
           if (!x.qui || x.qui === "Julien") throw new Refus("Cette sous-tâche est du côté de Julien.");
+          if (norme(x.qui) !== norme(session.nom)) throw new Refus(`Cette tâche est confiée à ${x.qui} : vous ne cochez que les vôtres.`);
           c.nouveau = "julien";
         }
         x.ok = op.ok === true;

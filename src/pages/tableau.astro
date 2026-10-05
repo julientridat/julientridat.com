@@ -1532,12 +1532,14 @@
         function dateCourte(iso) { return iso ? new Date(iso + "T12:00:00").toLocaleDateString("fr-FR", { day: "numeric", month: "short" }) : ""; }
         function enRetard(c, x) { return !x.ok && !!x.date && x.date < aujourdhui() && c.col !== "fait"; }
         function idLocal() { return "n" + Date.now().toString(36).slice(-5) + Math.random().toString(36).slice(2, 5); }
-        /* Julien coche tout ; le client, ce qui est confié à quelqu'un de chez lui. */
+        /* Julien coche tout ; une personne de chez le client, seulement ce qui lui est confié à elle
+           (le serveur refuse le reste). Les tâches de son équipe, elle les voit sans les cocher. */
+        function confieeAMoi(x) { return !!x.qui && !!S.me && sansAccent(x.qui) === sansAccent(S.me.nom); }
         function peutCocher(c, x) {
           if (S.apercu) return false;
           if (julien()) return true;
           var cl = clientParId(c.client);
-          return !!cl && !cl.archive && coteClient(x.qui);
+          return !!cl && !cl.archive && confieeAMoi(x);
         }
         function cocher(c, x, ok) {
           if (!op({ type: "carte.cocher", id: c.id, st: x.id, ok: ok })) return false;
@@ -1565,7 +1567,7 @@
         function ligneSousTache(c, x, avecCarte) {
           var li = el("li", x.ok ? "ok" : "");
           var clApercu = S.apercu ? clientParId(c.client) : null;
-          var enApercu = !!clApercu && !clApercu.archive && coteClient(x.qui);
+          var enApercu = !!clApercu && !clApercu.archive && !!x.qui && x.qui === clApercu.contact;
           if (peutCocher(c, x) || enApercu) {
             var cb = el("input");
             cb.type = "checkbox";
@@ -2315,7 +2317,7 @@
               ed.appendChild(li);
             });
             sheet.appendChild(ed);
-            if (sts.length) sheet.appendChild(el("p", "aide", (sts.length > 1 ? "Glissez ⠿ pour les classer, de la plus importante à la moins importante. " : "") + "Confiée au client, une sous-tâche apparaît dans son « Chez vous » : c’est lui qui la coche."));
+            if (sts.length) sheet.appendChild(el("p", "aide", (sts.length > 1 ? "Glissez ⠿ pour les classer, de la plus importante à la moins importante. " : "") + "Confiée au client, une sous-tâche apparaît dans son « Chez vous ». Chacun ne coche que les siennes : celles de son équipe, c’est toi qui les coches."));
             var nouvelle = el("input"); nouvelle.type = "text"; nouvelle.id = "st-nouvelle"; nouvelle.placeholder = "+ une sous-tâche, puis Entrée"; nouvelle.dataset.garde = "etape";
             nouvelle.style.marginTop = "8px";
             nouvelle.addEventListener("keydown", function (e) {
@@ -2615,7 +2617,7 @@
           ajoutEq.dataset.garde = "equipe";
           ajoutEq.style.marginTop = "8px";
           sheet.appendChild(ajoutEq);
-          sheet.appendChild(el("p", "aide", "Ils peuvent porter une sous-tâche sans ouvrir le tableau : " + (cl.contact || "le contact") + " voit et coche leurs tâches."));
+          sheet.appendChild(el("p", "aide", "Ils peuvent porter une sous-tâche sans ouvrir le tableau : " + (cl.contact || "le contact") + " voit leurs tâches ; c’est toi qui les coches."));
 
           sheet.appendChild(el("p", "lab", "Coller un plan"));
           var plan = el("textarea"); plan.rows = 5; plan.placeholder = FORMAT_PLAN;

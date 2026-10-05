@@ -32,7 +32,7 @@ const ORDRE = ["demandes", "prevu", "encours", "vous", "fait", "mensuel"];
 const DATE = /^\d{4}-\d{2}-\d{2}$/;
 
 const INSTRUCTIONS = `Le tableau de Julien Tridat (julientridat.com/tableau), partagé en direct avec ses clients.
-Une « place » par client. Dans une place : des cartes en colonnes — Demandes, Prévu, En cours, Chez le client (« vous » : le client doit répondre ou valider), Fait, Point mensuel — ; des projets (les chantiers) avec objectif, dates clés et fil de discussion ; des sous-tâches sur les cartes, avec un responsable (« Julien » ou un prénom de la place : le contact, son équipe, les personnes qui ont un lien) et une date. L'équipe du client n'ouvre pas le tableau : le contact voit et coche ses tâches.
+Une « place » par client. Dans une place : des cartes en colonnes — Demandes, Prévu, En cours, Chez le client (« vous » : le client doit répondre ou valider), Fait, Point mensuel — ; des projets (les chantiers) avec objectif, dates clés et fil de discussion ; des sous-tâches sur les cartes, avec un responsable (« Julien » ou un prénom de la place : le contact, son équipe, les personnes qui ont un lien) et une date. L'équipe du client n'ouvre pas le tableau : le contact voit ses tâches, sans pouvoir les cocher. Chez le client, chacun ne coche que ce qui lui est confié ; le reste, c'est Julien qui le coche (cocher_sous_tache).
 Règles :
 - Tout ce qui est dans une place est visible du client.
 - Écrire au client — envoyer_message, commenter_carte, deplacer_carte vers « vous », creer_carte en colonne « vous » — seulement si Julien l'a demandé explicitement dans la conversation. Sinon, proposer le texte et attendre son accord.
@@ -558,7 +558,7 @@ function creerServeur(stub: Stub): McpServer {
     {
       title: "Ajouter des personnes à l’équipe d’une place",
       description:
-        "Ajoute des prénoms à l’équipe du client : ils peuvent ensuite porter des sous-tâches (responsable), sans lien ni accès au tableau ; le contact voit et coche leurs tâches. Les noms déjà présents sont ignorés. Pour en retirer, le dire à Julien (Réglages de la place).",
+        "Ajoute des prénoms à l’équipe du client : ils peuvent ensuite porter des sous-tâches (responsable), sans lien ni accès au tableau ; le contact voit leurs tâches, et c’est Julien qui les coche. Les noms déjà présents sont ignorés. Pour en retirer, le dire à Julien (Réglages de la place).",
       inputSchema: { place: z.string(), noms: z.array(z.string().min(1).max(60)).min(1).max(20) },
       annotations: ecriture,
     },
