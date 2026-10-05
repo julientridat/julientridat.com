@@ -696,3 +696,97 @@ collections:
               - { name: titre, widget: string, label: "Titre — première phrase" }
               - { name: titreAccent, widget: string, label: "Titre — phrase en couleur", hint: "S'affiche en couleur, à la suite de la première phrase." }
               - { name: texte, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+
+      - name: agences
+        label: Agences (IA opérationnelle)
+        file: src/contenu/agences.json
+        format: json
+        fields:
+          - name: seo
+            label: Référencement (Google)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Titre de l'onglet et de Google, widget: string }
+              - { name: description, label: Description Google, widget: text }
+          - { name: bouton, label: Texte des boutons de réservation, widget: string }
+          - name: hero
+            label: 1. Haut de page
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, label: Surtitre, widget: string }
+              - { name: titreLigne1, label: "Grand titre — ligne 1", widget: string }
+              - { name: titreLigne2, label: "Grand titre — ligne 2", widget: string }
+              - { name: titreAvantAccent, label: "Grand titre — ligne 3, avant l'italique", widget: string, hint: "Ex. En" }
+              - { name: titreAccent, label: "Grand titre — ligne 3, en italique", widget: string, hint: "Ex. 60 jours" }
+              - { name: titreApresAccent, label: "Grand titre — ligne 3, après l'italique", widget: string, hint: "Commence par la ponctuation, ex. « , pas en deux ans. »" }
+              - { name: chapo, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: mention, label: Petite ligne à côté du bouton, widget: string }
+          - name: constat
+            label: 2. Le constat
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, label: Surtitre, widget: string }
+              - { name: titre, label: Titre, widget: string }
+              - { name: intro, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - name: symptomes
+                label: La liste
+                widget: list
+                field: { name: symptome, label: Ligne, widget: string }
+              - { name: chute, label: Phrase de conclusion, widget: text }
+              - { name: chuteAccent, label: "Phrase de conclusion — suite en italique", widget: string }
+          - name: cas
+            label: 3. Déjà installé (cas clients)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, label: Surtitre, widget: string }
+              - { name: titre, label: "Titre — première phrase", widget: string }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en italique", hint: "S'affiche en italique, à la suite de la première phrase." }
+              - { name: intro, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - name: cartes
+                label: Les cartes
+                widget: list
+                summary: "{{fields.etiquette}}"
+                fields:
+                  - { name: etiquette, label: Étiquette, widget: string }
+                  - { name: texte, label: Texte, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+                  - name: chiffres
+                    label: Chiffres
+                    widget: list
+                    summary: "{{fields.chiffre}} {{fields.label}}"
+                    fields:
+                      - { name: chiffre, label: Chiffre, widget: string }
+                      - { name: label, label: Légende, widget: string }
+                  - { name: lien, label: Lien vers l'étude de cas, widget: string, hint: "Ex. /realisations/agents-agence-creative" }
+              - { name: lienCarte, label: Texte du lien en bas de chaque carte, widget: string }
+          - name: installation
+            label: 4. Ce qu'on installe
+            widget: object
+            collapsed: true
+            fields:
+              - { name: surtitre, label: Surtitre, widget: string }
+              - { name: titre, label: Titre, widget: string }
+              - name: chantiers
+                label: Les chantiers (numérotés automatiquement)
+                widget: list
+                summary: "{{fields.titre}}"
+                fields:
+                  - { name: titre, label: Titre, widget: string }
+                  - { name: texte, label: Texte, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: fonctionsTitre, label: Titre de la liste des fonctions, widget: string }
+              - name: fonctions
+                label: Fonctions
+                widget: list
+                field: { name: fonction, label: Fonction, widget: string }
+          - name: cloture
+            label: 5. Clôture
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titre, label: "Titre — première phrase", widget: string }
+              - { name: titreAccent, widget: string, label: "Titre — phrase en italique", hint: "S'affiche en italique, à la suite de la première phrase." }
+              - { name: texte, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
+              - { name: mention, label: Petite ligne sous le bouton, widget: string }
