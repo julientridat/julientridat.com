@@ -429,6 +429,60 @@
 
       pre.format { font-family: ui-monospace, Menlo, monospace; font-size: 0.74rem; background: var(--paper); border-radius: 10px; padding: 10px 12px; color: var(--ink-2); white-space: pre-wrap; margin-top: 6px; }
 
+      /* Planning (Julien) : une barre par carte, de sa première à sa dernière sous-tâche */
+      .seg-vue { display: inline-flex; background: var(--col); border-radius: 999px; padding: 3px; gap: 2px; }
+      .seg-vue button { border: none; background: transparent; border-radius: 999px; padding: 5px 13px; font-size: 0.8rem; color: var(--ink-2); }
+      .seg-vue button[aria-pressed="true"] { background: var(--white); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(17, 18, 22, 0.12); }
+      .planning { max-width: 1480px; margin: 0 auto; padding: 16px 24px 104px; display: grid; gap: 18px; }
+      .pl-wrap { overflow-x: auto; background: var(--white); border: 1px solid var(--line); border-radius: 16px; }
+      .pl { position: relative; font-size: 0.8rem; }
+      .pl-ligne { display: grid; grid-template-columns: 260px var(--pl-l); align-items: center; min-height: 30px; }
+      .pl-lab { position: sticky; left: 0; z-index: 2; background: var(--white); padding: 4px 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+      .pl-lab button { all: unset; cursor: pointer; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; display: block; }
+      .pl-lab button:hover { color: var(--violet); text-decoration: underline; text-underline-offset: 2px; }
+      .pl-lab button:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 4px; }
+      .pl-piste { position: relative; height: 30px; }
+      .pl-tete { position: sticky; top: 0; z-index: 3; background: var(--white); border-bottom: 1px solid var(--line); }
+      .pl-tete .pl-piste { height: 42px; }
+      .pl-mois { position: absolute; top: 4px; font-weight: 600; color: var(--ink); font-size: 0.78rem; white-space: nowrap; }
+      .pl-sem { position: absolute; bottom: 4px; color: var(--ink-3); font-size: 0.68rem; transform: translateX(-50%); font-variant-numeric: tabular-nums; }
+      .pl-ch { grid-column: 1 / -1; position: sticky; left: 0; display: flex; align-items: center; gap: 8px; padding: 10px 12px 2px; font-size: 0.72rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.11em; color: var(--ink-2); }
+      .pl-ch .sw { width: 9px; height: 9px; border-radius: 3px; }
+      .pl-calque { position: absolute; top: 0; bottom: 0; left: 260px; width: var(--pl-l); pointer-events: none; }
+      .pl-calque .g { position: absolute; top: 0; bottom: 0; width: 1px; background: var(--line); }
+      .pl-calque .g.m { background: rgba(17, 18, 22, 0.2); }
+      .pl-calque .auj { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--violet); z-index: 1; }
+      .pl-barre { position: absolute; top: 12px; height: 6px; border-radius: 999px; opacity: 0.4; }
+      .pl-pt { position: absolute; top: 8px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid; background: var(--white); transform: translateX(-50%); display: grid; place-items: center; font-size: 0.58rem; font-weight: 700; color: var(--ink); cursor: pointer; padding: 0; }
+      .pl-pt.ok { color: var(--white); }
+      .pl-pt.client { box-shadow: 0 0 0 2px var(--violet); }
+      .pl-pt.retard { border-color: var(--late) !important; background: rgba(180, 50, 31, 0.1); }
+      .pl-pt.grappe { width: 20px; height: 20px; top: 5px; }
+      .pl-pt:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; }
+      .pl-legende { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 0.78rem; color: var(--ink-3); align-items: center; }
+      .pl-legende i { display: inline-block; width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--ink-3); background: var(--white); vertical-align: -2px; margin-right: 5px; }
+      .pl-legende i.p { background: var(--ink-3); }
+      .pl-legende i.c { box-shadow: 0 0 0 2px var(--violet); }
+      .pl-legende i.r { border-color: var(--late); background: rgba(180, 50, 31, 0.1); }
+      .pl-h { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.13em; color: var(--ink); }
+      .av-wrap { overflow-x: auto; }
+      table.av-mois { border-collapse: collapse; min-width: 100%; background: var(--white); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; font-size: 0.82rem; }
+      .av-mois th, .av-mois td { padding: 8px 12px; text-align: left; border-top: 1px solid var(--line); white-space: nowrap; }
+      .av-mois thead th { border-top: none; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--ink-3); font-weight: 600; }
+      .av-mois th[scope="row"] { color: var(--ink); font-weight: 500; }
+      .av-mois td { font-variant-numeric: tabular-nums; color: var(--ink-2); min-width: 84px; }
+      .av-mois td.cour, .av-mois th.cour { background: var(--violet-wash); }
+      .av-mois .mini { display: block; height: 4px; border-radius: 999px; background: var(--col); margin-top: 4px; overflow: hidden; }
+      .av-mois .mini i { display: block; height: 100%; background: var(--violet); }
+      .av-mois tr.total th, .av-mois tr.total td { font-weight: 600; color: var(--ink); }
+      .st-autres { all: unset; cursor: pointer; display: inline-block; margin-top: 4px; font-size: 0.78rem; color: var(--violet); text-decoration: underline; text-underline-offset: 2px; }
+      .st-autres:focus-visible { outline: 2px solid var(--violet); outline-offset: 2px; border-radius: 4px; }
+      @media (max-width: 700px) {
+        .planning { padding: 12px 16px 104px; }
+        .pl-ligne { grid-template-columns: 170px var(--pl-l); }
+        .pl-calque { left: 170px; }
+      }
+
       /* La page du client : ce que Julien a fait, ce qui vous attend, ce qui attend Julien, le mois */
       .accueil { max-width: 1480px; margin: 0 auto; padding: 16px 24px 104px; display: grid; gap: 16px; }
       .ac-grille { display: grid; gap: 14px; align-items: start; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); }
@@ -609,6 +663,10 @@
     <section class="projet" id="projet" hidden aria-label="Le projet"></section>
 
     <div class="barre" id="barre" hidden>
+      <div class="seg-vue" id="f-vue" role="group" aria-label="Affichage" hidden>
+        <button type="button" data-vue="colonnes" aria-pressed="true">Colonnes</button>
+        <button type="button" data-vue="planning" aria-pressed="false">Planning</button>
+      </div>
       <div class="f-groupe" id="f-ch"></div>
       <div class="f-groupe" id="f-mois"></div>
       <button type="button" class="pill f-st" id="f-st" aria-pressed="false" hidden>Sous-tâches</button>
@@ -621,6 +679,7 @@
     </div>
 
     <nav class="onglets" id="onglets" hidden aria-label="Colonnes du tableau"></nav>
+    <section class="planning" id="planning" hidden aria-label="Planning"></section>
     <section class="vue" id="vue" hidden></section>
 
     <div class="board" id="board" hidden>
@@ -694,7 +753,7 @@
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
         var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
-          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null, cocheesIci: {} };
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null, cocheesIci: {}, stAutres: {}, vuePlace: null };
         var tactile = window.matchMedia("(pointer: coarse)").matches;
         var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
@@ -842,7 +901,7 @@
         function filtreBarre() { return !!(S.f.mois !== null || S.f.q.trim()); }
         function passeFiltre(c) {
           if (S.f.ch && c.ch !== S.f.ch) return false;
-          if (S.f.mois !== null && moisDe(c) !== S.f.mois) return false;
+          if (S.f.mois !== null && moisCouverts(c).indexOf(S.f.mois) < 0) return false;
           var mots = sansAccent(S.f.q).split(/\s+/).filter(Boolean);
           if (mots.length) {
             var ch = chantier(c), cl = clientParId(c.client);
@@ -910,7 +969,7 @@
           var accueil = fc && !!cl;
           $("accueil").hidden = !accueil;
           if (accueil) {
-            ["vue", "board", "onglets", "projet", "barre"].forEach(function (id) { $(id).hidden = true; });
+            ["vue", "board", "onglets", "projet", "barre", "planning"].forEach(function (id) { $(id).hidden = true; });
             rendreAccueil(cl);
             return;
           }
@@ -921,11 +980,20 @@
           if (vue) {
             $("projet").hidden = true;
             $("barre").hidden = true;
+            $("planning").hidden = true;
             if (vue === "tous") rendreEnsemble(); else rendreSemaine();
             return;
           }
           rendreProjet(cl);
           rendreBarre(cl);
+          var plan = !!cl && julien() && !S.apercu && vuePlace() === "planning";
+          $("planning").hidden = !plan;
+          if (plan) {
+            $("board").hidden = true;
+            $("onglets").hidden = true;
+            rendrePlanning(cl);
+            return;
+          }
           rendreColonnes(cl);
         }
         function majTitre() {
@@ -961,7 +1029,7 @@
           });
           // Mois : ceux que portent les échéances, dans l'ordre de la période.
           var present = {};
-          visibles.forEach(function (c) { var m = moisDe(c); if (m >= 0) present[m] = true; });
+          visibles.forEach(function (c) { moisCouverts(c).forEach(function (m) { present[m] = true; }); });
           var depart = cl && cl.debut ? new Date(cl.debut + "T12:00:00").getMonth() : new Date().getMonth();
           if (isNaN(depart)) depart = new Date().getMonth();
           var mois = Object.keys(present).map(Number).sort(function (a, b) { return ((a - depart + 12) % 12) - ((b - depart + 12) % 12); });
@@ -976,8 +1044,11 @@
             fm.appendChild(b);
           });
           ["f-ch", "f-mois"].forEach(function (id) { majDebord($(id)); });
+          var fv = $("f-vue"), choix = !!cl && julien() && !S.apercu;
+          fv.hidden = !choix;
+          if (choix) fv.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.vue === vuePlace() ? "true" : "false"); });
           var fst = $("f-st"), deplie = sousTachesDepliees();
-          fst.hidden = !!S.f.ch || !visibles.some(function (c) { return c.st && c.st.length; });
+          fst.hidden = !!S.f.ch || !visibles.some(function (c) { return c.st && c.st.length; }) || (choix && vuePlace() === "planning");
           fst.classList.toggle("on", deplie);
           fst.setAttribute("aria-pressed", deplie ? "true" : "false");
           fst.title = deplie ? "Replier les sous-tâches" : "Afficher les sous-tâches sous chaque carte";
@@ -1105,13 +1176,20 @@
           t.appendChild(h);
           var sem = semaineDe(cl);
           if (sem) t.appendChild(el("p", "t-periode", (sem.avant ? "Démarrage le " + dateLongue(cl.debut) : "Semaine " + sem.sem + " sur " + sem.total) + " · jusqu’au " + dateLongue(cl.fin)));
+          // L'avancement du mois plutôt que celui de l'année (« 6 sur 110 » décourage).
+          var am = aujourdhui().slice(0, 7), mo = avancementMois(S.cartes.filter(function (c) { return c.client === cl.id; }), am);
           var jauge = el("div", "jauge"), trait = el("i");
-          trait.style.width = d.av.pct + "%";
+          trait.style.width = (mo.total ? mo.pct : d.av.pct) + "%";
           jauge.appendChild(trait);
           t.appendChild(jauge);
           var av = el("p", "t-av");
-          av.appendChild(el("b", null, d.av.pct + " %"));
-          av.appendChild(document.createTextNode(" — " + d.av.fait + " sur " + d.av.total + (d.av.total > 1 ? " tâches faites" : " tâche faite")));
+          if (mo.total) {
+            av.appendChild(el("b", null, MOIS_AFFICHE[moisIso(am + "-01")] + " : " + mo.fait + " sur " + mo.total));
+            av.appendChild(document.createTextNode(" · période : " + d.av.fait + " sur " + d.av.total));
+          } else {
+            av.appendChild(el("b", null, d.av.pct + " %"));
+            av.appendChild(document.createTextNode(" — " + d.av.fait + " sur " + d.av.total + (d.av.total > 1 ? " tâches faites" : " tâche faite")));
+          }
           t.appendChild(av);
           var dl = el("dl", "t-chiffres");
           [["À traiter", d.aTraiter, ""], ["En cours", d.enCours, ""], ["Chez " + (cl.contact || "le client"), d.chez, d.taches ? "+ " + nombre(d.taches, "tâche", "tâches") : "", "vous"]].forEach(function (k) {
@@ -1137,7 +1215,9 @@
         function finDeSemaine() { var d = new Date(); d.setDate(d.getDate() + ((7 - d.getDay()) % 7)); return d.getFullYear() + "-" + deux(d.getMonth() + 1) + "-" + deux(d.getDate()); }
         function maSemaine() {
           var auj = aujourdhui(), dimanche = finDeSemaine();
-          var sections = { traiter: [], retard: [], auj: [], semaine: [], plusTard: [], sansDate: [] };
+          var sections = { traiter: [], retard: [], auj: [], semaine: [], attend: [], plusTard: [], sansDate: [] };
+          var d2 = new Date(dimanche + "T12:00:00"); d2.setDate(d2.getDate() + 14);
+          var horizon = d2.getFullYear() + "-" + deux(d2.getMonth() + 1) + "-" + deux(d2.getDate());
           S.cartes.forEach(function (c) {
             var cl = clientParId(c.client);
             if (!cl || cl.archive) return;
@@ -1148,10 +1228,14 @@
             if (c.col !== "fait") (c.st || []).forEach(function (k) { if (!k.ok && k.qui === "Julien" && (k.date || c.col === "encours" || c.col === "vous")) items.push({ c: c, s: k, date: k.date || "" }); });
             items.forEach(function (it) {
               var d = it.date;
+              if (d && d > horizon) return; // au-delà, le planning
               (!d ? sections.sansDate : d < auj ? sections.retard : d === auj ? sections.auj : d <= dimanche ? sections.semaine : sections.plusTard).push(it);
             });
+            // Ce que Julien attend des clients : leurs questions, et leurs tâches de la semaine (ou en retard).
+            if (c.col === "vous") sections.attend.push({ c: c, date: "" });
+            if (c.col !== "fait" && c.col !== "demandes" && c.col !== "mensuel") (c.st || []).forEach(function (k) { if (!k.ok && coteClient(k.qui) && k.date && k.date <= dimanche) sections.attend.push({ c: c, s: k, date: k.date }); });
           });
-          ["retard", "auj", "semaine", "plusTard"].forEach(function (k) { sections[k].sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }); });
+          ["retard", "auj", "semaine", "attend", "plusTard"].forEach(function (k) { sections[k].sort(function (a, b) { return a.date < b.date ? -1 : a.date > b.date ? 1 : 0; }); });
           sections.urgent = sections.traiter.length + sections.retard.length + sections.auj.length;
           sections.aFaire = sections.urgent + sections.semaine.length;
           return sections;
@@ -1160,7 +1244,7 @@
           var zone = $("vue");
           zone.innerHTML = "";
           var m = maSemaine(), bloc = el("div", "semaine"), rien = true;
-          [["traiter", "À traiter — ce que vos clients ont fait"], ["retard", "En retard"], ["auj", "Aujourd’hui"], ["semaine", "Cette semaine"], ["plusTard", "Plus tard"], ["sansDate", "En cours, sans date"]].forEach(function (k) {
+          [["traiter", "À traiter — ce que vos clients ont fait"], ["retard", "En retard"], ["auj", "Aujourd’hui"], ["semaine", "Cette semaine"], ["attend", "Ce que vous attendez des clients"], ["plusTard", "Les deux semaines suivantes"], ["sansDate", "En cours, sans date"]].forEach(function (k) {
             var liste = m[k[0]];
             if (!liste.length) return;
             rien = false;
@@ -1180,7 +1264,7 @@
           var c = it.c, k = it.s, cl = clientParId(c.client), ch = chantier(c);
           var li = el("li");
           li.style.setProperty("--mc", couleur(c));
-          if (section === "traiter") li.appendChild(el("span", "point"));
+          if (section === "traiter" || (section === "attend" && !k)) li.appendChild(el("span", "point"));
           else {
             var cb = el("input");
             cb.type = "checkbox";
@@ -1200,7 +1284,9 @@
           var ou = [cl ? cl.nom : "", ch ? ch.nom : ""].filter(Boolean).join(" · ");
           var detail = section === "traiter"
             ? (c.statut ? majuscule(c.statut) : c.col === "demandes" ? "Nouvelle demande" : "Nouveau") + (ou ? " — " + ou : "")
-            : (k ? "Dans « " + c.t + " »" + (ou ? " — " + ou : "") : ou + (c.col === "encours" ? " · en cours" : ""));
+            : section === "attend"
+              ? (k ? k.qui + " · dans « " + c.t + " »" : "Question chez " + ((cl && cl.contact) || "le client") + (c.chezClientDepuis ? ", " + depuis(c.chezClientDepuis) : "")) + (ou ? " — " + ou : "")
+              : (k ? "Dans « " + c.t + " »" + (ou ? " — " + ou : "") : ou + (c.col === "encours" ? " · en cours" : ""));
           titre.appendChild(el("small", null, detail));
           titre.addEventListener("click", function () { ouvrirCarte(c.id); });
           li.appendChild(titre);
@@ -1450,6 +1536,8 @@
         function cleChrono(c) {
           if (c.date) return c.date;
           if (/\b(urgent|urgence|asap|au plus vite|immediat)/.test(sansAccent(c.echeance))) return "0000"; // l'urgent passe devant
+          var per = periode(c);
+          if (per) return per.debut;
           var m = moisDe(c);
           if (m < 0) return "9999";
           var cl = clientParId(c.client);
@@ -1459,6 +1547,167 @@
         }
         function trierChrono(liste) {
           return liste.sort(function (a, b) { var ka = cleChrono(a), kb = cleChrono(b); return ka < kb ? -1 : ka > kb ? 1 : a.ordre - b.ordre; });
+        }
+
+        /* ————— Le planning (Julien) ————— */
+        /* Une ligne par carte : une barre de sa première à sa dernière sous-tâche, un point par sous-tâche
+           (plein : fait ; cerclé de violet : chez le client ; rouge : en retard), aujourd'hui marqué. Les
+           filtres de la barre (projet, mois, mots) choisissent les cartes. Dessous, l'avancement par mois
+           et par chantier. */
+        var VUE_STOCK = "tableau.vue-place";
+        function vuePlace() {
+          if (S.vuePlace) return S.vuePlace;
+          var v = null;
+          try { v = localStorage.getItem(VUE_STOCK); } catch (e) {}
+          return (S.vuePlace = v === "planning" ? "planning" : "colonnes");
+        }
+        document.querySelectorAll("#f-vue button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            S.vuePlace = b.dataset.vue;
+            try { localStorage.setItem(VUE_STOCK, S.vuePlace); } catch (e) {}
+            S.planGauche = null;
+            rendre();
+          });
+        });
+        function lundiDe(iso) { var d = new Date(iso + "T12:00:00"); d.setDate(d.getDate() - ((d.getDay() + 6) % 7)); return isoDe(d); }
+        function ecart(a, b) { return Math.round((new Date(b + "T12:00:00") - new Date(a + "T12:00:00")) / JOUR); }
+        function rendrePlanning(cl) {
+          var z = $("planning");
+          var ancien = z.querySelector(".pl-wrap");
+          if (ancien) S.planGauche = ancien.scrollLeft;
+          z.innerHTML = "";
+          var auj = aujourdhui();
+          var lignes = [];
+          cartesAffichees().forEach(function (c) {
+            if (c.col === "demandes" || c.col === "mensuel") return;
+            var ds = (c.st || []).filter(function (x) { return x.date; }).map(function (x) { return { d: x.date, x: x }; });
+            if (!ds.length && c.date) ds = [{ d: c.date, x: null }];
+            if (!ds.length) return;
+            var tri = ds.map(function (o) { return o.d; }).sort();
+            lignes.push({ c: c, ds: ds, min: tri[0], max: tri[tri.length - 1] });
+          });
+          var bornes = [auj];
+          lignes.forEach(function (o) { bornes.push(o.min, o.max); });
+          if (/^\d{4}-\d{2}-\d{2}$/.test(cl.debut || "")) bornes.push(cl.debut);
+          if (/^\d{4}-\d{2}-\d{2}$/.test(cl.fin || "")) bornes.push(cl.fin);
+          bornes.sort();
+          var debut = lundiDe(bornes[0]), nbSem = Math.max(4, Math.ceil((ecart(debut, bornes[bornes.length - 1]) + 1) / 7));
+          var SEM = 30, largeur = nbSem * SEM, total = nbSem * 7;
+          function px(iso) { return ((ecart(debut, iso) + 0.5) / total) * largeur; }
+
+          var leg = el("p", "pl-legende");
+          leg.innerHTML = '<span><i></i>à faire</span><span><i class="p"></i>fait</span><span><i class="c"></i>chez le client</span><span><i class="r"></i>en retard</span><span>trait violet : aujourd’hui · un clic ouvre la carte</span>';
+          z.appendChild(leg);
+          var boite = el("div", "pl");
+          boite.style.setProperty("--pl-l", largeur + "px");
+          var tete = el("div", "pl-ligne pl-tete");
+          tete.appendChild(el("div", "pl-lab"));
+          var axe = el("div", "pl-piste");
+          axe.setAttribute("aria-hidden", "true");
+          var calque = el("div", "pl-calque");
+          calque.setAttribute("aria-hidden", "true");
+          for (var k = 0; k < nbSem; k++) {
+            var lu = new Date(debut + "T12:00:00"); lu.setDate(lu.getDate() + k * 7);
+            var isoL = isoDe(lu), x0 = (k / nbSem) * largeur;
+            var sem = el("span", "pl-sem", String(lu.getDate())); sem.style.left = px(isoL) + "px"; axe.appendChild(sem);
+            var g = el("span", "g"); g.style.left = x0 + "px"; calque.appendChild(g);
+          }
+          // Les mois : un nom à chaque début de mois ; le premier, s'il ne reste que quelques jours, cède la place.
+          var m = new Date(debut + "T12:00:00"), reperes = [];
+          m.setDate(1);
+          for (var n = 0; n < 24; n++) {
+            var premier = isoDe(m);
+            if (premier > bornes[bornes.length - 1]) break;
+            reperes.push({ lieu: premier < debut ? 0 : (ecart(debut, premier) / total) * largeur, nom: MOIS_AFFICHE[m.getMonth()], an: m.getFullYear(), m: m.getMonth(), coupe: premier < debut });
+            m.setMonth(m.getMonth() + 1);
+          }
+          reperes.forEach(function (r, i) {
+            if (!r.coupe) { var gm = el("span", "g m"); gm.style.left = r.lieu + "px"; calque.appendChild(gm); }
+            if (reperes[i + 1] && reperes[i + 1].lieu - r.lieu < 80) return;
+            var lm = el("span", "pl-mois", r.nom + (r.m === 0 || i < 2 ? " " + r.an : ""));
+            lm.style.left = r.lieu + 4 + "px"; axe.appendChild(lm);
+          });
+          var au = el("span", "auj"); au.style.left = px(auj) + "px"; calque.appendChild(au);
+          tete.appendChild(axe);
+          boite.appendChild(tete);
+
+          var groupes = cl.chantiers.map(function (x) { return { ch: x, l: [] }; }), sans = { ch: null, l: [] };
+          lignes.forEach(function (o) { var gr = groupes.filter(function (g2) { return g2.ch.id === o.c.ch; })[0] || sans; gr.l.push(o); });
+          groupes.concat([sans]).forEach(function (gr) {
+            if (!gr.l.length) return;
+            gr.l.sort(function (a, b) { return a.min < b.min ? -1 : a.min > b.min ? 1 : a.max < b.max ? -1 : 1; });
+            var tch = el("div", "pl-ligne"), h = el("div", "pl-ch"), sw = el("span", "sw");
+            sw.style.background = "var(--" + (gr.ch ? gr.ch.couleur : "c0") + ")";
+            h.appendChild(sw); h.appendChild(document.createTextNode(gr.ch ? gr.ch.nom : "Sans chantier"));
+            tch.appendChild(h); boite.appendChild(tch);
+            gr.l.forEach(function (o) {
+              var c = o.c, l = el("div", "pl-ligne");
+              var lab = el("div", "pl-lab"), b = bouton(c.t, "", function () { ouvrirCarte(c.id); });
+              b.title = c.t + (o.min === o.max ? " — " + dateCourte(o.min) : " — du " + dateCourte(o.min) + " au " + dateCourte(o.max));
+              lab.appendChild(b); l.appendChild(lab);
+              var piste = el("div", "pl-piste");
+              var restant = o.ds.filter(function (q) { return q.x && !q.x.ok && c.col !== "fait"; }).length;
+              var enRet = o.ds.filter(function (q) { return q.x && !q.x.ok && c.col !== "fait" && q.d < auj; }).length;
+              piste.setAttribute("role", "img");
+              piste.setAttribute("aria-label", (o.min === o.max ? "Le " + dateLongue(o.min) : "Du " + dateLongue(o.min) + " au " + dateLongue(o.max)) + " : " + nombre(restant, "sous-tâche à faire", "sous-tâches à faire") + (enRet ? ", dont " + enRet + " en retard" : ""));
+              var barre = el("span", "pl-barre");
+              barre.style.background = couleur(c); barre.style.left = px(o.min) + "px"; barre.style.width = Math.max(4, px(o.max) - px(o.min)) + "px";
+              piste.appendChild(barre);
+              var parDate = {};
+              o.ds.forEach(function (q) { (parDate[q.d] = parDate[q.d] || []).push(q); });
+              Object.keys(parDate).forEach(function (d) {
+                var qs = parDate[d];
+                var fini = c.col === "fait" || qs.every(function (q) { return q.x ? q.x.ok : false; });
+                var client = qs.some(function (q) { return q.x && !q.x.ok && coteClient(q.x.qui); });
+                var pt = el("span", "pl-pt" + (fini ? " ok" : "") + (client ? " client" : "") + (!fini && d < auj ? " retard" : "") + (qs.length > 1 ? " grappe" : ""), qs.length > 1 ? String(qs.length) : "");
+                pt.style.left = px(d) + "px"; pt.style.borderColor = couleur(c); if (fini) pt.style.background = couleur(c);
+                pt.title = dateCourte(d) + "\n" + qs.map(function (q) { return q.x ? (q.x.ok ? "✓ " : "○ ") + q.x.t + (q.x.qui ? " · " + q.x.qui : "") : c.t; }).join("\n");
+                pt.addEventListener("click", function () { ouvrirCarte(c.id); });
+                piste.appendChild(pt);
+              });
+              l.appendChild(piste); boite.appendChild(l);
+            });
+          });
+          if (!lignes.length) boite.appendChild(el("p", "vide", filtreActif() ? "Rien avec ce filtre." : "Aucune carte datée pour l’instant."));
+          boite.appendChild(calque);
+          var wrap = el("div", "pl-wrap");
+          wrap.tabIndex = 0;
+          wrap.setAttribute("aria-label", "Planning de " + cl.nom + ", défilable de côté");
+          wrap.appendChild(boite);
+          z.appendChild(wrap);
+          wrap.scrollLeft = S.planGauche != null ? S.planGauche : Math.max(0, px(lundiDe(auj)) - SEM * 2);
+
+          z.appendChild(el("h2", "pl-h", "Avancement par mois et par chantier"));
+          z.appendChild(tableAvancement(cl));
+        }
+        function tableAvancement(cl) {
+          var cartes = S.cartes.filter(function (c) { return c.client === cl.id; });
+          var mois = {};
+          cartes.forEach(function (c) { (c.st || []).forEach(function (x) { if (x.date) mois[x.date.slice(0, 7)] = true; }); if (!(c.st || []).length && c.date) mois[c.date.slice(0, 7)] = true; });
+          var liste = Object.keys(mois).sort(), ceMois = aujourdhui().slice(0, 7);
+          var wrap = el("div", "av-wrap"), t = el("table", "av-mois");
+          if (!liste.length) { wrap.appendChild(el("p", "vide", "Pas encore de sous-tâche datée.")); return wrap; }
+          var tr = el("tr"); tr.appendChild(el("th", null, "Chantier"));
+          liste.forEach(function (am) { var th = el("th", am === ceMois ? "cour" : "", MOIS_AFFICHE[moisIso(am + "-01")] + (am.slice(5) === "01" ? " " + am.slice(0, 4) : "")); th.scope = "col"; tr.appendChild(th); });
+          var thead = el("thead"); thead.appendChild(tr); t.appendChild(thead);
+          var tb = el("tbody");
+          function rangee(nom, lot, cls) {
+            if (!cls && !liste.some(function (am) { return avancementMois(lot, am).total; })) return;
+            var r = el("tr", cls || ""), th = el("th", null, nom); th.scope = "row"; r.appendChild(th);
+            liste.forEach(function (am) {
+              var a = avancementMois(lot, am), td = el("td", am === ceMois ? "cour" : "");
+              if (!a.total) td.textContent = "—";
+              else { td.textContent = a.fait + " sur " + a.total; var mi = el("span", "mini"), i = el("i"); i.style.width = a.pct + "%"; mi.appendChild(i); td.appendChild(mi); }
+              r.appendChild(td);
+            });
+            tb.appendChild(r);
+          }
+          cl.chantiers.forEach(function (x) { var lot = cartes.filter(function (c) { return c.ch === x.id; }); if (lot.length) rangee(x.nom, lot); });
+          var sansCh = cartes.filter(function (c) { return !chantierDe(cl, c.ch); });
+          if (sansCh.length) rangee("Sans chantier", sansCh);
+          rangee("Tout " + cl.nom, cartes, "total");
+          t.appendChild(tb); wrap.appendChild(t);
+          return wrap;
         }
 
         /* ————— La page du client ————— */
@@ -1729,7 +1978,7 @@
           function rang(m) { return m < 0 ? 99 : (m - debut + 12) % 12; }
           var maintenant = rang(new Date().getMonth());
           var groupes = {};
-          liste.forEach(function (c) { var m = moisDe(c); (groupes[m] = groupes[m] || []).push(c); });
+          liste.forEach(function (c) { var m = moisDebut(c); (groupes[m] = groupes[m] || []).push(c); });
           Object.keys(groupes).map(Number).sort(function (a, b) { return rang(a) - rang(b); }).forEach(function (m) {
             var cartes = groupes[m];
             var ouvert = S.moisOuverts[m] != null ? S.moisOuverts[m] : m < 0 || rang(m) <= maintenant + 1;
@@ -1786,8 +2035,16 @@
           if (c.note) e.appendChild(el("p", "note", c.statut === "répondu" ? "« " + c.note + " »" : c.note));
           if (sousTachesDepliees() && st.length) {
             var liste = el("ul", "st-liste");
-            st.forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
+            var ceMois = S.f.mois === null ? st : st.filter(function (x) { return !x.date || moisIso(x.date) === S.f.mois; });
+            var autres = S.f.mois === null ? [] : st.filter(function (x) { return x.date && moisIso(x.date) !== S.f.mois; });
+            var ouvertes = !!S.stAutres[c.id];
+            (ouvertes ? st : ceMois).forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
             e.appendChild(liste);
+            if (autres.length) {
+              var bt = bouton(ouvertes ? "Ne montrer que " + MOIS_AFFICHE[S.f.mois].toLowerCase() : "+ " + nombre(autres.length, "sous-tâche", "sous-tâches") + " d’autres mois", "st-autres", function () { S.stAutres[c.id] = !ouvertes; rendre(); });
+              bt.addEventListener("click", function (ev) { ev.stopPropagation(); });
+              e.appendChild(bt);
+            }
           }
 
           if (c.col === "vous" && fc) e.appendChild(actionsClient(c, e));
@@ -1817,6 +2074,28 @@
         function periode(c) {
           var ds = (c.st || []).map(function (x) { return x.date; }).filter(Boolean).sort();
           return ds.length ? { debut: ds[0], fin: ds[ds.length - 1] } : null;
+        }
+        /* Les mois (0 à 11) que couvre une carte : ceux de sa période, sinon celui de sa date ou de son échéance. */
+        function moisIso(iso) { return Number(iso.slice(5, 7)) - 1; }
+        function moisCouverts(c) {
+          var p = periode(c);
+          if (!p) { var m = moisDe(c); return m >= 0 ? [m] : []; }
+          var a = Number(p.debut.slice(0, 4)) * 12 + moisIso(p.debut), b = Number(p.fin.slice(0, 4)) * 12 + moisIso(p.fin), out = [];
+          for (var k = a; k <= b && out.length < 12; k++) out.push(k % 12);
+          return out;
+        }
+        function moisDebut(c) { var p = periode(c); return p ? moisIso(p.debut) : moisDe(c); }
+        /* Ce qui était prévu dans un mois (« AAAA-MM ») et ce qui en est fait : les sous-tâches datées du mois
+           (une carte sans sous-tâche compte pour une, à sa date). */
+        function avancementMois(cartes, am) {
+          var fait = 0, total = 0;
+          cartes.forEach(function (c) {
+            if (c.col === "demandes" || c.col === "mensuel") return;
+            var st = c.st || [];
+            if (st.length) st.forEach(function (x) { if (x.date && x.date.slice(0, 7) === am) { total++; if (x.ok || c.col === "fait") fait++; } });
+            else if (c.date && c.date.slice(0, 7) === am) { total++; if (c.col === "fait") fait++; }
+          });
+          return { fait: fait, total: total, pct: total ? Math.round((fait / total) * 100) : 0 };
         }
         function textePeriode(p) { return p.debut === p.fin ? dateCourte(p.debut) : dateCourte(p.debut) + " → " + dateCourte(p.fin); }
         /* Julien change la date d'une sous-tâche sans ouvrir la carte. */
@@ -1983,8 +2262,15 @@
           jauge.appendChild(trait);
           av.appendChild(jauge);
           var ligne = el("p");
-          ligne.appendChild(el("b", null, a.pct + " %"));
-          ligne.appendChild(document.createTextNode(" — " + a.fait + " sur " + a.total + (a.total > 1 ? " tâches faites" : " tâche faite")));
+          var amP = auj.slice(0, 7), moP = avancementMois(cartesVisibles().filter(function (c) { return c.ch === x.id; }), amP);
+          if (moP.total) {
+            trait.style.width = moP.pct + "%";
+            ligne.appendChild(el("b", null, MOIS_AFFICHE[moisIso(amP + "-01")] + " : " + moP.fait + " sur " + moP.total));
+            ligne.appendChild(document.createTextNode(" · période : " + a.fait + " sur " + a.total));
+          } else {
+            ligne.appendChild(el("b", null, a.pct + " %"));
+            ligne.appendChild(document.createTextNode(" — " + a.fait + " sur " + a.total + (a.total > 1 ? " tâches faites" : " tâche faite")));
+          }
           if (prochaine) ligne.appendChild(document.createTextNode(" · Prochaine échéance : " + prochaine.t + ", " + dateLongue(prochaine.date)));
           if (retards) { ligne.appendChild(document.createTextNode(" · ")); ligne.appendChild(el("span", "retard", nombre(retards, "sous-tâche", "sous-tâches") + " en retard")); }
           av.appendChild(ligne);

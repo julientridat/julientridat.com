@@ -87,6 +87,18 @@ function avancement(cartes: Carte[]): { fait: number; total: number; pct: number
   }
   return { fait, total, pct: total ? Math.round((fait / total) * 100) : 0 };
 }
+/** Ce qui était prévu dans un mois (« AAAA-MM ») et ce qui en est fait : les sous-tâches datées du mois. */
+function avancementMois(cartes: Carte[], am: string): { fait: number; total: number } {
+  let fait = 0, total = 0;
+  for (const c of cartes) {
+    if (c.col === "demandes" || c.col === "mensuel") continue;
+    if (c.st.length) {
+      for (const k of c.st) if (k.date?.startsWith(am)) { total++; if (k.ok || c.col === "fait") fait++; }
+    } else if (c.date?.startsWith(am)) { total++; if (c.col === "fait") fait++; }
+  }
+  return { fait, total };
+}
+const MOIS_FR = ["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"];
 
 function nonLus(etat: EtatMcp, client: string): number {
   const lu = (fil: string) => etat.lectures.find((l) => l.client === client && l.fil === fil && l.qui === "j")?.ts ?? 0;
@@ -167,6 +179,7 @@ function ligneCarte(c: Carte, cl: Client, auj: string, avecSousTaches = true): s
 function resumePlace(etat: EtatMcp, cl: Client, auj: string): string {
   const cartes = etat.cartes.filter((c) => c.client === cl.id);
   const av = avancement(cartes);
+  const mo = avancementMois(cartes, auj.slice(0, 7));
   const chez = cartes.filter((c) => c.col === "vous");
   const taches = cartes.flatMap((c) => (c.col === "fait" || c.col === "demandes" ? [] : c.st.filter((k) => !k.ok && coteClient(k.qui) && duMoment(c, k, auj))));
   let retards = 0;
@@ -184,7 +197,7 @@ function resumePlace(etat: EtatMcp, cl: Client, auj: string): string {
   const enLigne = etat.enLigne.filter((x) => x.client === cl.id).map((x) => x.nom);
   return [
     `${cl.nom} [${cl.id}]${cl.archive ? " — close" : ""} · contact : ${cl.contact || "—"}${cl.debut && cl.fin ? ` · du ${dateFr(cl.debut)} au ${dateFr(cl.fin)}` : ""}`,
-    `  Avancement ${av.pct} % (${av.fait} sur ${av.total}) · à traiter : ${cartes.filter((c) => c.col === "demandes" || c.nouveau === "julien").length} · en cours : ${cartes.filter((c) => c.col === "encours").length} · chez ${cl.contact || "le client"} : ${chez.length} carte(s) + ${taches.length} tâche(s)`,
+    `  Avancement : ${mo.total ? `${MOIS_FR[Number(auj.slice(5, 7)) - 1]} ${mo.fait} sur ${mo.total} · ` : ""}période ${av.fait} sur ${av.total} · à traiter : ${cartes.filter((c) => c.col === "demandes" || c.nouveau === "julien").length} · en cours : ${cartes.filter((c) => c.col === "encours").length} · chez ${cl.contact || "le client"} : ${chez.length} carte(s) + ${taches.length} tâche(s)`,
     `  ${retards ? retards + " en retard · " : ""}prochaine échéance : ${p ? `${p.t}, ${dateFr(p.date)}` : "—"} · messages non lus : ${nonLus(etat, cl.id)}${enLigne.length ? " · en ligne : " + enLigne.join(", ") : ""}`,
   ].join("\n");
 }
