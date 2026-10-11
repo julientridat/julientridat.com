@@ -802,3 +802,103 @@ collections:
               - { name: titreAccent, widget: string, label: "Titre — phrase en italique", hint: "S'affiche en italique, à la suite de la première phrase." }
               - { name: texte, label: Paragraphe, widget: text, hint: "**mots** = gras · *mots* = en couleur · [texte](/adresse) = lien · un retour à la ligne est gardé. Les espaces avant « : ? ! » se posent toutes seules." }
               - { name: mention, label: Petite ligne sous le bouton, widget: string }
+
+      - name: enquete-pme
+        label: "Enquête PME (LinkedIn)"
+        file: src/contenu/enquete-pme.json
+        format: json
+        fields:
+          - name: seo
+            label: Titre et description (page non indexée)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Titre de l'onglet, widget: string }
+              - { name: description, label: Description, widget: text }
+          - { name: titre, label: Titre de l'enquête, widget: string }
+          - { name: intro, label: Phrase d'introduction, widget: text }
+          - { name: signature, label: Signature, widget: string }
+          - name: questions
+            label: Les questions
+            widget: list
+            summary: "{{fields.id}} — {{fields.libelle}}"
+            hint: "Ne changez pas l'identifiant (q1, q2…) d'une question qui a déjà reçu des réponses : c'est la colonne de l'export."
+            fields:
+              - { name: id, label: "Identifiant (q1, q2…)", widget: string }
+              - { name: libelle, label: Question, widget: string }
+              - { name: type, label: Type de réponse, widget: select, options: [{ label: Un seul choix, value: un }, { label: Plusieurs choix, value: plusieurs }, { label: Texte libre, value: texte }] }
+              - name: options
+                label: Choix proposés
+                widget: list
+                required: false
+                field: { name: option, label: Choix, widget: string }
+              - { name: autre, label: "Ajouter un choix « Autre » avec précision", widget: boolean, default: false }
+          - name: contact
+            label: Bloc « Recevoir la synthèse »
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titre, label: Titre, widget: string }
+              - { name: intro, label: Petite mention à côté du titre, widget: string }
+              - { name: libelleEntreprise, label: "Libellé du champ entreprise", widget: string, hint: "Ex. Entreprise" }
+              - { name: consentement, label: Texte de la case de consentement, widget: text }
+              - { name: mention, label: Mention sur l'usage des données, widget: text }
+          - { name: bouton, label: Texte du bouton, widget: string }
+          - name: merci
+            label: Écran de remerciement
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titre, label: Titre, widget: string }
+              - { name: texte, label: Texte, widget: string }
+              - { name: texteContact, label: "Phrase ajoutée si la personne a laissé son e-mail", widget: string }
+
+      - name: enquete-agences
+        label: "Enquête agences (LinkedIn)"
+        file: src/contenu/enquete-agences.json
+        format: json
+        fields:
+          - name: seo
+            label: Titre et description (page non indexée)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: title, label: Titre de l'onglet, widget: string }
+              - { name: description, label: Description, widget: text }
+          - { name: titre, label: Titre de l'enquête, widget: string }
+          - { name: intro, label: Phrase d'introduction, widget: text }
+          - { name: signature, label: Signature, widget: string }
+          - name: questions
+            label: Les questions
+            widget: list
+            summary: "{{fields.id}} — {{fields.libelle}}"
+            hint: "Ne changez pas l'identifiant (q1, q2…) d'une question qui a déjà reçu des réponses : c'est la colonne de l'export."
+            fields:
+              - { name: id, label: "Identifiant (q1, q2…)", widget: string }
+              - { name: libelle, label: Question, widget: string }
+              - { name: type, label: Type de réponse, widget: select, options: [{ label: Un seul choix, value: un }, { label: Plusieurs choix, value: plusieurs }, { label: Texte libre, value: texte }] }
+              - name: options
+                label: Choix proposés
+                widget: list
+                required: false
+                field: { name: option, label: Choix, widget: string }
+              - { name: autre, label: "Ajouter un choix « Autre » avec précision", widget: boolean, default: false }
+          - name: contact
+            label: Bloc « Recevoir la synthèse »
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titre, label: Titre, widget: string }
+              - { name: intro, label: Petite mention à côté du titre, widget: string }
+              - { name: libelleEntreprise, label: "Libellé du champ entreprise", widget: string, hint: "Ex. Agence" }
+              - { name: consentement, label: Texte de la case de consentement, widget: text }
+              - { name: mention, label: Mention sur l'usage des données, widget: text }
+          - { name: bouton, label: Texte du bouton, widget: string }
+          - name: merci
+            label: Écran de remerciement
+            widget: object
+            collapsed: true
+            fields:
+              - { name: titre, label: Titre, widget: string }
+              - { name: texte, label: Texte, widget: string }
+              - { name: texteContact, label: "Phrase ajoutée si la personne a laissé son e-mail", widget: string }

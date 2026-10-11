@@ -69,3 +69,10 @@ la bascule des nameservers vers Cloudflare (ci-dessus) reste la voie recommandé
 - URL LinkedIn exacte dans `sameAs` (`src/lib/site.ts`) pour le Knowledge Graph.
 - Point de vigilance : cas « groupe travel retail » sous clause de confidentialité (déjà
   doublement anonymisé — validation par l'organisme prudente avant large diffusion).
+
+## Enquêtes LinkedIn (/enquete-pme, /enquete-agences)
+
+- Pages hors menu, hors sitemap et hors llms.txt, non indexées. Textes et questions modifiables dans /admin.
+- Les réponses sont enregistrées par le Worker (`worker/enquetes.ts`) dans l'espace KV `OAUTH_KV`, préfixe `enquete:`.
+- Export (tableur, séparateur « ; ») : `https://julientridat.com/api/enquetes.csv?enquete=pme&cle=<TABLEAU_ADMIN_KEY>` (ou `enquete=agences`, ou `toutes`).
+- Provenance : ajouter `?src=…` au lien (ex. `?src=gojiberry-pme`), stocké avec la réponse.

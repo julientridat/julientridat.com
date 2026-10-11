@@ -16,6 +16,7 @@ import { autoriser, pageConnecteur, type EnvAutorisation } from "./autorisation"
 import { redirectionCanonique } from "./canonique";
 import { servirCms, type EnvCms } from "./cms";
 import { analyserFiche } from "./evaluateur";
+import { enregistrerReponse, exporterReponses } from "./enquetes";
 import { servirMcp } from "./mcp";
 import type { EnvTableau } from "./tableau";
 
@@ -1124,6 +1125,14 @@ const site = {
     }
     if (url.pathname === "/authorize") return autoriser(request, env);
     if (url.pathname === "/api/evaluer-poste") return handleEvaluerPoste(request, env);
+    // Enquêtes LinkedIn (worker/enquetes.ts) : réponse publique, export réservé à Julien.
+    if (url.pathname === "/api/enquete") {
+      if (request.method !== "POST") return new Response("Méthode non autorisée", { status: 405 });
+      if (!allowedOrigin(request)) return new Response("Origine refusée", { status: 403 });
+      if (await rateLimited(request)) return Response.json({ ok: false, erreur: "trop" }, { status: 429 });
+      return enregistrerReponse(request, env);
+    }
+    if (url.pathname === "/api/enquetes.csv") return exporterReponses(request, env);
     // Connexion GitHub de l'outil d'édition /admin (worker/cms.ts).
     if (url.pathname === "/cms/auth" || url.pathname === "/cms/callback") return servirCms(request, env);
     return env.ASSETS.fetch(request);

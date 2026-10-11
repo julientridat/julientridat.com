@@ -1,0 +1,84 @@
+{
+  "seo": {
+    "title": "L'IA dans les agences — enquête | Julien Tridat",
+    "description": "Cinq questions, trois minutes, sur l'intégration de l'IA dans les agences."
+  },
+  "titre": "L'IA dans les agences",
+  "intro": "Cinq questions, trois minutes. Je partage la synthèse avec tous ceux qui répondent.",
+  "signature": "Julien Tridat",
+  "questions": [
+    {
+      "id": "q1",
+      "libelle": "Où en est l'IA dans votre agence ?",
+      "type": "un",
+      "options": [
+        "Pas encore commencé",
+        "Des tests individuels",
+        "Quelques usages en production",
+        "Intégrée dans plusieurs pôles"
+      ],
+      "autre": false
+    },
+    {
+      "id": "q2",
+      "libelle": "Qu'avez-vous déjà mis en place ?",
+      "type": "plusieurs",
+      "options": [
+        "Des licences (ChatGPT, Claude, Copilot…)",
+        "Une formation des équipes",
+        "Des outils IA spécialisés",
+        "Des agents ou automatisations sur mesure",
+        "Un accompagnement externe",
+        "Rien pour l'instant"
+      ],
+      "autre": false
+    },
+    {
+      "id": "q3",
+      "libelle": "Qu'est-ce qui coince le plus ?",
+      "type": "plusieurs",
+      "options": [
+        "Chacun dans son coin, rien de partagé",
+        "Des process trop peu standardisés",
+        "La confidentialité des données clients",
+        "Des équipes réticentes",
+        "Pas le temps de s'y mettre",
+        "Pas de gain visible",
+        "Personne pour piloter"
+      ],
+      "autre": true
+    },
+    {
+      "id": "q4",
+      "libelle": "Qui porte le sujet chez vous ?",
+      "type": "un",
+      "options": [
+        "La direction",
+        "Un référent interne",
+        "Chacun pour soi",
+        "Personne"
+      ],
+      "autre": false
+    },
+    {
+      "id": "q5",
+      "libelle": "Qu'est-ce qui changerait vraiment la donne pour votre agence ?",
+      "type": "texte",
+      "options": [],
+      "autre": false
+    }
+  ],
+  "contact": {
+    "titre": "Recevoir la synthèse",
+    "intro": "Facultatif.",
+    "libelleEntreprise": "Agence",
+    "consentement": "J'accepte que Julien Tridat utilise mon e-mail pour m'envoyer la synthèse de l'enquête.",
+    "mention": "Votre e-mail ne sert qu'à vous envoyer la synthèse. Pour le faire effacer, écrivez à julien.tridat@gmail.com."
+  },
+  "bouton": "Envoyer",
+  "merci": {
+    "titre": "Merci.",
+    "texte": "Vos réponses sont bien enregistrées.",
+    "texteContact": "Je vous envoie la synthèse dès qu'elle est prête."
+  }
+}

@@ -1,0 +1,49 @@
+---
+/**
+ * Gabarit commun des enquêtes LinkedIn (/enquete-pme, /enquete-agences).
+ * Hors menu, hors sitemap et hors llms.txt ; non indexées (pas de canonical,
+ * donc BaseLayout pose meta robots noindex). On y arrive par le message 3 des
+ * séquences Gojiberry, avec ?src=… pour savoir d'où vient la réponse.
+ */
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Nav from "@/components/Nav.astro";
+import Footer from "@/components/Footer.astro";
+import Enquete, { type ContenuEnquete } from "@/components/react/Enquete";
+import { preparer, enLigne } from "@/lib/texte";
+
+interface Props {
+  enquete: "pme" | "agences";
+  contenu: typeof import("@/contenu/enquete-pme.json");
+}
+const { enquete, contenu: brut } = Astro.props;
+const c = preparer(brut);
+---
+
+<BaseLayout title={brut.seo.title} description={brut.seo.description}>
+  <main class="bg-background text-foreground">
+    <section class="relative isolate overflow-hidden bg-foreground text-white">
+      <div
+        class="pointer-events-none absolute inset-0 -z-10"
+        style="background: radial-gradient(45% 60% at 78% 45%, rgba(108,76,241,0.30), transparent 70%);"
+      >
+      </div>
+      <Nav onDark />
+      <div class="mx-auto max-w-3xl px-6 pb-14 pt-32 md:px-12 md:pb-16 md:pt-40">
+        <p class="mb-6 w-fit rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-white">
+          Enquête
+        </p>
+        <h1 class="text-balance text-[clamp(2.3rem,6vw,4rem)] font-medium leading-[1.04] tracking-[-0.035em]">{c.titre}</h1>
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-white/85 md:text-xl" set:html={enLigne(c.intro, { fort: "font-medium text-white", accent: "text-violet-soft" })} />
+        <p class="mt-4 font-serif text-xl italic text-violet-soft">— {c.signature}</p>
+      </div>
+    </section>
+
+    <section class="px-4 py-10 sm:px-6 md:px-12 md:py-14">
+      <div class="mx-auto max-w-3xl">
+        <Enquete client:load enquete={enquete} contenu={c as unknown as ContenuEnquete} />
+      </div>
+    </section>
+
+    <Footer />
+  </main>
+</BaseLayout>
