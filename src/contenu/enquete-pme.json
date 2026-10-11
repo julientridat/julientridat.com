@@ -1,0 +1,85 @@
+{
+  "seo": {
+    "title": "Le marketing dans les PME — enquête | Julien Tridat",
+    "description": "Cinq questions, trois minutes, sur la façon dont les PME s'organisent pour leur marketing."
+  },
+  "titre": "Le marketing dans les PME",
+  "intro": "Cinq questions, trois minutes. Je partage la synthèse avec tous ceux qui répondent.",
+  "signature": "Julien Tridat",
+  "questions": [
+    {
+      "id": "q1",
+      "libelle": "Aujourd'hui, qui s'occupe du marketing et de la communication chez vous ?",
+      "type": "un",
+      "options": [
+        "Moi-même",
+        "Un alternant ou un stagiaire",
+        "Un salarié junior",
+        "Un responsable marketing expérimenté",
+        "Une agence ou un freelance",
+        "Personne vraiment"
+      ],
+      "autre": false
+    },
+    {
+      "id": "q2",
+      "libelle": "Qu'avez-vous déjà essayé ces trois dernières années ?",
+      "type": "plusieurs",
+      "options": [
+        "Un alternant",
+        "Un recrutement en CDI ou CDD",
+        "Une agence",
+        "Un freelance",
+        "Une formation",
+        "Rien pour l'instant"
+      ],
+      "autre": false
+    },
+    {
+      "id": "q3",
+      "libelle": "Qu'est-ce qui a le plus coincé ?",
+      "type": "plusieurs",
+      "options": [
+        "Personne pour fixer le cap",
+        "Pas de résultats visibles",
+        "Pas le temps d'encadrer",
+        "Un départ, et tout s'est arrêté",
+        "Un prestataire trop loin de notre métier",
+        "Le coût"
+      ],
+      "autre": true
+    },
+    {
+      "id": "q4",
+      "libelle": "Dans les douze prochains mois, vous envisagez plutôt de…",
+      "type": "un",
+      "options": [
+        "Recruter",
+        "Externaliser",
+        "Continuer comme aujourd'hui",
+        "Je ne sais pas encore"
+      ],
+      "autre": false
+    },
+    {
+      "id": "q5",
+      "libelle": "Si vous pouviez régler une seule chose dans votre marketing, ce serait laquelle ?",
+      "type": "texte",
+      "options": [],
+      "autre": false
+    }
+  ],
+  "contact": {
+    "titre": "Recevoir la synthèse",
+    "intro": "Facultatif.",
+    "libelleEntreprise": "Entreprise",
+    "consentement": "J'accepte que Julien Tridat utilise mon e-mail pour m'envoyer la synthèse de l'enquête.",
+    "mention": "Votre e-mail ne sert qu'à vous envoyer la synthèse. Pour le faire effacer, écrivez à julien.tridat@gmail.com."
+  },
+  "bouton": "Envoyer",
+  "merci": {
+    "titre": "Merci.",
+    "texte": "Vos réponses sont bien enregistrées.",
+    "texteContact": "Je vous envoie la synthèse dès qu'elle est prête."
+  }
+}
