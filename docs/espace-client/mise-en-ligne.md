@@ -166,10 +166,11 @@ changer la date ou le titre) ; commenter ; coller un plan (qui complète les car
 existantes) ; créer un projet, le renommer, fixer son objectif et ses dates clés.
 
 **Ce qu'il ne fait que si tu le lui demandes** : écrire au client (message dans la
-discussion), envoyer une carte « Chez le client », supprimer une sous-tâche. Tout ce qui est
-dans une place reste visible du client : ses consignes le lui rappellent.
+discussion), envoyer une carte « Chez le client », supprimer une carte ou une sous-tâche
+(définitif, chez le client aussi). Tout ce qui est dans une place reste visible du client : ses
+consignes le lui rappellent.
 
-**Ce qu'il ne fait pas** : supprimer une carte ou un projet, voir les liens et les clés d'accès.
+**Ce qu'il ne fait pas** : supprimer un projet, voir les liens et les clés d'accès.
 
 Après une mise à jour du connecteur, une conversation déjà ouverte garde l'ancienne liste
 d'outils : ouvre une nouvelle conversation pour avoir les nouveaux.
