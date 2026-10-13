@@ -36,7 +36,7 @@ Une « place » par client. Dans une place : des cartes en colonnes — Demandes
 Règles :
 - Tout ce qui est dans une place est visible du client.
 - Écrire au client — envoyer_message, commenter_carte, deplacer_carte vers « vous », creer_carte en colonne « vous » — seulement si Julien l'a demandé explicitement dans la conversation. Sinon, proposer le texte et attendre son accord.
-- Rien ne se supprime par ce connecteur, sauf une sous-tâche (supprimer_sous_tache), et seulement si Julien l’a demandé explicitement. Pour retirer une carte, le dire à Julien.
+- Supprimer (supprimer_carte, supprimer_sous_tache) est définitif et visible du client : seulement si Julien l’a demandé explicitement, en nommant ce qu’il faut supprimer. Dans le doute, lister les cartes visées et attendre son accord. Les projets ne se suppriment pas par ce connecteur.
 - Lire la place (lire_place) avant de créer, pour éviter les doublons ; désigner les cartes par leur id.
 - Dates au format AAAA-MM-JJ. Français soigné, ton direct, pas de chiffre inventé.`;
 
@@ -525,7 +525,7 @@ function creerServeur(stub: Stub): McpServer {
     {
       title: "Supprimer des sous-tâches",
       description:
-        "Supprime une ou plusieurs sous-tâches d’une carte (par id ou titre). Définitif, et visible du client : seulement si Julien l’a demandé explicitement. La carte, elle, ne se supprime pas ici.",
+        "Supprime une ou plusieurs sous-tâches d’une carte (par id ou titre). Définitif, et visible du client : seulement si Julien l’a demandé explicitement. Pour une carte entière : supprimer_carte.",
       inputSchema: { carte: z.string(), sous_taches: z.array(z.string().min(1)).min(1).max(30) },
       annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
     },
@@ -536,6 +536,23 @@ function creerServeur(stub: Stub): McpServer {
       const ids = new Set(retirees.map((k) => k.id));
       await geste({ type: "carte.maj", id: c.id, champs: { st: c.st.filter((x) => !ids.has(x.id)) } });
       return `${retirees.length} sous-tâche(s) supprimée(s) de « ${c.t} » (${cl.nom}) : ${retirees.map((k) => k.t).join(" ; ")}.`;
+    },
+  );
+
+  outil(
+    "supprimer_carte",
+    {
+      title: "Supprimer des cartes",
+      description:
+        "Supprime une ou plusieurs cartes (par id), avec leurs sous-tâches et leurs commentaires. Définitif, et la carte disparaît aussi chez le client : seulement si Julien l’a demandé explicitement. Lire la place d’abord et désigner les cartes par leur id.",
+      inputSchema: { cartes: z.array(z.string().min(1)).min(1).max(20) },
+      annotations: { readOnlyHint: false, destructiveHint: true, idempotentHint: true, openWorldHint: false },
+    },
+    async (a: { cartes: string[] }) => {
+      const etat = await lire();
+      const visees = a.cartes.map((id) => trouverCarte(etat, id)).filter((v, i, t) => t.findIndex((w) => w.c.id === v.c.id) === i);
+      for (const { c } of visees) await geste({ type: "carte.supprimer", id: c.id });
+      return `${visees.length} carte(s) supprimée(s) : ${visees.map(({ c, cl }) => `« ${c.t} » (${cl.nom})`).join(" ; ")}.`;
     },
   );
 
