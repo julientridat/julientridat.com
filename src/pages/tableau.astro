@@ -125,6 +125,8 @@
       .col-h .n { font-size: 0.74rem; color: var(--ink-3); }
       .col-h .hint { margin-left: auto; font-size: 0.75rem; color: var(--ink-3); }
       .cards { display: grid; gap: 8px; min-height: 30px; position: relative; }
+      /* Le contenu d'une carte tient dans sa colonne : il passe à la ligne, il ne déborde pas. */
+      .column, .cards, .cards > * { min-width: 0; }
       .vide { font-size: 0.8rem; color: var(--ink-3); padding: 6px; }
       .card { background: var(--white); border: 1px solid var(--line); border-top: 4px solid var(--mc, var(--c0)); border-radius: 12px; padding: 10px 12px; cursor: pointer; box-shadow: 0 1px 2px rgba(24, 20, 60, 0.05); transition: transform 0.15s, box-shadow 0.15s; }
       /* Seule une carte qui arrive (ou qui change de colonne) s'anime — pas tout le tableau à chaque mise à jour. */
@@ -254,19 +256,22 @@
 
       /* Sous-tâches : sur la carte (sous-tableau), dans la fiche, dans « Chez vous » */
       .st-liste { list-style: none; display: grid; gap: 5px; margin-top: 8px; border-top: 1px solid var(--line); padding-top: 8px; }
-      .st-liste li { display: flex; align-items: flex-start; gap: 8px; font-size: 0.84rem; color: var(--ink-2); line-height: 1.3; }
+      .st-liste li { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 4px 8px; font-size: 0.84rem; color: var(--ink-2); line-height: 1.3; }
       .st-liste li.ok .t { color: var(--ink-3); text-decoration: line-through; }
       .st-liste input[type="checkbox"] { width: 18px; height: 18px; margin-top: 0; accent-color: var(--violet); flex: none; cursor: pointer; }
       .st-liste .coche-fixe { width: 18px; flex: none; text-align: center; color: var(--ink-3); font-size: 0.74rem; }
-      .st-liste .t { flex: 1; min-width: 0; }
+      .st-liste .t { flex: 1 1 110px; min-width: 0; overflow-wrap: anywhere; }
+      .st-liste .st-droite { display: inline-flex; align-items: baseline; gap: 6px; margin-left: auto; flex: none; }
       .st-liste .meta { font-size: 0.75rem; color: var(--ink-3); white-space: nowrap; }
       .st-liste .meta.client { color: var(--violet); font-weight: 600; }
       .st-liste .meta.retard { color: var(--late); font-weight: 600; }
-      .st-liste .st-date { width: auto; flex: none; border: 1px solid transparent; background: transparent; border-radius: 999px; padding: 0 4px; font-size: 0.75rem; color: var(--ink-3); cursor: pointer; font-variant-numeric: tabular-nums; }
-      .st-liste .st-date:hover, .st-liste .st-date:focus { border-color: var(--line); background: var(--white); color: var(--ink); outline: none; }
-      .st-liste .st-date:focus-visible { outline: 2px solid var(--violet); outline-offset: 1px; }
+      /* La date d'une sous-tâche (Julien) : une étiquette courte ; le calendrier s'ouvre au clic. */
+      .st-liste .st-date { position: relative; display: inline-block; flex: none; border: 1px solid transparent; border-radius: 999px; padding: 0 5px; font-size: 0.75rem; color: var(--ink-3); cursor: pointer; font-variant-numeric: tabular-nums; white-space: nowrap; }
+      .st-liste .st-date:hover { border-color: var(--line); background: var(--white); color: var(--ink); }
+      .st-liste .st-date:focus-within { outline: 2px solid var(--violet); outline-offset: 1px; }
       .st-liste .st-date.retard { color: var(--late); font-weight: 600; }
-      .st-liste .st-date.vide { color: var(--ink-3); opacity: 0.7; }
+      .st-liste .st-date.vide { opacity: 0.7; }
+      .st-liste .st-date input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; border: 0; padding: 0; margin: 0; cursor: pointer; font-size: 16px; }
       .st-liste button.parent { background: none; border: none; padding: 0; color: var(--ink-3); font-size: 0.76rem; text-decoration: underline; text-underline-offset: 2px; text-align: left; }
       .sheet .st-liste { border-top: none; padding-top: 0; gap: 8px; }
       .sheet .st-liste li { font-size: 0.88rem; }
@@ -670,6 +675,11 @@
       <div class="f-groupe" id="f-ch"></div>
       <div class="f-groupe" id="f-mois"></div>
       <button type="button" class="pill f-st" id="f-st" aria-pressed="false" hidden>Sous-tâches</button>
+      <div class="seg-vue" id="f-st-etat" role="group" aria-label="Sous-tâches affichées" hidden>
+        <button type="button" data-st="afaire" aria-pressed="true">À faire</button>
+        <button type="button" data-st="faites" aria-pressed="false">Faites</button>
+        <button type="button" data-st="toutes" aria-pressed="false">Toutes</button>
+      </div>
       <label class="f-q">
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="7" cy="7" r="5"></circle><path d="m11 11 3.5 3.5"></path></svg>
         <input type="search" id="f-q" placeholder="Chercher une carte" autocomplete="off" aria-label="Chercher une carte" />
@@ -753,7 +763,7 @@
         var HORS_CADRE = { type: "à cadrer", intro: "Reçu. Pour éviter tout malentendu sur les délais, Julien découpe chaque demande en étapes — la première arrive toujours sous 48 à 72 h :", jalons: ["Découpage proposé — sous 24 h", "Votre validation", "Premier livrable — sous 48 à 72 h"] };
 
         var S = { cle: null, me: null, clients: [], cartes: [], acces: [], enLigne: [], filtre: "tous", apercu: false, connecte: false, recu: false,
-          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null, cocheesIci: {}, stAutres: {}, vuePlace: null };
+          f: { ch: null, mois: null, q: "" }, msgs: {}, lus: {}, debutFil: {}, moisOuverts: {}, aide: false, colMobile: null, stDeplie: null, cocheesIci: {}, stAutres: {}, vuePlace: null, stEtat: null };
         var tactile = window.matchMedia("(pointer: coarse)").matches;
         var autonome = window.matchMedia("(display-mode: standalone)").matches || navigator.standalone === true;
         var feuille = { mode: null, id: null };
@@ -1050,6 +1060,9 @@
           var fst = $("f-st"), deplie = sousTachesDepliees();
           fst.hidden = !!S.f.ch || !visibles.some(function (c) { return c.st && c.st.length; }) || (choix && vuePlace() === "planning");
           fst.classList.toggle("on", deplie);
+          var fe = $("f-st-etat");
+          fe.hidden = fst.hidden || !deplie;
+          fe.querySelectorAll("button").forEach(function (b) { b.setAttribute("aria-pressed", b.dataset.st === filtreSousTaches() ? "true" : "false"); });
           fst.setAttribute("aria-pressed", deplie ? "true" : "false");
           fst.title = deplie ? "Replier les sous-tâches" : "Afficher les sous-tâches sous chaque carte";
           var actif = filtreBarre();
@@ -1076,6 +1089,20 @@
           if (v === "1" || v === "0") return (S.stDeplie = v === "1");
           return true;
         }
+        var ST_ETAT = "tableau.sous-taches-etat";
+        function filtreSousTaches() {
+          if (S.stEtat) return S.stEtat;
+          var v = null;
+          try { v = localStorage.getItem(ST_ETAT); } catch (e) {}
+          return (S.stEtat = v === "faites" || v === "toutes" ? v : "afaire");
+        }
+        document.querySelectorAll("#f-st-etat button").forEach(function (b) {
+          b.addEventListener("click", function () {
+            S.stEtat = b.dataset.st;
+            try { localStorage.setItem(ST_ETAT, S.stEtat); } catch (e) {}
+            rendre();
+          });
+        });
         $("f-st").addEventListener("click", function () {
           S.stDeplie = !sousTachesDepliees();
           try { localStorage.setItem(ST_STOCK, S.stDeplie ? "1" : "0"); } catch (e) {}
@@ -2035,11 +2062,14 @@
           if (c.note) e.appendChild(el("p", "note", c.statut === "répondu" ? "« " + c.note + " »" : c.note));
           if (sousTachesDepliees() && st.length) {
             var liste = el("ul", "st-liste");
-            var ceMois = S.f.mois === null ? st : st.filter(function (x) { return !x.date || moisIso(x.date) === S.f.mois; });
-            var autres = S.f.mois === null ? [] : st.filter(function (x) { return x.date && moisIso(x.date) !== S.f.mois; });
+            // Le filtre de la barre : à faire (et celles cochées à l'instant, barrées), faites, ou toutes.
+            var etat = filtreSousTaches();
+            var montrees = st.filter(function (x) { return etat === "toutes" || (etat === "faites" ? x.ok : !x.ok || S.cocheesIci[c.id + ":" + x.id]); });
+            var ceMois = S.f.mois === null ? montrees : montrees.filter(function (x) { return !x.date || moisIso(x.date) === S.f.mois; });
+            var autres = S.f.mois === null ? [] : montrees.filter(function (x) { return x.date && moisIso(x.date) !== S.f.mois; });
             var ouvertes = !!S.stAutres[c.id];
-            (ouvertes ? st : ceMois).forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
-            e.appendChild(liste);
+            (ouvertes ? montrees : ceMois).forEach(function (x) { liste.appendChild(ligneSousTache(c, x, false)); });
+            if (liste.childNodes.length) e.appendChild(liste);
             if (autres.length) {
               var bt = bouton(ouvertes ? "Ne montrer que " + MOIS_AFFICHE[S.f.mois].toLowerCase() : "+ " + nombre(autres.length, "sous-tâche", "sous-tâches") + " d’autres mois", "st-autres", function () { S.stAutres[c.id] = !ouvertes; rendre(); });
               bt.addEventListener("click", function (ev) { ev.stopPropagation(); });
@@ -2175,19 +2205,25 @@
           var dateModifiable = julien() && !S.apercu;
           if (x.qui && !(aMoi && avecCarte === "groupe")) meta.push(aMoi ? "vous" : x.qui);
           if (x.date && !dateModifiable) meta.push(dateCourte(x.date));
-          if (meta.length) li.appendChild(el("span", "meta" + (enRetard(c, x) && !dateModifiable ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
+          var droite = el("span", "st-droite");
+          if (meta.length) droite.appendChild(el("span", "meta" + (enRetard(c, x) && !dateModifiable ? " retard" : coteClient(x.qui) ? " client" : ""), meta.join(" · ")));
           if (dateModifiable) {
-            var d = el("input", "st-date" + (enRetard(c, x) ? " retard" : "") + (x.date ? "" : " vide"));
+            // Une étiquette courte (« 31 oct. ») : le champ de date, invisible, la recouvre et ouvre le calendrier.
+            var dw = el("span", "st-date" + (enRetard(c, x) ? " retard" : "") + (x.date ? "" : " vide"));
+            dw.title = "Changer la date";
+            dw.appendChild(el("span", null, x.date ? dateCourte(x.date) : "+ date"));
+            var d = el("input");
             d.type = "date";
             d.value = x.date || "";
             d.id = "st-d-" + c.id.slice(0, 8) + "-" + x.id + (avecCarte ? "-v" : "");
             d.dataset.garde = "date-" + x.id;
-            d.setAttribute("aria-label", "Date de « " + x.t + " »");
-            d.title = "Changer la date";
-            d.addEventListener("click", function (e) { e.stopPropagation(); });
+            d.setAttribute("aria-label", "Date de « " + x.t + " »" + (x.date ? " : " + dateLongue(x.date) : ""));
+            d.addEventListener("click", function (e) { e.stopPropagation(); try { d.showPicker(); } catch (er) {} });
             d.addEventListener("change", function () { if (d.value !== (x.date || "")) dater(c, x, d.value); });
-            li.appendChild(d);
+            dw.appendChild(d);
+            droite.appendChild(dw);
           }
+          if (droite.childNodes.length) li.appendChild(droite);
           return li;
         }
         function personnesDe(cl) {
