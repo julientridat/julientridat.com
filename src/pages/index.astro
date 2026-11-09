@@ -55,7 +55,7 @@ const jsonLd = [
         price: "490",
         priceCurrency: "EUR",
         description:
-          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers assistants. Déduit si une offre est signée dans les 30 jours.",
+          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers assistants. Satisfait ou remboursé. Déduit si une offre est signée dans les 30 jours.",
       },
       ...offres.map((o) => ({
         "@type": "Offer",
@@ -95,22 +95,22 @@ const jsonLd = [
           <button type="button" class="v-bouton" data-open-booking="diagnostic">
             Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
           </button>
-          <p class="v-petit">490&nbsp;€ · visio ou présentiel · déduit de la suite si vous signez sous 30&nbsp;jours</p>
+          <p class="v-petit">490&nbsp;€ · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · déduit si vous signez une offre sous 30&nbsp;jours</p>
+          <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-contact>Une question avant&nbsp;? →</button>
         </div>
       </div>
-      <div class="v-carte" style="align-self: start;">
-        <div class="v-bandeau"><span>Votre diagnostic</span><span style="color: var(--v-encre-sur-sombre);">90&nbsp;min</span></div>
-        <ol>
-          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">1</span><span>Cartographie de 3 à 5 processus qui vous coûtent du temps.</span></li>
-          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">2</span><span>Les 2 ou 3 assistants IA qui rapportent tout de suite.</span></li>
-          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">3</span><span>Le gain indicatif, en heures par semaine et par collaborateur.</span></li>
-          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">4</span><span>Une feuille de route en 3&nbsp;étapes.</span></li>
-        </ol>
-        <div class="v-ligne" style="border-top: 1px solid var(--v-grille); display: flex; flex-direction: column; gap: 4px;">
-          <span class="v-label">Vous repartez avec</span>
-          <span>La cartographie, le chiffrage et la feuille de route. Puis, sous 48&nbsp;h, votre kit pour construire vos 3&nbsp;premiers assistants.</span>
+      <figure class="v-carte" style="align-self: start; margin: 0;">
+        {/* [À VALIDER] Vidéo « Le diagnostic en 2 minutes » à tourner. Une fois prête :
+            fichier dans public/ (comme hero.mp4) et <video controls preload="none" poster=…>
+            avec sous-titres (<track kind="captions">), à la place de cet emplacement. */}
+        <div class="v-emplacement" style="aspect-ratio: 16 / 9;" role="img" aria-label="Emplacement de la vidéo de présentation du diagnostic">
+          <span class="v-label" aria-hidden="true">[Vidéo · le diagnostic en 2 minutes]</span>
         </div>
-      </div>
+        <figcaption class="v-ligne" style="border-top: 2px solid var(--v-encre); border-bottom: 0;">
+          <span class="v-label" style="display: block;">En 2 minutes</span>
+          <span>Ce qui se passe pendant les 90 minutes, et ce que vous emportez.</span>
+        </figcaption>
+      </figure>
     </div>
   </section>
 
@@ -133,11 +133,15 @@ const jsonLd = [
       <div class="v-pile v-pile--serree" style="gap: 8px;">
         <p class="v-prix">490&nbsp;€</p>
         <p class="v-petit">90&nbsp;min · visio ou présentiel · déduit si vous signez une offre sous 30&nbsp;jours</p>
+        <p class="v-fort v-vert">Satisfait ou remboursé.</p>
       </div>
       <p style="max-width: 46ch;">Les construire seul, c'est possible. <span class="v-fort">Les brancher sur vos outils et former votre équipe, c'est mon métier.</span></p>
-      <button type="button" class="v-bouton v-bouton--petit" style="justify-self: start;" data-open-booking="diagnostic">
-        Réserver →<span class="v-surligne">90&nbsp;min</span>
-      </button>
+      <div class="v-pile v-pile--serree" style="gap: 4px; align-items: flex-start;">
+        <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
+          Réserver →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-contact>Une question avant&nbsp;? →</button>
+      </div>
     </div>
     <p class="v-petit">Vous cherchez une formation à l'IA pour vos équipes&nbsp;? <a href="/formation-ia" class="v-fort">Voir la page Formation →</a></p>
   </section>
@@ -229,7 +233,8 @@ const jsonLd = [
         <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
           Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
         </button>
-        <p class="v-petit">490&nbsp;€ · déduit si vous signez sous 30&nbsp;jours</p>
+        <p class="v-petit">490&nbsp;€ · satisfait ou remboursé · déduit si vous signez une offre sous 30&nbsp;jours</p>
+        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-contact>Une question avant&nbsp;? →</button>
       </div>
     </div>
   </section>

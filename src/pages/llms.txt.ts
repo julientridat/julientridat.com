@@ -21,7 +21,7 @@ export const GET: APIRoute = () => {
     "",
     "## Porte d'entrée : le diagnostic",
     "",
-    "- 90 minutes, en visio ou en présentiel, 490 €, déduits si une offre est signée dans les 30 jours.",
+    "- 90 minutes, en visio ou en présentiel, 490 €, satisfait ou remboursé, déduits si une offre est signée dans les 30 jours.",
     "- Cartographie de 3 à 5 processus, identification des 2 ou 3 assistants IA qui rapportent tout de suite,",
     "  gain indicatif en heures par semaine et par collaborateur, feuille de route en 3 étapes ;",
     "  sous 48 heures, un kit pour construire soi-même ses 3 premiers assistants. Les brancher sur",
