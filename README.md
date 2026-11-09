@@ -7,6 +7,30 @@ comme pour les agents IA (JSON-LD, `llms.txt`).
 Remplace la version Lovable (`page-replicator-charm`, conservée en lecture seule comme
 référence de design).
 
+## Refonte de novembre 2026 — à valider avant la mise en ligne
+
+Le site vitrine passe dans la charte « planning » (`src/styles/vitrine.css`,
+`src/layouts/VitrineLayout.astro`) et se réduit à trois pages : l'accueil (intégration IA,
+diagnostic de 90 minutes), `/formation-ia` et `/mentions-legales`. Les anciennes pages
+(direction marketing, études de cas, notes, intégration, installation, transformation,
+agences, expérience, avant de recruter) sont hors ligne : leurs adresses répondent en 301
+vers l'accueil (`worker/redirections.ts`). Leurs contenus restent dans le dépôt.
+
+Restent en place, sans changement : le tableau client (`/tableau`), le connecteur Claude
+(`/mcp`, `/authorize`), les enquêtes LinkedIn et leurs API, le CMS (`/admin`).
+
+**[À VALIDER] par Julien :**
+- [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
+- [ ] Planning Google Agenda de 90 minutes pour le diagnostic : remplacer
+      `SCHEDULER_DIAGNOSTIC_URL` dans `src/lib/site.ts` (pour l'instant, le planning de 20 minutes).
+- [ ] 490 € : hors taxes ou TTC ?
+- [ ] Autorisation de citer le cas du centre de formation (accueil, section Cas).
+- [ ] Attestation de RC professionnelle : à ajouter aux pièces de référencement
+      (`src/pages/formation-ia.astro`) une fois l'assurance souscrite.
+- [ ] Après fusion : soumettre `https://julientridat.com/sitemap.xml` dans la Search Console.
+
+Hors de ce dépôt, non touché : le calendrier éditorial LEH.
+
 ## Stack
 
 - **Astro 5** (statique, 100 % HTML pré-rendu) + **React 19** (un seul îlot : le dialogue

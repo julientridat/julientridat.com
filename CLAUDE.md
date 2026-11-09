@@ -12,26 +12,31 @@ par les humains ET par les agents IA (AEO).
 Contraintes : **site statique, zéro base de données de contenu, zéro coût récurrent,
 souveraineté totale (code versionné, aucun outil propriétaire).**
 
-## Architecture
+## Architecture (refonte de novembre 2026)
 
-- `/` — one-page fidèle à l'ancien site Lovable (Hero, Constat, Méthode, Assistants,
-  Offres, **Registre** [ajout], Références, À propos, CTA final). NE PAS reformuler les
-  textes de vente sans demande explicite.
-- `/realisations` + `/realisations/[slug]` — études de cas (collection `realisations`).
-- `/notes` + `/notes/[slug]` — écrits d'analyse (collection `notes`).
-- `sitemap.xml`, `llms.txt` — générés au build depuis les collections (`src/pages/*.ts`).
-- Réservation : îlot React unique `src/components/react/BookingDialog.tsx`, monté par
-  `BaseLayout`, ouvert par délégation sur tout `[data-open-booking]`.
-  Qualification → insert Supabase (clé publique, RLS insert-only) → iframe Google Calendar.
+- `/` — accueil : intégration IA pour TPE et PME, diagnostic payant de 90 minutes comme
+  porte d'entrée, quatre offres dimensionnées par le nombre d'utilisateurs formés.
+- `/formation-ia` — formation à l'IA générative ; textes dans `src/contenu/formation-ia.json` (/admin).
+- `/mentions-legales`, `404`.
+- Pages retirées (ancien site) : 301 vers l'accueil, liste dans `worker/redirections.ts`.
+  Les collections `realisations` et `notes` restent dans `src/content/`, hors ligne.
+- Inchangés : `/tableau` (page applicative, hors mise en page vitrine), `/mcp`, enquêtes, `/admin`.
+- `sitemap.xml`, `llms.txt` : réduits aux deux pages vitrine (`src/pages/*.ts`).
+- Réservation : îlot React `BookingDialog`, ouvert par `[data-open-booking]`.
+  `data-open-booking="diagnostic"` → diagnostic 90 min (`SCHEDULER_DIAGNOSTIC_URL`) ;
+  `data-open-booking="echange"` → échange gratuit de 20 min (`SCHEDULER_URL`).
+  Contact : `[data-open-contact]`.
 
-## Charte (À RESPECTER FIDÈLEMENT)
+## Charte (À RESPECTER FIDÈLEMENT) — « planning »
 
-Référence de design : `../page-replicator-charm/` (Lovable/React — LIRE, jamais modifier).
-- Fond noir `oklch(0.145 0 0)`, accent lime `oklch(0.92 0.21 125)` (~#c8ff3d).
-- **Geist** (sans) + **Instrument Serif** (les `<em>` passent en serif italique lime).
-- Vocabulaire : `rounded-2xl`, bordures `white/10-15`, eyebrows uppercase `tracking-[0.22em]`,
-  titres `font-light tracking-[-0.03em]`, boutons pilule.
-- Tokens dans `src/styles/global.css` (Tailwind 4, config CSS-first, pas de tailwind.config).
+Référence : l'artefact Design System « Julien Tridat » ; tokens dans `src/styles/vitrine.css`.
+- Fond `#F5F7F9`, surfaces blanches, encre `#101214`, **un seul accent : vert `#0A7350`**,
+  réservé à ce qui est livré ou tenu (seconde phrase des titres, statuts). Surligneur
+  `#FFE45C` uniquement sur la mention de durée du bouton principal.
+- **Barlow Condensed** (titres, toujours en capitales) + **Public Sans** (texte). Pas d'italique.
+- Angles droits partout, cadres de 2 px d'encre, filets de 1 px. Aucune ombre, aucun dégradé.
+- Les fenêtres React (global.css, Tailwind) héritent de la charte par leurs variables,
+  surchargées dans `vitrine.css`. `BaseLayout` ne sert plus qu'aux enquêtes.
 
 ## Règles éditoriales (NON NÉGOCIABLES)
 
@@ -44,7 +49,7 @@ Référence de design : `../page-replicator-charm/` (Lovable/React — LIRE, jam
 
 ## SEO/AEO
 
-- Balises home = version repo Lovable la plus récente (title « Consultant IA Bordeaux… »).
+- Balises home : title « Intégration IA pour TPE et PME à Bordeaux | Julien Tridat ».
 - `google-site-verification` conservée. Canonical absolu partout, `lang="fr"`.
 - JSON-LD : `Person` (sitewide, `src/lib/site.ts`), `ProfessionalService` + `WebSite` (home),
   `Article` + `BreadcrumbList` (artefacts), `CollectionPage` (index).

@@ -1,26 +1,14 @@
 ---
-import BaseLayout from "@/layouts/BaseLayout.astro";
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
 ---
 
-<BaseLayout
-  title="Page introuvable | Julien Tridat"
-  description="La page que vous cherchez n'existe pas ou a été déplacée."
->
-  <main class="flex min-h-screen items-center justify-center bg-background px-4 text-foreground">
-    <div class="max-w-md text-center">
-      <h1 class="font-serif text-7xl italic text-lime">404</h1>
-      <h2 class="mt-4 text-xl font-medium text-foreground">Page introuvable</h2>
-      <p class="mt-2 text-base text-ink-2">
-        La page que vous cherchez n'existe pas ou a été déplacée.
-      </p>
-      <div class="mt-6">
-        <a
-          href="/"
-          class="inline-flex items-center justify-center rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90"
-        >
-          Retour à l'accueil
-        </a>
-      </div>
+<VitrineLayout title="Page introuvable | Julien Tridat" description="La page que vous cherchez n'existe pas ou a été déplacée.">
+  <section class="v-section v-section--premiere v-section--fin">
+    <div class="v-hero v-pile">
+      <p class="v-label">Erreur 404</p>
+      <h1 class="v-h1">Page introuvable. <span class="v-vert">L'accueil, lui, est là.</span></h1>
+      <p class="v-chapo">La page que vous cherchez n'existe pas ou a été déplacée.</p>
+      <a href="/" class="v-bouton" style="align-self: flex-start;">Retour à l'accueil →</a>
     </div>
-  </main>
-</BaseLayout>
+  </section>
+</VitrineLayout>

@@ -1,9 +1,9 @@
 export const SITE = {
   url: "https://julientridat.com",
   name: "Julien Tridat",
-  title: "Julien Tridat — Direction marketing externalisée pour PME",
+  title: "Julien Tridat — Intégration IA pour TPE et PME, Bordeaux",
   description:
-    "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis vos livrables à date, chaque semaine.",
+    "J'audite vos processus, je construis les assistants IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.",
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 
@@ -19,6 +19,14 @@ export const WEB3FORMS_ACCESS_KEY = "12c7676a-7350-41af-a901-7e276d7ed8c9";
 /** Google Calendar — page de prise de rendez-vous (identique au site d'origine). */
 export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
+
+/**
+ * Google Calendar — planning du diagnostic de 90 minutes.
+ * [À VALIDER] Aucun planning de 90 minutes n'existe encore : en attendant, le
+ * diagnostic ouvre le planning de l'échange de 20 minutes. Remplacer par l'URL
+ * d'un planning de rendez-vous de 90 minutes (paiement en ligne si possible).
+ */
+export const SCHEDULER_DIAGNOSTIC_URL = SCHEDULER_URL;
 
 /*
  * Il n'y a plus de base de données. Le projet Supabase qui recevait les traces
@@ -36,7 +44,7 @@ export const PERSON_JSONLD = {
   "@type": "Person",
   "@id": `${SITE.url}/#julien-tridat`,
   name: "Julien Tridat",
-  jobTitle: "Consultant marketing et IA indépendant",
+  jobTitle: "Intégrateur IA pour TPE et PME",
   description:
     "Vingt ans de marketing. Depuis 2018, j'accompagne des dirigeants de PME dans la croissance de leur entreprise. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
   url: SITE.url,

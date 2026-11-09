@@ -1,92 +1,235 @@
 ---
 /**
- * Page d'accueil — offre de direction marketing externalisée.
+ * Accueil — intégration IA pour TPE et PME (refonte de novembre 2026).
  *
- * Remplace, depuis le 2026-08-29, l'ancienne home « J'installe l'IA dans vos
- * outils. En 2 mois. » (archivée, hors index, dans /installation-ia).
+ * Remplace l'accueil « direction marketing externalisée » : l'offre en vigueur
+ * est désormais l'intégration IA, avec un diagnostic payant de 90 minutes comme
+ * porte d'entrée. Charte « planning » (src/styles/vitrine.css). Source : canevas
+ * « julientridat.com — Page Diagnostic IA » et le document d'offre Intégrateur v2.
  *
- * Septembre 2026 : ramenée de 11 à 7 blocs sur le modèle de designjoy.co.
- * Copy du 29/09/2026 : neuf blocs — hero, problème, comment ça marche,
- * comparaison, preuves, qui, prix, questions, clôture — et un seul bouton,
- * « Réserver 20 minutes ». Les autres offres restent dans la nav et le pied
- * de page.
+ * [À VALIDER] — voir README, section « Refonte de novembre 2026 » :
+ *   - 490 € HT ou TTC ;
+ *   - autorisation de citer le cas du centre de formation ;
+ *   - planning de rendez-vous de 90 minutes (SCHEDULER_DIAGNOSTIC_URL).
  */
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import Hero from "@/components/sections/offre/Hero.astro";
-import Probleme from "@/components/sections/offre/Probleme.astro";
-import Fonctionnement from "@/components/sections/offre/Fonctionnement.astro";
-import Avantages from "@/components/sections/offre/Avantages.astro";
-import Preuves from "@/components/sections/offre/Preuves.astro";
-import Bio from "@/components/sections/offre/Bio.astro";
-import Prix from "@/components/sections/offre/Prix.astro";
-import Faq from "@/components/sections/offre/Faq.astro";
-import FinalCta from "@/components/sections/offre/FinalCta.astro";
-import Footer from "@/components/Footer.astro";
-import Reveal from "@/components/Reveal.astro";
+import { Image } from "astro:assets";
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
 import { SITE } from "@/lib/site";
-import { FAQ_ACCUEIL } from "@/lib/faqAccueil";
-import { accueilBrut } from "@/lib/contenu";
+import portrait from "@/assets/julien.jpg";
 
-// Mot-clé principal : « direction marketing externalisée », dans le title,
-// la description, le H1 (surtitre du hero) et le sous-titre. Title et
-// description sont repris tels quels en og: et twitter: par BaseLayout.
-// Modifiables dans /admin (src/contenu/accueil.json, bloc seo).
-const { title, description } = accueilBrut.seo;
+const title = "Intégration IA pour TPE et PME à Bordeaux | Julien Tridat";
+const description =
+  "J'audite vos processus, je construis les assistants IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.";
+
+const offres = [
+  { nom: "Dirigeant augmenté", utilisateurs: "1", duree: "1 semaine", prix: 2500 },
+  { nom: "TPE augmentée", utilisateurs: "Jusqu'à 10", duree: "2 à 4 semaines", prix: 5000 },
+  { nom: "PME augmentée", utilisateurs: "Jusqu'à 30", duree: "4 à 8 semaines", prix: 12000 },
+  { nom: "PME augmentée +", utilisateurs: "Jusqu'à 80", duree: "8 à 12 semaines", prix: 25000 },
+];
+const euros = (n: number) => `${n.toLocaleString("fr-FR").replace(/ |\s/g, " ")} €`;
 
 const jsonLd = [
   {
     "@context": "https://schema.org",
     "@type": "ProfessionalService",
     "@id": `${SITE.url}/#service`,
-    name: "Direction marketing externalisée — abonnement mensuel, mois de démarrage compris",
+    name: "Intégration IA pour TPE et PME",
     description:
-      "Abonnement mensuel, trois mois d'engagement avec 30 jours d'essai, puis sans engagement. Le premier mois peut partir d'un projet précis du client (campagne, événement, projet d'édition, site). Le dirigeant est formé à l'IA en priorité, compris dans l'abonnement ; formation IA des équipes en option. Le premier mois est le mois de démarrage : état des lieux (semaine 1), plan sur douze mois avec les trois premiers mois détaillés et les actions du mois suivant validées (semaine 2), positionnement et charte (semaine 3), modèles et premier livrable (semaine 4). Ensuite, le plan mis en œuvre semaine après semaine, les livrables prévus à date, un point hebdomadaire de 45 minutes, des demandes hors plan livrées entre J+1 et J+3, et un tableau de bord partagé. Pour PME jusqu'à 50 salariés, sans équipe marketing interne. Bordeaux et à distance.",
+      "Audit des processus, assistants IA construits dans les outils de l'entreprise, formation des équipes à les utiliser. Porte d'entrée : un diagnostic de 90 minutes. Bordeaux et Grand Sud-Ouest.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/`,
     makesOffer: [
       {
         "@type": "Offer",
-        name: "Abonnement mensuel — six PME à la fois",
-        price: "2500",
+        name: "Diagnostic IA — 90 minutes",
+        price: "490",
         priceCurrency: "EUR",
-        priceSpecification: {
-          "@type": "UnitPriceSpecification",
-          price: "2500",
-          priceCurrency: "EUR",
-          unitText: "mois",
-          valueAddedTaxIncluded: false,
-        },
         description:
-          "2 500 € HT par mois dès le premier mois, mois de démarrage compris, prélevés en début de mois. Trois mois d'engagement avec 30 jours d'essai : le client peut arrêter à la fin du premier mois. Ensuite, sans engagement. Le plan mis en œuvre chaque semaine, les livrables prévus à date, point hebdomadaire de 45 minutes, demandes hors plan livrées entre J+1 et J+3, tableau de bord partagé. Après les trois premiers mois, arrêt et reprise à tout moment, pour un mois ou plus. Le client conserve tous les livrables — contenus, charte, modèles, fichiers sources — y compris après résiliation ; les agents IA utilisés pour produire restent la propriété du prestataire.",
+          "Cartographie de 3 à 5 processus, identification des 2 ou 3 assistants IA à rendement immédiat, gain indicatif chiffré, feuille de route en 3 étapes. Déduit si une offre est signée dans les 30 jours.",
       },
+      ...offres.map((o) => ({
+        "@type": "Offer",
+        name: o.nom,
+        price: String(o.prix),
+        priceCurrency: "EUR",
+        description: `${o.utilisateurs} utilisateur(s) formé(s) · ${o.duree.replace(" ", " ")}.`,
+      })),
     ],
   },
   {
     "@context": "https://schema.org",
-    "@type": "FAQPage",
-    mainEntity: FAQ_ACCUEIL.map((item) => ({
-      "@type": "Question",
-      name: item.q,
-      acceptedAnswer: { "@type": "Answer", text: item.r },
-    })),
+    "@type": "WebSite",
+    "@id": `${SITE.url}/#website`,
+    url: `${SITE.url}/`,
+    name: SITE.name,
+    inLanguage: "fr-FR",
+    publisher: { "@id": `${SITE.url}/#julien-tridat` },
   },
 ];
 ---
 
-<BaseLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd}>
-  <main class="bg-background text-foreground">
-    <Hero />
-    <Probleme />
-    <Fonctionnement />
-    <Avantages />
-    <Preuves />
-    <Bio />
-    <Prix />
-    <Faq />
-    <FinalCta />
-    <Footer home />
-  </main>
-  <Reveal />
-</BaseLayout>
+<VitrineLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd} actif="accueil" cta="diagnostic">
+  <section id="accueil" class="v-section v-section--premiere">
+    <div class="v-hero v-grille v-grille--large">
+      <div class="v-pile">
+        <p class="v-label">Dirigeants de TPE et PME · Bordeaux et Grand Sud-Ouest</p>
+        <h1 class="v-h1">
+          J'audite vos processus. Je construis les assistants IA dans vos outils.
+          <span class="v-vert">Je forme vos équipes à les utiliser.</span>
+        </h1>
+        <p class="v-chapo">
+          Tout commence par un diagnostic de 90&nbsp;minutes. Vous me décrivez votre semaine. Je vous dis où l'IA
+          vous fait gagner du temps, et combien ça vaut.
+        </p>
+        <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
+          <button type="button" class="v-bouton" data-open-booking="diagnostic">
+            Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
+          </button>
+          <p class="v-petit">490&nbsp;€ · visio ou présentiel · déduit de la suite si vous signez sous 30&nbsp;jours</p>
+        </div>
+      </div>
+      <div class="v-carte" style="align-self: start;">
+        <div class="v-bandeau"><span>Votre diagnostic</span><span style="color: var(--v-encre-sur-sombre);">90&nbsp;min</span></div>
+        <ol>
+          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">1</span><span>Cartographie de 3 à 5 processus qui vous coûtent du temps.</span></li>
+          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">2</span><span>Les 2 ou 3 assistants IA qui rapportent tout de suite.</span></li>
+          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">3</span><span>Le gain indicatif, en heures par semaine et par collaborateur.</span></li>
+          <li class="v-ligne" style="display: flex; gap: 16px;"><span class="v-chiffre" style="min-width: 24px;">4</span><span>Une feuille de route en 3&nbsp;étapes.</span></li>
+        </ol>
+        <div class="v-ligne" style="border-top: 1px solid var(--v-grille); display: flex; flex-direction: column; gap: 4px;">
+          <span class="v-label">Vous repartez avec</span>
+          <span>La liste des assistants à construire · un gain estimé sur votre cas réel · une décision&nbsp;: s'arrêter là, ou passer à la suite.</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
+  <section id="diagnostic" class="v-section">
+    <p class="v-label">Le diagnostic</p>
+    <h2 class="v-h2">90&nbsp;minutes. <span class="v-vert">Vous savez où mettre l'IA, et combien ça vaut.</span></h2>
+    <div class="v-grille">
+      <div class="v-carte v-carte--pad">
+        <h3 class="v-h3">C'est pour vous si</h3>
+        <ul class="v-liste">
+          <li>· Vous dirigez seul, ou une TPE ou PME dont les utilisateurs sont identifiés.</li>
+          <li>· Des tâches reviennent chaque semaine&nbsp;: rédaction, reporting, réponses, CRM.</li>
+          <li>· Vous investissez sur votre trésorerie, sans attendre un financement OPCO.</li>
+          <li>· Vous décidez vite&nbsp;: sous 30&nbsp;jours.</li>
+        </ul>
+      </div>
+      <div class="v-carte v-carte--pad">
+        <h3 class="v-h3">Ce n'est pas pour vous si</h3>
+        <ul class="v-liste">
+          <li>· Vous cherchez une formation à l'IA pour vos équipes&nbsp;: <a href="/formation-ia" class="v-fort">voir la page Formation →</a></li>
+          <li>· Vous voulez un «&nbsp;test&nbsp;» ou une preuve de concept gratuite.</li>
+          <li>· La décision passe par un comité.</li>
+          <li>· Vous voulez un audit isolé, sans intention d'agir.</li>
+        </ul>
+      </div>
+      <div class="v-carte v-carte--pad">
+        <p class="v-label">Le prix</p>
+        <p class="v-prix">490&nbsp;€</p>
+        <p class="v-petit">90&nbsp;min · visio ou présentiel · Bordeaux et Grand Sud-Ouest</p>
+        <p>Le diagnostic se suffit à lui-même&nbsp;: vous repartez avec une feuille de route, que vous la mettiez en œuvre avec moi ou non.</p>
+        <p class="v-fort">Si vous passez à une offre dans les 30&nbsp;jours, il est déduit.</p>
+        <button type="button" class="v-bouton v-bouton--petit" style="align-self: flex-start;" data-open-booking="diagnostic">
+          Réserver →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <section id="cas" class="v-section">
+    <p class="v-label">Cas</p>
+    <h2 class="v-h2">Trois métiers. <span class="v-vert">Ce qui a changé dans leur semaine.</span></h2>
+    <div class="v-grille">
+      <article class="v-carte" style="display: flex; flex-direction: column;">
+        <p class="v-bandeau">Courtier en assurance BTP · Gironde</p>
+        <div class="v-cols" style="grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--v-grille);">
+          <div class="v-ligne" style="border-bottom: 0;"><span class="v-label" style="display: block;">Avant</span><span class="v-chiffre">2 à 3&nbsp;jours</span></div>
+          <div class="v-ligne" style="border-bottom: 0; border-left: 1px solid var(--v-grille);"><span class="v-label" style="display: block;">Après</span><span class="v-chiffre v-vert">Moins de 2&nbsp;h</span></div>
+        </div>
+        <p style="padding: 16px 22px 22px;">Synthétiser les dizaines de documents d'un dossier chantier, traquer les coquilles, chiffrer le contrat. Une tâche quasi quotidienne. Un assistant pensé pour son métier la ramène à moins de 2&nbsp;heures.</p>
+      </article>
+      <article class="v-carte" style="display: flex; flex-direction: column;">
+        <p class="v-bandeau">Carrossier · Grand Sud-Ouest</p>
+        <div class="v-cols" style="grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--v-grille);">
+          <div class="v-ligne" style="border-bottom: 0;"><span class="v-label" style="display: block;">Avant</span><span class="v-chiffre">1&nbsp;h&nbsp;30 à 2&nbsp;h</span></div>
+          <div class="v-ligne" style="border-bottom: 0; border-left: 1px solid var(--v-grille);"><span class="v-label" style="display: block;">Après</span><span class="v-chiffre v-vert">8 à 12&nbsp;min</span></div>
+        </div>
+        <p style="padding: 16px 22px 22px;">Après sa journée d'atelier, il passait ses soirées sur l'évaluation, le devis et la facture. Il dicte désormais en faisant le tour du véhicule, photos à l'appui. Le devis sort avant qu'il ait raccroché.</p>
+      </article>
+      <article class="v-carte" style="display: flex; flex-direction: column;">
+        <p class="v-bandeau">Centre de formation</p>
+        <div class="v-cols" style="grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--v-grille);">
+          <div class="v-ligne" style="border-bottom: 0;"><span class="v-label" style="display: block;">Avant, par module</span><span class="v-chiffre">3 à 4&nbsp;jours</span></div>
+          <div class="v-ligne" style="border-bottom: 0; border-left: 1px solid var(--v-grille);"><span class="v-label" style="display: block;">Après</span><span class="v-chiffre v-vert">4 à 6&nbsp;h</span></div>
+        </div>
+        <p style="padding: 16px 22px 22px;">Concevoir un parcours et ses supports prenait plusieurs journées. Les formatrices ont récupéré ce temps. Elles créent désormais le e-learning qu'elles n'avaient jamais eu le temps de lancer.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="offres" class="v-section">
+    <p class="v-label">Offres</p>
+    <h2 class="v-h2">Après le diagnostic, vous décidez. <span class="v-vert">Le planning est signé avec le devis.</span></h2>
+    <div class="v-carte" style="overflow-x: auto;">
+      <table class="v-tableau">
+        <thead>
+          <tr>
+            <th scope="col">Offre</th>
+            <th scope="col">Utilisateurs formés</th>
+            <th scope="col">Durée</th>
+            <th scope="col" class="v-droite">Prix</th>
+          </tr>
+        </thead>
+        <tbody>
+          {offres.map((o) => (
+            <tr>
+              <th scope="row" class="v-h3">{o.nom}</th>
+              <td>{o.utilisateurs}</td>
+              <td>{o.duree}</td>
+              <td class="v-droite v-chiffre">{euros(o.prix)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="v-grille">
+      <p class="v-texte">Les assistants sortent par vagues. Les premiers tournent pendant le projet, pas à la fin. <span class="v-fort">Si je dérape sur le planning, je continue à mes frais.</span></p>
+      <p class="v-petit v-texte">Au-delà de 80&nbsp;utilisateurs&nbsp;: sur devis · Maintenance évolutive&nbsp;: 300 à 1&nbsp;200&nbsp;€ par mois selon l'offre</p>
+    </div>
+  </section>
+
+  <section id="qui" class="v-section">
+    <div class="v-grille v-grille--large" style="align-items: start;">
+      <div class="v-carte" style="padding: 0; overflow: hidden;">
+        <Image src={portrait} alt="Julien Tridat" widths={[400, 640, 900]} sizes="(max-width: 700px) 100vw, 560px" style="display: block; width: 100%; height: auto;" />
+      </div>
+      <div class="v-pile">
+        <p class="v-label">Qui je suis</p>
+        <h2 class="v-h2">Je ne suis pas développeur. <span class="v-vert">J'aide les entreprises à grandir depuis 20&nbsp;ans.</span></h2>
+        <p class="v-texte">La publicité chez Publicis. La réalisation pour France&nbsp;24, Canal+ et France&nbsp;2. Puis la formation en marketing et en IA&nbsp;: <span class="v-fort">plus de 300 dirigeants et cadres formés.</span></p>
+        <p class="v-texte">J'installe l'IA dans les outils que vos équipes utilisent déjà&nbsp;: Microsoft&nbsp;365, Google Workspace, Notion. Pas de migration. Vos données restent chez vous.</p>
+        <p class="v-texte">Basé à Bordeaux, j'interviens dans tout le Grand Sud-Ouest.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="reserver" class="v-section v-section--fin">
+    <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
+      <div class="v-pile">
+        <h2 class="v-h1">Commençons <span class="v-vert">par 90&nbsp;minutes.</span></h2>
+        <p class="v-chapo">On cartographie vos processus. On repère les 2 ou 3 assistants qui comptent. On chiffre le gain. Vous repartez avec une feuille de route.</p>
+      </div>
+      <div class="v-pile v-pile--serree" style="align-items: flex-start;">
+        <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
+          Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+        <p class="v-petit">490&nbsp;€ · déduit si vous signez sous 30&nbsp;jours</p>
+      </div>
+    </div>
+  </section>
+</VitrineLayout>
