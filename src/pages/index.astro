@@ -27,6 +27,14 @@ const offres = [
   { nom: "PME augmentée", utilisateurs: "Jusqu'à 30", duree: "4 à 8 semaines", prix: 12000 },
   { nom: "PME augmentée +", utilisateurs: "Jusqu'à 80", duree: "8 à 12 semaines", prix: 25000 },
 ];
+// Les quatre livrables du diagnostic. Le kit est remis sous 48 h (Julien, 09/11/2026).
+// [À VALIDER] Le kit de construction reste à concevoir et à tester avant la mise en ligne.
+const livrables = [
+  { quand: "En séance", titre: "La cartographie", texte: "Vos 3 à 5\u00A0processus qui coûtent le plus de temps.", differe: false },
+  { quand: "En séance", titre: "Le chiffrage", texte: "Les heures gagnées par semaine et par collaborateur, sur votre cas.", differe: false },
+  { quand: "En séance", titre: "La feuille de route", texte: "3\u00A0étapes, dans l'ordre.", differe: false },
+  { quand: "Sous 48\u00A0h", titre: "Votre kit de construction", texte: "De quoi monter vos 3\u00A0premiers assistants vous-même, calibré sur vos réponses.", differe: true },
+];
 const euros = (n: number) => `${n.toLocaleString("fr-FR").replace(/ |\s/g, " ")} €`;
 
 const jsonLd = [
@@ -47,7 +55,7 @@ const jsonLd = [
         price: "490",
         priceCurrency: "EUR",
         description:
-          "Cartographie de 3 à 5 processus, identification des 2 ou 3 assistants IA à rendement immédiat, gain indicatif chiffré, feuille de route en 3 étapes. Déduit si une offre est signée dans les 30 jours.",
+          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers assistants. Déduit si une offre est signée dans les 30 jours.",
       },
       ...offres.map((o) => ({
         "@type": "Offer",
@@ -100,7 +108,7 @@ const jsonLd = [
         </ol>
         <div class="v-ligne" style="border-top: 1px solid var(--v-grille); display: flex; flex-direction: column; gap: 4px;">
           <span class="v-label">Vous repartez avec</span>
-          <span>La liste des assistants à construire · un gain estimé sur votre cas réel · une décision&nbsp;: s'arrêter là, ou passer à la suite.</span>
+          <span>La cartographie, le chiffrage et la feuille de route. Puis, sous 48&nbsp;h, votre kit pour construire vos 3&nbsp;premiers assistants.</span>
         </div>
       </div>
     </div>
@@ -108,37 +116,30 @@ const jsonLd = [
 
   <section id="diagnostic" class="v-section">
     <p class="v-label">Le diagnostic</p>
-    <h2 class="v-h2">90&nbsp;minutes. <span class="v-vert">Vous savez où mettre l'IA, et combien ça vaut.</span></h2>
-    <div class="v-grille">
-      <div class="v-carte v-carte--pad">
-        <h3 class="v-h3">C'est pour vous si</h3>
-        <ul class="v-liste">
-          <li>· Vous dirigez seul, ou une TPE ou PME dont les utilisateurs sont identifiés.</li>
-          <li>· Des tâches reviennent chaque semaine&nbsp;: rédaction, reporting, réponses, CRM.</li>
-          <li>· Vous investissez sur votre trésorerie, sans attendre un financement OPCO.</li>
-          <li>· Vous décidez vite&nbsp;: sous 30&nbsp;jours.</li>
-        </ul>
-      </div>
-      <div class="v-carte v-carte--pad">
-        <h3 class="v-h3">Ce n'est pas pour vous si</h3>
-        <ul class="v-liste">
-          <li>· Vous cherchez une formation à l'IA pour vos équipes&nbsp;: <a href="/formation-ia" class="v-fort">voir la page Formation →</a></li>
-          <li>· Vous voulez un «&nbsp;test&nbsp;» ou une preuve de concept gratuite.</li>
-          <li>· La décision passe par un comité.</li>
-          <li>· Vous voulez un audit isolé, sans intention d'agir.</li>
-        </ul>
-      </div>
-      <div class="v-carte v-carte--pad">
-        <p class="v-label">Le prix</p>
-        <p class="v-prix">490&nbsp;€</p>
-        <p class="v-petit">90&nbsp;min · visio ou présentiel · Bordeaux et Grand Sud-Ouest</p>
-        <p>Le diagnostic se suffit à lui-même&nbsp;: vous repartez avec une feuille de route, que vous la mettiez en œuvre avec moi ou non.</p>
-        <p class="v-fort">Si vous passez à une offre dans les 30&nbsp;jours, il est déduit.</p>
-        <button type="button" class="v-bouton v-bouton--petit" style="align-self: flex-start;" data-open-booking="diagnostic">
-          Réserver →<span class="v-surligne">90&nbsp;min</span>
-        </button>
-      </div>
+    <h2 class="v-h2">490&nbsp;€. Vous repartez avec quatre livrables. <span class="v-vert">Et de quoi construire vos 3&nbsp;premiers assistants vous-même.</span></h2>
+    <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
+      {livrables.map((l, i) => (
+        <article class="v-carte v-carte--pad">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+            <span class="v-chiffre">{i + 1}</span>
+            <span class:list={["v-label", { "v-vert": l.differe }]}>{l.quand}</span>
+          </div>
+          <h3 class="v-h3">{l.titre}</h3>
+          <p>{l.texte}</p>
+        </article>
+      ))}
     </div>
+    <div class="v-carte v-grille" style="padding: 22px; align-items: center; gap: 22px;">
+      <div class="v-pile v-pile--serree" style="gap: 8px;">
+        <p class="v-prix">490&nbsp;€</p>
+        <p class="v-petit">90&nbsp;min · visio ou présentiel · déduit si vous signez une offre sous 30&nbsp;jours</p>
+      </div>
+      <p style="max-width: 46ch;">Les construire seul, c'est possible. <span class="v-fort">Les brancher sur vos outils et former votre équipe, c'est mon métier.</span></p>
+      <button type="button" class="v-bouton v-bouton--petit" style="justify-self: start;" data-open-booking="diagnostic">
+        Réserver →<span class="v-surligne">90&nbsp;min</span>
+      </button>
+    </div>
+    <p class="v-petit">Vous cherchez une formation à l'IA pour vos équipes&nbsp;? <a href="/formation-ia" class="v-fort">Voir la page Formation →</a></p>
   </section>
 
   <section id="cas" class="v-section">

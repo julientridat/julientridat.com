@@ -24,6 +24,8 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 - [ ] Planning Google Agenda de 90 minutes pour le diagnostic : remplacer
       `SCHEDULER_DIAGNOSTIC_URL` dans `src/lib/site.ts` (pour l'instant, le planning de 20 minutes).
 - [ ] 490 € : hors taxes ou TTC ?
+- [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
+      à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
 - [ ] Autorisation de citer le cas du centre de formation (accueil, section Cas).
 - [ ] Attestation de RC professionnelle : à ajouter aux pièces de référencement
       (`src/pages/formation-ia.astro`) une fois l'assurance souscrite.

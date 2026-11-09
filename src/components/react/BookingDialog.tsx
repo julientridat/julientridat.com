@@ -36,7 +36,7 @@ const INTRO: Record<Mode, { surtitre: string; titre: string; texte: string; poin
       "90 minutes",
       "En visio ou en présentiel",
       "Une rapide qualification, puis le créneau",
-      "Vous repartez avec une feuille de route",
+      "Sous 48 h, votre kit pour construire vos 3 premiers assistants",
     ],
   },
 };
