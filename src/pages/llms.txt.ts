@@ -40,7 +40,7 @@ export const GET: APIRoute = () => {
     "",
     "- En intra pour les entreprises (convention portée par un organisme certifié Qualiopi, financement OPCO possible),",
     "  ou comme intervenant pour les organismes de formation, sous leur certification.",
-    "- Dès 790 € HT la demi-journée. Présentiel, classe virtuelle ou mixte.",
+    "- À partir de 790 € HT. Présentiel, classe virtuelle ou mixte.",
     "",
     "## Pages",
     "",

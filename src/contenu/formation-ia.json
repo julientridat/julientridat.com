@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Formation à l'IA générative | Julien Tridat",
-    "description": "Formation IA générative en intra ou pour organismes de formation. Plus de 300 dirigeants et cadres formés. Dès 790 € HT la demi-journée, OPCO possible."
+    "description": "Formation IA générative en intra ou pour organismes de formation. Plus de 300 dirigeants et cadres formés. À partir de 790 € HT. Financement OPCO possible."
   },
   "bouton": "Réserver 20 minutes",
   "hero": {
@@ -13,7 +13,7 @@
     "titreAccent2": "aux équipes de terrain.",
     "chapo": "Pour les entreprises qui forment leurs équipes, et les organismes qui cherchent un formateur. Plus de 300 dirigeants et cadres formés.",
     "lienDossier": "Voir le dossier remis",
-    "mention": "Dès 790 € HT la demi-journée · Financement OPCO possible · Dossier complet à chaque session"
+    "mention": "À partir de 790 € HT · Financement OPCO possible · Dossier complet à chaque session"
   },
   "aiguillage": {
     "surtitre": "Deux façons d'arriver ici",
@@ -287,7 +287,7 @@
     ],
     "pieces": "Pièces de référencement",
     "piecesSuite": "transmises sur demande, sous 24 h.",
-    "prixEtiquette": "La demi-journée, à partir de",
+    "prixEtiquette": "À partir de",
     "montant": "790 €",
     "montantDetail": "HT",
     "prixTexte": "Le tarif dépend du format, du volume et de l'ingénierie. Financement OPCO possible en intra."

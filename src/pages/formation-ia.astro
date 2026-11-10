@@ -41,7 +41,7 @@ const jsonLd = [
       "@type": "Offer",
       price: "790",
       priceCurrency: "EUR",
-      description: "La demi-journée, à partir de 790 € HT.",
+      description: "À partir de 790 € HT.",
     },
   },
   {
@@ -70,7 +70,7 @@ const jsonLd = [
           <button type="button" class="v-bouton" data-open-booking="echange">
             Réserver →<span class="v-surligne">20&nbsp;min</span>
           </button>
-          <p class="v-petit">Dès 790&nbsp;€ HT la demi-journée · financement OPCO possible</p>
+          <p class="v-petit">À partir de 790&nbsp;€ HT · financement OPCO possible</p>
         </div>
       </div>
       <div class="v-carte" style="align-self: start;">
@@ -181,8 +181,8 @@ const jsonLd = [
       </div>
       <div class="v-carte v-carte--pad">
         <p class="v-label">{c.cadre.prixEtiquette}</p>
-        <p class="v-prix">{c.cadre.montant} {c.cadre.montantDetail}</p>
-        <p set:html={enLigne(c.cadre.prixTexte, accent)} />
+        <p class="v-prix">{c.cadre.montant}{c.cadre.montantDetail && ` ${c.cadre.montantDetail}`}</p>
+        {c.cadre.prixTexte && <p set:html={enLigne(c.cadre.prixTexte, accent)} />}
       </div>
     </div>
   </section>
