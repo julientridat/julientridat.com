@@ -20,6 +20,9 @@ export const WEB3FORMS_ACCESS_KEY = "12c7676a-7350-41af-a901-7e276d7ed8c9";
 export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
+/** Google Agenda — prise de rendez-vous de la porte « Une question avant ? » (Julien, 10/11/2026). */
+export const QUESTION_URL = "https://calendar.app.google/Tr82L5xzrLSSgXKj8";
+
 /**
  * Google Calendar — planning du diagnostic de 90 minutes.
  * [À VALIDER] Aucun planning de 90 minutes n'existe encore : en attendant, le

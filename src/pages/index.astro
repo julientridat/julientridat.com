@@ -14,7 +14,7 @@
  */
 import { Image } from "astro:assets";
 import VitrineLayout from "@/layouts/VitrineLayout.astro";
-import { SITE } from "@/lib/site";
+import { QUESTION_URL, SITE } from "@/lib/site";
 import portrait from "@/assets/julien-portrait.jpg";
 
 const title = "Intégration IA pour TPE et PME à Bordeaux | Julien Tridat";
@@ -96,7 +96,7 @@ const jsonLd = [
             Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
           </button>
           <p class="v-petit">490&nbsp;€ · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · déduit si vous signez une offre sous 30&nbsp;jours</p>
-          <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-contact>Une question avant&nbsp;? →</button>
+          <a class="v-lien-action" style="font-size: 18px; padding: 4px 0;" href={QUESTION_URL} target="_blank" rel="noopener">Une question avant&nbsp;? →</a>
         </div>
       </div>
       <figure class="v-carte" style="align-self: start; margin: 0;">
@@ -140,7 +140,7 @@ const jsonLd = [
         <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
           Réserver →<span class="v-surligne">90&nbsp;min</span>
         </button>
-        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-contact>Une question avant&nbsp;? →</button>
+        <a class="v-lien-action" style="font-size: 18px; padding: 4px 0;" href={QUESTION_URL} target="_blank" rel="noopener">Une question avant&nbsp;? →</a>
       </div>
     </div>
     <p class="v-petit">Vous cherchez une formation à l'IA pour vos équipes&nbsp;? <a href="/formation-ia" class="v-fort">Voir la page Formation →</a></p>
@@ -234,7 +234,7 @@ const jsonLd = [
           Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
         </button>
         <p class="v-petit">490&nbsp;€ · satisfait ou remboursé · déduit si vous signez une offre sous 30&nbsp;jours</p>
-        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-contact>Une question avant&nbsp;? →</button>
+        <a class="v-lien-action" style="font-size: 18px; padding: 4px 0;" href={QUESTION_URL} target="_blank" rel="noopener">Une question avant&nbsp;? →</a>
       </div>
     </div>
   </section>
