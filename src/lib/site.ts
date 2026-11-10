@@ -20,6 +20,16 @@ export const WEB3FORMS_ACCESS_KEY = "12c7676a-7350-41af-a901-7e276d7ed8c9";
 export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
+/**
+ * Stripe — lien de paiement du diagnostic (490 €), payé à la réservation (Julien, 10/11/2026).
+ * Parcours : qualification → paiement Stripe → redirection vers /diagnostic-confirme,
+ * qui affiche le planning de 90 minutes.
+ * [À VALIDER] Vide tant que le lien n'est pas créé : la fenêtre ouvre alors directement
+ * le planning, comme avant. Dans Stripe, régler « Après le paiement » sur
+ * https://julientridat.com/diagnostic-confirme
+ */
+export const PAIEMENT_DIAGNOSTIC_URL = "";
+
 /** Google Agenda — prise de rendez-vous de la porte « Une question avant ? » (Julien, 10/11/2026). */
 export const QUESTION_URL = "https://calendar.app.google/Tr82L5xzrLSSgXKj8";
 

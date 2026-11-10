@@ -25,6 +25,8 @@ souveraineté totale (code versionné, aucun outil propriétaire).**
 - Réservation : îlot React `BookingDialog`, ouvert par `[data-open-booking]`.
   `data-open-booking="diagnostic"` → diagnostic 90 min (`SCHEDULER_DIAGNOSTIC_URL`) ;
   `data-open-booking="echange"` → échange gratuit de 20 min (`SCHEDULER_URL`).
+  Diagnostic payé à la réservation : qualification → `PAIEMENT_DIAGNOSTIC_URL` (Stripe) →
+  `/diagnostic-confirme` (noindex) qui affiche le planning de 90 min.
   Contact : `[data-open-contact]`. « Une question avant ? » : lien vers `QUESTION_URL` (Google Agenda).
 
 ## Charte (À RESPECTER FIDÈLEMENT) — « planning »

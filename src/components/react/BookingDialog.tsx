@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { SCHEDULER_DIAGNOSTIC_URL, SCHEDULER_URL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
+import { PAIEMENT_DIAGNOSTIC_URL, SCHEDULER_DIAGNOSTIC_URL, SCHEDULER_URL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
 
 const COMPANY_SIZES = ["1 (solo)", "2-10", "11-50", "51-200", "200+"] as const;
 const AI_TOOLS = ["ChatGPT", "Claude", "Gemini", "Copilot", "Autre"] as const;
 
 const URL_RE = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
 
-type Step = "intro" | "qualify" | "schedule";
+type Step = "intro" | "qualify" | "payment" | "schedule";
 
 /**
  * Deux usages : l'échange gratuit de 20 minutes (par défaut) et le diagnostic
@@ -146,7 +146,8 @@ export default function BookingDialog() {
       /* Le contexte est perdu, la réservation continue. */
     });
 
-    setStep("schedule");
+    // Diagnostic : on paie avant de choisir le créneau (lien Stripe), si le lien existe.
+    setStep(mode === "diagnostic" && PAIEMENT_DIAGNOSTIC_URL ? "payment" : "schedule");
   };
 
   if (!open) return null;
@@ -314,6 +315,36 @@ export default function BookingDialog() {
               </button>
             </div>
           </form>
+        )}
+
+        {step === "payment" && (
+          <div className="px-6 pb-8 pt-10 sm:px-10">
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Diagnostic IA · 90 minutes</p>
+            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+              Réglez votre diagnostic, puis choisissez votre créneau
+            </h2>
+            <ul className="mt-6 space-y-2 text-sm text-foreground">
+              <li>· 490 €, payés en ligne sur une page sécurisée Stripe.</li>
+              <li>· Satisfait ou remboursé.</li>
+              <li>· Déduits si vous passez à une offre dans les 30 jours.</li>
+              <li>· Juste après le paiement, vous choisissez votre créneau.</li>
+            </ul>
+            <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">
+              <button
+                type="button"
+                onClick={() => setStep("qualify")}
+                className="w-full cursor-pointer rounded-full px-6 py-3 text-sm text-ink-2 transition-colors hover:text-foreground sm:w-auto"
+              >
+                ← Retour
+              </button>
+              <a
+                href={PAIEMENT_DIAGNOSTIC_URL}
+                className="w-full rounded-full bg-lime px-6 py-3 text-center text-sm font-medium text-white transition-colors hover:bg-lime/90 sm:w-auto"
+              >
+                Payer et choisir mon créneau →
+              </a>
+            </div>
+          </div>
         )}
 
         {step === "schedule" && (

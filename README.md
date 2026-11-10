@@ -23,6 +23,10 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 - [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
 - [ ] Planning Google Agenda de 90 minutes pour le diagnostic : remplacer
       `SCHEDULER_DIAGNOSTIC_URL` dans `src/lib/site.ts` (pour l'instant, le planning de 20 minutes).
+- [ ] Lien de paiement Stripe du diagnostic : `PAIEMENT_DIAGNOSTIC_URL` dans `src/lib/site.ts`.
+      Dans Stripe, « Après le paiement » → https://julientridat.com/diagnostic-confirme
+      (page non indexée qui affiche le planning de 90 minutes). Tant que la constante est vide,
+      la fenêtre de réservation ouvre directement le planning.
 - [ ] 490 € : hors taxes ou TTC ?
 - [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
       à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
