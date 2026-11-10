@@ -111,6 +111,10 @@ body.vitrine {
 .v-pied nav { display: flex; flex-wrap: wrap; gap: 16px; }
 .v-pied a, .v-pied button { color: var(--v-gris); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
 
+/* Bio : portrait en colonne étroite, texte à côté ; empilés sur téléphone */
+.v-bio { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 700px) { .v-bio { grid-template-columns: minmax(0, 1fr); gap: 22px; } .v-bio__photo { max-width: 220px; } }
+
 /* Tableau des offres */
 .v-tableau { width: 100%; min-width: 640px; border-collapse: collapse; }
 .v-tableau thead tr { background: var(--v-encre); color: var(--v-blanc); }
