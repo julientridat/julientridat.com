@@ -35,7 +35,7 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
       puis remplacer l'emplacement dans `src/pages/index.astro`.
 - [x] « Satisfait ou remboursé » : demande dans les 7 jours qui suivent la remise du kit, sans justification,
       remboursement intégral sous 14 jours, une fois par entreprise (`/mentions-legales#conditions-diagnostic`).
-- [ ] Report ou annulation d'un diagnostic déjà payé : règle à fixer (aucune n'est écrite).
+- [x] Report : gratuit jusqu'à 48 h avant le rendez-vous ; au-delà, ou en cas d'absence, le diagnostic reste dû (Julien, 11/11/2026).
 - [ ] Autorisation de citer le cas du centre de formation (accueil, section Cas).
 - [ ] Attestation de RC professionnelle : à ajouter aux pièces de référencement
       (`src/pages/formation-ia.astro`) une fois l'assurance souscrite.
