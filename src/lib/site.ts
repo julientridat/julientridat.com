@@ -29,12 +29,14 @@ export const SCHEDULER_URL =
  * Prix : 390 € HT, soit 468 € TTC — Julien est assujetti à la TVA (Julien, 11/11/2026).
  * Parcours : qualification → paiement Stripe → redirection vers /diagnostic-confirme,
  * qui affiche le planning de 90 minutes.
- * [À VALIDER] Vide tant que le lien du compte Stripe RÉEL n'est pas créé : la fenêtre ouvre
- * alors directement le planning, comme avant. Le même lien existe en mode test
- * (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00, produit prod_VbnZ5yAzs9ZRJO) :
- * ne jamais le mettre ici, il encaisserait des paiements fictifs.
+ * Lien du compte réel « JT Marketing » (vérifié le 11/11/2026) : 468 € TTC, taxe incluse,
+ * adresse de facturation et nom de l'entreprise obligatoires, numéro de TVA facultatif.
+ * Stripe n'envoie qu'un reçu : la facture part d'Abby, à la main.
+ * Un lien de test existe (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00) : ne jamais
+ * le mettre ici, il encaisserait des paiements fictifs. Vide, la fenêtre ouvrirait le
+ * planning sans paiement.
  */
-export const PAIEMENT_DIAGNOSTIC_URL = "";
+export const PAIEMENT_DIAGNOSTIC_URL = "https://book.stripe.com/eVq7sNemd2nkdlGdq3aZi00";
 
 /**
  * Google Calendar — planning « Diagnostic IA » (90 minutes), lien donné par Julien le

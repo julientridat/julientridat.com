@@ -23,12 +23,9 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 - [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
 - [x] Planning du diagnostic : un seul planning « Diagnostic IA » (90 minutes). L'échange
       gratuit de 20 minutes est supprimé ; la page Formation renvoie vers la demande de rappel.
-- [ ] Lien de paiement Stripe du diagnostic, compte RÉEL : `PAIEMENT_DIAGNOSTIC_URL` dans
-      `src/lib/site.ts`. Le connecteur Stripe ne voit que l'environnement de test, où le lien
-      existe (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00) : 468 € TTC, redirection
-      vers https://julientridat.com/diagnostic-confirme, nom de l'entreprise et adresse de
-      facturation obligatoires, n° de TVA facultatif. Le recréer à l'identique en mode réel.
-      Tant que la constante est vide, la fenêtre de réservation ouvre directement le planning.
+- [x] Lien de paiement Stripe du diagnostic, compte réel « JT Marketing » : branché dans
+      `PAIEMENT_DIAGNOSTIC_URL` (468 € TTC, redirection vers /diagnostic-confirme).
+      Stripe n'envoie qu'un reçu : penser à envoyer la facture Abby après chaque paiement.
 - [x] Prix du diagnostic : 390 € HT, soit 468 € TTC (Julien est assujetti à la TVA).
 - [x] Prix des offres et de la maintenance : hors taxes (Julien, 11/11/2026).
 - [ ] Demande de rappel (« Une question avant ? ») : délai de rappel à fixer avant de l'afficher.
