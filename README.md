@@ -33,7 +33,7 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
       à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
 - [ ] Vidéo « Le diagnostic en 2 minutes » : à tourner et sous-titrer. Son emplacement est retiré de
       l'accueil en attendant (11/11/2026) ; la marche à suivre pour la remettre est en commentaire dans `src/pages/index.astro`.
-- [x] « Satisfait ou remboursé » : demande dans les 7 jours qui suivent la remise du kit, sans justification,
+- [x] « Satisfait ou remboursé » : demande dans les 14 jours qui suivent la remise du kit (questions par e-mail pendant ces 14 jours), sans justification,
       remboursement intégral sous 14 jours, une fois par entreprise (`/mentions-legales#conditions-diagnostic`).
 - [x] Report : gratuit jusqu'à 48 h avant le rendez-vous ; au-delà, ou en cas d'absence, le diagnostic reste dû (Julien, 11/11/2026).
 - [ ] Autorisation de citer le cas du centre de formation (accueil, section Cas).
