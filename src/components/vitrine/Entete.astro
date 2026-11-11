@@ -26,15 +26,15 @@ const ancre = (id: string) => (surAccueil ? `#${id}` : `/#${id}`);
       <a class="v-nav__lien" href={ancre("offres")}>Offres</a>
       <a class="v-nav__lien" href="/formation-ia" aria-current={actif === "formation" ? "page" : undefined}>Formation</a>
       <a class="v-nav__lien" href={ancre("qui")}>Qui je suis</a>
-      {cta === "diagnostic" ? (
-        <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
-          Réserver →<span class="v-surligne">90&nbsp;min</span>
-        </button>
-      ) : (
-        <button type="button" class="v-bouton v-bouton--petit" data-open-rappel>
-          Être rappelé →
-        </button>
-      )}
     </nav>
+    {cta === "diagnostic" ? (
+      <button type="button" class="v-bouton v-bouton--petit v-entete__cta" data-open-booking="diagnostic">
+        Réserver →<span class="v-surligne">90&nbsp;min</span>
+      </button>
+    ) : (
+      <button type="button" class="v-bouton v-bouton--petit v-entete__cta" data-open-rappel>
+        Être rappelé →
+      </button>
+    )}
   </div>
 </header>

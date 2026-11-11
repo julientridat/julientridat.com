@@ -106,6 +106,18 @@ body.vitrine {
 .v-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
 .v-nav a.v-nav__lien { font-family: var(--v-titre); font-weight: 600; font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 12px 0; }
 .v-nav a.v-nav__lien[aria-current="page"] { font-weight: 800; border-bottom: 2px solid var(--v-encre); }
+/* Téléphone et tablette : le nom et le bouton sur une ligne, le menu sur une seule ligne
+   en dessous, qui défile au doigt si besoin. Sans cela, l'en-tête prenait un tiers de l'écran. */
+@media (max-width: 860px) {
+  .v-entete__barre { gap: 4px 12px; padding-top: 12px; padding-bottom: 8px; }
+  .v-entete__cta { order: 2; font-size: 15px; padding: 10px 12px; gap: 8px; min-height: 40px; }
+  .v-entete__cta .v-surligne { font-size: 13px; padding: 2px 6px; }
+  .v-marque__nom { font-size: 22px; }
+  .v-marque .v-label { display: none; } /* la même mention ouvre la page, juste en dessous */
+  .v-nav { order: 3; width: 100%; flex-wrap: nowrap; gap: 18px; overflow-x: auto; scrollbar-width: none; }
+  .v-nav::-webkit-scrollbar { display: none; }
+  .v-nav a.v-nav__lien { font-size: 14px; padding: 8px 0; white-space: nowrap; }
+}
 .v-pied { border-top: 2px solid var(--v-encre); background: var(--v-blanc); }
 .v-pied__barre { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 22px; padding-bottom: 22px; font-size: 14px; line-height: 1.45; color: var(--v-gris); }
 .v-pied nav { display: flex; flex-wrap: wrap; gap: 16px; }
@@ -127,6 +139,11 @@ body.vitrine {
 .v-dl > div { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 2fr); gap: 16px; padding: 12px 22px; border-bottom: 1px solid var(--v-grille); }
 .v-dl > div:last-child { border-bottom: 0; }
 .v-dl dt { padding-top: 3px; }
+/* Petits écrans : l'intitulé passe au-dessus de sa valeur, sinon SIRET et TVA débordent. */
+@media (max-width: 480px) {
+  .v-dl > div { grid-template-columns: minmax(0, 1fr); gap: 4px; padding: 12px 16px; }
+  .v-dl dd { overflow-wrap: anywhere; }
+}
 
 @media (max-width: 600px) {
   .v-hero, .v-sombre { padding: 22px; }
