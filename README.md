@@ -20,7 +20,7 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 (`/mcp`, `/authorize`), les enquêtes LinkedIn et leurs API, le CMS (`/admin`).
 
 **[À VALIDER] par Julien :**
-- [x] Forme juridique et adresse de l'éditeur : EI Julien Tridat, nom commercial Velvety, 56 rue du Jardin public, TVA FR47528133713 (11/11/2026).
+- [x] Forme juridique et adresse de l'éditeur : EI Julien Tridat, nom commercial Velvety, 84 cours Victor Hugo, TVA FR47528133713 (11/11/2026).
 - [x] Planning du diagnostic : un seul planning « Diagnostic IA » (90 minutes). L'échange
       gratuit de 20 minutes est supprimé ; la page Formation renvoie vers la demande de rappel.
 - [x] Lien de paiement Stripe du diagnostic, compte réel « JT Marketing » : branché dans
