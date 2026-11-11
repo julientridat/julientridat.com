@@ -23,8 +23,8 @@ souveraineté totale (code versionné, aucun outil propriétaire).**
 - Inchangés : `/tableau` (page applicative, hors mise en page vitrine), `/mcp`, enquêtes, `/admin`.
 - `sitemap.xml`, `llms.txt` : réduits aux deux pages vitrine (`src/pages/*.ts`).
 - Réservation : îlot React `BookingDialog`, ouvert par `[data-open-booking]`.
-  `data-open-booking="diagnostic"` → diagnostic 90 min (`SCHEDULER_DIAGNOSTIC_URL`) ;
-  `data-open-booking="echange"` → échange gratuit de 20 min (`SCHEDULER_URL`).
+  `[data-open-booking]` → diagnostic 90 min (`SCHEDULER_DIAGNOSTIC_URL`). L'échange gratuit
+  de 20 min n'existe plus (Julien, 11/11/2026) : la page Formation renvoie vers le rappel.
   Diagnostic payé à la réservation : qualification → `PAIEMENT_DIAGNOSTIC_URL` (Stripe) →
   `/diagnostic-confirme` (noindex) qui affiche le planning de 90 min.
   Contact : `[data-open-contact]`. « Une question avant ? » : demande de rappel `RappelDialog`,

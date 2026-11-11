@@ -21,9 +21,8 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 
 **[À VALIDER] par Julien :**
 - [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
-- [ ] Planning Google Agenda de 90 minutes pour le diagnostic : le lien donné le 11/11
-      (`SCHEDULER_DIAGNOSTIC_URL`) ouvre le même planning que l'échange gratuit de 20 minutes
-      (page Formation). Créer deux plannings distincts, puis mettre à jour les URL.
+- [x] Planning du diagnostic : un seul planning « Diagnostic IA » (90 minutes). L'échange
+      gratuit de 20 minutes est supprimé ; la page Formation renvoie vers la demande de rappel.
 - [ ] Lien de paiement Stripe du diagnostic, compte RÉEL : `PAIEMENT_DIAGNOSTIC_URL` dans
       `src/lib/site.ts`. Le connecteur Stripe ne voit que l'environnement de test, où le lien
       existe (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00) : 468 € TTC, redirection

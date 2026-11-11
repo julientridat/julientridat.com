@@ -16,7 +16,11 @@ export const CONTACT_EMAIL = "julien.tridat@gmail.com";
  */
 export const WEB3FORMS_ACCESS_KEY = "12c7676a-7350-41af-a901-7e276d7ed8c9";
 
-/** Google Calendar — page de prise de rendez-vous (identique au site d'origine). */
+/**
+ * Google Calendar — planning de l'ancien site. N'est plus utilisé par les pages vitrine
+ * (seulement par les composants de l'ancien site, hors ligne) ; c'est le même planning
+ * que SCHEDULER_DIAGNOSTIC_URL.
+ */
 export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
@@ -33,13 +37,10 @@ export const SCHEDULER_URL =
 export const PAIEMENT_DIAGNOSTIC_URL = "";
 
 /**
- * Google Calendar — planning du diagnostic de 90 minutes, lien donné par Julien le 11/11/2026
- * (https://calendar.app.google/HFhQsWHYE3mh4MGQ9), en version intégrable (?gv=true).
- * [À VALIDER] Ce lien ouvre le MÊME planning (« Diagnostic IA ») que SCHEDULER_URL :
- * l'échange gratuit de 20 minutes (page Formation) ouvre donc le planning du diagnostic
- * payant. Il faut deux plannings distincts dans Google Agenda.
- * « Une question avant ? » n'ouvre plus d'agenda : c'est une demande de rappel
- * (RappelDialog, [data-open-rappel]).
+ * Google Calendar — planning « Diagnostic IA » (90 minutes), lien donné par Julien le
+ * 11/11/2026 (https://calendar.app.google/DoYc85UPJeqpqfSN7), en version intégrable.
+ * C'est le seul planning du site : l'échange gratuit de 20 minutes n'existe plus et
+ * « Une question avant ? » est une demande de rappel (RappelDialog, [data-open-rappel]).
  */
 export const SCHEDULER_DIAGNOSTIC_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";

@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { PAIEMENT_DIAGNOSTIC_URL, SCHEDULER_DIAGNOSTIC_URL, SCHEDULER_URL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
+import { PAIEMENT_DIAGNOSTIC_URL, SCHEDULER_DIAGNOSTIC_URL, WEB3FORMS_ACCESS_KEY } from "@/lib/site";
 
 const COMPANY_SIZES = ["1 (solo)", "2-10", "11-50", "51-200", "200+"] as const;
 const AI_TOOLS = ["ChatGPT", "Claude", "Gemini", "Copilot", "Autre"] as const;
@@ -9,36 +9,20 @@ const URL_RE = /^(https?:\/\/)?([\w-]+\.)+[\w-]{2,}(\/.*)?$/i;
 type Step = "intro" | "qualify" | "payment" | "schedule";
 
 /**
- * Deux usages : l'échange gratuit de 20 minutes (par défaut) et le diagnostic
- * payant de 90 minutes, ouvert par [data-open-booking="diagnostic"].
+ * Réservation du diagnostic payant de 90 minutes, ouverte par [data-open-booking].
+ * L'échange gratuit de 20 minutes n'existe plus (Julien, 11/11/2026).
  */
-type Mode = "echange" | "diagnostic";
-
-const INTRO: Record<Mode, { surtitre: string; titre: string; texte: string; points: string[] }> = {
-  echange: {
-    surtitre: "Premier échange",
-    titre: "Réservez un échange de 20 minutes",
-    texte:
-      "On fait le point sur votre situation, et je vous dis franchement si je peux vous être utile. Gratuit, sans engagement.",
-    points: [
-      "20 minutes",
-      "En visio — lien envoyé après réservation",
-      "Créneaux disponibles cette semaine",
-      "Une rapide qualification, puis le créneau",
-    ],
-  },
-  diagnostic: {
-    surtitre: "Diagnostic IA",
-    titre: "Réservez votre diagnostic de 90 minutes",
-    texte:
-      "On cartographie 3 à 5 processus qui vous coûtent du temps, on repère les 2 ou 3 assistants qui rapportent tout de suite, on chiffre le gain. 390 € HT, satisfait ou remboursé, déduits si vous passez à une offre dans les 30 jours.",
-    points: [
-      "90 minutes",
-      "En visio ou en présentiel",
-      "Une rapide qualification, puis le créneau",
-      "Sous 48 h, votre kit pour construire vos 3 premiers assistants",
-    ],
-  },
+const INTRO = {
+  surtitre: "Diagnostic IA",
+  titre: "Réservez votre diagnostic de 90 minutes",
+  texte:
+    "On cartographie 3 à 5 processus qui vous coûtent du temps, on repère les 2 ou 3 assistants qui rapportent tout de suite, on chiffre le gain. 390 € HT, satisfait ou remboursé, déduits si vous passez à une offre dans les 30 jours.",
+  points: [
+    "90 minutes",
+    "En visio ou en présentiel",
+    "Une rapide qualification, puis le créneau",
+    "Sous 48 h, votre kit pour construire vos 3 premiers assistants",
+  ],
 };
 
 /**
@@ -49,7 +33,6 @@ const INTRO: Record<Mode, { surtitre: string; titre: string; texte: string; poin
 export default function BookingDialog() {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState<Step>("intro");
-  const [mode, setMode] = useState<Mode>("echange");
   const [loaded, setLoaded] = useState(false);
 
   const [company, setCompany] = useState("");
@@ -68,7 +51,6 @@ export default function BookingDialog() {
       if (target) {
         e.preventDefault();
         triggerRef.current = target;
-        setMode(target.dataset.openBooking === "diagnostic" ? "diagnostic" : "echange");
         setOpen(true);
       }
     };
@@ -133,7 +115,7 @@ export default function BookingDialog() {
       headers: { "Content-Type": "application/json", Accept: "application/json" },
       body: JSON.stringify({
         access_key: WEB3FORMS_ACCESS_KEY,
-        subject: `${mode === "diagnostic" ? "Diagnostic 90 min" : "Échange 20 min"} — réservation en cours — ${company.trim()}`,
+        subject: `Diagnostic 90 min — réservation en cours — ${company.trim()}`,
         from_name: "Réservation julientridat.com",
         Entreprise: company.trim(),
         Taille: companySize,
@@ -147,7 +129,7 @@ export default function BookingDialog() {
     });
 
     // Diagnostic : on paie avant de choisir le créneau (lien Stripe), si le lien existe.
-    setStep(mode === "diagnostic" && PAIEMENT_DIAGNOSTIC_URL ? "payment" : "schedule");
+    setStep(PAIEMENT_DIAGNOSTIC_URL ? "payment" : "schedule");
   };
 
   if (!open) return null;
@@ -177,16 +159,16 @@ export default function BookingDialog() {
 
         {step === "intro" && (
           <div className="px-6 py-10 sm:px-12 sm:py-14">
-            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">{INTRO[mode].surtitre}</p>
+            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">{INTRO.surtitre}</p>
             <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
-              {INTRO[mode].titre}
+              {INTRO.titre}
             </h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-2 sm:text-base">
-              {INTRO[mode].texte}
+              {INTRO.texte}
             </p>
 
             <ul className="mt-7 space-y-3">
-              {INTRO[mode].points.map((label) => (
+              {INTRO.points.map((label) => (
                 <li key={label} className="flex items-center gap-3 text-sm text-foreground">
                   <span className="flex h-8 w-8 items-center justify-center rounded-full bg-lime/10 text-lime">✓</span>
                   {label}
@@ -217,7 +199,7 @@ export default function BookingDialog() {
           <form onSubmit={handleSubmit} className="px-6 py-8 sm:px-10 sm:py-10">
             <p className="text-xs uppercase tracking-[0.18em] text-ink-3">Étape 1 / 2</p>
             <h2 className="mt-2 text-xl font-semibold tracking-tight text-foreground sm:text-2xl">
-              Quelques infos pour préparer l'échange
+              Quelques infos pour préparer le diagnostic
             </h2>
             <p className="mt-2 text-sm text-ink-2">Tous les champs sont obligatoires.</p>
 
@@ -359,7 +341,7 @@ export default function BookingDialog() {
                 </div>
               )}
               <iframe
-                src={mode === "diagnostic" ? SCHEDULER_DIAGNOSTIC_URL : SCHEDULER_URL}
+                src={SCHEDULER_DIAGNOSTIC_URL}
                 title="Réserver un diagnostic IA"
                 onLoad={() => setLoaded(true)}
                 className="block h-[min(78vh,720px)] w-full"

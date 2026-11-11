@@ -56,7 +56,7 @@ const jsonLd = [
 ];
 ---
 
-<VitrineLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`} jsonLd={jsonLd} actif="formation" cta="echange">
+<VitrineLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`} jsonLd={jsonLd} actif="formation" cta="rappel">
   <section id="haut" class="v-section v-section--premiere">
     <div class="v-hero v-grille v-grille--large">
       <div class="v-pile">
@@ -67,8 +67,8 @@ const jsonLd = [
         </h1>
         <p class="v-chapo" set:html={enLigne(c.hero.chapo, accent)} />
         <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
-          <button type="button" class="v-bouton" data-open-booking="echange">
-            Réserver →<span class="v-surligne">20&nbsp;min</span>
+          <button type="button" class="v-bouton" data-open-rappel>
+            Demandez à être rappelé →
           </button>
           <p class="v-petit">À partir de 790&nbsp;€ HT · financement OPCO possible</p>
         </div>
@@ -208,8 +208,8 @@ const jsonLd = [
         <p class="v-chapo" set:html={enLigne(c.cloture.texte, accent)} />
       </div>
       <div class="v-pile v-pile--serree" style="align-items: flex-start;">
-        <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="echange">
-          Réserver →<span class="v-surligne">20&nbsp;min</span>
+        <button type="button" class="v-bouton v-bouton--inverse" data-open-rappel>
+          Demandez à être rappelé →
         </button>
         <button type="button" class="v-lien-action" data-open-contact>{c.cloture.boutonMessage} →</button>
       </div>
