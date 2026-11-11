@@ -16,13 +16,13 @@ const INTRO = {
   surtitre: "Diagnostic IA",
   titre: "Réservez votre diagnostic de 90 minutes",
   texte:
-    "On cartographie 3 à 5 processus qui vous coûtent du temps, on repère les 2 ou 3 agents IA qui rapportent tout de suite, on chiffre le gain. 390 € HT, satisfait ou remboursé, déduits si vous passez à une offre dans les 30 jours.",
+    "On cartographie les 3 à 5 processus qui vous coûtent du temps, on repère les 2 ou 3 agents IA qui rapportent tout de suite, et on chiffre le gain.",
   points: [
-    "90 minutes",
-    "En visio ou en présentiel",
-    "Une rapide qualification, puis le créneau",
+    "90 minutes, en visio ou en présentiel",
+    "Trois questions, le paiement, puis le créneau",
     "Sous 48 h, votre kit pour construire vos 3 premiers agents IA",
   ],
+  prix: "390 € HT · satisfait ou remboursé · déduits du prix de l'intégration si vous la lancez sous 30 jours",
 };
 
 /**
@@ -44,6 +44,9 @@ export default function BookingDialog() {
 
   const triggerRef = useRef<HTMLElement | null>(null);
   const closeBtnRef = useRef<HTMLButtonElement | null>(null);
+  // Le focus va au panneau, pas au bouton Fermer : sinon son contour de focus,
+  // très visible dans la charte, accapare l'œil à l'ouverture.
+  const panneauRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
@@ -75,7 +78,7 @@ export default function BookingDialog() {
     // Le contenu de page devient inerte : le focus clavier reste dans le dialogue.
     const page = document.querySelector("main");
     page?.setAttribute("inert", "");
-    closeBtnRef.current?.focus();
+    panneauRef.current?.focus();
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = "";
@@ -146,7 +149,13 @@ export default function BookingDialog() {
       aria-label="Réservez votre diagnostic IA"
     >
       <div className="absolute inset-0 bg-foreground/60 backdrop-blur-sm" onClick={close} />
-      <div className="relative max-h-[92vh] w-[calc(100vw-1rem)] max-w-3xl overflow-y-auto rounded-2xl border border-line bg-card shadow-2xl">
+      <div
+        ref={panneauRef}
+        tabIndex={-1}
+        className={`relative max-h-[92vh] w-[calc(100vw-1rem)] overflow-y-auto rounded-2xl border border-line bg-card shadow-2xl outline-none ${
+          step === "schedule" ? "max-w-3xl" : "max-w-xl"
+        }`}
+      >
         <button
           ref={closeBtnRef}
           type="button"
@@ -158,36 +167,33 @@ export default function BookingDialog() {
         </button>
 
         {step === "intro" && (
-          <div className="px-6 py-10 sm:px-12 sm:py-14">
-            <p className="text-xs uppercase tracking-[0.18em] text-ink-3">{INTRO.surtitre}</p>
-            <h2 className="mt-2 text-2xl font-semibold tracking-tight text-foreground sm:text-3xl">
+          // Marges en style : la feuille vitrine.css remet à zéro celles des p, h2 et ul,
+          // et l'emporte sur les classes mt-* de Tailwind.
+          <div className="px-6 py-9 sm:px-10 sm:py-10">
+            <p className="v-label">{INTRO.surtitre}</p>
+            <h2 className="v-h3 pr-10" style={{ fontSize: "clamp(28px, 4vw, 34px)", marginTop: 12 }}>
               {INTRO.titre}
             </h2>
-            <p className="mt-3 text-sm leading-relaxed text-ink-2 sm:text-base">
-              {INTRO.texte}
-            </p>
+            <p className="text-[17px] leading-relaxed text-ink-2" style={{ marginTop: 16 }}>{INTRO.texte}</p>
 
-            <ul className="mt-7 space-y-3">
+            <ul className="border-t-2 border-foreground" style={{ marginTop: 24, listStyle: "none", padding: 0 }}>
               {INTRO.points.map((label) => (
-                <li key={label} className="flex items-center gap-3 text-sm text-foreground">
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-lime/10 text-lime">✓</span>
+                <li key={label} className="flex items-start gap-3 border-b border-line py-3 text-[16px] leading-snug text-foreground">
+                  <span className="font-bold text-lime" aria-hidden="true">✓</span>
                   {label}
                 </li>
               ))}
             </ul>
+            <p className="text-sm text-ink-3" style={{ marginTop: 16 }}>{INTRO.prix}</p>
 
-            <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <button
-                type="button"
-                onClick={() => setStep("qualify")}
-                className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90 sm:w-auto"
-              >
-                Commencer
+            <div style={{ marginTop: 28 }} className="flex flex-col items-start gap-2 sm:flex-row sm:items-center sm:gap-6">
+              <button type="button" onClick={() => setStep("qualify")} className="v-bouton">
+                Commencer →
               </button>
               <button
                 type="button"
                 onClick={close}
-                className="w-full cursor-pointer rounded-full px-6 py-3 text-sm text-ink-2 transition-colors hover:text-foreground sm:w-auto"
+                className="cursor-pointer px-0 py-3 text-sm text-ink-2 underline underline-offset-4 transition-colors hover:text-foreground"
               >
                 Plus tard
               </button>
@@ -293,7 +299,7 @@ export default function BookingDialog() {
                 type="submit"
                 className="w-full cursor-pointer rounded-full bg-lime px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-lime/90 disabled:opacity-60 sm:w-auto"
               >
-                Voir les créneaux
+                Continuer
               </button>
             </div>
           </form>
@@ -308,7 +314,7 @@ export default function BookingDialog() {
             <ul className="mt-6 space-y-2 text-sm text-foreground">
               <li>· 390 € HT, soit 468 € TTC, payés en ligne sur une page sécurisée Stripe.</li>
               <li>· Satisfait ou remboursé.</li>
-              <li>· Déduits si vous passez à une offre dans les 30 jours.</li>
+              <li>· Déduits du prix de l'intégration (Dirigeant augmenté, TPE ou PME augmentée) si vous la lancez sous 30 jours.</li>
               <li>· Juste après le paiement, vous choisissez votre créneau.</li>
             </ul>
             <div className="mt-8 flex flex-col-reverse gap-3 sm:flex-row sm:justify-between">

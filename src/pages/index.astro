@@ -60,7 +60,7 @@ const jsonLd = [
           valueAddedTaxIncluded: false,
         },
         description:
-          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers agents IA. Satisfait ou remboursé. Déduit si une offre est signée dans les 30 jours.",
+          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers agents IA. Satisfait ou remboursé. Déduit du prix de l'intégration si elle est signée dans les 30 jours.",
       },
       ...offres.map((o) => ({
         "@type": "Offer",
@@ -113,7 +113,7 @@ const jsonLd = [
             <button type="button" class="v-bouton" data-open-booking="diagnostic">
               Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
             </button>
-            <p class="v-petit">390&nbsp;€&nbsp;HT · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · déduit si vous signez une offre sous 30&nbsp;jours</p>
+            <p class="v-petit">390&nbsp;€&nbsp;HT · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · <a href="#offres" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
             <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
           </div>
         </div>
@@ -139,7 +139,7 @@ const jsonLd = [
     <div class="v-carte v-grille" style="padding: 22px; align-items: center; gap: 22px;">
       <div class="v-pile v-pile--serree" style="gap: 8px;">
         <p class="v-prix">390&nbsp;€&nbsp;HT</p>
-        <p class="v-petit">90&nbsp;min · visio ou présentiel · déduit si vous signez une offre sous 30&nbsp;jours</p>
+        <p class="v-petit">90&nbsp;min · visio ou présentiel · <a href="#offres" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
         <p class="v-fort v-vert">Satisfait ou remboursé. <a href="/mentions-legales#conditions-diagnostic" class="v-petit" style="color: var(--v-encre); font-weight: 400;">Conditions</a></p>
       </div>
       <p style="max-width: 46ch;">Les construire seul, c'est possible. <span class="v-fort">Les brancher sur vos outils et former votre équipe, c'est mon métier.</span></p>
@@ -240,7 +240,7 @@ const jsonLd = [
         <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
           Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
         </button>
-        <p class="v-petit">390&nbsp;€&nbsp;HT · satisfait ou remboursé · déduit si vous signez une offre sous 30&nbsp;jours</p>
+        <p class="v-petit">390&nbsp;€&nbsp;HT · satisfait ou remboursé · <a href="#offres" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
         <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
       </div>
     </div>
