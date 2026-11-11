@@ -10,6 +10,7 @@ import "@/styles/vitrine.css";
 import { SITE, PERSON_JSONLD } from "@/lib/site";
 import BookingDialog from "@/components/react/BookingDialog";
 import ContactDialog from "@/components/react/ContactDialog";
+import RappelDialog from "@/components/react/RappelDialog";
 import Coupures from "@/components/Coupures.astro";
 import Entete from "@/components/vitrine/Entete.astro";
 import PiedDePage from "@/components/vitrine/PiedDePage.astro";
@@ -70,6 +71,7 @@ const { title, description, canonical, jsonLd = [], actif, cta } = Astro.props;
     <PiedDePage />
     <BookingDialog client:load />
     <ContactDialog client:load />
+    <RappelDialog client:load />
     <Coupures />
   </body>
 </html>

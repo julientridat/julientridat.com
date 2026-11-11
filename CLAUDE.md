@@ -27,7 +27,9 @@ souveraineté totale (code versionné, aucun outil propriétaire).**
   `data-open-booking="echange"` → échange gratuit de 20 min (`SCHEDULER_URL`).
   Diagnostic payé à la réservation : qualification → `PAIEMENT_DIAGNOSTIC_URL` (Stripe) →
   `/diagnostic-confirme` (noindex) qui affiche le planning de 90 min.
-  Contact : `[data-open-contact]`. « Une question avant ? » : lien vers `QUESTION_URL` (Google Agenda).
+  Contact : `[data-open-contact]`. « Une question avant ? » : demande de rappel `RappelDialog`,
+  ouverte par `[data-open-rappel]` (nom, téléphone, disponibilités, question ; Web3Forms).
+- Tous les prix sont hors taxes (Julien est assujetti à la TVA).
 
 ## Charte (À RESPECTER FIDÈLEMENT) — « planning »
 

@@ -10,11 +10,11 @@
  * [À VALIDER] — voir README, section « Refonte de novembre 2026 » :
  *   - autorisation de citer le cas du centre de formation ;
  *   - planning de rendez-vous de 90 minutes distinct de l'échange gratuit (SCHEDULER_DIAGNOSTIC_URL).
- * Diagnostic : 390 € HT, Julien est assujetti à la TVA (Julien, 11/11/2026).
+ * Tous les prix sont hors taxes : Julien est assujetti à la TVA (Julien, 11/11/2026).
  */
 import { Image } from "astro:assets";
 import VitrineLayout from "@/layouts/VitrineLayout.astro";
-import { QUESTION_URL, SITE } from "@/lib/site";
+import { SITE } from "@/lib/site";
 import portrait from "@/assets/julien-portrait.jpg";
 
 const title = "Intégration IA pour TPE et PME à Bordeaux | Julien Tridat";
@@ -68,6 +68,12 @@ const jsonLd = [
         name: o.nom,
         price: String(o.prix),
         priceCurrency: "EUR",
+        priceSpecification: {
+          "@type": "UnitPriceSpecification",
+          price: String(o.prix),
+          priceCurrency: "EUR",
+          valueAddedTaxIncluded: false,
+        },
         description: `${o.utilisateurs} utilisateur(s) formé(s) · ${o.duree.replace(" ", " ")}.`,
       })),
     ],
@@ -106,7 +112,7 @@ const jsonLd = [
               Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
             </button>
             <p class="v-petit">390&nbsp;€&nbsp;HT · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · déduit si vous signez une offre sous 30&nbsp;jours</p>
-            <a class="v-lien-action" style="font-size: 18px; padding: 4px 0;" href={QUESTION_URL} target="_blank" rel="noopener">Une question avant&nbsp;? →</a>
+            <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
           </div>
         </div>
         <figure class="v-carte" style="margin: 0;">
@@ -150,7 +156,7 @@ const jsonLd = [
         <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
           Réserver →<span class="v-surligne">90&nbsp;min</span>
         </button>
-        <a class="v-lien-action" style="font-size: 18px; padding: 4px 0;" href={QUESTION_URL} target="_blank" rel="noopener">Une question avant&nbsp;? →</a>
+        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
       </div>
     </div>
     <p class="v-petit">Vous cherchez une formation à l'IA pour vos équipes&nbsp;? <a href="/formation-ia" class="v-fort">Voir la page Formation →</a></p>
@@ -197,7 +203,7 @@ const jsonLd = [
             <th scope="col">Offre</th>
             <th scope="col">Utilisateurs formés</th>
             <th scope="col">Durée</th>
-            <th scope="col" class="v-droite">Prix</th>
+            <th scope="col" class="v-droite">Prix HT</th>
           </tr>
         </thead>
         <tbody>
@@ -214,7 +220,7 @@ const jsonLd = [
     </div>
     <div class="v-grille">
       <p class="v-texte">Les assistants sortent par vagues. Les premiers tournent pendant le projet, pas à la fin. <span class="v-fort">Si je dérape sur le planning, je continue à mes frais.</span></p>
-      <p class="v-petit v-texte">Au-delà de 80&nbsp;utilisateurs&nbsp;: sur devis · Maintenance évolutive&nbsp;: 300 à 1&nbsp;200&nbsp;€ par mois selon l'offre</p>
+      <p class="v-petit v-texte">Au-delà de 80&nbsp;utilisateurs&nbsp;: sur devis · Maintenance évolutive&nbsp;: 300 à 1&nbsp;200&nbsp;€&nbsp;HT par mois selon l'offre</p>
     </div>
   </section>
 
@@ -244,7 +250,7 @@ const jsonLd = [
           Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
         </button>
         <p class="v-petit">390&nbsp;€&nbsp;HT · satisfait ou remboursé · déduit si vous signez une offre sous 30&nbsp;jours</p>
-        <a class="v-lien-action" style="font-size: 18px; padding: 4px 0;" href={QUESTION_URL} target="_blank" rel="noopener">Une question avant&nbsp;? →</a>
+        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
       </div>
     </div>
   </section>

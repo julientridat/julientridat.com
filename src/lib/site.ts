@@ -32,15 +32,14 @@ export const SCHEDULER_URL =
  */
 export const PAIEMENT_DIAGNOSTIC_URL = "";
 
-/** Google Agenda — prise de rendez-vous de la porte « Une question avant ? » (Julien, 10/11/2026). */
-export const QUESTION_URL = "https://calendar.app.google/Tr82L5xzrLSSgXKj8";
-
 /**
  * Google Calendar — planning du diagnostic de 90 minutes, lien donné par Julien le 11/11/2026
  * (https://calendar.app.google/HFhQsWHYE3mh4MGQ9), en version intégrable (?gv=true).
- * [À VALIDER] Ce lien ouvre le MÊME planning (« Diagnostic IA ») que SCHEDULER_URL et
- * QUESTION_URL : l'échange gratuit et « Une question avant ? » ouvriraient donc le planning
- * du diagnostic payant. Il faut deux plannings distincts dans Google Agenda.
+ * [À VALIDER] Ce lien ouvre le MÊME planning (« Diagnostic IA ») que SCHEDULER_URL :
+ * l'échange gratuit de 20 minutes (page Formation) ouvre donc le planning du diagnostic
+ * payant. Il faut deux plannings distincts dans Google Agenda.
+ * « Une question avant ? » n'ouvre plus d'agenda : c'est une demande de rappel
+ * (RappelDialog, [data-open-rappel]).
  */
 export const SCHEDULER_DIAGNOSTIC_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";

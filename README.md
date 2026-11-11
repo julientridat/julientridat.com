@@ -22,8 +22,8 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 **[À VALIDER] par Julien :**
 - [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
 - [ ] Planning Google Agenda de 90 minutes pour le diagnostic : le lien donné le 11/11
-      (`SCHEDULER_DIAGNOSTIC_URL`) ouvre le même planning que l'échange gratuit de 20 minutes et
-      que « Une question avant ? ». Créer deux plannings distincts, puis mettre à jour les URL.
+      (`SCHEDULER_DIAGNOSTIC_URL`) ouvre le même planning que l'échange gratuit de 20 minutes
+      (page Formation). Créer deux plannings distincts, puis mettre à jour les URL.
 - [ ] Lien de paiement Stripe du diagnostic, compte RÉEL : `PAIEMENT_DIAGNOSTIC_URL` dans
       `src/lib/site.ts`. Le connecteur Stripe ne voit que l'environnement de test, où le lien
       existe (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00) : 468 € TTC, redirection
@@ -31,7 +31,8 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
       facturation obligatoires, n° de TVA facultatif. Le recréer à l'identique en mode réel.
       Tant que la constante est vide, la fenêtre de réservation ouvre directement le planning.
 - [x] Prix du diagnostic : 390 € HT, soit 468 € TTC (Julien est assujetti à la TVA).
-- [ ] Prix des offres (2 500 à 25 000 €) : HT ? Le tableau de l'accueil ne le précise pas.
+- [x] Prix des offres et de la maintenance : hors taxes (Julien, 11/11/2026).
+- [ ] Demande de rappel (« Une question avant ? ») : délai de rappel à fixer avant de l'afficher.
 - [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
       à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
 - [ ] Vidéo « Le diagnostic en 2 minutes » (accueil, haut de page) : à tourner, sous-titrer,

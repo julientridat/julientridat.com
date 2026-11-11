@@ -136,3 +136,9 @@ body.vitrine {
 @media (prefers-reduced-motion: reduce) {
   .vitrine * { transition: none !important; animation: none !important; }
 }
+
+/* Fenêtres React (réservation, contact, rappel) : angles droits, cadre d'encre de 2 px,
+   aucune ombre, aucun flou — charte « planning ». */
+.vitrine [role="dialog"] * { border-radius: 0 !important; }
+.vitrine [role="dialog"] .shadow-2xl { box-shadow: none !important; border: 2px solid var(--v-encre) !important; }
+.vitrine [role="dialog"] .backdrop-blur-sm { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
