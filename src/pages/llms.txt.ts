@@ -1,13 +1,18 @@
 import type { APIRoute } from "astro";
+import { getCollection } from "astro:content";
 import { SITE } from "@/lib/site";
+import { CAS_EN_LIGNE } from "@/lib/casEnLigne";
 
 /**
  * llms.txt — point d'entrée pour les agents IA (https://llmstxt.org).
  * Refonte de novembre 2026 : l'offre en vigueur est l'intégration IA, avec un
  * diagnostic de 90 minutes comme porte d'entrée, et la formation à l'IA générative.
- * Seuls des faits publiés sur les deux pages du site figurent ici.
+ * Seuls des faits publiés sur les pages du site figurent ici ; les études de cas
+ * viennent de leurs fichiers (src/content/realisations, liste src/lib/casEnLigne.ts).
  */
-export const GET: APIRoute = () => {
+export const GET: APIRoute = async () => {
+  const cas = (await getCollection("realisations", ({ id, data }) => data.published && (CAS_EN_LIGNE as readonly string[]).includes(id)))
+    .sort((a, b) => CAS_EN_LIGNE.indexOf(a.id as (typeof CAS_EN_LIGNE)[number]) - CAS_EN_LIGNE.indexOf(b.id as (typeof CAS_EN_LIGNE)[number]));
   const lines = [
     "# Julien Tridat — Intégration IA pour TPE et PME (Bordeaux, France)",
     "",
@@ -46,6 +51,11 @@ export const GET: APIRoute = () => {
     "",
     `- [Accueil — intégration IA et diagnostic](${SITE.url}/)`,
     `- [Formation à l'IA générative](${SITE.url}/formation-ia)`,
+    `- [Intégration de l'IA pour les TPE et PME à Bordeaux](${SITE.url}/integration-ia-bordeaux)`,
+    "",
+    "## Études de cas",
+    "",
+    ...cas.map((c) => `- [${c.data.title}](${SITE.url}/realisations/${c.id}) — ${c.data.client}. ${c.data.pitch}`),
     "",
   ];
 

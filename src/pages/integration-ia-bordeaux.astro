@@ -1,0 +1,184 @@
+---
+/**
+ * Page locale « Intégration de l'IA à Bordeaux » (SEO local, 12/11/2026).
+ *
+ * Une seule page locale, pas une page par commune : Google sanctionne les pages
+ * quasi identiques où seule la ville change. Elle relie l'offre (accueil) et les
+ * études de cas ancrées en Gironde (src/lib/casEnLigne.ts).
+ *
+ * Tous les faits viennent de l'accueil, de /formation-ia (src/contenu/formation-ia.json)
+ * et des conditions du diagnostic (/mentions-legales#conditions-diagnostic) : en cas de
+ * changement d'offre, reprendre aussi cette page.
+ */
+import { getCollection } from "astro:content";
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
+import { SITE } from "@/lib/site";
+import { CAS_EN_LIGNE } from "@/lib/casEnLigne";
+
+const title = "Intégration de l'IA pour les TPE et PME à Bordeaux | Julien Tridat";
+const description =
+  "Consultant IA basé à Bordeaux : j'audite vos processus, je construis vos agents IA et je forme vos équipes. Diagnostic de 90 minutes, en visio ou en présentiel.";
+const canonical = `${SITE.url}/integration-ia-bordeaux`;
+
+const tous = await getCollection("realisations", ({ id, data }) => data.published && (CAS_EN_LIGNE as readonly string[]).includes(id));
+const cas = CAS_EN_LIGNE.map((slug) => tous.find((c) => c.id === slug)).filter((c) => c !== undefined);
+
+const etapes = [
+  {
+    titre: "Le diagnostic",
+    texte: "90 minutes, en visio ou en présentiel. Vous repartez avec la cartographie de vos processus, le gain chiffré et une feuille de route, puis sous 48 h un kit pour monter vos 3 premiers agents IA.",
+  },
+  {
+    titre: "L'intégration",
+    texte: "Je construis les agents IA dans vos outils et je forme votre équipe à les utiliser. Les premiers agents tournent pendant le projet, pas à la fin.",
+  },
+  {
+    titre: "La formation",
+    texte: "Une formation intra à l'IA générative, construite sur vos métiers. En présentiel à Bordeaux, en classe virtuelle ou en mixte. Financement OPCO possible.",
+  },
+];
+
+const faq = [
+  {
+    q: "Faut-il être à Bordeaux pour travailler ensemble ?",
+    r: "Non. Je suis basé à Bordeaux et j'interviens partout en France. Le diagnostic se fait en visio ou en présentiel, à votre choix.",
+  },
+  {
+    q: "Combien coûte l'intégration de l'IA dans une TPE ou une PME ?",
+    r: "Le diagnostic coûte 390 € HT, déduits du prix de l'intégration si vous la lancez sous 30 jours. L'intégration va de 2 500 € HT (un dirigeant, une semaine) à 25 000 € HT (jusqu'à 80 utilisateurs). La maintenance évolutive coûte de 300 à 1 200 € HT par mois selon l'offre.",
+  },
+  {
+    q: "Faut-il des compétences techniques dans l'équipe ?",
+    r: "Non. Je construis les agents IA dans les outils que vous utilisez déjà, puis je forme votre équipe à s'en servir.",
+  },
+  {
+    q: "La formation à l'IA peut-elle être financée ?",
+    r: "Oui. La convention est portée par un organisme certifié Qualiopi, ce qui rend la formation éligible à une prise en charge par votre OPCO. Le montant dépend de votre OPCO et de votre entreprise.",
+  },
+  {
+    q: "Et si le diagnostic ne m'apporte rien ?",
+    r: "Il est satisfait ou remboursé : vous avez 14 jours après la remise du kit pour le demander, sans justification.",
+  },
+];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebPage",
+    "@id": `${canonical}#page`,
+    url: canonical,
+    name: title,
+    description,
+    inLanguage: "fr-FR",
+    about: { "@id": `${SITE.url}/#service` },
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.r } })),
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE.url}/` },
+      { "@type": "ListItem", position: 2, name: "Intégration IA à Bordeaux", item: canonical },
+    ],
+  },
+];
+---
+
+<VitrineLayout title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
+  <section class="v-section v-section--premiere">
+    <div class="v-hero v-pile" style="gap: 32px;">
+      <p class="v-label">Bordeaux · Bordeaux Métropole · Gironde</p>
+      <h1 class="v-h1">
+        Intégration de l'IA<br />
+        <span class="v-vert">pour les TPE et PME de Bordeaux.</span>
+      </h1>
+      <div class="v-pile" style="max-width: 64ch;">
+        <p class="v-chapo">
+          J'audite vos processus, je construis vos agents IA et je forme vos équipes à les utiliser. Je suis basé à
+          Bordeaux&nbsp;; le diagnostic de 90&nbsp;minutes se fait en présentiel ou en visio.
+        </p>
+        <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
+          <button type="button" class="v-bouton" data-open-booking="diagnostic">
+            Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
+          </button>
+          <p class="v-petit">390&nbsp;€&nbsp;HT · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · <a href="/#offres" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="cas" class="v-section">
+    <p class="v-label">Études de cas</p>
+    <h2 class="v-h2">En Gironde et dans le Sud-Ouest. <span class="v-vert">Ce qui a changé, chiffres à l'appui.</span></h2>
+    <div class="v-grille">
+      {cas.map((c) => (
+        <article class="v-carte" style="display: flex; flex-direction: column;">
+          <p class="v-bandeau">{c.data.client}</p>
+          <div class="v-carte--pad" style="flex: 1;">
+            <h3 class="v-h3" style="font-size: 22px;">{c.data.title}</h3>
+            <p>{c.data.pitch}</p>
+            <a class="v-fort" href={`/realisations/${c.id}`} style="margin-top: auto;">Lire l'étude de cas →</a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="v-section">
+    <p class="v-label">Comment ça se passe</p>
+    <h2 class="v-h2">Un diagnostic d'abord. <span class="v-vert">Vous décidez ensuite.</span></h2>
+    <div class="v-grille">
+      {etapes.map((e, i) => (
+        <article class="v-carte v-carte--pad">
+          <span class="v-chiffre">{i + 1}</span>
+          <h3 class="v-h3">{e.titre}</h3>
+          <p>{e.texte}</p>
+        </article>
+      ))}
+    </div>
+    <p class="v-petit">
+      Le détail des offres et des prix&nbsp;: <a href="/#offres" class="v-fort">sur l'accueil</a>. La formation&nbsp;: <a href="/formation-ia" class="v-fort">page Formation</a>.
+    </p>
+  </section>
+
+  <section class="v-section">
+    <p class="v-label">Où j'interviens</p>
+    <div class="v-carte v-carte--pad">
+      <p class="v-texte">
+        À Bordeaux et dans la métropole (Mérignac, Pessac, Talence, Bègles, Le Bouscat, Lormont…), en Gironde et en
+        Nouvelle-Aquitaine. Partout ailleurs en France, en visio ou en classe virtuelle.
+      </p>
+    </div>
+  </section>
+
+  <section class="v-section">
+    <p class="v-label">Questions fréquentes</p>
+    <div class="v-carte">
+      {faq.map((f) => (
+        <details class="v-ligne">
+          <summary class="v-fort" style="cursor: pointer;">{f.q}</summary>
+          <p style="margin-top: 8px;">{f.r}</p>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section class="v-section v-section--fin">
+    <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
+      <div class="v-pile">
+        <h2 class="v-h1">Commençons <span class="v-vert">par 90&nbsp;minutes.</span></h2>
+        <p class="v-chapo">On cartographie vos processus. On repère les 2 ou 3 agents IA qui comptent. On chiffre le gain. Vous repartez avec une feuille de route.</p>
+      </div>
+      <div class="v-pile v-pile--serree" style="align-items: flex-start;">
+        <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
+          Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
+      </div>
+    </div>
+  </section>
+</VitrineLayout>

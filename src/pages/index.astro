@@ -45,7 +45,23 @@ const jsonLd = [
     description:
       "Audit des processus, agents IA construits dans les outils de l'entreprise, formation des équipes à les utiliser. Porte d'entrée : un diagnostic de 90 minutes. Bordeaux, partout en France.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
-    areaServed: "FR",
+    // Signaux locaux (SEO Bordeaux, 11/11/2026) : la ville et sa métropole d'abord,
+    // puis le reste de la France. Pas d'adresse de rue : le service se déplace.
+    address: {
+      "@type": "PostalAddress",
+      addressLocality: "Bordeaux",
+      postalCode: "33000",
+      addressRegion: "Nouvelle-Aquitaine",
+      addressCountry: "FR",
+    },
+    areaServed: [
+      { "@type": "City", name: "Bordeaux" },
+      { "@type": "AdministrativeArea", name: "Bordeaux Métropole" },
+      { "@type": "AdministrativeArea", name: "Gironde" },
+      { "@type": "Country", name: "France" },
+    ],
+    priceRange: "390 € – 25 000 € HT",
+    knowsAbout: ["Intelligence artificielle générative", "Agents IA", "Automatisation des processus", "Formation à l'IA"],
     url: `${SITE.url}/`,
     makesOffer: [
       {
@@ -182,6 +198,7 @@ const jsonLd = [
         <p style="padding: 16px 22px 22px;">Concevoir un parcours et ses supports prenait plusieurs journées. Les formatrices ont récupéré ce temps. Elles créent désormais le e-learning qu'elles n'avaient jamais eu le temps de lancer.</p>
       </article>
     </div>
+    <p class="v-petit">Les études de cas détaillées, en Gironde et dans le Sud-Ouest&nbsp;: <a href="/integration-ia-bordeaux#cas" class="v-fort">Intégration de l'IA à Bordeaux →</a></p>
   </section>
 
   <section id="offres" class="v-section">

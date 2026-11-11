@@ -1,0 +1,186 @@
+---
+/**
+ * Étude de cas, à la charte « planning » (SEO local, 12/11/2026).
+ *
+ * Seuls les cas listés dans src/lib/casEnLigne.ts sont générés ; les autres fichiers
+ * de src/content/realisations restent hors ligne. Le contenu vient tel quel du
+ * fichier Markdown du cas : aucun chiffre ajouté ici.
+ */
+import { getCollection, render } from "astro:content";
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
+import { SITE } from "@/lib/site";
+import { estCasEnLigne } from "@/lib/casEnLigne";
+
+export async function getStaticPaths() {
+  const cas = await getCollection("realisations", ({ id, data }) => data.published && estCasEnLigne(id));
+  return cas.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const d = entry.data;
+const aUnCorps = (entry.body ?? "").trim().length > 0;
+const canonical = `${SITE.url}/realisations/${entry.id}`;
+const description = d.pitch.length > 160 ? d.pitch.slice(0, 158).replace(/\s+\S*$/, "") + "…" : d.pitch;
+
+const identite = [
+  ["Client", d.client],
+  ["Type d'entreprise", d.typeEntreprise],
+  ["Effectif", d.effectif],
+  [d.periode ? "Période" : "Année", d.periode ?? String(d.annee)],
+  ["Mon rôle", d.role],
+].filter(([, v]) => v) as [string, string][];
+
+const jsonLd = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: d.title,
+    description,
+    url: canonical,
+    datePublished: `${d.annee}-01-01`,
+    inLanguage: "fr-FR",
+    author: { "@id": `${SITE.url}/#julien-tridat` },
+    publisher: { "@id": `${SITE.url}/#julien-tridat` },
+    about: d.secteur,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Accueil", item: `${SITE.url}/` },
+      { "@type": "ListItem", position: 2, name: "Intégration IA à Bordeaux", item: `${SITE.url}/integration-ia-bordeaux` },
+      { "@type": "ListItem", position: 3, name: d.title, item: canonical },
+    ],
+  },
+];
+---
+
+<VitrineLayout title={`${d.title} | Julien Tridat`} description={description} canonical={canonical} jsonLd={jsonLd}>
+  <section class="v-section v-section--premiere">
+    <nav class="v-petit" aria-label="Fil d'Ariane">
+      <a href="/">Accueil</a> / <a href="/integration-ia-bordeaux">Intégration IA à Bordeaux</a> / Étude de cas
+    </nav>
+    <div class="v-hero v-pile">
+      <p class="v-label">Étude de cas · {d.secteur}</p>
+      <h1 class="v-h2" style="max-width: 30ch;">{d.title}</h1>
+      <p class="v-chapo">{d.pitch}</p>
+    </div>
+    <dl class="v-carte v-dl">
+      {identite.map(([k, v]) => (
+        <div><dt class="v-label">{k}</dt><dd>{v}</dd></div>
+      ))}
+    </dl>
+  </section>
+
+  {(d.enjeu || d.transformation) && (
+    <section class="v-section">
+      <div class="v-grille">
+        {d.enjeu && (
+          <article class="v-carte v-carte--pad">
+            <p class="v-label">Avant</p>
+            <p class="v-texte">{d.enjeu}</p>
+          </article>
+        )}
+        {d.transformation && (
+          <article class="v-carte v-carte--pad">
+            <p class="v-label v-vert">Après</p>
+            <p class="v-texte v-fort">{d.transformation}</p>
+          </article>
+        )}
+      </div>
+    </section>
+  )}
+
+  {d.resultats.length > 0 && (
+    <section class="v-section">
+      <p class="v-label">Résultats</p>
+      <div class="v-carte v-cols">
+        {d.resultats.map((r) => (
+          <div class="v-ligne" style="border-bottom: 0;">
+            <span class="v-chiffre v-vert" style="display: block;">{r.chiffre}</span>
+            <span class="v-petit" style="display: block; margin-top: 8px;">{r.label}</span>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {d.pointDepart && (
+    <section class="v-section">
+      <p class="v-label">Le point de départ</p>
+      <p class="v-chapo" style="max-width: 65ch;">{d.pointDepart}</p>
+    </section>
+  )}
+
+  {d.methode.length > 0 && (
+    <section class="v-section">
+      <p class="v-label">La méthode</p>
+      <ol class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); list-style: none; padding: 0;">
+        {d.methode.map((m, i) => (
+          <li class="v-carte v-carte--pad">
+            <span class="v-chiffre">{i + 1}</span>
+            <h2 class="v-h3">{m.etape}</h2>
+            <p>{m.detail}</p>
+          </li>
+        ))}
+      </ol>
+    </section>
+  )}
+
+  {d.assistants.length > 0 && (
+    <section class="v-section">
+      <p class="v-label">Ce qui a été installé</p>
+      <div class="v-grille">
+        {d.assistants.map((a) => (
+          <article class="v-carte" style="display: flex; flex-direction: column;">
+            <h2 class="v-bandeau">{a.nom}</h2>
+            <div class="v-cols" style="grid-template-columns: repeat(2, minmax(0, 1fr)); border-bottom: 1px solid var(--v-grille);">
+              <div class="v-ligne" style="border-bottom: 0;"><span class="v-label" style="display: block;">Entrée</span>{a.entree}</div>
+              <div class="v-ligne" style="border-bottom: 0; border-left: 1px solid var(--v-grille);"><span class="v-label v-vert" style="display: block;">Sortie</span>{a.sortie}</div>
+            </div>
+            {a.fait && <p style="padding: 16px 22px 22px;">{a.fait}</p>}
+          </article>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {d.livrables.length > 0 && (
+    <section class="v-section">
+      <p class="v-label">Livrables</p>
+      <ul class="v-carte v-liste" style="list-style: none; padding: 0 22px;">
+        {d.livrables.map((l) => <li>✓ {l}</li>)}
+      </ul>
+    </section>
+  )}
+
+  {d.bilan && (
+    <section class="v-section">
+      <p class="v-label">Le bilan</p>
+      <p class="v-chapo" style="max-width: 65ch;">{d.bilan}</p>
+    </section>
+  )}
+
+  {aUnCorps && (
+    <section class="v-section">
+      <div class="v-texte v-pile"><Content /></div>
+    </section>
+  )}
+
+  <section class="v-section v-section--fin">
+    <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
+      <div class="v-pile">
+        <h2 class="v-h2">Et chez vous&nbsp;? <span class="v-vert">90&nbsp;minutes pour le savoir.</span></h2>
+        <p class="v-chapo">On cartographie vos processus, on chiffre le gain, vous repartez avec une feuille de route.</p>
+      </div>
+      <div class="v-pile v-pile--serree" style="align-items: flex-start;">
+        <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
+          Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+        <p class="v-petit">390&nbsp;€&nbsp;HT · satisfait ou remboursé · <a href="/#offres" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
+        <a class="v-petit" href="/integration-ia-bordeaux">Les autres cas en Gironde →</a>
+      </div>
+    </div>
+  </section>
+</VitrineLayout>
