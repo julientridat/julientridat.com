@@ -1,0 +1,35 @@
+---
+/**
+ * Page d'arrivée après le paiement Stripe du diagnostic (« Après le paiement » →
+ * https://julientridat.com/diagnostic-confirme). Non indexée, absente du sitemap.
+ * Elle affiche le planning Google Agenda de 90 minutes pour choisir le créneau.
+ */
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
+import { SCHEDULER_DIAGNOSTIC_URL } from "@/lib/site";
+---
+
+<VitrineLayout title="Paiement reçu — choisissez votre créneau | Julien Tridat" description="Votre diagnostic est réglé. Choisissez votre créneau de 90 minutes.">
+  <section class="v-section v-section--premiere">
+    <p class="v-label"><span class="v-statut">✓ Paiement reçu</span></p>
+    <h1 class="v-h2" style="max-width: none;">Merci. <span class="v-vert">Choisissez maintenant votre créneau de 90&nbsp;minutes.</span></h1>
+    <p class="v-chapo">Vous recevez la confirmation du rendez-vous par e-mail, avec le lien de visio. Avant la séance, je vous envoie votre facture et un court questionnaire de préparation.</p>
+    <div class="v-carte" style="overflow: hidden;">
+      <iframe
+        src={SCHEDULER_DIAGNOSTIC_URL}
+        title="Choisir le créneau de votre diagnostic"
+        style="display: block; width: 100%; height: min(80vh, 760px); border: 0;"
+        loading="eager"
+      ></iframe>
+    </div>
+  </section>
+
+  <section class="v-section v-section--fin">
+    <h2 class="v-h3">Ce qui se passe ensuite</h2>
+    <ol class="v-carte">
+      <li class="v-ligne"><span class="v-label" style="display: block;">Avant la séance</span>Votre facture et un questionnaire de préparation de 10&nbsp;minutes.</li>
+      <li class="v-ligne"><span class="v-label" style="display: block;">Le jour J</span>90&nbsp;minutes : la cartographie, le chiffrage et la feuille de route.</li>
+      <li class="v-ligne"><span class="v-label" style="display: block;">Sous 48&nbsp;h</span>Votre kit pour construire vos 3&nbsp;premiers agents IA.</li>
+    </ol>
+    <p class="v-petit">Un souci pour réserver&nbsp;? <button type="button" class="v-lien-action" style="font-size: 16px; padding: 0;" data-open-rappel>Demandez à être rappelé →</button></p>
+  </section>
+</VitrineLayout>

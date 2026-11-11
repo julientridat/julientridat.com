@@ -14,6 +14,7 @@ import Anthropic from "@anthropic-ai/sdk";
 import { OAuthProvider } from "@cloudflare/workers-oauth-provider";
 import { autoriser, pageConnecteur, type EnvAutorisation } from "./autorisation";
 import { redirectionCanonique } from "./canonique";
+import { redirectionAncienSite } from "./redirections";
 import { servirCms, type EnvCms } from "./cms";
 import { analyserFiche } from "./evaluateur";
 import { enregistrerReponse, exporterReponses } from "./enquetes";
@@ -1111,6 +1112,8 @@ const site = {
   async fetch(request: Request, env: Env): Promise<Response> {
     const redirection = redirectionCanonique(request);
     if (redirection) return redirection;
+    const retiree = redirectionAncienSite(request);
+    if (retiree) return retiree;
 
     const url = new URL(request.url);
     if (url.pathname === "/api/experience") return handleExperience(request, env);

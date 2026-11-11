@@ -1,0 +1,144 @@
+/*
+ * Charte du site vitrine — système « planning » (artefact Design System « Julien Tridat »).
+ * Fond clair, encre, un seul accent vert réservé à ce qui est tenu ou livré,
+ * titres Barlow Condensed en capitales, texte Public Sans, angles droits partout.
+ *
+ * Chargée par VitrineLayout APRÈS global.css (Tailwind) : global.css reste là pour
+ * les fenêtres de réservation et de contact (îlots React stylés en Tailwind), dont
+ * on recolore ici les variables pour qu'elles prennent la charte.
+ */
+
+:root:root {
+  --v-encre: #101214;
+  --v-vert: #0A7350;
+  --v-surligneur: #FFE45C;
+  --v-fond: #F5F7F9;
+  --v-blanc: #FFFFFF;
+  --v-grille: #D5DCE4;
+  --v-gris: #555D68;
+  --v-encre-sur-sombre: #C9CFD6;
+  --v-vert-sur-sombre: #7FD3AE;
+  --v-titre: "Barlow Condensed", "Arial Narrow", system-ui, sans-serif;
+  --v-texte: "Public Sans", "Segoe UI", system-ui, sans-serif;
+
+  /* Variables lues par les fenêtres React (global.css). */
+  --background: #F5F7F9;
+  --foreground: #101214;
+  --lime: #0A7350;
+  --ink: #101214;
+  --ink-2: #3B4149;
+  --ink-3: #555D68;
+  --card: #FFFFFF;
+  --line: #D5DCE4;
+}
+
+body.vitrine {
+  margin: 0;
+  background: var(--v-fond);
+  color: var(--v-encre);
+  font-family: var(--v-texte);
+  font-size: 17px;
+  line-height: 1.55;
+}
+
+.vitrine a { color: var(--v-encre); }
+.vitrine a:hover { color: var(--v-gris); }
+.vitrine a:focus-visible,
+.vitrine button:focus-visible { outline: 3px solid var(--v-vert); outline-offset: 3px; }
+.vitrine p, .vitrine h1, .vitrine h2, .vitrine h3, .vitrine ul, .vitrine ol, .vitrine dl, .vitrine dd { margin: 0; }
+.vitrine ul, .vitrine ol { padding: 0; list-style: none; }
+
+/* Mise en page */
+.v-conteneur { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+.v-section { max-width: 1200px; margin: 0 auto; padding: 64px 24px 0; display: flex; flex-direction: column; gap: 22px; }
+.v-section--premiere { padding-top: 40px; }
+.v-section--fin { padding-bottom: 64px; }
+.v-grille { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; }
+.v-grille--large { grid-template-columns: repeat(auto-fit, minmax(min(320px, 100%), 1fr)); gap: 40px; }
+.v-pile { display: flex; flex-direction: column; gap: 22px; }
+.v-pile--serree { gap: 12px; }
+
+/* Typographie */
+.v-label { font-family: var(--v-titre); font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--v-gris); }
+.v-h1 { font-family: var(--v-titre); font-weight: 800; font-size: clamp(44px, 6vw, 80px); line-height: 0.9; letter-spacing: -0.01em; text-transform: uppercase; }
+.v-h2 { font-family: var(--v-titre); font-weight: 800; font-size: clamp(34px, 4vw, 44px); line-height: 0.95; text-transform: uppercase; max-width: 24ch; }
+.v-h3 { font-family: var(--v-titre); font-weight: 800; font-size: 26px; line-height: 1; text-transform: uppercase; }
+.v-chiffre { font-family: var(--v-titre); font-weight: 800; font-size: 30px; line-height: 1; text-transform: uppercase; font-variant-numeric: tabular-nums; }
+.v-prix { font-family: var(--v-titre); font-weight: 800; font-size: 56px; line-height: 1; font-variant-numeric: tabular-nums; }
+.v-vert { color: var(--v-vert); }
+.v-chapo { font-size: 19px; line-height: 1.55; max-width: 56ch; }
+.v-texte { max-width: 65ch; }
+.v-fort { font-weight: 700; }
+.v-petit { font-size: 14px; line-height: 1.45; color: var(--v-gris); }
+.v-statut { font-size: 12.5px; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--v-vert); white-space: nowrap; }
+
+/* Surfaces */
+.v-carte { background: var(--v-blanc); border: 2px solid var(--v-encre); }
+.v-carte--pad { padding: 22px; display: flex; flex-direction: column; gap: 12px; }
+.v-hero { background: var(--v-blanc); border: 2px solid var(--v-encre); padding: 40px; }
+.v-bandeau { background: var(--v-encre); color: var(--v-blanc); padding: 12px 22px; font-family: var(--v-titre); font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.v-ligne { padding: 12px 22px; border-bottom: 1px solid var(--v-grille); }
+.v-ligne:last-child { border-bottom: 0; }
+.v-liste > li { padding: 12px 0; border-bottom: 1px solid var(--v-grille); }
+.v-liste > li:last-child { border-bottom: 0; }
+.v-sombre { background: var(--v-encre); color: var(--v-blanc); padding: 40px; }
+.v-sombre .v-chapo, .v-sombre .v-petit { color: var(--v-encre-sur-sombre); }
+.v-sombre .v-vert { color: var(--v-vert-sur-sombre); }
+.v-sombre a { color: var(--v-blanc); }
+.v-emplacement { background: var(--v-fond); display: flex; align-items: flex-end; padding: 16px 22px; box-sizing: border-box; }
+.v-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }
+.v-cols > * + * { border-left: 1px solid var(--v-grille); }
+@media (max-width: 860px) { .v-cols > * + * { border-left: 0; border-top: 1px solid var(--v-grille); } }
+
+/* Boutons et liens d'action */
+.v-bouton { display: inline-flex; align-items: center; gap: 12px; background: var(--v-encre); color: var(--v-blanc); border: 0; border-radius: 0; text-decoration: none; padding: 16px 22px; min-height: 44px; box-sizing: border-box; font-family: var(--v-titre); font-weight: 800; font-size: 22px; text-transform: uppercase; letter-spacing: 0.04em; cursor: pointer; }
+.vitrine .v-bouton, .vitrine .v-bouton:hover { color: var(--v-blanc); }
+.v-bouton--petit { font-size: 18px; padding: 12px 22px; gap: 10px; }
+.vitrine .v-bouton--inverse, .vitrine .v-bouton--inverse:hover { background: var(--v-blanc); color: var(--v-encre); }
+.v-bouton .v-surligne { background: var(--v-surligneur); color: var(--v-encre); padding: 2px 8px; }
+.v-lien-action { background: none; border: 0; padding: 12px 0; cursor: pointer; font-family: var(--v-titre); font-weight: 800; font-size: 20px; text-transform: uppercase; letter-spacing: 0.04em; color: inherit; text-decoration: underline; text-underline-offset: 4px; }
+
+/* En-tête et pied de page */
+.v-entete { border-bottom: 2px solid var(--v-encre); background: var(--v-blanc); }
+.v-entete__barre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding-top: 16px; padding-bottom: 16px; }
+.v-marque { text-decoration: none; display: flex; flex-direction: column; gap: 2px; }
+.v-marque__nom { font-family: var(--v-titre); font-weight: 800; font-size: 26px; line-height: 1; text-transform: uppercase; color: var(--v-encre); }
+.v-nav { display: flex; flex-wrap: wrap; align-items: center; gap: 22px; }
+.v-nav a.v-nav__lien { font-family: var(--v-titre); font-weight: 600; font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; text-decoration: none; padding: 12px 0; }
+.v-nav a.v-nav__lien[aria-current="page"] { font-weight: 800; border-bottom: 2px solid var(--v-encre); }
+.v-pied { border-top: 2px solid var(--v-encre); background: var(--v-blanc); }
+.v-pied__barre { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 22px; padding-bottom: 22px; font-size: 14px; line-height: 1.45; color: var(--v-gris); }
+.v-pied nav { display: flex; flex-wrap: wrap; gap: 16px; }
+.v-pied a, .v-pied button { color: var(--v-gris); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Bio : portrait en colonne étroite, texte à côté ; empilés sur téléphone */
+.v-bio { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 40px; align-items: start; }
+@media (max-width: 700px) { .v-bio { grid-template-columns: minmax(0, 1fr); gap: 22px; } .v-bio__photo { max-width: 220px; } }
+
+/* Tableau des offres */
+.v-tableau { width: 100%; min-width: 640px; border-collapse: collapse; }
+.v-tableau thead tr { background: var(--v-encre); color: var(--v-blanc); }
+.v-tableau th, .v-tableau td { padding: 16px 22px; text-align: left; vertical-align: middle; }
+.v-tableau thead th { padding: 12px 22px; font-family: var(--v-titre); font-weight: 600; font-size: 14px; letter-spacing: 0.12em; text-transform: uppercase; }
+.v-tableau tbody tr + tr { border-top: 1px solid var(--v-grille); }
+.v-tableau .v-droite { text-align: right; }
+
+/* Liste de définitions (cadre et prix) */
+.v-dl > div { display: grid; grid-template-columns: minmax(120px, 1fr) minmax(0, 2fr); gap: 16px; padding: 12px 22px; border-bottom: 1px solid var(--v-grille); }
+.v-dl > div:last-child { border-bottom: 0; }
+.v-dl dt { padding-top: 3px; }
+
+@media (max-width: 600px) {
+  .v-hero, .v-sombre { padding: 22px; }
+  .v-section { padding-top: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vitrine * { transition: none !important; animation: none !important; }
+}
+
+/* Fenêtres React (réservation, contact, rappel) : angles droits, cadre d'encre de 2 px,
+   aucune ombre, aucun flou — charte « planning ». */
+.vitrine [role="dialog"] * { border-radius: 0 !important; }
+.vitrine [role="dialog"] .shadow-2xl { box-shadow: none !important; border: 2px solid var(--v-encre) !important; }
+.vitrine [role="dialog"] .backdrop-blur-sm { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }

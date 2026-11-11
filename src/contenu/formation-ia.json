@@ -1,7 +1,7 @@
 {
   "seo": {
     "title": "Formation à l'IA générative | Julien Tridat",
-    "description": "Formation IA générative en intra ou pour organismes de formation. Plus de 300 dirigeants et cadres formés. Dès 790 € HT la demi-journée, OPCO possible."
+    "description": "Formation IA générative en intra ou pour organismes de formation. Plus de 300 dirigeants et cadres formés. À partir de 790 € HT. Financement OPCO possible."
   },
   "bouton": "Réserver 20 minutes",
   "hero": {
@@ -13,7 +13,7 @@
     "titreAccent2": "aux équipes de terrain.",
     "chapo": "Pour les entreprises qui forment leurs équipes, et les organismes qui cherchent un formateur. Plus de 300 dirigeants et cadres formés.",
     "lienDossier": "Voir le dossier remis",
-    "mention": "Dès 790 € HT la demi-journée · Financement OPCO possible · Dossier complet à chaque session"
+    "mention": "À partir de 790 € HT · Financement OPCO possible · Dossier complet à chaque session"
   },
   "aiguillage": {
     "surtitre": "Deux façons d'arriver ici",
@@ -136,7 +136,7 @@
         "items": [
           {
             "titre": "Marketing et communication",
-            "texte": "Contenus, déclinaison de supports à l'échelle d'un réseau, brief de création, plan éditorial, charte maison encodée dans l'assistant."
+            "texte": "Contenus, déclinaison de supports à l'échelle d'un réseau, brief de création, plan éditorial, charte maison encodée dans l'agent IA."
           },
           {
             "titre": "Commercial et développement",
@@ -287,7 +287,7 @@
     ],
     "pieces": "Pièces de référencement",
     "piecesSuite": "transmises sur demande, sous 24 h.",
-    "prixEtiquette": "La demi-journée, à partir de",
+    "prixEtiquette": "À partir de",
     "montant": "790 €",
     "montantDetail": "HT",
     "prixTexte": "Le tarif dépend du format, du volume et de l'ingénierie. Financement OPCO possible en intra."
@@ -322,8 +322,8 @@
         "r": "Petits-déjeuners prescripteurs, salons, clubs clients. Je construis un livrable réel devant la salle plutôt que d'exposer le potentiel de l'IA."
       },
       {
-        "q": "Vous faites aussi du marketing et de l'intégration IA ?",
-        "r": "Ce sont deux autres offres. Marketing IA : je deviens le service marketing d'une PME, avec les livrables prévus, à date, chaque semaine. Intégration IA : j'installe des agents dans les outils d'une entreprise, en huit semaines."
+        "q": "Vous faites aussi de l'intégration IA ?",
+        "r": "Oui, c'est mon autre offre : j'installe des agents IA dans les outils d'une entreprise, puis je forme les équipes à les utiliser. Tout commence par [un diagnostic de 90 minutes](/#diagnostic)."
       }
     ]
   },

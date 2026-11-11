@@ -1,0 +1,40 @@
+---
+/**
+ * En-tête du site vitrine. `actif` marque la page courante ; `cta` choisit l'appel
+ * du bouton : le diagnostic de 90 minutes (BookingDialog, [data-open-booking]) ou la
+ * demande de rappel (RappelDialog, [data-open-rappel]) sur la page Formation.
+ * L'échange gratuit de 20 minutes n'existe plus (Julien, 11/11/2026).
+ */
+interface Props {
+  actif?: "accueil" | "formation";
+  cta?: "diagnostic" | "rappel";
+}
+const { actif, cta = "diagnostic" } = Astro.props;
+const surAccueil = actif === "accueil";
+const ancre = (id: string) => (surAccueil ? `#${id}` : `/#${id}`);
+---
+
+<header class="v-entete">
+  <div class="v-conteneur v-entete__barre">
+    <a href="/" class="v-marque" aria-label="Julien Tridat, accueil">
+      <span class="v-marque__nom">Julien Tridat</span>
+      <span class="v-label">Intégration IA · Bordeaux</span>
+    </a>
+    <nav class="v-nav" aria-label="Navigation principale">
+      <a class="v-nav__lien" href={ancre("diagnostic")}>Le diagnostic</a>
+      <a class="v-nav__lien" href={ancre("cas")}>Cas</a>
+      <a class="v-nav__lien" href={ancre("offres")}>Offres</a>
+      <a class="v-nav__lien" href="/formation-ia" aria-current={actif === "formation" ? "page" : undefined}>Formation</a>
+      <a class="v-nav__lien" href={ancre("qui")}>Qui je suis</a>
+      {cta === "diagnostic" ? (
+        <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
+          Réserver →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+      ) : (
+        <button type="button" class="v-bouton v-bouton--petit" data-open-rappel>
+          Être rappelé →
+        </button>
+      )}
+    </nav>
+  </div>
+</header>

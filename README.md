@@ -7,6 +7,43 @@ comme pour les agents IA (JSON-LD, `llms.txt`).
 Remplace la version Lovable (`page-replicator-charm`, conservée en lecture seule comme
 référence de design).
 
+## Refonte de novembre 2026 — à valider avant la mise en ligne
+
+Le site vitrine passe dans la charte « planning » (`src/styles/vitrine.css`,
+`src/layouts/VitrineLayout.astro`) et se réduit à trois pages : l'accueil (intégration IA,
+diagnostic de 90 minutes), `/formation-ia` et `/mentions-legales`. Les anciennes pages
+(direction marketing, études de cas, notes, intégration, installation, transformation,
+agences, expérience, avant de recruter) sont hors ligne : leurs adresses répondent en 301
+vers l'accueil (`worker/redirections.ts`). Leurs contenus restent dans le dépôt.
+
+Restent en place, sans changement : le tableau client (`/tableau`), le connecteur Claude
+(`/mcp`, `/authorize`), les enquêtes LinkedIn et leurs API, le CMS (`/admin`).
+
+**[À VALIDER] par Julien :**
+- [x] Forme juridique et adresse de l'éditeur : EI Julien Tridat, nom commercial Velvety, 84 cours Victor Hugo, TVA FR47528133713 (11/11/2026).
+- [x] Planning du diagnostic : un seul planning « Diagnostic IA » (90 minutes). L'échange
+      gratuit de 20 minutes est supprimé ; la page Formation renvoie vers la demande de rappel.
+- [x] Lien de paiement Stripe du diagnostic, compte réel « JT Marketing » : branché dans
+      `PAIEMENT_DIAGNOSTIC_URL` (468 € TTC, redirection vers /diagnostic-confirme).
+      Stripe n'envoie qu'un reçu. La facture est faite dans Abby, une seule par vente : le brief du matin
+      prépare le brouillon pour chaque diagnostic payé, Julien le valide et l'envoie (décision du 11/11/2026).
+- [x] Prix du diagnostic : 390 € HT, soit 468 € TTC (Julien est assujetti à la TVA).
+- [x] Prix des offres et de la maintenance : hors taxes (Julien, 11/11/2026).
+- [x] Demande de rappel : téléphone et e-mail obligatoires ; « je vous rappelle dès qu'un créneau se libère, sinon je reviens vers vous très vite par e-mail » (Julien, 11/11/2026).
+- [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
+      à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
+- [ ] Vidéo « Le diagnostic en 2 minutes » : à tourner et sous-titrer. Son emplacement est retiré de
+      l'accueil en attendant (11/11/2026) ; la marche à suivre pour la remettre est en commentaire dans `src/pages/index.astro`.
+- [x] « Satisfait ou remboursé » : demande dans les 14 jours qui suivent la remise du kit (questions par e-mail pendant ces 14 jours), sans justification,
+      remboursement intégral sous 14 jours, une fois par entreprise (`/mentions-legales#conditions-diagnostic`).
+- [x] Report : gratuit jusqu'à 48 h avant le rendez-vous ; au-delà, ou en cas d'absence, le diagnostic reste dû (Julien, 11/11/2026).
+- [x] Autorisation de citer le cas du centre de formation (accueil, section Cas) : accordée (Julien, 11/11/2026).
+- [ ] Attestation de RC professionnelle : à ajouter aux pièces de référencement
+      (`src/pages/formation-ia.astro`) une fois l'assurance souscrite.
+- [ ] Après fusion : soumettre `https://julientridat.com/sitemap.xml` dans la Search Console.
+
+Hors de ce dépôt, non touché : le calendrier éditorial LEH.
+
 ## Stack
 
 - **Astro 5** (statique, 100 % HTML pré-rendu) + **React 19** (un seul îlot : le dialogue

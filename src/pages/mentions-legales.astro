@@ -1,0 +1,46 @@
+---
+/**
+ * Mentions légales — obligatoires pour un site professionnel (loi du 21 juin 2004, art. 6).
+ * Éditeur : l'entreprise individuelle de Julien (registre public, vérifié le 02/09/2026 ;
+ * TVA au réel depuis le 30/09/2026). Conditions du diagnostic : décision de Julien du
+ * 11/11/2026 (remboursement sur demande sous 14 jours après la remise du kit,
+ * questions par e-mail pendant ces 14 jours).
+ */
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
+import { SITE } from "@/lib/site";
+
+const title = "Mentions légales et conditions | Julien Tridat";
+const description = "Éditeur, hébergeur, données personnelles et conditions du diagnostic IA de julientridat.com.";
+---
+
+<VitrineLayout title={title} description={description} canonical={`${SITE.url}/mentions-legales`}>
+  <section class="v-section v-section--premiere v-section--fin">
+    <p class="v-label">Informations légales</p>
+    <h1 class="v-h1">Mentions légales</h1>
+    <div class="v-carte">
+      <dl class="v-dl">
+        <div><dt class="v-label">Éditeur</dt><dd>Julien Tridat, entrepreneur individuel (EI) — nom commercial Velvety</dd></div>
+        <div><dt class="v-label">SIRET</dt><dd>528&nbsp;133&nbsp;713&nbsp;00024</dd></div>
+        <div><dt class="v-label">Adresse</dt><dd>84 cours Victor Hugo, 33000 Bordeaux</dd></div>
+        <div><dt class="v-label">TVA intracommunautaire</dt><dd>FR47&nbsp;528&nbsp;133&nbsp;713</dd></div>
+        <div><dt class="v-label">Contact</dt><dd><button type="button" class="v-lien-action" style="font-size: 17px; padding: 0;" data-open-contact>Envoyer un message</button></dd></div>
+        <div><dt class="v-label">Directeur de la publication</dt><dd>Julien Tridat</dd></div>
+        <div><dt class="v-label">Formation</dt><dd>Déclaration d'activité enregistrée sous le n°&nbsp;75331864933 auprès du préfet de région Nouvelle-Aquitaine. Cet enregistrement ne vaut pas agrément de l'État.</dd></div>
+        <div><dt class="v-label">Hébergeur</dt><dd>Cloudflare, Inc. — 101 Townsend Street, San Francisco, CA 94107, États-Unis — cloudflare.com</dd></div>
+      </dl>
+    </div>
+    <div class="v-pile v-texte" id="conditions-diagnostic">
+      <h2 class="v-h3">Conditions du diagnostic IA</h2>
+      <p><span class="v-fort">Prix.</span> 390&nbsp;€&nbsp;HT, soit 468&nbsp;€&nbsp;TTC, payés à la réservation. Ce montant est déduit de toute offre signée dans les 30&nbsp;jours qui suivent le diagnostic.</p>
+      <p><span class="v-fort">Satisfait ou remboursé.</span> Si le diagnostic ne vous a pas été utile, écrivez-moi dans les 14&nbsp;jours qui suivent la remise du kit, par le formulaire de contact. C'est le temps de monter vos agents et de mesurer ce qu'ils vous font gagner ; pendant ces 14&nbsp;jours, vous me posez vos questions par e-mail. Je vous rembourse l'intégralité du montant payé, sous 14&nbsp;jours, sur le moyen de paiement utilisé. Aucune justification n'est exigée ; une phrase sur ce qui vous a manqué m'aide à progresser.</p>
+      <p>La garantie vaut pour un diagnostic par entreprise.</p>
+      <p><span class="v-fort">Report.</span> Vous pouvez reporter le diagnostic gratuitement jusqu'à 48&nbsp;heures avant le rendez-vous. Passé ce délai, ou en cas d'absence, le diagnostic reste dû.</p>
+    </div>
+    <div class="v-pile v-texte">
+      <h2 class="v-h3">Données personnelles</h2>
+      <p>Les informations saisies dans les formulaires de contact et de réservation me sont transmises par e-mail (service Web3Forms) et servent uniquement à vous répondre et à préparer notre échange. Les rendez-vous sont pris dans Google Agenda.</p>
+      <p>Le site ne dépose aucun cookie publicitaire. Les polices de caractères sont chargées depuis Google Fonts.</p>
+      <p>Vous pouvez demander l'accès à vos données, leur rectification ou leur suppression en m'écrivant par le formulaire de contact.</p>
+    </div>
+  </section>
+</VitrineLayout>

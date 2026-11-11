@@ -1,9 +1,9 @@
 export const SITE = {
   url: "https://julientridat.com",
   name: "Julien Tridat",
-  title: "Julien Tridat — Direction marketing externalisée pour PME",
+  title: "Julien Tridat — Intégration IA pour TPE et PME, Bordeaux",
   description:
-    "Direction marketing externalisée pour PME : 2 500 € HT par mois, plan sur douze mois et charte le premier mois, puis vos livrables à date, chaque semaine.",
+    "J'audite vos processus, je construis les agents IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.",
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 
@@ -16,8 +16,35 @@ export const CONTACT_EMAIL = "julien.tridat@gmail.com";
  */
 export const WEB3FORMS_ACCESS_KEY = "12c7676a-7350-41af-a901-7e276d7ed8c9";
 
-/** Google Calendar — page de prise de rendez-vous (identique au site d'origine). */
+/**
+ * Google Calendar — planning de l'ancien site. N'est plus utilisé par les pages vitrine
+ * (seulement par les composants de l'ancien site, hors ligne) ; c'est le même planning
+ * que SCHEDULER_DIAGNOSTIC_URL.
+ */
 export const SCHEDULER_URL =
+  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
+
+/**
+ * Stripe — lien de paiement du diagnostic, payé à la réservation (Julien, 10/11/2026).
+ * Prix : 390 € HT, soit 468 € TTC — Julien est assujetti à la TVA (Julien, 11/11/2026).
+ * Parcours : qualification → paiement Stripe → redirection vers /diagnostic-confirme,
+ * qui affiche le planning de 90 minutes.
+ * Lien du compte réel « JT Marketing » (vérifié le 11/11/2026) : 468 € TTC, taxe incluse,
+ * adresse de facturation et nom de l'entreprise obligatoires, numéro de TVA facultatif.
+ * Stripe n'envoie qu'un reçu : la facture part d'Abby, à la main.
+ * Un lien de test existe (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00) : ne jamais
+ * le mettre ici, il encaisserait des paiements fictifs. Vide, la fenêtre ouvrirait le
+ * planning sans paiement.
+ */
+export const PAIEMENT_DIAGNOSTIC_URL = "https://book.stripe.com/eVq7sNemd2nkdlGdq3aZi00";
+
+/**
+ * Google Calendar — planning « Diagnostic IA » (90 minutes), lien donné par Julien le
+ * 11/11/2026 (https://calendar.app.google/DoYc85UPJeqpqfSN7), en version intégrable.
+ * C'est le seul planning du site : l'échange gratuit de 20 minutes n'existe plus et
+ * « Une question avant ? » est une demande de rappel (RappelDialog, [data-open-rappel]).
+ */
+export const SCHEDULER_DIAGNOSTIC_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
 /*
@@ -36,9 +63,9 @@ export const PERSON_JSONLD = {
   "@type": "Person",
   "@id": `${SITE.url}/#julien-tridat`,
   name: "Julien Tridat",
-  jobTitle: "Consultant marketing et IA indépendant",
+  jobTitle: "Intégrateur IA pour TPE et PME",
   description:
-    "Vingt ans de marketing. Depuis 2018, j'accompagne des dirigeants de PME dans la croissance de leur entreprise. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
+    "Vingt ans de marketing : la publicité chez Publicis et Saatchi & Saatchi, la production média pour France 24, Canal+ et France 2, puis le conseil aux entreprises depuis dix ans. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
   url: SITE.url,
   address: {
     "@type": "PostalAddress",

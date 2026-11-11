@@ -1,51 +1,25 @@
 import type { APIRoute } from "astro";
-import { getCollection } from "astro:content";
 import { SITE } from "@/lib/site";
 
-interface Entry {
-  path: string;
-  changefreq?: string;
-  priority?: string;
-  lastmod?: string;
-}
+/*
+ * Refonte de novembre 2026 : le site vitrine se réduit à l'accueil (intégration IA)
+ * et à la formation. Les études de cas et les notes sont hors ligne (redirigées vers
+ * l'accueil, worker/redirections.ts) et sortent donc du plan du site.
+ */
+const ENTREES = [
+  { path: "/", changefreq: "weekly", priority: "1.0" },
+  { path: "/formation-ia", changefreq: "monthly", priority: "0.8" },
+];
 
-export const GET: APIRoute = async () => {
-  const realisations = await getCollection("realisations", ({ data }) => data.published);
-  const notes = await getCollection("notes", ({ data }) => data.published);
-
-  const entries: Entry[] = [
-    { path: "/", changefreq: "weekly", priority: "1.0" },
-    { path: "/realisations", changefreq: "monthly", priority: "0.9" },
-    { path: "/integration-ia", changefreq: "monthly", priority: "0.9" },
-    { path: "/avant-de-recruter", changefreq: "monthly", priority: "0.8" },
-    { path: "/agences", changefreq: "monthly", priority: "0.8" },
-    { path: "/formation-ia", changefreq: "monthly", priority: "0.8" },
-    { path: "/experience", changefreq: "monthly", priority: "0.7" },
-    { path: "/notes", changefreq: "monthly", priority: "0.8" },
-    ...realisations.map((r) => ({
-      path: `/realisations/${r.id}`,
-      changefreq: "yearly",
-      priority: "0.7",
-    })),
-    ...notes.map((n) => ({
-      path: `/notes/${n.id}`,
-      changefreq: "yearly",
-      priority: "0.7",
-      lastmod: n.data.date.toISOString().slice(0, 10),
-    })),
-  ];
-
-  const urls = entries.map((e) =>
+export const GET: APIRoute = () => {
+  const urls = ENTREES.map((e) =>
     [
       "  <url>",
       `    <loc>${SITE.url}${e.path}</loc>`,
-      e.lastmod ? `    <lastmod>${e.lastmod}</lastmod>` : null,
-      e.changefreq ? `    <changefreq>${e.changefreq}</changefreq>` : null,
-      e.priority ? `    <priority>${e.priority}</priority>` : null,
+      `    <changefreq>${e.changefreq}</changefreq>`,
+      `    <priority>${e.priority}</priority>`,
       "  </url>",
-    ]
-      .filter(Boolean)
-      .join("\n"),
+    ].join("\n"),
   );
 
   const xml = [
@@ -55,7 +29,5 @@ export const GET: APIRoute = async () => {
     `</urlset>`,
   ].join("\n");
 
-  return new Response(xml, {
-    headers: { "Content-Type": "application/xml" },
-  });
+  return new Response(xml, { headers: { "Content-Type": "application/xml" } });
 };

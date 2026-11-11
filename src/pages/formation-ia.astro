@@ -1,105 +1,31 @@
 ---
 /**
- * Formation à l'IA générative — refaite en septembre 2026 sur le modèle de
- * la page d'accueil (fond et forme), comme /integration-ia : hero sombre,
- * aiguillage, déroulé « Vous recevez » avec une mécanique animée (le dossier
- * qui se remplit), tuiles à grand signe, prix sur fond sombre, FAQ fermée,
- * clôture sombre.
+ * Formation à l'IA générative — refonte de novembre 2026 (charte « planning »).
  *
- * DEUX destinataires, nommés dès l'aiguillage : l'entreprise qui forme ses
- * équipes (argument : financement OPCO via un organisme partenaire) et
- * l'organisme de formation qui cherche un intervenant (argument : le dossier
- * complet, la Qualiopi portée par son centre).
+ * Les textes restent dans src/contenu/formation-ia.json (modifiables dans /admin) ;
+ * cette page n'en change que la mise en page. La liste détaillée du dossier de
+ * session n'est plus affichée (choix de Julien, 09/11/2026) ; les champs
+ * `deroule.dossier*` restent dans le fichier.
  *
- * Le titre du hero est calé ligne par ligne par Julien : deux lignes sur
- * desktop, quatre en responsive. Ne pas y toucher sans lui. Chaque morceau
- * de ligne est un champ ; les coupures (<br />) restent ici.
+ * Deux destinataires : l'entreprise qui forme ses équipes (financement OPCO via un
+ * organisme partenaire) et l'organisme de formation qui cherche un intervenant.
+ * Aucun organisme partenaire n'est nommé à côté d'un client : les contrats l'interdisent.
  *
- * Les textes se modifient dans /admin (src/contenu/formation-ia.json) ; ici,
- * la mise en page seulement. Références : les noms déjà publiés sur le site
- * (archive docs/verbatims-et-references.md) et Lagardère Travel Retail ; le
- * club d'affaires du Marmandais n'y est pas (hors financement de la formation).
- * Verbatims : les six de la même archive, publiés ici depuis le 16/09/2026.
- *
- * PRIX : à partir de 790 € HT la demi-journée (Julien, 15/09/2026).
- * Aucun organisme partenaire n'est nommé à côté d'un client : les contrats
- * l'interdisent.
+ * PIÈCES DE RÉFÉRENCEMENT : l'attestation de RC professionnelle n'est PAS proposée
+ * tant qu'aucun contrat n'est souscrit (constat du 09/11/2026). L'ajouter à
+ * `PIECES_SUR_DEMANDE` une fois l'assurance en place.
  */
-import BaseLayout from "@/layouts/BaseLayout.astro";
-import Nav from "@/components/Nav.astro";
-import Eyebrow from "@/components/Eyebrow.astro";
-import CtaButton from "@/components/CtaButton.astro";
-import Footer from "@/components/Footer.astro";
-import Reveal from "@/components/Reveal.astro";
+import VitrineLayout from "@/layouts/VitrineLayout.astro";
 import { SITE } from "@/lib/site";
 import formationJson from "@/contenu/formation-ia.json";
 import { preparer, enLigne, brut } from "@/lib/texte";
 
 const c = preparer(formationJson);
-// Title et description tels qu'enregistrés, sans typographie (bloc seo).
 const { title, description } = formationJson.seo;
 
-/* ------------------------------------------------------------------ *
- * Données administratives — à compléter par Julien. Une valeur absente
- * n'affiche rien : elle rejoint la liste des pièces « sur demande ».
- * ------------------------------------------------------------------ */
-const ADMIN = {
-  formeJuridique: null as string | null,
-  siret: null as string | null,
-  /** N° de déclaration d'activité de formateur (préfecture de région). */
-  nda: null as string | null,
-  ndaRegion: "Nouvelle-Aquitaine",
-  /** Assureur + n° de police de la RC professionnelle. */
-  rcPro: null as string | null,
-  /** Délai entre l'accord et la première session. */
-  delaiAcces: null as string | null,
-};
+const PIECES_SUR_DEMANDE = ["forme juridique", "SIRET", "n° de déclaration d'activité", "délai d'accès"];
 
-/** Lignes administratives réellement renseignées, prêtes à l'affichage. */
-const lignesAdmin: [string, string][] = [
-  ADMIN.formeJuridique ? (["Forme juridique", ADMIN.formeJuridique] as [string, string]) : null,
-  ADMIN.siret ? (["SIRET", ADMIN.siret] as [string, string]) : null,
-  ADMIN.nda
-    ? (["Déclaration d'activité", `${ADMIN.nda} — préfecture de région ${ADMIN.ndaRegion}`] as [
-        string,
-        string,
-      ])
-    : null,
-  [
-    "Qualiopi",
-    "Non détenue en propre. J'interviens sous la certification du centre, en sous-traitance.",
-  ] as [string, string],
-  ADMIN.rcPro ? (["RC professionnelle", ADMIN.rcPro] as [string, string]) : null,
-  ADMIN.delaiAcces ? (["Délai d'accès", ADMIN.delaiAcces] as [string, string]) : null,
-].filter((l): l is [string, string] => l !== null);
-
-/** Intitulés des pièces encore absentes, listés en une phrase plutôt qu'en trous. */
-const piecesSurDemande = [
-  ADMIN.formeJuridique ? null : "forme juridique",
-  ADMIN.siret ? null : "SIRET",
-  ADMIN.nda ? null : "n° de déclaration d'activité",
-  ADMIN.rcPro ? null : "attestation de RC professionnelle",
-  ADMIN.delaiAcces ? null : "délai d'accès",
-].filter((x): x is string => x !== null);
-
-/* ------------------------------------------------------------------ *
- * Le spectre — la seule mécanique de la page.
- * Quatre axes, une seule bande à l'écran : le lecteur y cherche SON public.
- * Un axe dont aucun élément n'a de texte s'affiche en étiquettes, sinon en
- * cartes. Les identifiants des quatre premiers axes restent ceux d'origine.
- * ------------------------------------------------------------------ */
-const ID_AXES = ["taille", "niveau", "metier", "secteur"];
-type ElementSpectre = { titre: string; texte?: string };
-const SPECTRE = c.public.axes.map((axe, i) => {
-  const items: ElementSpectre[] = axe.items;
-  return {
-    id: ID_AXES[i] ?? `axe-${i + 1}`,
-    onglet: axe.onglet,
-    question: axe.question,
-    type: items.some((it) => it.texte) ? "cartes" : "etiquettes",
-    items: items.map((it) => (it.texte ? { t: it.titre, d: it.texte } : { t: it.titre })),
-  };
-});
+const accent = { fort: "v-fort", accent: "v-vert", lien: "v-fort" };
 
 const jsonLd = [
   {
@@ -107,527 +33,186 @@ const jsonLd = [
     "@type": "Service",
     "@id": `${SITE.url}/formation-ia#service`,
     name: "Formation à l'IA générative",
-    description:
-      "Formations à l'IA générative en intra-entreprise (convention portée par un organisme partenaire certifié Qualiopi, financement OPCO possible) ou en sous-traitance pour organismes de formation. Programme sous 48 heures, dossier complet remis à chaque session.",
+    description: brut(c.hero.chapo),
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/formation-ia`,
-    makesOffer: [
-      {
-        "@type": "Offer",
-        name: "Demi-journée de formation",
-        priceCurrency: "EUR",
-        priceSpecification: {
-          "@type": "PriceSpecification",
-          minPrice: "790",
-          priceCurrency: "EUR",
-          valueAddedTaxIncluded: false,
-        },
-        description: "À partir de 790 € HT la demi-journée ; le tarif dépend du format, du volume et de l'ingénierie.",
-      },
-    ],
+    offers: {
+      "@type": "Offer",
+      price: "790",
+      priceCurrency: "EUR",
+      description: "À partir de 790 € HT.",
+    },
   },
   {
     "@context": "https://schema.org",
     "@type": "FAQPage",
-    mainEntity: c.faq.questions.map((item) => ({
+    mainEntity: formationJson.faq.questions.map((item) => ({
       "@type": "Question",
-      name: brut(item.q),
+      name: item.q,
       acceptedAnswer: { "@type": "Answer", text: brut(item.r) },
     })),
   },
 ];
-
-const h2 = "text-[clamp(2.2rem,5vw,4rem)] font-normal leading-[1.02] tracking-[-0.035em]";
 ---
 
-<BaseLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`} jsonLd={jsonLd}>
-  <main class="bg-background text-foreground">
-    {/* ---------------------------------------------------------------- 1 · Hero */}
-    <header class="relative isolate overflow-hidden bg-foreground px-6 pb-20 pt-36 text-white md:px-12 md:pb-24 md:pt-44">
-      <div
-        class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(45% 60% at 80% 40%, rgba(108,76,241,0.28), transparent 70%), radial-gradient(40% 50% at 5% 0%, rgba(185,166,255,0.10), transparent 70%);"
-      >
-      </div>
-      <Nav onDark />
-      <div class="mx-auto max-w-7xl">
-        <p class="mb-7 w-fit rounded-full border border-white/15 bg-white/[0.06] px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.18em] text-white md:text-[13px]">
-          {c.hero.surtitre}<span class="hidden sm:inline">&nbsp;· {c.hero.surtitreSuite}</span>
-        </p>
-        <h1 class="text-[clamp(1.85rem,5.2vw,3.5rem)] font-normal leading-[1.04] tracking-[-0.03em]">
-          {c.hero.titre1}
-          <br class="lg:hidden" />{" "}
-          {c.hero.titre2}
-          <br />
-          <em class="text-violet-soft">
-            {c.hero.titreAccent1}
-            <br class="lg:hidden" />{" "}
-            {c.hero.titreAccent2}
-          </em>
+<VitrineLayout title={title} description={description} canonical={`${SITE.url}/formation-ia`} jsonLd={jsonLd} actif="formation" cta="rappel">
+  <section id="haut" class="v-section v-section--premiere">
+    <div class="v-hero v-grille v-grille--large">
+      <div class="v-pile">
+        <p class="v-label">{c.hero.surtitre} · {c.hero.surtitreSuite}</p>
+        <h1 class="v-h1">
+          {c.hero.titre1} {c.hero.titre2}
+          <span class="v-vert">{c.hero.titreAccent1} {c.hero.titreAccent2}</span>
         </h1>
-        <p
-          class="mt-8 max-w-2xl text-lg leading-relaxed text-white/85 md:text-xl"
-          set:html={enLigne(c.hero.chapo, { fort: "font-medium text-white", accent: "text-violet-soft" })}
-        />
-        <div class="mt-10 flex flex-wrap items-center gap-4">
-          <CtaButton onDark>{c.bouton}</CtaButton>
-          <a
-            href="#deroule"
-            class="inline-flex items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
-          >
-            {c.hero.lienDossier}&nbsp;↓
-          </a>
-        </div>
-        <p class="mt-6 text-sm text-white/70">
-          {c.hero.mention}
-        </p>
-      </div>
-    </header>
-
-    {/* ---------------------------------------------------- 2 · Deux façons d'arriver */}
-    <section class="px-6 py-14 md:px-12 md:py-20">
-      <div class="mx-auto max-w-7xl">
-        <div data-reveal>
-          <Eyebrow>{c.aiguillage.surtitre}</Eyebrow>
-          <h2 class={h2}>
-            {c.aiguillage.titre}
-            <br />
-            <em class="text-lime">{c.aiguillage.titreAccent}</em>
-          </h2>
-        </div>
-
-        <div class="mt-12 grid gap-4 md:grid-cols-2">
-          <article data-reveal class="flex flex-col rounded-3xl bg-lime p-8 text-white shadow-[0_30px_70px_-30px_rgba(108,76,241,0.7)] md:p-10">
-            <span class="text-[11px] uppercase tracking-[0.22em] text-white/75">{c.aiguillage.entreprise.etiquette}</span>
-            <h3 class="mt-5 text-2xl font-medium leading-snug">{c.aiguillage.entreprise.titre}</h3>
-            <p
-              class="mt-3 flex-1 text-lg leading-relaxed text-white/85"
-              set:html={enLigne(c.aiguillage.entreprise.texte, { fort: "font-medium text-white", accent: "text-white" })}
-            />
-            <button
-              type="button"
-              data-open-contact
-              class="group mt-8 inline-flex w-fit cursor-pointer items-center gap-3 rounded-full bg-white px-6 py-3.5 text-[15px] font-medium text-foreground transition-transform hover:-translate-y-0.5"
-            >
-              {c.aiguillage.entreprise.bouton}
-              <span class="transition-transform group-hover:translate-x-1">→</span>
-            </button>
-          </article>
-
-          <article data-reveal style="--reveal-delay: 100ms" class="flex flex-col rounded-3xl border border-line bg-card p-8 md:p-10">
-            <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.aiguillage.organisme.etiquette}</span>
-            <h3 class="mt-5 text-2xl font-medium leading-snug text-foreground">{c.aiguillage.organisme.titre}</h3>
-            <p
-              class="mt-3 flex-1 text-lg leading-relaxed text-ink-2"
-              set:html={enLigne(c.aiguillage.organisme.texte, { fort: "font-medium text-foreground", accent: "text-lime" })}
-            />
-            <a
-              href="#cadre"
-              class="group mt-8 inline-flex w-fit items-center gap-3 rounded-full border border-line px-6 py-3.5 text-[15px] font-medium text-foreground transition-colors hover:border-lime hover:text-lime"
-            >
-              {c.aiguillage.organisme.lien}
-              <span class="transition-transform group-hover:translate-y-0.5">↓</span>
-            </a>
-          </article>
+        <p class="v-chapo" set:html={enLigne(c.hero.chapo, accent)} />
+        <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
+          <button type="button" class="v-bouton" data-open-rappel>
+            Demandez à être rappelé →
+          </button>
+          <p class="v-petit">À partir de 790&nbsp;€ HT · financement OPCO possible</p>
         </div>
       </div>
-    </section>
-
-    {/* ------------------------------------------------------ 3 · Comment ça se passe
-        À droite, le dossier se remplit pièce par pièce puis affiche « Dossier
-        complet ». Décoratif : les pièces sont aussi listées en toutes lettres. */}
-    <section id="deroule" class="scroll-mt-24 border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
-      <div class="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[minmax(0,1fr)_minmax(0,0.9fr)] lg:items-center lg:gap-16">
-        <div>
-          <div data-reveal>
-            <Eyebrow>{c.deroule.surtitre}</Eyebrow>
-            <h2 class={`${h2} lg:text-[clamp(2.4rem,3.6vw,3.4rem)]`}>
-              {c.deroule.titre}
-              <br />
-              <em class="text-lime">{c.deroule.titreAccent}</em>
-            </h2>
+      <div class="v-carte" style="align-self: start;">
+        <div class="v-bandeau"><span>{c.public.surtitre}</span></div>
+        {c.public.chiffres.map((ch) => (
+          <div class="v-ligne" style="display: flex; align-items: baseline; gap: 16px;">
+            <span class="v-prix" style="min-width: 110px;">{ch.signe}</span>
+            <span>{ch.titre}</span>
           </div>
-          <ol class="mt-10 space-y-4">
-            {c.deroule.etapes.map((e, i) => (
-              <li data-reveal style={`--reveal-delay: ${i * 90}ms`} class="rounded-3xl border border-line bg-background p-6 md:p-7">
-                <div class="flex items-baseline gap-4">
-                  <span class="font-serif text-3xl italic leading-none text-lime">{String(i + 1).padStart(2, "0")}</span>
-                  <h3 class="text-xl font-medium text-foreground">{e.moment}</h3>
-                </div>
-                <p class="mt-3 text-base leading-relaxed text-ink-2">{e.texte}</p>
-                <p class="mt-4 border-t border-line pt-3 text-[15px] leading-relaxed text-ink-2">
-                  <span class="font-medium text-lime">Vous recevez&nbsp;:</span> {e.recu}
-                </p>
-              </li>
-            ))}
-          </ol>
-        </div>
-
-        <div data-reveal style="--reveal-delay: 150ms" class="relative min-w-0">
-          <div
-            class="pointer-events-none absolute -inset-10 -z-10 rounded-[3rem] opacity-70 blur-3xl"
-            style="background: radial-gradient(60% 60% at 50% 40%, rgba(108,76,241,0.18), transparent 70%);"
-          >
-          </div>
-          <div id="dossier" class="rounded-3xl border border-line bg-background p-6 shadow-[0_40px_90px_-45px_rgba(17,18,22,0.45)] md:p-8">
-            <div class="flex items-center justify-between gap-4">
-              <span class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.deroule.dossierTitre}</span>
-              <span id="dossier-compte" class="font-serif text-2xl italic leading-none text-lime">{c.deroule.dossier.length}&nbsp;/&nbsp;{c.deroule.dossier.length}</span>
-            </div>
-            <ul class="mt-6 space-y-2.5">
-              {c.deroule.dossier.map((d) => (
-                <li class="dossier-piece flex items-center gap-3 rounded-xl border border-line px-4 py-2.5 text-[15px] text-foreground transition-colors duration-300">
-                  <span class="dossier-coche grid h-5 w-5 shrink-0 place-items-center rounded-full bg-lime text-[11px] text-white transition-all duration-300">✓</span>
-                  {d}
-                </li>
-              ))}
-            </ul>
-            <div id="dossier-statut" class="mt-6 flex items-center justify-between gap-4 border-t border-line pt-4">
-              <span class="text-sm text-ink-3">{c.deroule.dossierMention}</span>
-              <span class="rounded-full bg-lime px-3 py-1 text-xs font-medium text-white">{c.deroule.dossierStatut}</span>
-            </div>
-          </div>
-        </div>
+        ))}
       </div>
-    </section>
+    </div>
+  </section>
 
-    {/* ---------------------------------------------------------- 4 · Qui j'ai formé */}
-    <section class="border-t border-line px-6 py-14 md:px-12 md:py-20">
-      <div class="mx-auto max-w-7xl">
-        <div data-reveal>
-          <Eyebrow>{c.public.surtitre}</Eyebrow>
-          <h2 class={h2}>
-            {c.public.titre}
-            <br />
-            <em class="text-lime">{c.public.titreAccent}</em>
-          </h2>
+  <section id="entrees" class="v-section">
+    <p class="v-label">{c.aiguillage.surtitre}</p>
+    <h2 class="v-h2">{c.aiguillage.titre} <span class="v-vert">{c.aiguillage.titreAccent}</span></h2>
+    <div class="v-grille">
+      <article class="v-carte v-carte--pad">
+        <p class="v-label">{c.aiguillage.entreprise.etiquette}</p>
+        <h3 class="v-h3">{c.aiguillage.entreprise.titre}</h3>
+        <p set:html={enLigne(c.aiguillage.entreprise.texte, accent)} />
+        <button type="button" class="v-lien-action" style="align-self: flex-start;" data-open-contact>{c.aiguillage.entreprise.bouton} →</button>
+      </article>
+      <article class="v-carte v-carte--pad">
+        <p class="v-label">{c.aiguillage.organisme.etiquette}</p>
+        <h3 class="v-h3">{c.aiguillage.organisme.titre}</h3>
+        <p set:html={enLigne(c.aiguillage.organisme.texte, accent)} />
+        <a href="#cadre" class="v-lien-action" style="align-self: flex-start;">{c.aiguillage.organisme.lien} →</a>
+      </article>
+    </div>
+  </section>
+
+  <section id="deroule" class="v-section">
+    <p class="v-label">{c.deroule.surtitre}</p>
+    <h2 class="v-h2">{c.deroule.titre} <span class="v-vert">{c.deroule.titreAccent}</span></h2>
+    <div class="v-carte v-cols">
+      {c.deroule.etapes.map((e) => (
+        <div class="v-carte--pad">
+          <span class="v-label">{e.moment}</span>
+          <p set:html={enLigne(e.texte, accent)} />
+          <p class="v-petit"><span class="v-statut">✓ Vous recevez</span> {e.recu}</p>
         </div>
+      ))}
+    </div>
+  </section>
 
-        <ul class="mt-12 grid gap-4 sm:grid-cols-3">
-          {c.public.chiffres.map((ch, i) => (
-            <li
-              data-reveal
-              style={`--reveal-delay: ${i * 80}ms`}
-              class={`rounded-3xl p-7 md:p-8 ${ch.plein ? "bg-lime text-white shadow-[0_30px_70px_-30px_rgba(108,76,241,0.7)]" : "border border-line bg-card"}`}
-            >
-              <span class={`font-serif text-[clamp(3.2rem,6vw,5rem)] italic leading-[0.85] tracking-tight ${ch.plein ? "text-white" : "text-lime"}`}>{ch.signe}</span>
-              <p class={`mt-6 text-lg font-medium ${ch.plein ? "text-white" : "text-foreground"}`}>{ch.titre}</p>
-            </li>
-          ))}
-        </ul>
-
-        <p
-          data-reveal
-          class="mt-12 max-w-2xl text-lg leading-relaxed text-ink-2"
-          set:html={enLigne(c.public.intro, { fort: "font-medium text-foreground", accent: "text-lime" })}
-        />
-        <div data-reveal class="mt-6 flex flex-wrap gap-2">
-          {SPECTRE.map((axe, i) => (
-            <button
-              type="button"
-              data-spectre-onglet
-              data-val={axe.id}
-              aria-pressed={i === 0 ? "true" : "false"}
-              class="cursor-pointer rounded-full border border-line px-5 py-2.5 text-sm text-ink-2 transition-colors hover:border-lime hover:text-lime aria-pressed:border-lime aria-pressed:bg-lime aria-pressed:text-white"
-            >
-              {axe.onglet}
-            </button>
-          ))}
-        </div>
-        <div data-reveal class="mt-6">
-          <h3 class="text-[11px] uppercase tracking-[0.22em] text-lime" id="sp-question"></h3>
-          <div class="mt-5" id="sp-corps"></div>
-        </div>
-      </div>
-    </section>
-
-    {/* ----------------------------------------------------------- 5 · Les supports */}
-    <section class="border-t border-line bg-card px-6 py-14 md:px-12 md:py-20">
-      <div class="mx-auto max-w-7xl">
-        <div data-reveal>
-          <Eyebrow>{c.supports.surtitre}</Eyebrow>
-          <h2 class={h2}>
-            {c.supports.titre} <em class="text-lime">{c.supports.titreAccent}</em>
-          </h2>
-        </div>
-
-        <div class="mt-12 grid gap-4 md:grid-cols-3">
-          {c.supports.artefacts.map((a, i) => (
-            <a
-              data-reveal
-              style={`--reveal-delay: ${i * 80}ms`}
-              href={a.lien}
-              target="_blank"
-              rel="noopener"
-              class="group flex flex-col rounded-3xl border border-line bg-background p-7 transition duration-300 hover:-translate-y-1 hover:border-lime/50 hover:shadow-[0_24px_50px_-30px_rgba(17,18,22,0.35)]"
-            >
-              <h3 class="text-lg font-medium text-foreground transition-colors group-hover:text-lime">{a.titre}</h3>
-              <p class="mt-2 flex-1 text-base leading-relaxed text-ink-2">{a.texte}</p>
-              <span class="mt-6 text-sm text-ink-3 transition-colors group-hover:text-lime">{a.lienTexte} ↗</span>
-            </a>
-          ))}
-        </div>
-
-        {/* Six avis : trois colonnes sur desktop, en cartes pour que la grille tienne. */}
-        <div class="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {c.supports.verbatims.map((v, i) => (
-            <figure
-              data-reveal
-              style={`--reveal-delay: ${(i % 3) * 80}ms`}
-              class="flex flex-col rounded-3xl border border-line bg-background p-7"
-            >
-              <span class="font-serif text-5xl leading-[0.6] text-lime" aria-hidden="true">“</span>
-              <blockquote class="mt-3 flex-1 font-serif text-xl italic leading-snug text-foreground">{v.citation}</blockquote>
-              <figcaption class="mt-5 border-t border-line pt-4 text-sm text-ink-3">{v.auteur}</figcaption>
-            </figure>
-          ))}
-        </div>
-
-        <div data-reveal class="mt-14 border-t border-line pt-8">
-          <p class="text-[11px] uppercase tracking-[0.22em] text-ink-3">{c.supports.referencesTitre}</p>
-          <ul class="mt-5 flex flex-wrap items-center gap-x-6 gap-y-3 lg:gap-x-8">
-            {c.supports.references.map((r, i) => (
-              <li class="flex items-center gap-6 lg:gap-8">
-                <span class="text-[clamp(1.1rem,1.8vw,1.55rem)] font-medium tracking-[-0.03em] text-ink-3 transition-colors hover:text-foreground">{r}</span>
-                {i < c.supports.references.length - 1 && <span class="hidden text-lime/50 sm:inline">✦</span>}
+  <section id="public" class="v-section">
+    <p class="v-label">{c.public.surtitre}</p>
+    <h2 class="v-h2">{c.public.titre} <span class="v-vert">{c.public.titreAccent}</span></h2>
+    <p class="v-texte" set:html={enLigne(c.public.intro, accent)} />
+    <div class="v-carte">
+      {c.public.axes.map((axe, i) => (
+        <details class="v-ligne" open={i === 0}>
+          <summary class="v-h3" style="cursor: pointer; padding: 6px 0; font-size: 24px;"><span>{axe.question}</span></summary>
+          <ul class="v-liste" style="margin-top: 8px;">
+            {axe.items.map((it) => (
+              <li>
+                <span class="v-fort">{it.titre}</span>
+                {it.texte && <span> — {it.texte}</span>}
               </li>
             ))}
           </ul>
-        </div>
+        </details>
+      ))}
+    </div>
+  </section>
+
+  <section id="supports" class="v-section">
+    <p class="v-label">{c.supports.surtitre}</p>
+    <h2 class="v-h2">{c.supports.titre} <span class="v-vert">{c.supports.titreAccent}</span></h2>
+    <div class="v-grille">
+      {c.supports.artefacts.map((a) => (
+        <article class="v-carte v-carte--pad">
+          <h3 class="v-h3">{a.titre}</h3>
+          <p set:html={enLigne(a.texte, accent)} />
+          <a href={a.lien} class="v-lien-action" style="align-self: flex-start;">{a.lienTexte} →</a>
+        </article>
+      ))}
+    </div>
+    <div class="v-grille">
+      {c.supports.verbatims.map((v) => (
+        <figure class="v-carte v-carte--pad" style="margin: 0;">
+          <blockquote style="margin: 0;"><p>«&nbsp;{v.citation}&nbsp;»</p></blockquote>
+          <figcaption class="v-petit">{v.auteur}</figcaption>
+        </figure>
+      ))}
+    </div>
+    <div class="v-carte">
+      <div class="v-bandeau"><span>{c.supports.referencesTitre}</span></div>
+      <ul style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+        {c.supports.references.map((r) => (
+          <li class="v-ligne v-fort" style="border-bottom: 1px solid var(--v-grille);">{r}</li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section id="cadre" class="v-section">
+    <p class="v-label">{c.cadre.surtitre}</p>
+    <h2 class="v-h2">{c.cadre.titre} <span class="v-vert">{c.cadre.titreAccent}</span></h2>
+    <div class="v-grille" style="align-items: start;">
+      <div class="v-carte">
+        <ul>
+          {c.cadre.pastilles.map((p) => <li class="v-ligne">{p}</li>)}
+          <li class="v-ligne"><span class="v-fort">{c.cadre.pieces}</span> ({PIECES_SUR_DEMANDE.join(", ")}) {c.cadre.piecesSuite}</li>
+        </ul>
       </div>
-    </section>
-
-    {/* ------------------------------------------------------ 6 · Le cadre et le prix */}
-    <section id="cadre" class="relative isolate scroll-mt-24 overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-24">
-      <div
-        class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(45% 55% at 75% 55%, rgba(108,76,241,0.28), transparent 70%), radial-gradient(35% 40% at 10% 10%, rgba(185,166,255,0.10), transparent 70%);"
-      >
+      <div class="v-carte v-carte--pad">
+        <p class="v-label">{c.cadre.prixEtiquette}</p>
+        <p class="v-prix">{c.cadre.montant}{c.cadre.montantDetail && ` ${c.cadre.montantDetail}`}</p>
+        {c.cadre.prixTexte && <p set:html={enLigne(c.cadre.prixTexte, accent)} />}
       </div>
-      <div class="mx-auto max-w-7xl">
-        <div data-reveal>
-          <Eyebrow onDark>{c.cadre.surtitre}</Eyebrow>
-          <h2 class={h2}>
-            {c.cadre.titre} <em class="text-violet-soft">{c.cadre.titreAccent}</em>
-          </h2>
-        </div>
+    </div>
+  </section>
 
-        <div class="mt-12 grid items-stretch gap-5 lg:grid-cols-[minmax(0,1.2fr)_minmax(0,1fr)]">
-          <div data-reveal class="flex flex-col rounded-3xl border border-white/10 bg-white/[0.04] p-8 backdrop-blur-sm md:p-10">
-            <ul class="flex flex-wrap gap-2.5">
-              {c.cadre.pastilles.map((p) => (
-                <li class="rounded-2xl border border-white/15 px-4 py-2 text-[15px] text-white/85 sm:rounded-full">{p}</li>
-              ))}
-            </ul>
-            {/* Pièces administratives renseignées dans ADMIN (hors Qualiopi, déjà en pastille). */}
-            {lignesAdmin.filter(([k]) => k !== "Qualiopi").length > 0 && (
-              <dl class="mt-6 grid gap-3 text-[15px] sm:grid-cols-2">
-                {lignesAdmin.filter(([k]) => k !== "Qualiopi").map(([k, val]) => (
-                  <div>
-                    <dt class="text-white/50">{k}</dt>
-                    <dd class="text-white/85">{val}</dd>
-                  </div>
-                ))}
-              </dl>
-            )}
-            {piecesSurDemande.length > 0 && (
-              <p class="mt-auto border-t border-white/10 pt-6 text-base leading-relaxed text-white/65">
-                {c.cadre.pieces} ({piecesSurDemande.join(", ")}) {c.cadre.piecesSuite}
-              </p>
-            )}
-          </div>
+  <section id="questions" class="v-section">
+    <p class="v-label">{c.faq.surtitre}</p>
+    <h2 class="v-h2">{c.faq.titre} <span class="v-vert">{c.faq.titreAccent}</span></h2>
+    <div class="v-carte">
+      {c.faq.questions.map((item) => (
+        <details class="v-ligne">
+          <summary class="v-h3" style="cursor: pointer; padding: 6px 0; font-size: 24px;"><span>{item.q}</span></summary>
+          <p class="v-texte" style="padding-top: 8px;" set:html={enLigne(item.r, accent)} />
+        </details>
+      ))}
+    </div>
+  </section>
 
-          <div
-            data-reveal
-            style="--reveal-delay: 120ms"
-            class="rounded-[1.75rem] bg-gradient-to-br from-violet-soft/70 via-lime/60 to-lime/10 p-px shadow-[0_40px_120px_-40px_rgba(108,76,241,0.75)]"
-          >
-            <div class="flex h-full flex-col rounded-[calc(1.75rem-1px)] bg-[#17151f] p-8 md:p-10">
-              <div class="text-[11px] uppercase tracking-[0.22em] text-violet-soft">{c.cadre.prixEtiquette}</div>
-              <div class="mt-4 flex flex-wrap items-baseline gap-x-3">
-                <span class="font-serif text-[clamp(4rem,9vw,6.5rem)] italic leading-[0.82] tracking-tight">{c.cadre.montant}</span>
-                <span class="text-base text-white/60">{c.cadre.montantDetail}</span>
-              </div>
-              <p
-                class="mt-6 flex-1 text-base leading-relaxed text-white/75"
-                set:html={enLigne(c.cadre.prixTexte, { fort: "font-medium text-white", accent: "text-violet-soft" })}
-              />
-              <div class="mt-8">
-                <CtaButton onDark>{c.bouton}</CtaButton>
-              </div>
-            </div>
-          </div>
-        </div>
+  <section id="contact" class="v-section v-section--fin">
+    <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
+      <div class="v-pile">
+        <p class="v-label" style="color: var(--v-encre-sur-sombre);">{c.cloture.surtitre}</p>
+        <h2 class="v-h1">{c.cloture.titre} <span class="v-vert">{c.cloture.titreAccent}</span></h2>
+        <p class="v-chapo" set:html={enLigne(c.cloture.texte, accent)} />
       </div>
-    </section>
-
-    {/* --------------------------------------------------------------- 7 · Questions */}
-    <section id="faq" class="px-6 py-14 md:px-12 md:py-20">
-      <div class="mx-auto max-w-7xl">
-        <Eyebrow>{c.faq.surtitre}</Eyebrow>
-        <div class="grid gap-8 md:grid-cols-[minmax(0,0.85fr)_minmax(0,1.4fr)] md:gap-16">
-          <h2 data-reveal class={`${h2} md:sticky md:top-24 md:self-start`}>
-            {c.faq.titre} <em class="text-lime">{c.faq.titreAccent}</em>
-          </h2>
-          <div data-reveal style="--reveal-delay: 100ms">
-            {c.faq.questions.map((item, i) => (
-              <details class={`border-t border-line ${i === c.faq.questions.length - 1 ? "border-b" : ""}`}>
-                <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 text-lg font-medium text-foreground transition-colors hover:text-lime md:text-xl">
-                  <span>{item.q}</span>
-                  <span class="faq-marqueur shrink-0 font-serif text-2xl leading-none text-lime" aria-hidden="true"></span>
-                </summary>
-                <p
-                  class="pb-5 text-lg leading-relaxed text-ink-2"
-                  set:html={enLigne(item.r, { fort: "font-medium text-foreground", accent: "text-lime", lien: "underline decoration-lime/40 underline-offset-4 hover:text-lime" })}
-                />
-              </details>
-            ))}
-          </div>
-        </div>
+      <div class="v-pile v-pile--serree" style="align-items: flex-start;">
+        <button type="button" class="v-bouton v-bouton--inverse" data-open-rappel>
+          Demandez à être rappelé →
+        </button>
+        <button type="button" class="v-lien-action" data-open-contact>{c.cloture.boutonMessage} →</button>
       </div>
-    </section>
-
-    {/* ----------------------------------------------------------------- 8 · Clôture */}
-    <section id="contact" class="relative isolate overflow-hidden bg-foreground px-6 py-16 text-white md:px-12 md:py-20">
-      <div
-        class="pointer-events-none absolute inset-0 -z-10"
-        style="background: radial-gradient(58% 90% at 50% 115%, rgba(108,76,241,0.22), transparent 70%);"
-      >
-      </div>
-      <div class="mx-auto max-w-4xl text-center">
-        <Eyebrow onDark>{c.cloture.surtitre}</Eyebrow>
-        <h2 class="text-[clamp(2.2rem,5.5vw,4.5rem)] font-normal leading-[1.02] tracking-[-0.03em]">
-          {c.cloture.titre} <em class="text-violet-soft">{c.cloture.titreAccent}</em>
-        </h2>
-        <p
-          class="mx-auto mt-8 max-w-2xl text-xl leading-relaxed text-white/80"
-          set:html={enLigne(c.cloture.texte, { fort: "font-medium text-white", accent: "text-violet-soft" })}
-        />
-        <div class="mt-12 flex flex-wrap items-center justify-center gap-4">
-          <CtaButton onDark>{c.bouton}</CtaButton>
-          <button
-            type="button"
-            data-open-contact
-            class="inline-flex cursor-pointer items-center rounded-full border border-white/25 px-6 py-3.5 text-[15px] font-medium leading-7 text-white/85 transition-colors hover:border-violet-soft hover:text-violet-soft"
-          >
-            {c.cloture.boutonMessage}
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <Footer />
-  </main>
-  <Reveal />
-
-  <script type="application/json" id="fi-spectre" set:html={JSON.stringify(SPECTRE)} />
-
-  <script>
-    /* Le contenu du spectre voyage en JSON dans le DOM : il faut donc le
-       retyper à l'arrivée, JSON.parse ne rendant que du `any`. */
-    type ItemSpectre = { t: string; d?: string };
-    type AxeSpectre = {
-      id: string;
-      onglet: string;
-      question: string;
-      type: string;
-      items: ItemSpectre[];
-    };
-
-    const source = document.getElementById("fi-spectre");
-    const question = document.getElementById("sp-question");
-    const corps = document.getElementById("sp-corps");
-
-    // Les trois éléments sont vérifiés ici plutôt qu'à chaque usage : ce sont
-    // des `const`, la restriction de type tient donc jusque dans les closures.
-    if (source && question && corps) {
-      const SPECTRE: AxeSpectre[] = JSON.parse(source.textContent || "[]");
-
-      const rendre = (id: string) => {
-        const axe = SPECTRE.find((a) => a.id === id);
-        if (!axe) return;
-        question.textContent = axe.question;
-
-        if (axe.type === "etiquettes") {
-          corps.className = "mt-6 flex flex-wrap gap-2.5";
-          corps.innerHTML = axe.items
-            .map(
-              (i) =>
-                `<span class="rounded-full border border-line bg-card px-4 py-2 text-[15px] text-ink-2">${i.t}</span>`,
-            )
-            .join("");
-        } else {
-          corps.className = "mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-3";
-          corps.innerHTML = axe.items
-            .map(
-              (i) =>
-                `<div class="rounded-2xl border border-line bg-card p-5"><div class="text-[17px] font-medium text-foreground">${i.t}</div><p class="mt-2 text-[15px] leading-relaxed text-ink-2">${i.d ?? ""}</p></div>`,
-            )
-            .join("");
-        }
-      };
-
-      // querySelectorAll<HTMLElement> : sur un Element nu, `dataset` n'existe pas.
-      const onglets = document.querySelectorAll<HTMLElement>("[data-spectre-onglet]");
-      onglets.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          onglets.forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
-          const val = btn.dataset.val;
-          if (val) rendre(val);
-        });
-      });
-
-      if (SPECTRE.length > 0) rendre(SPECTRE[0].id);
-    }
-  </script>
-
-  <script>
-    /* Le dossier : les huit pièces se décochent, puis se cochent une à une
-       (0,45 s chacune) jusqu'à « Dossier complet », puis la boucle reprend.
-       Tourne seulement à l'écran ; figé et complet en mouvement réduit. */
-    const dossier = document.getElementById("dossier");
-    const compte = document.getElementById("dossier-compte");
-    const reduitD = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (dossier && compte && !reduitD) {
-      const pieces = [...dossier.querySelectorAll<HTMLElement>(".dossier-piece")];
-      const statut = document.getElementById("dossier-statut") as HTMLElement;
-      let visibleD = false;
-      let n = pieces.length;
-      const peindre = () => {
-        pieces.forEach((p, i) => {
-          const c = p.querySelector(".dossier-coche") as HTMLElement;
-          const fait = i < n;
-          c.classList.toggle("bg-lime", fait);
-          c.classList.toggle("text-white", fait);
-          c.classList.toggle("bg-line", !fait);
-          c.classList.toggle("text-transparent", !fait);
-          p.classList.toggle("text-ink-3", !fait);
-          p.classList.toggle("border-lime/40", fait && i === n - 1);
-        });
-        compte.textContent = `${n}\u00a0/\u00a0${pieces.length}`;
-        statut.style.opacity = n === pieces.length ? "1" : "0.35";
-      };
-      new IntersectionObserver((e) => { visibleD = e.some((x) => x.isIntersecting); }, { threshold: 0.3 }).observe(dossier);
-      let pauseFin = 0;
-      window.setInterval(() => {
-        if (!visibleD || document.hidden) return;
-        if (n === pieces.length) {
-          if (++pauseFin < 5) return;
-          pauseFin = 0;
-          n = 0;
-        } else {
-          n += 1;
-        }
-        peindre();
-      }, 450);
-    }
-  </script>
-</BaseLayout>
-
-<style>
-  summary::-webkit-details-marker { display: none; }
-  summary::marker { content: ""; }
-  .faq-marqueur::after { content: "+"; }
-  details[open] .faq-marqueur::after { content: "–"; }
-</style>
+    </div>
+  </section>
+</VitrineLayout>
