@@ -9,12 +9,14 @@ const MOMENTS = ["Matin", "Midi", "Après-midi"];
  * Remplace le lien vers Google Agenda : le visiteur laisse son numéro et ses
  * disponibilités, Julien le rappelle. S'ouvre au clic sur tout [data-open-rappel].
  * Envoi : Web3Forms vers CONTACT_EMAIL ; en cas d'échec, repli sur un e-mail
- * pré-rempli. Aucun délai de rappel n'est affiché : Julien ne l'a pas fixé.
+ * pré-rempli. Téléphone ET e-mail obligatoires (Julien, 11/11/2026) : il rappelle dès
+ * qu'un créneau se libère, sinon il répond par e-mail.
  */
 export default function RappelDialog() {
   const [open, setOpen] = useState(false);
   const [nom, setNom] = useState("");
   const [telephone, setTelephone] = useState("");
+  const [email, setEmail] = useState("");
   const [entreprise, setEntreprise] = useState("");
   const [jours, setJours] = useState<string[]>([]);
   const [moments, setMoments] = useState<string[]>([]);
@@ -75,6 +77,7 @@ export default function RappelDialog() {
       [
         `Nom : ${nom.trim()}`,
         `Téléphone : ${telephone.trim()}`,
+        `E-mail : ${email.trim()}`,
         `Entreprise : ${entreprise.trim() || "—"}`,
         `Disponibilités : ${disponibilites() || "—"}`,
         `Question : ${question.trim() || "—"}`,
@@ -89,6 +92,7 @@ export default function RappelDialog() {
     if (!nom.trim()) errs.nom = "Requis";
     const chiffres = telephone.replace(/\D/g, "").length;
     if (chiffres < 9 || chiffres > 15) errs.telephone = "Numéro invalide";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) errs.email = "E-mail invalide";
     if (!((jours.length > 0 && moments.length > 0) || precision.trim().length >= 3)) {
       errs.dispos = "Choisissez au moins un jour et un moment, ou précisez vos disponibilités";
     }
@@ -106,6 +110,8 @@ export default function RappelDialog() {
         // champs affichés dans l'e-mail
         Nom: nom.trim(),
         Téléphone: telephone.trim(),
+        "E-mail": email.trim(),
+        replyto: email.trim(),
         Entreprise: entreprise.trim() || "—",
         Jours: jours.join(", ") || "—",
         Moments: moments.join(", ") || "—",
@@ -151,7 +157,7 @@ export default function RappelDialog() {
             <div className="mx-auto grid h-12 w-12 place-items-center rounded-full bg-lime/15 text-2xl text-lime">✓</div>
             <h2 className="mt-5 text-2xl font-semibold tracking-tight text-foreground">C'est noté.</h2>
             <p className="mt-3 text-sm leading-relaxed text-ink-2">
-              Merci {nom.trim().split(" ")[0]}. Je vous rappelle au {telephone.trim()}, sur l'un des créneaux indiqués.
+              Merci {nom.trim().split(" ")[0]}. Je vous rappelle au {telephone.trim()} dès qu'un de vos créneaux se libère. Sinon, je reviens vers vous très vite par e-mail.
             </p>
             <button
               type="button"
@@ -168,7 +174,7 @@ export default function RappelDialog() {
               Demandez à être rappelé
             </h2>
             <p className="mt-2 text-sm text-ink-2">
-              Laissez votre numéro et vos disponibilités. Je vous rappelle pour répondre à vos questions.
+              Laissez votre numéro, votre e-mail et vos disponibilités. Je vous rappelle dès qu'un créneau se libère ; sinon, je vous réponds très vite par e-mail.
             </p>
 
             <div className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2">
@@ -181,6 +187,11 @@ export default function RappelDialog() {
                 <label htmlFor="r-tel" className={labelCls}>Téléphone</label>
                 <input id="r-tel" type="tel" inputMode="tel" autoComplete="tel" value={telephone} onChange={(e) => setTelephone(e.target.value)} maxLength={30} className={inputCls} />
                 {errors.telephone && <p className="mt-1 text-xs text-destructive">{errors.telephone}</p>}
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="r-email" className={labelCls}>E-mail</label>
+                <input id="r-email" type="email" autoComplete="email" value={email} onChange={(e) => setEmail(e.target.value)} maxLength={200} className={inputCls} />
+                {errors.email && <p className="mt-1 text-xs text-destructive">{errors.email}</p>}
               </div>
               <div className="sm:col-span-2">
                 <label htmlFor="r-entreprise" className={labelCls}>Entreprise <span className="font-normal text-ink-3">(facultatif)</span></label>

@@ -20,7 +20,7 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 (`/mcp`, `/authorize`), les enquêtes LinkedIn et leurs API, le CMS (`/admin`).
 
 **[À VALIDER] par Julien :**
-- [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
+- [x] Forme juridique et adresse de l'éditeur : EI Julien Tridat, nom commercial Velvety, 56 rue du Jardin public, TVA FR47528133713 (11/11/2026).
 - [x] Planning du diagnostic : un seul planning « Diagnostic IA » (90 minutes). L'échange
       gratuit de 20 minutes est supprimé ; la page Formation renvoie vers la demande de rappel.
 - [x] Lien de paiement Stripe du diagnostic, compte réel « JT Marketing » : branché dans
@@ -28,13 +28,14 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
       Stripe n'envoie qu'un reçu : penser à envoyer la facture Abby après chaque paiement.
 - [x] Prix du diagnostic : 390 € HT, soit 468 € TTC (Julien est assujetti à la TVA).
 - [x] Prix des offres et de la maintenance : hors taxes (Julien, 11/11/2026).
-- [ ] Demande de rappel (« Une question avant ? ») : délai de rappel à fixer avant de l'afficher.
+- [x] Demande de rappel : téléphone et e-mail obligatoires ; « je vous rappelle dès qu'un créneau se libère, sinon je reviens vers vous très vite par e-mail » (Julien, 11/11/2026).
 - [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
       à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
 - [ ] Vidéo « Le diagnostic en 2 minutes » (accueil, haut de page) : à tourner, sous-titrer,
       puis remplacer l'emplacement dans `src/pages/index.astro`.
-- [ ] « Satisfait ou remboursé » : fixer les conditions (délai de demande, modalités) et les
-      écrire dans les conditions de vente avant la mise en ligne.
+- [x] « Satisfait ou remboursé » : demande dans les 7 jours qui suivent la remise du kit, sans justification,
+      remboursement intégral sous 14 jours, une fois par entreprise (`/mentions-legales#conditions-diagnostic`).
+- [ ] Report ou annulation d'un diagnostic déjà payé : règle à fixer (aucune n'est écrite).
 - [ ] Autorisation de citer le cas du centre de formation (accueil, section Cas).
 - [ ] Attestation de RC professionnelle : à ajouter aux pièces de référencement
       (`src/pages/formation-ia.astro`) une fois l'assurance souscrite.
