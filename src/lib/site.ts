@@ -3,7 +3,7 @@ export const SITE = {
   name: "Julien Tridat",
   title: "Julien Tridat — Intégration IA pour TPE et PME, Bordeaux",
   description:
-    "J'audite vos processus, je construis les assistants IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.",
+    "J'audite vos processus, je construis les agents IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.",
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 

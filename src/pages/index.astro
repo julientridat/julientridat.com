@@ -18,7 +18,7 @@ import portrait from "@/assets/julien-portrait.jpg";
 
 const title = "Intégration IA pour TPE et PME à Bordeaux | Julien Tridat";
 const description =
-  "J'audite vos processus, je construis les assistants IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.";
+  "J'audite vos processus, je construis les agents IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.";
 
 const offres = [
   { nom: "Dirigeant augmenté", utilisateurs: "1", duree: "1 semaine", prix: 2500 },
@@ -32,7 +32,7 @@ const livrables = [
   { quand: "En séance", titre: "La cartographie", texte: "Vos 3 à 5\u00A0processus qui coûtent le plus de temps.", differe: false },
   { quand: "En séance", titre: "Le chiffrage", texte: "Les heures gagnées par semaine et par collaborateur, sur votre cas.", differe: false },
   { quand: "En séance", titre: "La feuille de route", texte: "3\u00A0étapes, dans l'ordre.", differe: false },
-  { quand: "Sous 48\u00A0h", titre: "Votre kit de construction", texte: "De quoi monter vos 3\u00A0premiers assistants vous-même, calibré sur vos réponses.", differe: true },
+  { quand: "Sous 48\u00A0h", titre: "Votre kit de construction", texte: "De quoi monter vos 3\u00A0premiers agents IA vous-même, calibré sur vos réponses.", differe: true },
 ];
 const euros = (n: number) => `${n.toLocaleString("fr-FR").replace(/ |\s/g, " ")} €`;
 
@@ -43,7 +43,7 @@ const jsonLd = [
     "@id": `${SITE.url}/#service`,
     name: "Intégration IA pour TPE et PME",
     description:
-      "Audit des processus, assistants IA construits dans les outils de l'entreprise, formation des équipes à les utiliser. Porte d'entrée : un diagnostic de 90 minutes. Bordeaux, partout en France.",
+      "Audit des processus, agents IA construits dans les outils de l'entreprise, formation des équipes à les utiliser. Porte d'entrée : un diagnostic de 90 minutes. Bordeaux, partout en France.",
     provider: { "@id": `${SITE.url}/#julien-tridat` },
     areaServed: "FR",
     url: `${SITE.url}/`,
@@ -60,7 +60,7 @@ const jsonLd = [
           valueAddedTaxIncluded: false,
         },
         description:
-          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers assistants. Satisfait ou remboursé. Déduit si une offre est signée dans les 30 jours.",
+          "Quatre livrables : cartographie de 3 à 5 processus, chiffrage du gain en heures par semaine et par collaborateur, feuille de route en 3 étapes, et sous 48 h un kit pour construire soi-même ses 3 premiers agents IA. Satisfait ou remboursé. Déduit si une offre est signée dans les 30 jours.",
       },
       ...offres.map((o) => ({
         "@type": "Offer",
@@ -97,7 +97,7 @@ const jsonLd = [
       <p class="v-label">Dirigeants de TPE et PME · Bordeaux, partout en France</p>
       <h1 class="v-h1">
         J'audite vos processus.<br />
-        Je construis vos assistants IA.<br />
+        Je construis vos agents IA.<br />
         <span class="v-vert">Je forme vos équipes à les utiliser.</span>
       </h1>
       <div class="v-grille v-grille--large" style="align-items: center;">
@@ -131,7 +131,7 @@ const jsonLd = [
 
   <section id="diagnostic" class="v-section">
     <p class="v-label">Le diagnostic</p>
-    <h2 class="v-h2">390&nbsp;€&nbsp;HT. Vous repartez avec quatre livrables. <span class="v-vert">Et de quoi construire vos 3&nbsp;premiers assistants vous-même.</span></h2>
+    <h2 class="v-h2">390&nbsp;€&nbsp;HT. Vous repartez avec quatre livrables. <span class="v-vert">Et de quoi construire vos 3&nbsp;premiers agents IA vous-même.</span></h2>
     <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));">
       {livrables.map((l, i) => (
         <article class="v-carte v-carte--pad">
@@ -171,7 +171,7 @@ const jsonLd = [
           <div class="v-ligne" style="border-bottom: 0;"><span class="v-label" style="display: block;">Avant</span><span class="v-chiffre">2 à 3&nbsp;jours</span></div>
           <div class="v-ligne" style="border-bottom: 0; border-left: 1px solid var(--v-grille);"><span class="v-label" style="display: block;">Après</span><span class="v-chiffre v-vert">Moins de 2&nbsp;h</span></div>
         </div>
-        <p style="padding: 16px 22px 22px;">Synthétiser les dizaines de documents d'un dossier chantier, traquer les coquilles, chiffrer le contrat. Une tâche quasi quotidienne. Un assistant pensé pour son métier la ramène à moins de 2&nbsp;heures.</p>
+        <p style="padding: 16px 22px 22px;">Synthétiser les dizaines de documents d'un dossier chantier, traquer les coquilles, chiffrer le contrat. Une tâche quasi quotidienne. Un agent IA pensé pour son métier la ramène à moins de 2&nbsp;heures.</p>
       </article>
       <article class="v-carte" style="display: flex; flex-direction: column;">
         <p class="v-bandeau">Carrossier · Grand Sud-Ouest</p>
@@ -218,7 +218,7 @@ const jsonLd = [
       </table>
     </div>
     <div class="v-grille">
-      <p class="v-texte">Les assistants sortent par vagues. Les premiers tournent pendant le projet, pas à la fin. <span class="v-fort">Si je dérape sur le planning, je continue à mes frais.</span></p>
+      <p class="v-texte">Les agents IA sortent par vagues. Les premiers tournent pendant le projet, pas à la fin. <span class="v-fort">Si je dérape sur le planning, je continue à mes frais.</span></p>
       <p class="v-petit v-texte">Au-delà de 80&nbsp;utilisateurs&nbsp;: sur devis · Maintenance évolutive&nbsp;: 300 à 1&nbsp;200&nbsp;€&nbsp;HT par mois selon l'offre</p>
     </div>
   </section>
@@ -242,7 +242,7 @@ const jsonLd = [
     <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
       <div class="v-pile">
         <h2 class="v-h1">Commençons <span class="v-vert">par 90&nbsp;minutes.</span></h2>
-        <p class="v-chapo">On cartographie vos processus. On repère les 2 ou 3 assistants qui comptent. On chiffre le gain. Vous repartez avec une feuille de route.</p>
+        <p class="v-chapo">On cartographie vos processus. On repère les 2 ou 3 agents IA qui comptent. On chiffre le gain. Vous repartez avec une feuille de route.</p>
       </div>
       <div class="v-pile v-pile--serree" style="align-items: flex-start;">
         <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">

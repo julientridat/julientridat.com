@@ -136,7 +136,7 @@
         "items": [
           {
             "titre": "Marketing et communication",
-            "texte": "Contenus, déclinaison de supports à l'échelle d'un réseau, brief de création, plan éditorial, charte maison encodée dans l'assistant."
+            "texte": "Contenus, déclinaison de supports à l'échelle d'un réseau, brief de création, plan éditorial, charte maison encodée dans l'agent IA."
           },
           {
             "titre": "Commercial et développement",
@@ -323,7 +323,7 @@
       },
       {
         "q": "Vous faites aussi de l'intégration IA ?",
-        "r": "Oui, c'est mon autre offre : j'installe des assistants IA dans les outils d'une entreprise, puis je forme les équipes à les utiliser. Tout commence par [un diagnostic de 90 minutes](/#diagnostic)."
+        "r": "Oui, c'est mon autre offre : j'installe des agents IA dans les outils d'une entreprise, puis je forme les équipes à les utiliser. Tout commence par [un diagnostic de 90 minutes](/#diagnostic)."
       }
     ]
   },
