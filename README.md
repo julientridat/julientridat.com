@@ -36,7 +36,7 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 - [x] « Satisfait ou remboursé » : demande dans les 14 jours qui suivent la remise du kit (questions par e-mail pendant ces 14 jours), sans justification,
       remboursement intégral sous 14 jours, une fois par entreprise (`/mentions-legales#conditions-diagnostic`).
 - [x] Report : gratuit jusqu'à 48 h avant le rendez-vous ; au-delà, ou en cas d'absence, le diagnostic reste dû (Julien, 11/11/2026).
-- [ ] Autorisation de citer le cas du centre de formation (accueil, section Cas).
+- [x] Autorisation de citer le cas du centre de formation (accueil, section Cas) : accordée (Julien, 11/11/2026).
 - [ ] Attestation de RC professionnelle : à ajouter aux pièces de référencement
       (`src/pages/formation-ia.astro`) une fois l'assurance souscrite.
 - [ ] Après fusion : soumettre `https://julientridat.com/sitemap.xml` dans la Search Console.
