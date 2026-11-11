@@ -91,8 +91,11 @@ const jsonLd = [
 
 <VitrineLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd} actif="accueil" cta="diagnostic">
   <section id="accueil" class="v-section v-section--premiere">
-    {/* Titre sur toute la largeur, puis deux colonnes de même poids : l'appel à gauche,
-        la vidéo à droite, centrés l'un sur l'autre. */}
+    {/* Titre sur toute la largeur, puis l'appel. La vidéo « Le diagnostic en 2 minutes »
+        est retirée tant qu'elle n'est pas tournée (Julien, 11/11/2026). Pour la remettre :
+        repasser le bloc ci-dessous en <div class="v-grille v-grille--large"
+        style="align-items: center;"> et ajouter à droite une <figure class="v-carte"> avec
+        <video controls preload="none" poster=…> et ses sous-titres (<track kind="captions">). */}
     <div class="v-hero v-pile" style="gap: 32px;">
       <p class="v-label">Dirigeants de TPE et PME · Bordeaux, partout en France</p>
       <h1 class="v-h1">
@@ -100,8 +103,8 @@ const jsonLd = [
         Je construis vos agents IA.<br />
         <span class="v-vert">Je forme vos équipes à les utiliser.</span>
       </h1>
-      <div class="v-grille v-grille--large" style="align-items: center;">
-        <div class="v-pile">
+      <div>
+        <div class="v-pile" style="max-width: 64ch;">
           <p class="v-chapo">
             Tout commence par un diagnostic de 90&nbsp;minutes. Vous me décrivez votre semaine. Je vous dis où l'IA
             vous fait gagner du temps, et combien ça vaut.
@@ -114,17 +117,6 @@ const jsonLd = [
             <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
           </div>
         </div>
-        <figure class="v-carte" style="margin: 0;">
-          {/* [À VALIDER] Vidéo « Le diagnostic en 2 minutes » à tourner. Une fois prête :
-              fichier dans public/ (comme hero.mp4) et <video controls preload="none" poster=…>
-              avec sous-titres (<track kind="captions">), à la place de cet emplacement. */}
-          <div class="v-emplacement" style="aspect-ratio: 16 / 9;" role="img" aria-label="Emplacement de la vidéo de présentation du diagnostic">
-            <span class="v-label" aria-hidden="true">[Vidéo · le diagnostic en 2 minutes]</span>
-          </div>
-          <figcaption class="v-ligne" style="border-top: 2px solid var(--v-encre); border-bottom: 0;">
-            <span class="v-label" style="display: block;">Ma méthode en 2 minutes</span>
-          </figcaption>
-        </figure>
       </div>
     </div>
   </section>

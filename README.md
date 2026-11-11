@@ -31,8 +31,8 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 - [x] Demande de rappel : téléphone et e-mail obligatoires ; « je vous rappelle dès qu'un créneau se libère, sinon je reviens vers vous très vite par e-mail » (Julien, 11/11/2026).
 - [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
       à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
-- [ ] Vidéo « Le diagnostic en 2 minutes » (accueil, haut de page) : à tourner, sous-titrer,
-      puis remplacer l'emplacement dans `src/pages/index.astro`.
+- [ ] Vidéo « Le diagnostic en 2 minutes » : à tourner et sous-titrer. Son emplacement est retiré de
+      l'accueil en attendant (11/11/2026) ; la marche à suivre pour la remettre est en commentaire dans `src/pages/index.astro`.
 - [x] « Satisfait ou remboursé » : demande dans les 7 jours qui suivent la remise du kit, sans justification,
       remboursement intégral sous 14 jours, une fois par entreprise (`/mentions-legales#conditions-diagnostic`).
 - [x] Report : gratuit jusqu'à 48 h avant le rendez-vous ; au-delà, ou en cas d'absence, le diagnostic reste dû (Julien, 11/11/2026).
