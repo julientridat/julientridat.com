@@ -25,7 +25,8 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
       gratuit de 20 minutes est supprimé ; la page Formation renvoie vers la demande de rappel.
 - [x] Lien de paiement Stripe du diagnostic, compte réel « JT Marketing » : branché dans
       `PAIEMENT_DIAGNOSTIC_URL` (468 € TTC, redirection vers /diagnostic-confirme).
-      Stripe n'envoie qu'un reçu : penser à envoyer la facture Abby après chaque paiement.
+      Stripe n'envoie qu'un reçu. La facture est faite dans Abby, une seule par vente : le brief du matin
+      prépare le brouillon pour chaque diagnostic payé, Julien le valide et l'envoie (décision du 11/11/2026).
 - [x] Prix du diagnostic : 390 € HT, soit 468 € TTC (Julien est assujetti à la TVA).
 - [x] Prix des offres et de la maintenance : hors taxes (Julien, 11/11/2026).
 - [x] Demande de rappel : téléphone et e-mail obligatoires ; « je vous rappelle dès qu'un créneau se libère, sinon je reviens vers vous très vite par e-mail » (Julien, 11/11/2026).
