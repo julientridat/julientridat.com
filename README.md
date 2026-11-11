@@ -21,13 +21,17 @@ Restent en place, sans changement : le tableau client (`/tableau`), le connecteu
 
 **[À VALIDER] par Julien :**
 - [ ] Forme juridique et adresse de l'éditeur (`src/pages/mentions-legales.astro`).
-- [ ] Planning Google Agenda de 90 minutes pour le diagnostic : remplacer
-      `SCHEDULER_DIAGNOSTIC_URL` dans `src/lib/site.ts` (pour l'instant, le planning de 20 minutes).
-- [ ] Lien de paiement Stripe du diagnostic : `PAIEMENT_DIAGNOSTIC_URL` dans `src/lib/site.ts`.
-      Dans Stripe, « Après le paiement » → https://julientridat.com/diagnostic-confirme
-      (page non indexée qui affiche le planning de 90 minutes). Tant que la constante est vide,
-      la fenêtre de réservation ouvre directement le planning.
-- [ ] 490 € : hors taxes ou TTC ?
+- [ ] Planning Google Agenda de 90 minutes pour le diagnostic : le lien donné le 11/11
+      (`SCHEDULER_DIAGNOSTIC_URL`) ouvre le même planning que l'échange gratuit de 20 minutes et
+      que « Une question avant ? ». Créer deux plannings distincts, puis mettre à jour les URL.
+- [ ] Lien de paiement Stripe du diagnostic, compte RÉEL : `PAIEMENT_DIAGNOSTIC_URL` dans
+      `src/lib/site.ts`. Le connecteur Stripe ne voit que l'environnement de test, où le lien
+      existe (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00) : 468 € TTC, redirection
+      vers https://julientridat.com/diagnostic-confirme, nom de l'entreprise et adresse de
+      facturation obligatoires, n° de TVA facultatif. Le recréer à l'identique en mode réel.
+      Tant que la constante est vide, la fenêtre de réservation ouvre directement le planning.
+- [x] Prix du diagnostic : 390 € HT, soit 468 € TTC (Julien est assujetti à la TVA).
+- [ ] Prix des offres (2 500 à 25 000 €) : HT ? Le tableau de l'accueil ne le précise pas.
 - [ ] Kit de construction des 3 premiers assistants (livrable du diagnostic, remis sous 48 h) :
       à concevoir et à tester sur de vrais cas AVANT la mise en ligne — la page le promet.
 - [ ] Vidéo « Le diagnostic en 2 minutes » (accueil, haut de page) : à tourner, sous-titrer,

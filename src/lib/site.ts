@@ -21,12 +21,14 @@ export const SCHEDULER_URL =
   "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
 /**
- * Stripe — lien de paiement du diagnostic (490 €), payé à la réservation (Julien, 10/11/2026).
+ * Stripe — lien de paiement du diagnostic, payé à la réservation (Julien, 10/11/2026).
+ * Prix : 390 € HT, soit 468 € TTC — Julien est assujetti à la TVA (Julien, 11/11/2026).
  * Parcours : qualification → paiement Stripe → redirection vers /diagnostic-confirme,
  * qui affiche le planning de 90 minutes.
- * [À VALIDER] Vide tant que le lien n'est pas créé : la fenêtre ouvre alors directement
- * le planning, comme avant. Dans Stripe, régler « Après le paiement » sur
- * https://julientridat.com/diagnostic-confirme
+ * [À VALIDER] Vide tant que le lien du compte Stripe RÉEL n'est pas créé : la fenêtre ouvre
+ * alors directement le planning, comme avant. Le même lien existe en mode test
+ * (https://book.stripe.com/test_eVq8wPbs7c5LejY0D73oA00, produit prod_VbnZ5yAzs9ZRJO) :
+ * ne jamais le mettre ici, il encaisserait des paiements fictifs.
  */
 export const PAIEMENT_DIAGNOSTIC_URL = "";
 
@@ -34,12 +36,14 @@ export const PAIEMENT_DIAGNOSTIC_URL = "";
 export const QUESTION_URL = "https://calendar.app.google/Tr82L5xzrLSSgXKj8";
 
 /**
- * Google Calendar — planning du diagnostic de 90 minutes.
- * [À VALIDER] Aucun planning de 90 minutes n'existe encore : en attendant, le
- * diagnostic ouvre le planning de l'échange de 20 minutes. Remplacer par l'URL
- * d'un planning de rendez-vous de 90 minutes (paiement en ligne si possible).
+ * Google Calendar — planning du diagnostic de 90 minutes, lien donné par Julien le 11/11/2026
+ * (https://calendar.app.google/HFhQsWHYE3mh4MGQ9), en version intégrable (?gv=true).
+ * [À VALIDER] Ce lien ouvre le MÊME planning (« Diagnostic IA ») que SCHEDULER_URL et
+ * QUESTION_URL : l'échange gratuit et « Une question avant ? » ouvriraient donc le planning
+ * du diagnostic payant. Il faut deux plannings distincts dans Google Agenda.
  */
-export const SCHEDULER_DIAGNOSTIC_URL = SCHEDULER_URL;
+export const SCHEDULER_DIAGNOSTIC_URL =
+  "https://calendar.google.com/calendar/appointments/schedules/AcZssZ2MIKzVXDt1av8z08mG370W0D-DIlPnpXMNZ991yUXHfKT0aPs2V--BQHQCXhB3EbJGBIJbXhsX?gv=true";
 
 /*
  * Il n'y a plus de base de données. Le projet Supabase qui recevait les traces
