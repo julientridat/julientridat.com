@@ -3,7 +3,7 @@ export const SITE = {
   name: "Julien Tridat",
   title: "Julien Tridat — Intégration IA pour TPE et PME, Bordeaux",
   description:
-    "J'audite vos processus, je construis les agents IA dans vos outils et je forme vos équipes à les utiliser. Tout commence par un diagnostic de 90 minutes.",
+    "Comprendre votre entreprise avant d'installer l'IA : vos tâches répétitives deviennent des processus IA que votre équipe valide. Diagnostic de 90 min.",
   googleSiteVerification: "U0bKj-WLWaStW6ymt9_vMvUeROa-Tcer6g29jCkLSkM",
 } as const;
 
@@ -65,7 +65,7 @@ export const PERSON_JSONLD = {
   name: "Julien Tridat",
   jobTitle: "Intégrateur IA pour TPE et PME",
   description:
-    "Vingt ans de marketing : la publicité chez Publicis et Saatchi & Saatchi, la production média pour France 24, Canal+ et France 2, puis le conseil aux entreprises depuis dix ans. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
+    "Vingt ans de marketing : la publicité chez Publicis et Saatchi & Saatchi, la production média pour France 24, Canal+ et France 2, puis le conseil aux entreprises. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
   url: SITE.url,
   address: {
     "@type": "PostalAddress",

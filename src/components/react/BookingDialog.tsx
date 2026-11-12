@@ -16,11 +16,11 @@ const INTRO = {
   surtitre: "Diagnostic IA",
   titre: "Réservez votre diagnostic de 90 minutes",
   texte:
-    "On cartographie les 3 à 5 processus qui vous coûtent du temps, on repère les 2 ou 3 agents IA qui rapportent tout de suite, et on chiffre le gain.",
+    "On cartographie les 3 à 5 processus qui vous coûtent du temps, on repère les 2 ou 3 processus IA qui rapportent tout de suite, et on chiffre le gain.",
   points: [
     "90 minutes, en visio ou en présentiel",
     "Trois questions, le paiement, puis le créneau",
-    "Sous 48 h, votre kit pour construire vos 3 premiers agents IA",
+    "Sous 48 h, votre kit pour lancer vos 3 premiers processus IA",
   ],
   prix: "390 € HT · satisfait ou remboursé · déduits du prix de l'intégration si vous la lancez sous 30 jours",
 };

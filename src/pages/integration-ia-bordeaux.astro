@@ -17,7 +17,7 @@ import { CAS_EN_LIGNE } from "@/lib/casEnLigne";
 
 const title = "Intégration de l'IA pour les TPE et PME à Bordeaux | Julien Tridat";
 const description =
-  "Consultant IA basé à Bordeaux : j'audite vos processus, je construis vos agents IA et je forme vos équipes. Diagnostic de 90 minutes, en visio ou en présentiel.";
+  "Consultant IA basé à Bordeaux : j'audite vos processus, je construis vos outils IA métier et je forme vos équipes. Diagnostic de 90 minutes, en visio ou en présentiel.";
 const canonical = `${SITE.url}/integration-ia-bordeaux`;
 
 const tous = await getCollection("realisations", ({ id, data }) => data.published && (CAS_EN_LIGNE as readonly string[]).includes(id));
@@ -26,11 +26,11 @@ const cas = CAS_EN_LIGNE.map((slug) => tous.find((c) => c.id === slug)).filter((
 const etapes = [
   {
     titre: "Le diagnostic",
-    texte: "90 minutes, en visio ou en présentiel. Vous repartez avec la cartographie de vos processus, le gain chiffré et une feuille de route, puis sous 48 h un kit pour monter vos 3 premiers agents IA.",
+    texte: "90 minutes, en visio ou en présentiel. Vous repartez avec la cartographie de vos processus, le gain chiffré et une feuille de route, puis sous 48 h un kit pour lancer vos 3 premiers processus IA.",
   },
   {
     titre: "L'intégration",
-    texte: "Je construis les agents IA dans vos outils et je forme votre équipe à les utiliser. Les premiers agents tournent pendant le projet, pas à la fin.",
+    texte: "Je construis les processus IA dans vos outils et je forme votre équipe à les utiliser. Les premiers processus tournent pendant le projet, pas à la fin.",
   },
   {
     titre: "La formation",
@@ -45,11 +45,11 @@ const faq = [
   },
   {
     q: "Combien coûte l'intégration de l'IA dans une TPE ou une PME ?",
-    r: "Le diagnostic coûte 390 € HT, déduits du prix de l'intégration si vous la lancez sous 30 jours. L'intégration va de 2 500 € HT (un dirigeant, une semaine) à 25 000 € HT (jusqu'à 80 utilisateurs). La maintenance évolutive coûte de 300 à 1 200 € HT par mois selon l'offre.",
+    r: "Le diagnostic coûte 390 € HT, déduits du prix de l'intégration si vous la lancez sous 30 jours. L'intégration va de 2 500 € HT (un dirigeant, une semaine) à 25 000 € HT (jusqu'à 80 utilisateurs). Le pilotage mensuel coûte de 300 à 1 200 € HT par mois selon la formule.",
   },
   {
     q: "Faut-il des compétences techniques dans l'équipe ?",
-    r: "Non. Je construis les agents IA dans les outils que vous utilisez déjà, puis je forme votre équipe à s'en servir.",
+    r: "Non. Je construis les processus IA dans les outils que vous utilisez déjà, puis je forme votre équipe à s'en servir.",
   },
   {
     q: "La formation à l'IA peut-elle être financée ?",
@@ -98,7 +98,7 @@ const jsonLd = [
       </h1>
       <div class="v-pile" style="max-width: 64ch;">
         <p class="v-chapo">
-          J'audite vos processus, je construis vos agents IA et je forme vos équipes à les utiliser. Je suis basé à
+          J'audite vos processus, je construis vos outils IA métier et je forme vos équipes à les utiliser. Je suis basé à
           Bordeaux&nbsp;; le diagnostic de 90&nbsp;minutes se fait en présentiel ou en visio.
         </p>
         <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
@@ -171,7 +171,7 @@ const jsonLd = [
     <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
       <div class="v-pile">
         <h2 class="v-h1">Commençons <span class="v-vert">par 90&nbsp;minutes.</span></h2>
-        <p class="v-chapo">On cartographie vos processus. On repère les 2 ou 3 agents IA qui comptent. On chiffre le gain. Vous repartez avec une feuille de route.</p>
+        <p class="v-chapo">On cartographie vos processus. On repère les 2 ou 3 processus IA qui comptent. On chiffre le gain. Vous repartez avec une feuille de route.</p>
       </div>
       <div class="v-pile v-pile--serree" style="align-items: flex-start;">
         <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
