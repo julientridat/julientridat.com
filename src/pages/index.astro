@@ -51,6 +51,23 @@ const etapesTest = [
 // Une carte par secteur. `processus` et `gain` : non affichés tant qu'ils sont vides
 // (TODO-site.md). Ne les remplir qu'avec un processus construit et un gain mesuré.
 type Metier = { secteur: string; processus?: string; gain?: string };
+// Les quatre cartes sont des exemples, pas une liste fermée : la ligne « Et bien
+// d'autres » cite des secteurs déjà accompagnés (secteurs formés de /formation-ia,
+// cas de l'accueil).
+const autresSecteurs = [
+  "courtage en assurance",
+  "carrosserie",
+  "formation professionnelle",
+  "BTP",
+  "industrie",
+  "transport et logistique",
+  "immobilier",
+  "vin et spiritueux",
+  "santé",
+  "banque et finance",
+  "retail",
+  "associations",
+];
 const metiers: Metier[] = [
   { secteur: "Agences" },
   { secteur: "Négociants" },
@@ -321,29 +338,36 @@ const jsonLd = [
 
   <section id="metiers" class="v-section">
     <p class="v-label">Métiers</p>
-    <h2 class="v-h2">Les métiers que j'accompagne</h2>
-    <p class="v-chapo">Vos équipes repartent formées, avec leurs premiers outils IA en service.</p>
+    <h2 class="v-h2">Quelques métiers que j'accompagne</h2>
+    <p class="v-chapo">Dans chaque métier, le même travail&nbsp;: former les équipes et construire leurs outils IA métier. <span class="v-fort">Vos équipes repartent formées, avec leurs premiers outils IA en service.</span></p>
     <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));">
       {metiers.map((m) => (
-        <article class="v-carte" style="display: flex; flex-direction: column;">
-          <h3 class="v-bandeau">{m.secteur}</h3>
-          <div class="v-carte--pad" style="flex: 1;">
-            <p>Formation des équipes et construction d'outils IA métier.</p>
-            {m.processus && (
-              <p><span class="v-label" style="display: block;">Processus construit</span>{m.processus}</p>
-            )}
-            {m.gain && (
-              <p><span class="v-label" style="display: block;">Gain mesuré</span><span class="v-chiffre v-vert">{m.gain}</span></p>
-            )}
-          </div>
+        <article class="v-carte" style="display: flex; flex-direction: column; background: var(--v-encre);">
+          <h3 class="v-bandeau" style="flex: 1; align-items: center;">{m.secteur}</h3>
+          {(m.processus || m.gain) && (
+            <div class="v-carte--pad" style="background: var(--v-blanc);">
+              {m.processus && (
+                <p><span class="v-label" style="display: block;">Processus construit</span>{m.processus}</p>
+              )}
+              {m.gain && (
+                <p><span class="v-label" style="display: block;">Gain mesuré</span><span class="v-chiffre v-vert">{m.gain}</span></p>
+              )}
+            </div>
+          )}
         </article>
       ))}
     </div>
+    {/* Autres secteurs : repris des pages existantes (secteurs formés, /formation-ia ;
+        cas de l'accueil). N'y ajouter que des secteurs réellement accompagnés. */}
+    <p class="v-texte">
+      <span class="v-fort">Et bien d'autres&nbsp;:</span> {autresSecteurs.join(", ")}.
+      Votre métier n'y figure pas&nbsp;? Le diagnostic commence par lui.
+    </p>
   </section>
 
   <section id="cas" class="v-section">
     <p class="v-label">Résultats</p>
-    <h2 class="v-h2">Trois métiers, <span class="v-vert">trois résultats mesurés.</span></h2>
+    <h2 class="v-h2" style="text-wrap: balance;">Trois exemples parmi d'autres. <span class="v-vert">Trois&nbsp;résultats&nbsp;mesurés.</span></h2>
     <div class="v-grille">
       {cas.map((c) => (
         <article class="v-carte" style="display: flex; flex-direction: column;">

@@ -13,6 +13,9 @@ Pour chaque secteur, renseigner `processus` (processus construit) et `gain` (gai
 - [ ] Conseillers en gestion de patrimoine
 - [ ] Marques e-commerce
 
+- [ ] Valider la liste « Et bien d'autres » (`autresSecteurs`) : reprise des secteurs
+      formés de /formation-ia et des cas de l'accueil. Retirer ce qui n'est pas exact.
+
 ### Résultats mesurés (`cas`, section `#cas`)
 Pour chaque cas : `mesure` (affiché « Mesuré sur [volume, période] ») et `temoignage`
 (citation, nom, fonction, entreprise — autorisation écrite du client requise).
