@@ -50,7 +50,7 @@ export const GET: APIRoute = async () => {
     "- Inclus : immersion et ateliers avec les équipes, processus IA branchés sur les outils, règle d'usage IA,",
     "  rapport de mesure avant/après, formation des utilisateurs. Délais et prix fixés à la signature ;",
     "  les premiers processus tournent pendant le projet ; en cas de dérapage du planning, le travail continue aux frais de Julien Tridat.",
-    "- Pilotage mensuel (retester, mettre à jour, suivre le gain réel) : 300 à 1 200 € HT par mois selon la formule.",
+    "- Pilotage mensuel, en option (retester, mettre à jour, suivre le gain réel) : 300 à 1 200 € HT par mois selon la formule.",
     "",
     "## Formation à l'IA générative",
     "",
