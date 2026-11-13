@@ -38,6 +38,7 @@ Pour chaque cas : `mesure` (affiché « Mesuré sur [volume, période] ») et `t
       en sous-traitance : Dassault Systèmes, SNCF Fret, Lagardère Travel Retail, Le Nouveau
       Bélier, Maison des Vins et des Spiritueux. Affichés en texte (aucun logo sur le site).
       Si des logos sont ajoutés : autorisation de la marque en plus.
+- [ ] /formation-ia : même vérification pour Fitness Park, Mouton Noir et Adaliance (ajoutés le 13/11/2026).
 
 ## Offres
 - [ ] Mention d'un financement OPCO sur les offres d'intégration : uniquement après
