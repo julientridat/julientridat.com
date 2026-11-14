@@ -9,7 +9,6 @@
  * Charte « planning » (src/styles/vitrine.css).
  *
  * Champs prévus mais vides (non affichés tant qu'ils le restent) : voir TODO-site.md.
- *   - metiers[].processus, metiers[].gain ;
  *   - cas[].mesure, cas[].temoignage ;
  *   - faq[].confirme === false : question masquée en attendant la confirmation de Julien.
  * Tous les prix sont hors taxes : Julien est assujetti à la TVA (Julien, 11/11/2026).
@@ -21,7 +20,7 @@ import portrait from "@/assets/julien-portrait.jpg";
 
 const title = "Intégration IA pour TPE et PME à Bordeaux | Julien Tridat";
 const description =
-  "Comprendre votre entreprise avant d'installer l'IA : vos tâches répétitives deviennent des processus IA que votre équipe valide. Diagnostic de 90 min.";
+  "Dirigeant de PME déçu par les promesses de l'IA ? Je comprends votre entreprise et transforme vos tâches répétitives en processus IA. Diagnostic 90 min.";
 
 // Les quatre livrables du diagnostic. Le kit est remis sous 48 h (Julien, 09/11/2026).
 const livrables = [
@@ -46,33 +45,6 @@ const etapesTest = [
   "Je teste sur une dizaine de cas réels.",
   "Je note les résultats selon une grille définie avec vous.",
   "On ne déploie que ce qui tient la mesure.",
-];
-
-// Une carte par secteur. `processus` et `gain` : non affichés tant qu'ils sont vides
-// (TODO-site.md). Ne les remplir qu'avec un processus construit et un gain mesuré.
-type Metier = { secteur: string; processus?: string; gain?: string };
-// Les quatre cartes sont des exemples, pas une liste fermée : la ligne « Et bien
-// d'autres » cite des secteurs déjà accompagnés (secteurs formés de /formation-ia,
-// cas de l'accueil).
-const autresSecteurs = [
-  "courtage en assurance",
-  "carrosserie",
-  "formation professionnelle",
-  "BTP",
-  "industrie",
-  "transport et logistique",
-  "immobilier",
-  "vin et spiritueux",
-  "santé",
-  "banque et finance",
-  "retail",
-  "associations",
-];
-const metiers: Metier[] = [
-  { secteur: "Agences" },
-  { secteur: "Négociants" },
-  { secteur: "Conseillers en gestion de patrimoine" },
-  { secteur: "Marques e-commerce" },
 ];
 
 // Résultats mesurés. `mesure` (« Mesuré sur [volume, période] ») et `temoignage` :
@@ -254,8 +226,9 @@ const jsonLd = [
       </h1>
       <div class="v-pile" style="max-width: 64ch;">
         <p class="v-chapo">
-          Agence, négociant, conseiller en gestion de patrimoine, marque e-commerce, et bien d'autres métiers&nbsp;: je comprends comment vous
-          travaillez, puis je transforme vos tâches répétitives en processus que l'IA exécute et que votre équipe valide.
+          Les promesses de l'IA, vous les avez entendues. Les résultats, vous les attendez encore. Je commence par
+          comprendre comment votre entreprise travaille, puis je transforme vos tâches répétitives en processus que l'IA
+          exécute et que votre équipe valide.
         </p>
         <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
           <button type="button" class="v-bouton" data-open-booking="diagnostic">
@@ -270,7 +243,7 @@ const jsonLd = [
 
   <section id="constat" class="v-section">
     <p class="v-label">Le constat</p>
-    <h2 class="v-h2">Votre problème n'est pas technique.</h2>
+    <h2 class="v-h2" style="max-width: 30ch; text-wrap: balance;">Votre problème n'est pas technique. <span class="v-vert" style="display: block;">C'est pour ça que l'IA ne tient pas ses promesses chez vous.</span></h2>
     <p class="v-chapo">
       Les outils d'IA sont là, accessibles à tous. Vos collaborateurs les utilisent probablement déjà, chacun à sa façon.
       Ce qui manque, c'est quelqu'un qui regarde comment votre entreprise fonctionne vraiment&nbsp;: où le temps se perd, ce
@@ -280,9 +253,9 @@ const jsonLd = [
   </section>
 
   <section id="diagnostic" class="v-section">
-    <p class="v-label">Le diagnostic</p>
-    <h2 class="v-h2">Tout commence <span class="v-vert">par 90&nbsp;minutes.</span></h2>
-    <p class="v-chapo">Vous me décrivez votre semaine. Je vous montre où l'IA vous fait gagner du temps, et combien cela vaut.</p>
+    <p class="v-label">Le diagnostic · 90&nbsp;minutes</p>
+    <h2 class="v-h2" style="max-width: none;">Vos missions. Vos équipes. <span class="v-vert">Votre&nbsp;IA.</span></h2>
+    <p class="v-chapo">Vous me décrivez votre semaine type&nbsp;: vos missions récurrentes, vos livrables incontournables, ce qui coince. Je vous montre où l'IA vous fait gagner du temps, et je chiffre le gain.</p>
     <p class="v-label" style="margin-top: 8px;">Vous repartez avec</p>
     <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));">
       {livrables.map((l, i) => (
@@ -334,35 +307,6 @@ const jsonLd = [
         </ol>
       </article>
     </div>
-  </section>
-
-  <section id="metiers" class="v-section">
-    <p class="v-label">Métiers</p>
-    <h2 class="v-h2">Quelques métiers que j'accompagne</h2>
-    <p class="v-chapo">Dans chaque métier, le même travail&nbsp;: former les équipes et construire leurs outils IA métier. <span class="v-fort">Vos équipes repartent formées, avec leurs premiers outils IA en service.</span></p>
-    <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));">
-      {metiers.map((m) => (
-        <article class="v-carte" style="display: flex; flex-direction: column; background: var(--v-encre);">
-          <h3 class="v-bandeau" style="flex: 1; align-items: center;">{m.secteur}</h3>
-          {(m.processus || m.gain) && (
-            <div class="v-carte--pad" style="background: var(--v-blanc);">
-              {m.processus && (
-                <p><span class="v-label" style="display: block;">Processus construit</span>{m.processus}</p>
-              )}
-              {m.gain && (
-                <p><span class="v-label" style="display: block;">Gain mesuré</span><span class="v-chiffre v-vert">{m.gain}</span></p>
-              )}
-            </div>
-          )}
-        </article>
-      ))}
-    </div>
-    {/* Autres secteurs : repris des pages existantes (secteurs formés, /formation-ia ;
-        cas de l'accueil). N'y ajouter que des secteurs réellement accompagnés. */}
-    <p class="v-texte">
-      <span class="v-fort">Et bien d'autres&nbsp;:</span> {autresSecteurs.join(", ")}.
-      Votre métier n'y figure pas&nbsp;? Le diagnostic commence par lui.
-    </p>
   </section>
 
   <section id="cas" class="v-section">

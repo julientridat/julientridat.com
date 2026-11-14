@@ -6,16 +6,6 @@ Les champs vides sont déjà prévus dans `src/pages/index.astro` : il suffit de
 
 ## Accueil — champs prévus, non affichés
 
-### Les métiers que j'accompagne (`metiers`, section `#metiers`)
-Pour chaque secteur, renseigner `processus` (processus construit) et `gain` (gain mesuré) :
-- [ ] Agences
-- [ ] Négociants
-- [ ] Conseillers en gestion de patrimoine
-- [ ] Marques e-commerce
-
-- [ ] Valider la liste « Et bien d'autres » (`autresSecteurs`) : reprise des secteurs
-      formés de /formation-ia et des cas de l'accueil. Retirer ce qui n'est pas exact.
-
 ### Résultats mesurés (`cas`, section `#cas`)
 Pour chaque cas : `mesure` (affiché « Mesuré sur [volume, période] ») et `temoignage`
 (citation, nom, fonction, entreprise — autorisation écrite du client requise).
@@ -57,6 +47,5 @@ Pour chaque cas : `mesure` (affiché « Mesuré sur [volume, période] ») et `t
 - [ ] Le kit (« lancer vos 3 premiers processus, avec la règle d'usage qui les encadre »)
       reste à concevoir et à tester avant la mise en ligne, comme l'ancien kit.
 
-## Phase suivante (non commencée)
-- [ ] Pages par secteur (agences, négociants, CGP, e-commerce), une fois les processus
-      construits et les gains renseignés.
+## Phase suivante
+- Pages par secteur abandonnées (14/11/2026) : la cible est le dirigeant de PME, pas un secteur.
