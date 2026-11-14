@@ -16,11 +16,17 @@ const ENTREES = [
   ...CAS_EN_LIGNE.map((slug) => ({ path: `/realisations/${slug}`, changefreq: "yearly", priority: "0.6" })),
 ];
 
+// Date du build, déclarée comme dernière modification : chaque déploiement suit une
+// modification du site. Google ignore changefreq et priority, mais lit <lastmod>
+// pour décider de revenir explorer une page.
+const LASTMOD = new Date().toISOString().slice(0, 10);
+
 export const GET: APIRoute = () => {
   const urls = ENTREES.map((e) =>
     [
       "  <url>",
       `    <loc>${SITE.url}${e.path}</loc>`,
+      `    <lastmod>${LASTMOD}</lastmod>`,
       `    <changefreq>${e.changefreq}</changefreq>`,
       `    <priority>${e.priority}</priority>`,
       "  </url>",

@@ -65,7 +65,7 @@ export const PERSON_JSONLD = {
   name: "Julien Tridat",
   jobTitle: "Intégrateur IA pour TPE et PME",
   description:
-    "Vingt ans de marketing : la publicité chez Publicis et Saatchi & Saatchi, la production média pour France 24, Canal+ et France 2, puis le conseil aux entreprises. Je forme par ailleurs des organisations à l'intelligence artificielle et je les accompagne dans cette transition — plus de 300 dirigeants et cadres formés dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret. Je couvre le marketing et la technique : e-mailing, gestion de projet, espaces de travail partagés, sites, applications métier, automatisations.",
+    "Intégrateur IA pour les dirigeants de PME, basé à Bordeaux. Je comprends comment une entreprise travaille, puis je transforme ses tâches répétitives en processus que l'IA exécute et que son équipe valide. Avant cela : la publicité chez Publicis et Saatchi & Saatchi, la production média pour France 24, Canal+ et France 2, puis le conseil aux entreprises. Plus de 300 dirigeants et cadres formés et accompagnés à l'intelligence artificielle dans une cinquantaine d'organisations, dont Dassault Systèmes et SNCF Fret.",
   url: SITE.url,
   address: {
     "@type": "PostalAddress",
@@ -74,13 +74,15 @@ export const PERSON_JSONLD = {
     addressRegion: "Nouvelle-Aquitaine",
     addressCountry: "FR",
   },
+  // Positionnement de novembre 2026 : intégration IA pour dirigeants de PME. Le marketing
+  // (ancienne offre) sort des signaux envoyés à Google.
   knowsAbout: [
-    "Marketing B2B",
-    "Stratégie de croissance",
+    "Intégration de l'intelligence artificielle en entreprise",
     "Intelligence artificielle générative",
-    "Automatisation d'entreprise",
+    "Processus IA",
+    "Automatisation des processus",
+    "Formation à l'intelligence artificielle",
     "Organisation et process d'entreprise",
-    "Production de contenus",
   ],
   // Ce qui permet à Google de relier ce site aux profils qu'il connaît déjà
   // sous le même nom — il y a au moins deux homonymes. Seuls des profils
