@@ -13,6 +13,9 @@ Pour chaque secteur, renseigner `processus` (processus construit) et `gain` (gai
 - [ ] Conseillers en gestion de patrimoine
 - [ ] Marques e-commerce
 
+- [ ] Valider la liste « Et bien d'autres » (`autresSecteurs`) : reprise des secteurs
+      formés de /formation-ia et des cas de l'accueil. Retirer ce qui n'est pas exact.
+
 ### Résultats mesurés (`cas`, section `#cas`)
 Pour chaque cas : `mesure` (affiché « Mesuré sur [volume, période] ») et `temoignage`
 (citation, nom, fonction, entreprise — autorisation écrite du client requise).
@@ -35,6 +38,7 @@ Pour chaque cas : `mesure` (affiché « Mesuré sur [volume, période] ») et `t
       en sous-traitance : Dassault Systèmes, SNCF Fret, Lagardère Travel Retail, Le Nouveau
       Bélier, Maison des Vins et des Spiritueux. Affichés en texte (aucun logo sur le site).
       Si des logos sont ajoutés : autorisation de la marque en plus.
+- [ ] /formation-ia : même vérification pour Fitness Park, Mouton Noir et Adaliance (ajoutés le 13/11/2026).
 
 ## Offres
 - [ ] Mention d'un financement OPCO sur les offres d'intégration : uniquement après

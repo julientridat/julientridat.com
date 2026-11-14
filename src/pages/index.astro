@@ -51,6 +51,23 @@ const etapesTest = [
 // Une carte par secteur. `processus` et `gain` : non affichés tant qu'ils sont vides
 // (TODO-site.md). Ne les remplir qu'avec un processus construit et un gain mesuré.
 type Metier = { secteur: string; processus?: string; gain?: string };
+// Les quatre cartes sont des exemples, pas une liste fermée : la ligne « Et bien
+// d'autres » cite des secteurs déjà accompagnés (secteurs formés de /formation-ia,
+// cas de l'accueil).
+const autresSecteurs = [
+  "courtage en assurance",
+  "carrosserie",
+  "formation professionnelle",
+  "BTP",
+  "industrie",
+  "transport et logistique",
+  "immobilier",
+  "vin et spiritueux",
+  "santé",
+  "banque et finance",
+  "retail",
+  "associations",
+];
 const metiers: Metier[] = [
   { secteur: "Agences" },
   { secteur: "Négociants" },
@@ -231,13 +248,13 @@ const jsonLd = [
   <section id="accueil" class="v-section v-section--premiere">
     <div class="v-hero v-pile" style="gap: 32px;">
       <p class="v-label">Intégration IA pour TPE et PME · Bordeaux et toute la France</p>
-      <h1 class="v-h1">
-        Installer l'IA, c'est la partie facile.<br />
-        <span class="v-vert">Comprendre votre entreprise, c'est mon métier.</span>
+      <h1 class="v-h1" style="text-wrap: balance;">
+        Installer l'IA, c'est la partie&nbsp;facile.<br />
+        <span class="v-vert">Comprendre votre entreprise, c'est mon&nbsp;métier.</span>
       </h1>
       <div class="v-pile" style="max-width: 64ch;">
         <p class="v-chapo">
-          Agence, négociant, conseiller en gestion de patrimoine, marque e-commerce&nbsp;: je comprends comment vous
+          Agence, négociant, conseiller en gestion de patrimoine, marque e-commerce, et bien d'autres métiers&nbsp;: je comprends comment vous
           travaillez, puis je transforme vos tâches répétitives en processus que l'IA exécute et que votre équipe valide.
         </p>
         <div class="v-pile v-pile--serree" style="align-items: flex-start; gap: 8px;">
@@ -321,29 +338,36 @@ const jsonLd = [
 
   <section id="metiers" class="v-section">
     <p class="v-label">Métiers</p>
-    <h2 class="v-h2">Les métiers que j'accompagne</h2>
-    <p class="v-chapo">Vos équipes repartent formées, avec leurs premiers outils IA en service.</p>
+    <h2 class="v-h2">Quelques métiers que j'accompagne</h2>
+    <p class="v-chapo">Dans chaque métier, le même travail&nbsp;: former les équipes et construire leurs outils IA métier. <span class="v-fort">Vos équipes repartent formées, avec leurs premiers outils IA en service.</span></p>
     <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));">
       {metiers.map((m) => (
-        <article class="v-carte" style="display: flex; flex-direction: column;">
-          <h3 class="v-bandeau">{m.secteur}</h3>
-          <div class="v-carte--pad" style="flex: 1;">
-            <p>Formation des équipes et construction d'outils IA métier.</p>
-            {m.processus && (
-              <p><span class="v-label" style="display: block;">Processus construit</span>{m.processus}</p>
-            )}
-            {m.gain && (
-              <p><span class="v-label" style="display: block;">Gain mesuré</span><span class="v-chiffre v-vert">{m.gain}</span></p>
-            )}
-          </div>
+        <article class="v-carte" style="display: flex; flex-direction: column; background: var(--v-encre);">
+          <h3 class="v-bandeau" style="flex: 1; align-items: center;">{m.secteur}</h3>
+          {(m.processus || m.gain) && (
+            <div class="v-carte--pad" style="background: var(--v-blanc);">
+              {m.processus && (
+                <p><span class="v-label" style="display: block;">Processus construit</span>{m.processus}</p>
+              )}
+              {m.gain && (
+                <p><span class="v-label" style="display: block;">Gain mesuré</span><span class="v-chiffre v-vert">{m.gain}</span></p>
+              )}
+            </div>
+          )}
         </article>
       ))}
     </div>
+    {/* Autres secteurs : repris des pages existantes (secteurs formés, /formation-ia ;
+        cas de l'accueil). N'y ajouter que des secteurs réellement accompagnés. */}
+    <p class="v-texte">
+      <span class="v-fort">Et bien d'autres&nbsp;:</span> {autresSecteurs.join(", ")}.
+      Votre métier n'y figure pas&nbsp;? Le diagnostic commence par lui.
+    </p>
   </section>
 
   <section id="cas" class="v-section">
     <p class="v-label">Résultats</p>
-    <h2 class="v-h2">Trois métiers, <span class="v-vert">trois résultats mesurés.</span></h2>
+    <h2 class="v-h2" style="text-wrap: balance;">Trois exemples parmi d'autres. <span class="v-vert">Trois&nbsp;résultats&nbsp;mesurés.</span></h2>
     <div class="v-grille">
       {cas.map((c) => (
         <article class="v-carte" style="display: flex; flex-direction: column;">
@@ -371,8 +395,13 @@ const jsonLd = [
 
   <section id="references" class="v-section">
     <div class="v-carte v-carte--pad" style="gap: 16px;">
-      <p class="v-label">Ils m'ont fait confiance</p>
-      <h2 class="v-h2" style="max-width: none;">La rigueur des grands groupes, <span class="v-vert">au format et au prix d'une PME.</span></h2>
+      <p class="v-label">Références</p>
+      <h2 class="v-h2" style="max-width: none; text-wrap: balance;">Des grands groupes aux indépendants. <span class="v-vert">Une méthode taillée pour les PME.</span></h2>
+      <p class="v-texte">
+        J'ai travaillé pour des groupes comme Dassault Systèmes ou SNCF Fret, et aux côtés de dirigeants qui
+        travaillent seuls. Cette vision d'ensemble, je la mets au service des PME&nbsp;: <span class="v-fort">une méthode
+        adaptée à leurs moyens, à leurs équipes et à la réalité de leur terrain.</span>
+      </p>
       <ul style="display: flex; flex-wrap: wrap; gap: 8px 28px;">
         {references.map((r) => <li class="v-h3" style="font-size: 22px;">{r}</li>)}
       </ul>
@@ -420,17 +449,17 @@ const jsonLd = [
   </section>
 
   <section id="pilotage" class="v-section">
-    <p class="v-label">Pilotage</p>
-    <h2 class="v-h2">Après le déploiement, <span class="v-vert">je reste.</span></h2>
+    <p class="v-label">En option · Le pilotage</p>
+    <h2 class="v-h2" style="text-wrap: balance;">Après le déploiement, <span class="v-vert">je peux rester.</span></h2>
     <div class="v-carte v-grille" style="padding: 22px; align-items: center; gap: 22px;">
       <p class="v-texte">
         Les modèles d'IA et vos outils évoluent tous les mois. Un processus qui fonctionne aujourd'hui peut se dégrader
-        demain. Le pilotage mensuel couvre trois choses&nbsp;: <span class="v-fort">retester vos processus, les mettre à jour, et
+        demain. Si vous le souhaitez, le pilotage mensuel couvre trois choses&nbsp;: <span class="v-fort">retester vos processus, les mettre à jour, et
         suivre le gain réel.</span>
       </p>
       <div class="v-pile v-pile--serree" style="gap: 4px;">
         <p class="v-chiffre">De 300 à 1&nbsp;200&nbsp;€&nbsp;HT par mois</p>
-        <p class="v-petit">selon la formule</p>
+        <p class="v-petit">en option, selon la formule</p>
       </div>
     </div>
   </section>
@@ -453,7 +482,7 @@ const jsonLd = [
         <p class="v-label">Qui je suis</p>
         <h2 class="v-h2">20 ans à comprendre des métiers <span class="v-vert">avant de les transformer.</span></h2>
         <p class="v-texte">Publicité (Publicis, Saatchi &amp; Saatchi), production média (France&nbsp;24, Canal+, France&nbsp;2), puis conseil&nbsp;: j'ai passé ma carrière à entrer dans des entreprises très différentes et à comprendre vite comment elles fonctionnent.</p>
-        <p class="v-texte"><span class="v-fort">J'ai accompagné plus de 300 dirigeants et cadres.</span> Je ne suis pas développeur. Je n'en ai pas besoin pour faire ce métier.</p>
+        <p class="v-texte"><span class="v-fort">J'ai formé et accompagné plus de 300 dirigeants et cadres à l'intelligence artificielle.</span> Je ne suis pas développeur. Ma force, c'est de comprendre votre métier et vos enjeux.</p>
         <p class="v-texte">Basé à Bordeaux, j'interviens partout en France.</p>
       </div>
     </div>
@@ -474,7 +503,7 @@ const jsonLd = [
 
   <section id="reserver" class="v-section v-section--fin">
     <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
-      <h2 class="v-h1">90&nbsp;minutes pour comprendre <span class="v-vert">ce que l'IA vaut chez vous.</span></h2>
+      <h2 class="v-h1" style="text-wrap: balance;">90&nbsp;minutes pour comprendre <span class="v-vert">ce que l'IA vaut chez vous.</span></h2>
       <div class="v-pile v-pile--serree" style="align-items: flex-start;">
         <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
           Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
