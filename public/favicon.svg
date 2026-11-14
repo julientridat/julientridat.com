@@ -1,31 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
   <!--
-    Mêmes neuf points que le logo de la nav, dans la charte violette.
-    L'ancienne version était restée en chartreuse #c8ff3d sur noir, héritage
-    de la première identité du site.
-
-    Bascule selon le thème du navigateur, exactement la règle du design
-    system : violet plein sur fond clair, violet clair sur fond d'encre —
-    #6C4CF1 sur du noir ne donne que 3,2:1, illisible à 16 px.
+    Favicon à la charte « planning » (novembre 2026) : angles droits, fond d'encre
+    #101214, neuf points dans le vert « sur sombre » #7FD3AE (contraste suffisant à
+    16 px). Remplace la version violette arrondie de l'ancienne identité, que Google
+    affichait encore dans ses résultats. Format 48 × 48 : Google demande un multiple de 48.
   -->
-  <style>
-    .fond  { fill: #F1F2F4; }
-    .point { fill: #6C4CF1; }
-    @media (prefers-color-scheme: dark) {
-      .fond  { fill: #111216; }
-      .point { fill: #B9A6FF; }
-    }
-  </style>
-  <rect class="fond" width="32" height="32" rx="6"/>
-  <g class="point">
-    <rect x="5" y="5" width="6" height="6" rx="1.5"/>
-    <rect x="13" y="5" width="6" height="6" rx="1.5"/>
-    <rect x="21" y="5" width="6" height="6" rx="1.5"/>
-    <rect x="5" y="13" width="6" height="6" rx="1.5"/>
-    <rect x="13" y="13" width="6" height="6" rx="1.5"/>
-    <rect x="21" y="13" width="6" height="6" rx="1.5"/>
-    <rect x="5" y="21" width="6" height="6" rx="1.5"/>
-    <rect x="13" y="21" width="6" height="6" rx="1.5"/>
-    <rect x="21" y="21" width="6" height="6" rx="1.5"/>
+  <rect width="48" height="48" fill="#101214"/>
+  <g fill="#7FD3AE">
+    <rect x="8" y="8" width="8" height="8"/>
+    <rect x="20" y="8" width="8" height="8"/>
+    <rect x="32" y="8" width="8" height="8"/>
+    <rect x="8" y="20" width="8" height="8"/>
+    <rect x="20" y="20" width="8" height="8"/>
+    <rect x="32" y="20" width="8" height="8"/>
+    <rect x="8" y="32" width="8" height="8"/>
+    <rect x="20" y="32" width="8" height="8"/>
+    <rect x="32" y="32" width="8" height="8"/>
   </g>
 </svg>
