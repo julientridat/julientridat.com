@@ -102,7 +102,38 @@ const inclus = [
   "Rapport de mesure avant/après",
   "Formation des utilisateurs",
 ];
+// Le parcours en trois étapes (refonte du narratif, 23/11/2026) : la carte qui relie le
+// diagnostic à l'intégration et au pilotage. Durées et prix calculés depuis `offres`.
+// « 1 semaine » … « 8 à 12 semaines » → « 1 à 12 semaines ».
+const dureeIntegration = `${offres[0].duree.split(" ")[0]} à ${offres[offres.length - 1].duree.replace(/^.* à /, "")}`;
 const euros = (n: number) => `${n.toLocaleString("fr-FR").replace(/ |\s/g, " ")} €`;
+
+const parcours = [
+  {
+    n: 1,
+    nom: "Le diagnostic",
+    meta: "90 min · 390 € HT · satisfait ou remboursé",
+    texte: "Je cartographie vos processus et je chiffre le gain. Vous repartez avec une feuille de route, puis sous 48 h un kit pour lancer vos 3 premiers processus.",
+    ancre: "diagnostic",
+    option: false,
+  },
+  {
+    n: 2,
+    nom: "L'intégration",
+    meta: `${dureeIntegration} · de ${euros(offres[0].prix)} à ${euros(offres[offres.length - 1].prix)} HT`,
+    texte: "Je construis les processus IA dans vos outils, je les teste sur vos cas réels et je forme votre équipe à s'en servir.",
+    ancre: "integration",
+    option: false,
+  },
+  {
+    n: 3,
+    nom: "Le pilotage",
+    meta: "De 300 à 1 200 € HT par mois",
+    texte: "Je reteste vos processus, je les mets à jour et je suis le gain réel, mois après mois.",
+    ancre: "pilotage",
+    option: true,
+  },
+];
 
 // FAQ. `html` : réponse affichée (liens) ; `texte` : version brute pour le balisage FAQPage.
 // `confirme: false` : question masquée en attendant la confirmation de Julien (TODO-site.md).
@@ -219,7 +250,7 @@ const jsonLd = [
 <VitrineLayout title={title} description={description} canonical={`${SITE.url}/`} jsonLd={jsonLd} actif="accueil" cta="diagnostic">
   <section id="accueil" class="v-section v-section--premiere">
     <div class="v-hero v-pile" style="gap: 32px;">
-      <p class="v-label">Intégration IA pour TPE et PME · Bordeaux et toute la France</p>
+      <p class="v-surtitre">Intégration IA pour TPE et PME · Bordeaux et toute la France</p>
       <h1 class="v-h1" style="text-wrap: balance;">
         Installer l'IA, c'est la partie&nbsp;facile.<br />
         <span class="v-vert">Comprendre votre entreprise, c'est mon&nbsp;métier.</span>
@@ -234,7 +265,7 @@ const jsonLd = [
           <button type="button" class="v-bouton" data-open-booking="diagnostic">
             Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
           </button>
-          <p class="v-petit">390&nbsp;€&nbsp;HT · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · <a href="#offres" style="color: inherit;">déductible de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
+          <p class="v-petit">390&nbsp;€&nbsp;HT · <span class="v-fort" style="color: var(--v-vert);">satisfait ou remboursé</span> · <a href="#parcours" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
           <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
         </div>
       </div>
@@ -242,7 +273,7 @@ const jsonLd = [
   </section>
 
   <section id="constat" class="v-section">
-    <p class="v-label">Le constat</p>
+    <p class="v-surtitre">Le constat</p>
     <h2 class="v-h2" style="max-width: 30ch; text-wrap: balance;">Votre problème n'est pas technique. <span class="v-vert" style="display: block;">C'est pour ça que l'IA ne tient pas ses promesses chez vous.</span></h2>
     <p class="v-chapo">
       Les outils d'IA sont là, accessibles à tous. Vos collaborateurs les utilisent probablement déjà, chacun à sa façon.
@@ -252,66 +283,9 @@ const jsonLd = [
     </p>
   </section>
 
-  <section id="diagnostic" class="v-section">
-    <p class="v-label">Le diagnostic · 90&nbsp;minutes</p>
-    <h2 class="v-h2" style="max-width: none;">Vos missions. Vos équipes. <span class="v-vert">Votre&nbsp;IA.</span></h2>
-    <p class="v-chapo">Vous me décrivez votre semaine type&nbsp;: vos missions récurrentes, vos livrables incontournables, ce qui coince. Je vous montre où l'IA vous fait gagner du temps, et je chiffre le gain.</p>
-    <p class="v-label" style="margin-top: 8px;">Vous repartez avec</p>
-    <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));">
-      {livrables.map((l, i) => (
-        <article class="v-carte v-carte--pad">
-          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
-            <span class="v-chiffre">{i + 1}</span>
-            <span class:list={["v-label", { "v-vert": l.differe }]}>{l.quand}</span>
-          </div>
-          <h3 class="v-h3">{l.titre}</h3>
-          <p>{l.texte}</p>
-        </article>
-      ))}
-    </div>
-    <div class="v-carte v-grille" style="padding: 22px; align-items: center; gap: 22px;">
-      <div class="v-pile v-pile--serree" style="gap: 8px;">
-        <p class="v-prix">390&nbsp;€&nbsp;HT</p>
-        <p class="v-petit">90&nbsp;min · visio ou présentiel · <a href="#offres" style="color: inherit;">déductible de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
-        <p class="v-fort v-vert">Satisfait ou remboursé. <a href="/mentions-legales#conditions-diagnostic" class="v-petit" style="color: var(--v-encre); font-weight: 400;">Conditions</a></p>
-      </div>
-      <div class="v-pile v-pile--serree" style="gap: 4px; align-items: flex-start;">
-        <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
-          Réserver →<span class="v-surligne">90&nbsp;min</span>
-        </button>
-        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
-      </div>
-    </div>
-  </section>
-
-  <section id="methode" class="v-section">
-    <p class="v-label">Ma méthode</p>
-    <h2 class="v-h2">Le terrain d'abord. <span class="v-vert">La technique ensuite.</span></h2>
-    <div class="v-grille">
-      {methode.map((m) => (
-        <article class="v-carte v-carte--pad">
-          <h3 class="v-h3">{m.titre}</h3>
-          <p>{m.texte}</p>
-        </article>
-      ))}
-      <article class="v-carte v-carte--pad">
-        <h3 class="v-h3">Testé avant d'être déployé</h3>
-        <p>Chaque processus est mesuré sur vos cas réels avant d'être mis en service&nbsp;:</p>
-        <ol class="v-liste">
-          {etapesTest.map((e, i) => (
-            <li style="display: flex; gap: 12px; align-items: baseline;">
-              <span class="v-chiffre" style="font-size: 22px;">{i + 1}</span>
-              <span class:list={[{ "v-fort": i === etapesTest.length - 1 }]}>{e}</span>
-            </li>
-          ))}
-        </ol>
-      </article>
-    </div>
-  </section>
-
   <section id="cas" class="v-section">
-    <p class="v-label">Résultats</p>
-    <h2 class="v-h2" style="text-wrap: balance;">Trois exemples parmi d'autres. <span class="v-vert">Trois&nbsp;résultats&nbsp;mesurés.</span></h2>
+    <p class="v-surtitre">Résultats</p>
+    <h2 class="v-h2" style="text-wrap: balance;">Trois exemples parmi d'autres. <span class="v-vert">Trois résultats&nbsp;mesurés.</span></h2>
     <div class="v-grille">
       {cas.map((c) => (
         <article class="v-carte" style="display: flex; flex-direction: column;">
@@ -337,29 +311,100 @@ const jsonLd = [
     <p class="v-petit">Les études de cas détaillées, en Gironde et dans le Sud-Ouest&nbsp;: <a href="/integration-ia-bordeaux#cas" class="v-fort">Intégration de l'IA à Bordeaux →</a></p>
   </section>
 
-  <section id="references" class="v-section">
-    <div class="v-carte v-carte--pad" style="gap: 16px;">
-      <p class="v-label">Références</p>
-      <h2 class="v-h2" style="max-width: none; text-wrap: balance;">Des grands groupes aux indépendants. <span class="v-vert">Une méthode taillée pour les PME.</span></h2>
-      <p class="v-texte">
-        J'ai travaillé pour des groupes comme Dassault Systèmes ou SNCF Fret, et aux côtés de dirigeants qui
-        travaillent seuls. Cette vision d'ensemble, je la mets au service des PME&nbsp;: <span class="v-fort">une méthode
-        adaptée à leurs moyens, à leurs équipes et à la réalité de leur terrain.</span>
-      </p>
-      <ul style="display: flex; flex-wrap: wrap; gap: 8px 28px;">
-        {references.map((r) => <li class="v-h3" style="font-size: 22px;">{r}</li>)}
-      </ul>
+  <section id="parcours" class="v-section">
+    <p class="v-surtitre">Comment ça se passe</p>
+    <h2 class="v-h2">Un diagnostic d'abord. <span class="v-vert">Vous décidez ensuite.</span></h2>
+    <ol class="v-grille">
+      {parcours.map((p) => (
+        <li class="v-carte v-carte--pad">
+          <p class="v-surtitre v-etape"><span class="v-etape__num">Étape {p.n}</span>{p.option && <span>En option</span>}</p>
+          <h3 class="v-h3">{p.nom}</h3>
+          <p class="v-fort">{p.meta}</p>
+          <p>{p.texte}</p>
+          <a class="v-fort" href={`#${p.ancre}`} style="margin-top: auto;">Le détail ↓</a>
+        </li>
+      ))}
+    </ol>
+    <p class="v-texte">
+      <span class="v-fort">Le diagnostic ne vous engage à rien d'autre.</span> Si vous lancez l'intégration dans les 30&nbsp;jours,
+      ses 390&nbsp;€ sont déduits du prix.
+    </p>
+  </section>
+
+  <section id="diagnostic" class="v-section">
+    <p class="v-surtitre v-etape"><span class="v-etape__num">Étape 1</span><span>Le diagnostic · 90&nbsp;minutes</span></p>
+    <h2 class="v-h2" style="max-width: none;">Vos missions. Vos équipes. <span class="v-vert">Votre&nbsp;IA.</span></h2>
+    <p class="v-chapo">Vous me décrivez votre semaine type&nbsp;: vos missions récurrentes, vos livrables incontournables, ce qui coince. Je vous montre où l'IA vous fait gagner du temps, et je chiffre le gain.</p>
+    <p class="v-surtitre" style="margin-top: 8px;">Vous repartez avec</p>
+    <div class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr));">
+      {livrables.map((l, i) => (
+        <article class="v-carte v-carte--pad">
+          <div style="display: flex; justify-content: space-between; align-items: baseline; gap: 12px;">
+            <span class="v-chiffre">{i + 1}</span>
+            <span class:list={["v-label", { "v-vert": l.differe }]}>{l.quand}</span>
+          </div>
+          <h3 class="v-h3">{l.titre}</h3>
+          <p>{l.texte}</p>
+        </article>
+      ))}
+    </div>
+    <div class="v-carte v-grille" style="padding: 22px; align-items: center; gap: 22px;">
+      <div class="v-pile v-pile--serree" style="gap: 8px;">
+        <p class="v-prix">390&nbsp;€&nbsp;HT</p>
+        <p class="v-petit">90&nbsp;min · visio ou présentiel · déduits du prix de l'intégration si vous la lancez sous 30&nbsp;jours</p>
+        <p class="v-fort v-vert">Satisfait ou remboursé. <a href="/mentions-legales#conditions-diagnostic" class="v-petit" style="color: var(--v-encre); font-weight: 400;">Conditions</a></p>
+      </div>
+      <div class="v-pile v-pile--serree" style="gap: 4px; align-items: flex-start;">
+        <button type="button" class="v-bouton v-bouton--petit" data-open-booking="diagnostic">
+          Réserver →<span class="v-surligne">90&nbsp;min</span>
+        </button>
+        <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
+      </div>
+    </div>
+    <p class="v-texte">
+      <span class="v-fort">Et après&nbsp;?</span> Avec le kit, vous pouvez lancer vos premiers processus vous-même. Pour les
+      construire dans vos outils et former votre équipe, c'est l'étape&nbsp;2&nbsp;: <a href="#integration" class="v-fort">l'intégration ↓</a>
+    </p>
+  </section>
+
+  <section id="integration" class="v-section">
+    <p class="v-surtitre v-etape"><span class="v-etape__num">Étape 2</span><span>L'intégration · {dureeIntegration}</span></p>
+    <h2 class="v-h2">Le terrain d'abord. <span class="v-vert">La technique ensuite.</span></h2>
+    <p class="v-chapo">
+      Je construis les processus IA repérés pendant le diagnostic, dans vos outils, avec ceux qui font le travail. Puis je
+      forme votre équipe à s'en servir.
+    </p>
+    <div class="v-grille">
+      {methode.map((m) => (
+        <article class="v-carte v-carte--pad">
+          <h3 class="v-h3">{m.titre}</h3>
+          <p>{m.texte}</p>
+        </article>
+      ))}
+      <article class="v-carte v-carte--pad">
+        <h3 class="v-h3">Testé avant d'être déployé</h3>
+        <p>Chaque processus est mesuré sur vos cas réels avant d'être mis en service&nbsp;:</p>
+        <ol class="v-liste">
+          {etapesTest.map((e, i) => (
+            <li style="display: flex; gap: 12px; align-items: baseline;">
+              <span class="v-chiffre" style="font-size: 22px;">{i + 1}</span>
+              <span class:list={[{ "v-fort": i === etapesTest.length - 1 }]}>{e}</span>
+            </li>
+          ))}
+        </ol>
+      </article>
     </div>
   </section>
 
   <section id="offres" class="v-section">
-    <p class="v-label">Offres</p>
+    <p class="v-surtitre v-etape"><span class="v-etape__num">Étape 2</span><span>Les formules d'intégration</span></p>
     <h2 class="v-h2">Des délais et des prix <span class="v-vert">fixés à la signature.</span></h2>
+    <p class="v-chapo">La formule dépend du nombre de personnes à former.</p>
     <div class="v-carte" style="overflow-x: auto;">
       <table class="v-tableau">
         <thead>
           <tr>
-            <th scope="col">Offre</th>
+            <th scope="col">Formule</th>
             <th scope="col">Utilisateurs formés</th>
             <th scope="col">Durée</th>
             <th scope="col" class="v-droite">Prix HT</th>
@@ -377,7 +422,7 @@ const jsonLd = [
         </tbody>
       </table>
     </div>
-    <p class="v-petit">Au-delà de 80&nbsp;utilisateurs&nbsp;: sur devis.</p>
+    <p class="v-petit">Au-delà de 80&nbsp;utilisateurs&nbsp;: sur devis. Les 390&nbsp;€ du diagnostic sont déduits si vous lancez l'intégration sous 30&nbsp;jours.</p>
     <div class="v-grille">
       <div class="v-carte v-carte--pad">
         <h3 class="v-h3">Inclus dans chaque formule</h3>
@@ -393,7 +438,7 @@ const jsonLd = [
   </section>
 
   <section id="pilotage" class="v-section">
-    <p class="v-label">En option · Le pilotage</p>
+    <p class="v-surtitre v-etape"><span class="v-etape__num">Étape 3</span><span>Le pilotage · en option</span></p>
     <h2 class="v-h2" style="text-wrap: balance;">Après le déploiement, <span class="v-vert">je peux rester.</span></h2>
     <div class="v-carte v-grille" style="padding: 22px; align-items: center; gap: 22px;">
       <p class="v-texte">
@@ -408,22 +453,27 @@ const jsonLd = [
     </div>
   </section>
 
-  <section id="donnees" class="v-section">
-    <p class="v-label">Vos données</p>
-    <h2 class="v-h2">Vos données restent <span class="v-vert">sous contrôle.</span></h2>
-    <ul class="v-carte">
-      <li class="v-ligne">L'IA n'accède qu'aux outils et aux données nécessaires à chaque processus.</li>
-      <li class="v-ligne">Aucun envoi ni aucune décision sans validation humaine.</li>
-    </ul>
+  <section id="references" class="v-section">
+    <div class="v-carte v-carte--pad" style="gap: 16px;">
+      <p class="v-surtitre">Références</p>
+      <h2 class="v-h2" style="max-width: none; text-wrap: balance;">Des grands groupes aux indépendants. <span class="v-vert">Une méthode taillée pour les PME.</span></h2>
+      <p class="v-texte">
+        J'ai travaillé pour des groupes comme Dassault Systèmes ou SNCF Fret, et aux côtés de dirigeants qui
+        travaillent seuls. Cette vision d'ensemble, je la mets au service des PME&nbsp;: <span class="v-fort">une méthode
+        adaptée à leurs moyens, à leurs équipes et à la réalité de leur terrain.</span>
+      </p>
+      <ul style="display: flex; flex-wrap: wrap; gap: 8px 28px;">
+        {references.map((r) => <li class="v-h3" style="font-size: 22px;">{r}</li>)}
+      </ul>
+    </div>
   </section>
-
   <section id="qui" class="v-section">
     <div class="v-bio">
       <div class="v-carte v-bio__photo" style="padding: 0; overflow: hidden;">
         <Image src={portrait} alt="Julien Tridat" widths={[280, 560]} sizes="280px" style="display: block; width: 100%; height: auto;" />
       </div>
       <div class="v-pile">
-        <p class="v-label">Qui je suis</p>
+        <p class="v-surtitre">Qui je suis</p>
         <h2 class="v-h2">20 ans à comprendre des métiers <span class="v-vert">avant de les transformer.</span></h2>
         <p class="v-texte">Publicité (Publicis, Saatchi &amp; Saatchi), production média (France&nbsp;24, Canal+, France&nbsp;2), puis conseil&nbsp;: j'ai passé ma carrière à entrer dans des entreprises très différentes et à comprendre vite comment elles fonctionnent.</p>
         <p class="v-texte"><span class="v-fort">J'ai formé et accompagné plus de 300 dirigeants et cadres à l'intelligence artificielle.</span> Je ne suis pas développeur. Ma force, c'est de comprendre votre métier et vos enjeux.</p>
@@ -432,8 +482,17 @@ const jsonLd = [
     </div>
   </section>
 
+  <section id="donnees" class="v-section">
+    <p class="v-surtitre">Vos données</p>
+    <h2 class="v-h2">Vos données restent <span class="v-vert">sous contrôle.</span></h2>
+    <ul class="v-carte">
+      <li class="v-ligne">L'IA n'accède qu'aux outils et aux données nécessaires à chaque processus.</li>
+      <li class="v-ligne">Aucun envoi ni aucune décision sans validation humaine.</li>
+    </ul>
+  </section>
+
   <section id="faq" class="v-section">
-    <p class="v-label">Questions</p>
+    <p class="v-surtitre">Questions</p>
     <h2 class="v-h2">Questions fréquentes</h2>
     <div class="v-carte">
       {faq.map((f) => (
@@ -452,7 +511,7 @@ const jsonLd = [
         <button type="button" class="v-bouton v-bouton--inverse" data-open-booking="diagnostic">
           Réserver le diagnostic →<span class="v-surligne">90&nbsp;min</span>
         </button>
-        <p class="v-petit">390&nbsp;€&nbsp;HT · satisfait ou remboursé · <a href="#offres" style="color: inherit;">déductible de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
+        <p class="v-petit">390&nbsp;€&nbsp;HT · satisfait ou remboursé · <a href="#parcours" style="color: inherit;">déduits du prix de l'intégration</a> si vous la lancez sous 30&nbsp;jours</p>
         <button type="button" class="v-lien-action" style="font-size: 18px; padding: 4px 0;" data-open-rappel>Une question avant&nbsp;? →</button>
       </div>
     </div>

@@ -21,9 +21,9 @@ const ancre = (id: string) => (surAccueil ? `#${id}` : `/#${id}`);
       <span class="v-label">Intégration IA · Bordeaux</span>
     </a>
     <nav class="v-nav" aria-label="Navigation principale">
-      <a class="v-nav__lien" href={ancre("diagnostic")}>Le diagnostic</a>
       <a class="v-nav__lien" href={ancre("cas")}>Cas</a>
-      <a class="v-nav__lien" href={ancre("offres")}>Offres</a>
+      <a class="v-nav__lien" href={ancre("diagnostic")}>Le diagnostic</a>
+      <a class="v-nav__lien" href={ancre("integration")}>L'intégration</a>
       <a class="v-nav__lien" href="/formation-ia" aria-current={actif === "formation" ? "page" : undefined}>Formation</a>
       <a class="v-nav__lien" href={ancre("qui")}>Qui je suis</a>
     </nav>

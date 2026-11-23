@@ -91,7 +91,7 @@ const jsonLd = [
 <VitrineLayout title={title} description={description} canonical={canonical} jsonLd={jsonLd}>
   <section class="v-section v-section--premiere">
     <div class="v-hero v-pile" style="gap: 32px;">
-      <p class="v-label">Bordeaux · Bordeaux Métropole · Gironde</p>
+      <p class="v-surtitre">Bordeaux · Bordeaux Métropole · Gironde</p>
       <h1 class="v-h1">
         Intégration de l'IA<br />
         <span class="v-vert">pour les TPE et PME de Bordeaux.</span>
@@ -112,7 +112,7 @@ const jsonLd = [
   </section>
 
   <section id="cas" class="v-section">
-    <p class="v-label">Études de cas</p>
+    <p class="v-surtitre">Études de cas</p>
     <h2 class="v-h2">En Gironde et dans le Sud-Ouest. <span class="v-vert">Ce qui a changé, chiffres à l'appui.</span></h2>
     <div class="v-grille">
       {cas.map((c) => (
@@ -129,7 +129,7 @@ const jsonLd = [
   </section>
 
   <section class="v-section">
-    <p class="v-label">Comment ça se passe</p>
+    <p class="v-surtitre">Comment ça se passe</p>
     <h2 class="v-h2">Un diagnostic d'abord. <span class="v-vert">Vous décidez ensuite.</span></h2>
     <div class="v-grille">
       {etapes.map((e, i) => (
@@ -146,7 +146,7 @@ const jsonLd = [
   </section>
 
   <section class="v-section">
-    <p class="v-label">Où j'interviens</p>
+    <p class="v-surtitre">Où j'interviens</p>
     <div class="v-carte v-carte--pad">
       <p class="v-texte">
         À Bordeaux et dans la métropole (Mérignac, Pessac, Talence, Bègles, Le Bouscat, Lormont…), en Gironde et en
@@ -156,7 +156,7 @@ const jsonLd = [
   </section>
 
   <section class="v-section">
-    <p class="v-label">Questions fréquentes</p>
+    <p class="v-surtitre">Questions fréquentes</p>
     <div class="v-carte">
       {faq.map((f) => (
         <details class="v-ligne">

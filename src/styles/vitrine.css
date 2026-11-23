@@ -65,6 +65,14 @@ body.vitrine {
 .v-h3 { font-family: var(--v-titre); font-weight: 800; font-size: 26px; line-height: 1; text-transform: uppercase; }
 .v-chiffre { font-family: var(--v-titre); font-weight: 800; font-size: 30px; line-height: 1; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .v-prix { font-family: var(--v-titre); font-weight: 800; font-size: 56px; line-height: 1; font-variant-numeric: tabular-nums; }
+/* Surtitre de section : ouvre chaque grand thème (« Le diagnostic », « Les formules »…).
+   Plus grand et à l'encre que .v-label, qui reste pour les libellés dans les cartes :
+   à 14 px gris, les thèmes ne se lisaient pas (Julien, 23/11/2026). */
+.v-surtitre { font-family: var(--v-titre); font-weight: 800; font-size: clamp(20px, 2vw, 24px); line-height: 1.15; letter-spacing: 0.08em; text-transform: uppercase; color: var(--v-encre); }
+/* Étape du parcours : « [ÉTAPE 1] LE DIAGNOSTIC · 90 MIN ». La pastille d'encre porte le numéro. */
+.v-etape { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; align-self: flex-start; }
+.v-etape__num { background: var(--v-encre); color: var(--v-blanc); padding: 6px 12px; white-space: nowrap; }
+.v-sombre .v-surtitre { color: var(--v-blanc); }
 .v-vert { color: var(--v-vert); }
 .v-chapo { font-size: 19px; line-height: 1.55; max-width: 56ch; }
 .v-texte { max-width: 65ch; }
