@@ -57,7 +57,6 @@ Polices chargées par le layout (Google Fonts) : Barlow Condensed 600/800, Publi
 | `.v-h2` | Barlow Condensed 800, capitales | `clamp(34px, 4vw, 44px)`, max 24 caractères de large | Titre de section |
 | `.v-h3` | Barlow Condensed 800, capitales | 26 px | Titre de carte, nom d'offre |
 | `.v-surtitre` | Barlow Condensed 800, capitales, interlettrage 0,08 em, encre | `clamp(20px, 2vw, 24px)` | Surtitre qui ouvre chaque grand thème (« Le constat », « Résultats »…) et le hero |
-| `.v-etape` + `.v-etape__num` | (avec `.v-surtitre`) pastille d'encre pour le numéro | — | Étapes du parcours : « [Étape 1] Le diagnostic · 90 minutes » |
 | `.v-label` | Barlow Condensed 600, capitales, interlettrage 0,12 em, gris | 14 px | Libellé dans une carte (« Avant », « En séance »), intitulé de `.v-dl` ; jamais pour ouvrir une section |
 | `.v-chiffre` | Barlow Condensed 800, chiffres tabulaires | 30 px | Chiffres « avant / après », numéros d'étape |
 | `.v-prix` | Barlow Condensed 800, chiffres tabulaires | 56 px | Le prix mis en avant |
@@ -140,10 +139,16 @@ droits, cadre d'encre de 2 px, aucune ombre ni flou, imposés par `vitrine.css`.
   (« 390 € HT · satisfait ou remboursé · déduits du prix de l'intégration… »).
 - **Section** : `.v-surtitre` (surtitre court) + `.v-h2` en deux temps + contenu en `.v-grille`.
   Le surtitre en `.v-label` (14 px gris) était illisible : remplacé le 23/11/2026.
-- **Parcours** (accueil, `#parcours`) : trois cartes numérotées (diagnostic, intégration, pilotage
-  en option), chacune avec durée et prix et un lien vers sa section. Chaque section détaillée
-  s'ouvre ensuite par sa pastille d'étape (`.v-surtitre.v-etape`). C'est le fil qui relie le
-  diagnostic aux offres : toute nouvelle offre s'insère dans ce parcours, pas à côté.
+- **Parcours en frise** (accueil, `#parcours`) : `ol.v-frise` > `li.v-frise__etape` (`id` =
+  `diagnostic`, `integration`, `pilotage`) > `.v-frise__num` (carré d'encre numéroté, relié au
+  suivant par un trait de 2 px) + `.v-frise__corps` (`.v-surtitre` « Étape 1 · 90 minutes »,
+  titre, contenu complet de l'étape). `.v-frise__etape--option` : numéro au trait (étape en
+  option). Chaque étape n'est décrite qu'une fois, dans sa frise : pas de résumé en cartes
+  au-dessus (répétitif, retiré le 23/11/2026). Toute nouvelle offre s'insère dans cette frise.
+- **Parcours de réservation** : le bouton du hero et celui de l'en-tête descendent à l'étape 1
+  (`href="#diagnostic"`) ; l'agenda (`data-open-booking`) s'ouvre depuis l'encadré prix de
+  l'étape 1 et depuis l'appel final. Le prix complet et ses conditions ne figurent que dans
+  cet encadré.
 - **Carte de cas** : `.v-carte` > `.v-bandeau` (métier · lieu) > `.v-cols` à deux colonnes
   « Avant » / « Après » (`.v-chiffre`, le second en `.v-vert`) > paragraphe.
 - **Étapes numérotées** : `.v-carte--pad` avec `.v-chiffre` (le numéro) puis `.v-h3`.

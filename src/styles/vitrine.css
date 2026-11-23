@@ -69,9 +69,6 @@ body.vitrine {
    Plus grand et à l'encre que .v-label, qui reste pour les libellés dans les cartes :
    à 14 px gris, les thèmes ne se lisaient pas (Julien, 23/11/2026). */
 .v-surtitre { font-family: var(--v-titre); font-weight: 800; font-size: clamp(20px, 2vw, 24px); line-height: 1.15; letter-spacing: 0.08em; text-transform: uppercase; color: var(--v-encre); }
-/* Étape du parcours : « [ÉTAPE 1] LE DIAGNOSTIC · 90 MIN ». La pastille d'encre porte le numéro. */
-.v-etape { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; align-self: flex-start; }
-.v-etape__num { background: var(--v-encre); color: var(--v-blanc); padding: 6px 12px; white-space: nowrap; }
 .v-sombre .v-surtitre { color: var(--v-blanc); }
 .v-vert { color: var(--v-vert); }
 .v-chapo { font-size: 19px; line-height: 1.55; max-width: 56ch; }
@@ -130,6 +127,23 @@ body.vitrine {
 .v-pied__barre { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; padding-top: 22px; padding-bottom: 22px; font-size: 14px; line-height: 1.45; color: var(--v-gris); }
 .v-pied nav { display: flex; flex-wrap: wrap; gap: 16px; }
 .v-pied a, .v-pied button { color: var(--v-gris); font: inherit; background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+
+/* Frise du parcours (accueil) : une colonne de numéros reliés par un trait d'encre,
+   le contenu de chaque étape à côté. L'étape en option a un numéro au trait. */
+.v-frise { display: flex; flex-direction: column; }
+.v-frise__etape { position: relative; display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 0 28px; padding-bottom: 64px; scroll-margin-top: 24px; }
+.v-frise__etape:last-child { padding-bottom: 0; }
+.v-frise__etape::before { content: ""; position: absolute; left: 27px; top: 56px; bottom: 0; width: 2px; background: var(--v-encre); }
+.v-frise__etape:last-child::before { display: none; }
+.v-frise__num { width: 56px; height: 56px; box-sizing: border-box; display: flex; align-items: center; justify-content: center; background: var(--v-encre); color: var(--v-blanc); font-family: var(--v-titre); font-weight: 800; font-size: 32px; line-height: 1; }
+.v-frise__etape--option .v-frise__num { background: var(--v-blanc); color: var(--v-encre); border: 2px solid var(--v-encre); }
+.v-frise__corps { display: flex; flex-direction: column; gap: 22px; min-width: 0; }
+@media (max-width: 600px) {
+  .v-frise__etape { grid-template-columns: 36px minmax(0, 1fr); gap: 0 14px; padding-bottom: 48px; }
+  .v-frise__etape::before { left: 17px; top: 36px; }
+  .v-frise__num { width: 36px; height: 36px; font-size: 22px; }
+}
+@media (prefers-reduced-motion: no-preference) { html:has(body.vitrine) { scroll-behavior: smooth; } }
 
 /* Bio : portrait en colonne étroite, texte à côté ; empilés sur téléphone */
 .v-bio { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: 40px; align-items: start; }
