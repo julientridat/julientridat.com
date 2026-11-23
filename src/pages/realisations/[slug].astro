@@ -62,7 +62,7 @@ const jsonLd = [
       <a href="/">Accueil</a> / <a href="/integration-ia-bordeaux">Intégration IA à Bordeaux</a> / Étude de cas
     </nav>
     <div class="v-hero v-pile">
-      <p class="v-label">Étude de cas · {d.secteur}</p>
+      <p class="v-surtitre">Étude de cas · {d.secteur}</p>
       <h1 class="v-h2" style="max-width: 30ch;">{d.title}</h1>
       <p class="v-chapo">{d.pitch}</p>
     </div>
@@ -94,7 +94,7 @@ const jsonLd = [
 
   {d.resultats.length > 0 && (
     <section class="v-section">
-      <p class="v-label">Résultats</p>
+      <p class="v-surtitre">Résultats</p>
       <div class="v-carte v-cols">
         {d.resultats.map((r) => (
           <div class="v-ligne" style="border-bottom: 0;">
@@ -108,14 +108,14 @@ const jsonLd = [
 
   {d.pointDepart && (
     <section class="v-section">
-      <p class="v-label">Le point de départ</p>
+      <p class="v-surtitre">Le point de départ</p>
       <p class="v-chapo" style="max-width: 65ch;">{d.pointDepart}</p>
     </section>
   )}
 
   {d.methode.length > 0 && (
     <section class="v-section">
-      <p class="v-label">La méthode</p>
+      <p class="v-surtitre">La méthode</p>
       <ol class="v-grille" style="grid-template-columns: repeat(auto-fit, minmax(min(220px, 100%), 1fr)); list-style: none; padding: 0;">
         {d.methode.map((m, i) => (
           <li class="v-carte v-carte--pad">
@@ -130,7 +130,7 @@ const jsonLd = [
 
   {d.assistants.length > 0 && (
     <section class="v-section">
-      <p class="v-label">Ce qui a été installé</p>
+      <p class="v-surtitre">Ce qui a été installé</p>
       <div class="v-grille">
         {d.assistants.map((a) => (
           <article class="v-carte" style="display: flex; flex-direction: column;">
@@ -148,7 +148,7 @@ const jsonLd = [
 
   {d.livrables.length > 0 && (
     <section class="v-section">
-      <p class="v-label">Livrables</p>
+      <p class="v-surtitre">Livrables</p>
       <ul class="v-carte v-liste" style="list-style: none; padding: 0 22px;">
         {d.livrables.map((l) => <li>✓ {l}</li>)}
       </ul>
@@ -157,7 +157,7 @@ const jsonLd = [
 
   {d.bilan && (
     <section class="v-section">
-      <p class="v-label">Le bilan</p>
+      <p class="v-surtitre">Le bilan</p>
       <p class="v-chapo" style="max-width: 65ch;">{d.bilan}</p>
     </section>
   )}

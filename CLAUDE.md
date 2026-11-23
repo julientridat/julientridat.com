@@ -33,7 +33,8 @@ souveraineté totale (code versionné, aucun outil propriétaire).**
 
 ## Charte (À RESPECTER FIDÈLEMENT) — « planning »
 
-Référence : l'artefact Design System « Julien Tridat » ; tokens dans `src/styles/vitrine.css`.
+Référence : l'artefact Design System « Julien Tridat » ; tokens dans `src/styles/vitrine.css` ;
+documentation complète (composants, motifs de page, responsive) : `docs/design-system-planning.md`.
 - Fond `#F5F7F9`, surfaces blanches, encre `#101214`, **un seul accent : vert `#0A7350`**,
   réservé à ce qui est livré ou tenu (seconde phrase des titres, statuts). Surligneur
   `#FFE45C` uniquement sur la mention de durée du bouton principal.

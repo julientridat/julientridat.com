@@ -60,7 +60,7 @@ const jsonLd = [
   <section id="haut" class="v-section v-section--premiere">
     <div class="v-hero v-grille v-grille--large">
       <div class="v-pile">
-        <p class="v-label">{c.hero.surtitre} · {c.hero.surtitreSuite}</p>
+        <p class="v-surtitre">{c.hero.surtitre} · {c.hero.surtitreSuite}</p>
         <h1 class="v-h1">
           {c.hero.titre1} {c.hero.titre2}
           <span class="v-vert">{c.hero.titreAccent1} {c.hero.titreAccent2}</span>
@@ -86,7 +86,7 @@ const jsonLd = [
   </section>
 
   <section id="entrees" class="v-section">
-    <p class="v-label">{c.aiguillage.surtitre}</p>
+    <p class="v-surtitre">{c.aiguillage.surtitre}</p>
     <h2 class="v-h2">{c.aiguillage.titre} <span class="v-vert">{c.aiguillage.titreAccent}</span></h2>
     <div class="v-grille">
       <article class="v-carte v-carte--pad">
@@ -105,7 +105,7 @@ const jsonLd = [
   </section>
 
   <section id="deroule" class="v-section">
-    <p class="v-label">{c.deroule.surtitre}</p>
+    <p class="v-surtitre">{c.deroule.surtitre}</p>
     <h2 class="v-h2">{c.deroule.titre} <span class="v-vert">{c.deroule.titreAccent}</span></h2>
     <div class="v-carte v-cols">
       {c.deroule.etapes.map((e) => (
@@ -119,7 +119,7 @@ const jsonLd = [
   </section>
 
   <section id="public" class="v-section">
-    <p class="v-label">{c.public.surtitre}</p>
+    <p class="v-surtitre">{c.public.surtitre}</p>
     <h2 class="v-h2">{c.public.titre} <span class="v-vert">{c.public.titreAccent}</span></h2>
     <p class="v-texte" set:html={enLigne(c.public.intro, accent)} />
     <div class="v-carte">
@@ -140,7 +140,7 @@ const jsonLd = [
   </section>
 
   <section id="supports" class="v-section">
-    <p class="v-label">{c.supports.surtitre}</p>
+    <p class="v-surtitre">{c.supports.surtitre}</p>
     <h2 class="v-h2">{c.supports.titre} <span class="v-vert">{c.supports.titreAccent}</span></h2>
     <div class="v-grille">
       {c.supports.artefacts.map((a) => (
@@ -170,7 +170,7 @@ const jsonLd = [
   </section>
 
   <section id="cadre" class="v-section">
-    <p class="v-label">{c.cadre.surtitre}</p>
+    <p class="v-surtitre">{c.cadre.surtitre}</p>
     <h2 class="v-h2">{c.cadre.titre} <span class="v-vert">{c.cadre.titreAccent}</span></h2>
     <div class="v-grille" style="align-items: start;">
       <div class="v-carte">
@@ -188,7 +188,7 @@ const jsonLd = [
   </section>
 
   <section id="questions" class="v-section">
-    <p class="v-label">{c.faq.surtitre}</p>
+    <p class="v-surtitre">{c.faq.surtitre}</p>
     <h2 class="v-h2">{c.faq.titre} <span class="v-vert">{c.faq.titreAccent}</span></h2>
     <div class="v-carte">
       {c.faq.questions.map((item) => (
@@ -203,7 +203,7 @@ const jsonLd = [
   <section id="contact" class="v-section v-section--fin">
     <div class="v-sombre v-grille v-grille--large" style="align-items: end;">
       <div class="v-pile">
-        <p class="v-label" style="color: var(--v-encre-sur-sombre);">{c.cloture.surtitre}</p>
+        <p class="v-surtitre">{c.cloture.surtitre}</p>
         <h2 class="v-h1">{c.cloture.titre} <span class="v-vert">{c.cloture.titreAccent}</span></h2>
         <p class="v-chapo" set:html={enLigne(c.cloture.texte, accent)} />
       </div>
