@@ -1,5 +1,9 @@
 # Design system — Julien Tridat, one-pages de vente
 
+> **Remplacé pour le site julientridat.com** (23/11/2026) : la charte en vigueur est « planning »,
+> voir [`design-system-planning.md`](design-system-planning.md). Ce document ne vaut plus que pour
+> la one-page « L'IA opérationnelle en 60 jours » de juillet 2026.
+
 Extrait du site « L'IA opérationnelle en 60 jours » (juillet 2026). Sert de référence pour toute nouvelle page one-page de vente sous la marque perso de Julien Tridat (consultant & formateur IA) — pas pour les livrables marque blanche client (Maikers, Adaliance, LEH…), qui ont leurs propres chartes.
 
 **Fichiers réutilisables**, dans ce dossier :
